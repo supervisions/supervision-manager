@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/rmbank/supervision/common/CustomHttpHeaderConst.java=UTF-8
+encoding//src/main/java/com/rmbank/supervision/common/exception/CommonActionException.java=UTF-8
+encoding//src/main/java/com/rmbank/supervision/common/exception/DefaultExceptionHandler.java=UTF-8
+encoding//src/main/java/com/rmbank/supervision/common/exception/IExceptionEnumRoot.java=UTF-8
+encoding//src/main/java/com/rmbank/supervision/common/shiro/UserRealm.java=UTF-8
+encoding//src/main/java/com/rmbank/supervision/common/utils/Page.java=UTF-8
+encoding//src/main/java/com/rmbank/supervision/common/utils/XMLConvert.java=UTF-8
+encoding//src/main/java/com/rmbank/supervision/common/utils/XmlUtil.java=UTF-8
+encoding/<project>=UTF-8
