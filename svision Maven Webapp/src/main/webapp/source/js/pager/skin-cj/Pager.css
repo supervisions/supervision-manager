@@ -21,13 +21,11 @@ background-color:#2F2C37;
 #pager ul.pages li:hover {
 border:1px solid #6D697D;
 color:#FDD51D;
-    margin-top: 5px;
 }
 
 #pager ul.pages li.pgEmpty {
 border:1px solid #6D697D;
 color:#BABABA;
-    margin-top:5px;
 }
 
 #pager ul.pages li.pgCurrent {

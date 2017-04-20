@@ -1,30 +1,24 @@
-<%@ page language="java" pageEncoding="utf-8"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://"
             + request.getServerName() + ":" + request.getServerPort()
             + path + "/";
-    String url = request.getScheme() + "://"
-            + request.getServerName() + ":" + request.getServerPort()
-            + path;
 %>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <META http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="shortcut icon" href="<%=basePath%>source/img/favicon.ico" type="image/x-icon" >
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>用户管理</title>
-    <%--<!-- Bootstrap table -->--%>
-    <script src="<%=basePath %>source/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
-    <script src="<%=basePath %>source/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
-    <script src="<%=basePath %>source/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <meta charset="utf-8">
+    <title>系统用户管理</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no"/>
+    <script src="${pageContext.request.contextPath}/source/js/pager/jquery.pager.js"></script>
+    <link href="${pageContext.request.contextPath}/source/js/pager/Pager.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="<%=basePath%>source/images/favicon.ico" type="image/x-icon" />
     <script type="text/javascript">
+        var topClick = false;
         $(document).ready(function () {
+
             //showProcess(true, '温馨提示', '正在加载数据...');
             $("#pager").pager({
                 pagenumber: '${user.pageNo}', /* 表示初始页数 */
@@ -32,15 +26,87 @@
                 totalCount: '${user.totalCount}',
                 buttonClickCallback: PageClick                  /* 表示点击分页数按钮调用的方法 */
             });
-            var searchName = $.trim($("#searchName").val());
-            var userStatus = $("#sct_userStatus").val();
-            if(searchName.length>0 || userStatus > 0){
-                $("#div-togle-search").toggle();
-                if(userStatus>0){
-                    $("#sct_userStatus").val(userStatus);
+//	$("#userList tr").each(function(i){
+//		if(i>0){
+//			$(this).bind("click",function(){
+//				if(topClick){
+//					topClick = false;
+//					return;
+//				}
+//				var userId = $(this).find("td").first().text();
+//				 window.location.href="userInfo.do?userId="+userId;
+//			});
+//		}
+//	});
+            $("#treeList").tree({
+                url: 'jsonLoadOrganParent.do?rootId=' + 0,
+                onClick: function (node) {
+                    var orgId = node.id;
+                    getUserListByOrganId(orgId);
+                },
+                onLoadSuccess: function () {
+                    //showProcess(false);
+                    /*  var cyId = $.trim($("#hid_companyId").val());
+                     if(cyId.length>0){
+                     var node = $("#treeList").tree("find",cyId);
+                     $('#treeList').tree("select", node.target);
+
+                     }  */
                 }
-            }
+            });
         });
+        function getUserListByOrganId(organId) {
+            $.ajax({
+                url: "jsonLoadUserListByOrganId.do?organId=" + organId,
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 0) {
+                        $("#pageNumber").val(1);
+                        $("#pager").pager({
+                            pagenumber: data.obj.pageNo, /* 表示初始页数 */
+                            pagecount: data.obj.pageCount, /* 表示总页数 */
+                            totalCount: data.obj.totalCount,
+                            buttonClickCallback: PageClick                     /* 表示点击分页数按钮调用的方法 */
+                        });
+                        $("#userList").html("");
+                        fillUserList(data.list);
+                    } else {
+                        $.messager.alert('错误信息', data.message, 'error');
+                    }
+                }
+            });
+        }
+        function fillUserList(lst) {
+            var html = "<tbody>";
+            html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>用户账号</span></th><th>联系电话</th><th>电子邮箱</th><th>组织机构</th><th>姓名</th><th>角色</th><th>水印显示</th><th>操作</th></tr>";
+            for (var i = 0; i < lst.length; i++) {
+                html += "<tr>";
+                html += "<td style='display:none'>" + lst[i].id + "</td>";
+                html += "<td  onclick=window.location.href='userInfo.do?userId='" + lst[i].id + " align='left' ><span style='margin-left:40px'>" + lst[i].account + "</span></td>";
+                html += "<td  onclick=window.location.href='userInfo.do?userId='" + lst[i].id + " align='left' >" + lst[i].mobile + "</td>";
+                html += "<td  onclick=window.location.href='userInfo.do?userId='" + lst[i].id + " align='left' >" + lst[i].email + "</td>";
+                html += "<td  onclick=window.location.href='userInfo.do?userId='" + lst[i].id + " align='left' >" + lst[i].organName + "</td>";
+                html += "<td  onclick=window.location.href='userInfo.do?userId='" + lst[i].id + " align='left' >" + lst[i].name + "</td>";
+                html += "<td  onclick=window.location.href='userInfo.do?userId='" + lst[i].id + ">" + lst[i].roleName + "</td>";
+
+                if (lst[i].showmark == 1) {
+                    html += "<td  onclick=window.location.href='userInfo.do?userId='" + lst[i].id + ">显示</td>";
+                } else {
+                    html += "<td  onclick=window.location.href='userInfo.do?userId='" + lst[i].id + ">不显示</td>";
+                }
+                html += "<td>";
+                if (lst[i].flag == 1) {
+                    html += "<a href='javascript:void(0);' onclick=OperatUser(" + lst[i].id + ",0,\'" + lst[i].name + "\') style='padding-left:5px;margin-top:25px' >禁用</a>";
+                } else {
+                    html += "<a href='javascript:void(0);' onclick=OperatUser(" + lst[i].id + ",1,\'" + lst[i].name + "\') style='padding-left:5px;margin-top:25px' >启用</a>";
+                }
+                html += "<a href='javascript:void(0);' onclick=resetPwd(\'" + lst[i].account + "\') style='padding-left:5px;margin-top:25px' >重置密码</a></td>";
+                html += "</tr>";
+            }
+            html += "</tbody>";
+            $("#userList").html(html);
+        }
         PageClick = function (pageclickednumber) {
             $("#pager").pager({
                 pagenumber: pageclickednumber, /* 表示启示页 */
@@ -51,262 +117,133 @@
             $("#pageNumber").val(pageclickednumber);
             /* 给pageNumber从新赋值 */
             /* 执行Action */
-            UserForm.submit();
-        }
-        function search() {
-            $("#pageNumber").val("1");
-            $("#hid_search").val(encodeURI($("#searchName").val()));
-            UserForm.submit();
-        }
-        function searchToggle(){
-            $("#div-togle-search").toggle(500);
+            pagesearch();
         }
         /*按下回车进行搜索*/
-        function keybDown(e) {
+        function keyDown(e) {
             var ev= window.event||e;
             if (ev.keyCode == 13){
                 search();
             }
         }
-        function resetPwd(uid){
-            $.ajax({
-                url: "<%=basePath%>system/user/jsonReSetPwd.do?id=" + uid,
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-                    if (data.code == returnResult.result_success) {
-                        BootstrapDialog.show({title:"操作提示", message: data.message });
-                    } else {
-                        BootstrapDialog.show({title:"操作提示", message: data.message });
-                    }
-                }
-            });
+        function search() {
+            $("#pageNumber").val("1");
+            $("#hid_search").val(encodeURI($("#searchName").val()));
+            pagesearch();
         }
-        function checkUser(uid,status){
-            $.ajax({
-                url: "<%=basePath%>system/user/jsonCheckUser.do?id=" + uid+"&status="+status,
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-                    if (data.code == returnResult.result_success) {
-//                        BootstrapDialog.alert({title:"操作提示", message: data.message });
-                        BootstrapDialog.show({title:"操作提示", message: data.message,buttons: [{label: '确定',action: function(e) {window.location.href='<%=basePath%>system/user/userList.do?pageNo='+$("#pageNumber").val();}}] });
-                    } else {
-                        BootstrapDialog.show({title:"操作提示", message: data.message });
-                    }
-                }
-            });
-        }
-    </script>
 
+        function pagesearch() {
+            if ($('#UserForm').form('validate')) {
+                UserForm.submit();
+            }
+        }
+        function OperatUser(id, status, name) {
+            topClick = true;
+            showProcess(true, '温馨提示', '正在操作，请等待...');
+            $.ajax({
+                url: "jsonUpdateUserFlag.do?id=" + id + "&flag=" + status + "&name=" + name,
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    showProcess(false);
+                    if (data.code == 0) {
+                        $.messager.alert('操作信息', data.message, 'info', function () {
+                            window.location.href = "userList.do";
+                        });
+                    } else {
+                        $.messager.alert('操作信息', data.message, 'error', function () {
+                        });
+                    }
+                }
+            });
+        }
+        function resetPwd(account) {
+            showProcess(true, '温馨提示', '正在重置密码，请等待...');
+            $.ajax({
+                url: "jsonUpdateUserDefaultPwd.do?account=" + account,
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    showProcess(false);
+                    if (data.code == 0) {
+                        $.messager.alert('操作信息', data.message, 'info', function () {
+                            window.location.href = "userList.do";
+                        });
+                    } else {
+                        $.messager.alert('操作信息', data.message, 'error', function () {
+                        });
+                    }
+                }
+            });
+        }
+
+    </script>
 </head>
 
-<body class="gray-bg">
-<div class="row wrapper border-bottom white-bg page-heading" style="margin-top:25px; margin-bottom:25px;">
-    <div class="col-lg-12">
-        <h2>基础数据</h2>
-        <ol class="breadcrumb">
-            <li>
-                <a href="<%=basePath%>server/introduction.do">主页</a>
-            </li>
-            <li>
-                <a style="cursor: text;">用户管理</a>
-            </li>
-            <li>
-                <strong style="cursor: text;">用户列表</strong>
-            </li>
-            <li style="float:right;">
-                <a href="javascript:void(0);" onclick="searchToggle();"> <button type="button" class="btn btn-large btn-danger">搜索</button></a>
-                <a href="javascript:void(0);" onclick="window.location.href='<%=basePath%>system/user/userInfo.do?id=0'" style="margin-left: 20px;"> <button type="button" class="btn btn-large btn-success">新建</button></a>
-            </li>
-        </ol>
-    </div>
-</div>
+<body>
 
-<div id="div-togle-search">
-    <form method="post" id="UserForm" action="<%=basePath%>system/user/userList.do">
-        <table cellspacing="3" cellpadding="4">
-            <tr>
-                <td>
-                    <select id="sct_userStatus" class="form-control" name="status" value="${user.status}">
-                        <option value="">请选择用户状态</option>
-                        <option value="0">未激活</option>
-                        <option value="1">已启用</option>
-                        <option value="2">已禁用</option>
-                        <option value="3">已删除</option>
-                    </select>
-                </td>
-                <td>
-                    <input id="searchName" type="text" class="form-control" placeholder="请输入查询内容..."   onkeydown="keybDown(event)"  value="${user.searchName}" />
-                    <input type="hidden" name="searchName" id="hid_search" />
-                    <input type="hidden" id="pageNumber" name="pageNo" value="${user.pageNo}"/>
-                </td>
-                <td><a href="javascript:void(0);"> <button type="button" class="btn btn-large btn-success"  onclick="search();">查询</button></a></td>
-            </tr>
-        </table>
-    </form>
-</div>
-<div class="row row-lg">
-
-    <%--<div class="col-sm-3" >
-
-        <div class="ibox-content" style=" background-color: #fff;">
-            <!--左侧导航开始-->
-            <nav role="navigation" style="background:#fff;">
-                <div class="nav-close"><i class="fa fa-times-circle"></i>
-                </div>
-                <div class="sidebar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li class="nav-header"  style="background:#22beef;">
-                            <div class="dropdown profile-element">
-                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <span class="clear">
-                                    <span class="block m-t-xs" style="font-size:20px;">
-                                        <i class="fa fa-sliders"></i>
-                                        <strong class="font-bold">机构树</strong>
-                                    </span>
-                                </span>
-                                </a>
-                            </div>
-                            <div class="logo-element">机构
-                            </div>
-                        </li>
-                        <li class="line dk"></li>
-                        <li  style="background:#fff;">
-                            <a href="#" style="background-color:#cfd4d6;color:#424256"><i class="fa fa-edit"></i> <span class="nav-label">云格致力</span><span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level" style="border-bottom: 1px solid #f0f3f4;border-left: 1px solid #f0f3f4;border-right: 1px solid #f0f3f4;border-top:0px;">
-                                <li><a class="J_menuItem" href="form_basic.html">研发部</a>
-                                </li>
-                                <li>
-                                    <a href="#">产品部 <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li><a class="J_menuItem" href="form_webuploader.html">产品一部</a>
-                                        </li>
-                                        <li><a class="J_menuItem" href="form_file_upload.html">产品二部</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">销售部 <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li><a class="J_menuItem" href="form_editors.html">售前服务</a>
-                                        </li>
-                                        <li><a class="J_menuItem" href="form_simditor.html">售后服务</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">维护部 <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li><a class="J_menuItem" href="form_editors.html">运维一部</a>
-                                        </li>
-                                        <li><a class="J_menuItem" href="form_simditor.html">运维二部</a>
-                                        </li>
-                                        <li><a class="J_menuItem" href="form_markdown.html">运维三部</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-
-
-                    </ul>
-                    </li>
-                    </ul>
-                    </li>
-                    </ul>
-                </div>
-            </nav>
-            <!--左侧导航结束-->
-        </div> </div>--%>
-
-    <div class="col-sm-12">
-        <div class="ibox-content" style=" background-color: #fff;">
-            <!-- Example Card View -->
-            <div class="example">
-                <table id="datatable" cellpadding="0" cellspacing="0" data-toggle="table" data-card-view="true" data-mobile-responsive="true">
-                    <thead>
-                    <tr >
-                        <th>状态</th>
-                        <th>姓名</th>
-                        <%--<th>组织机构</th>--%>
-                        <th>用户账号</th>
-                        <th>性别</th>
-                        <th>联系电话</th>
-                        <th>电子邮箱</th>
-                        <th>角色</th>
-                        <%--<th>显示水印</th>--%>
-                        <th>操作</th>
-                        <th>应用授权</th>
-                    </tr>
-
-                    </thead>
-                    <tbody>
-                        <c:forEach var="item" items="${userList}">
-                            <tr id="tdtable">
-                                <td>
-                                    <c:if test="${item.status == 0}">
-                                        未激活
-                                    </c:if>
-                                    <c:if test="${item.status == 1}">
-                                        已启用
-                                    </c:if>
-                                    <c:if test="${item.status == 2}">
-                                        已禁用
-                                    </c:if>
-                                    <c:if test="${item.status == 3}">
-                                        已删除
-                                    </c:if>
-                                </td>
-                                <td>${item.name}</td>
-                                <%--<td></td>--%>
-                                <td>${item.account}</td>
-                                <td>
-                                    <c:if test="${item.sex ==0}">
-                                        保密
-                                    </c:if>
-                                    <c:if test="${item.sex ==1}">
-                                        男
-                                    </c:if>
-                                    <c:if test="${item.sex ==2}">
-                                        女
-                                    </c:if>
-                                </td>
-                                <td>${item.phone}</td>
-                                <td>${item.email}</td>
-                                <td></td>
-                               <%-- <td>
-                                    <c:if test="${item.mark == 0}">不显示</c:if>
-                                    <c:if test="${item.mark == 1}">显示</c:if>
-                                </td>--%>
-                                <td>
-                                    <c:if test="${item.status == 0}">
-                                        <a href="javascript:void(0);" onclick="checkUser(${item.id},1);"> <button type="button" class="btn btn-xs btn-success">激活</button></a>
-                                    </c:if>
-                                    <c:if test="${item.status == 1}">
-                                        <a href="javascript:void(0);" onclick="checkUser(${item.id},2);"> <button type="button" class="btn btn-danger btn-xs">禁用</button></a>
-                                        <a href="<%=basePath%>system/user/userInfo.do?id=${item.id}"><button type="button" class="btn btn-info btn-xs">编辑</button></a>
-                                        <a href="javascript:void(0);" onclick="resetPwd(${item.id});"> <button type="button" class="btn btn-xs btn-warning">重置密码</button></a>
-                                    </c:if>
-                                    <c:if test="${item.status == 2}">
-                                        <a href="javascript:void(0);" onclick="checkUser(${item.id},1);"> <button type="button" class="btn btn-success btn-xs">启用</button></a>
-                                    </c:if>
-                                    <a href="javascript:void(0);" onclick="checkUser(${item.id},3);"> <button type="button" class="btn btn-xs btn-danger">删除</button></a>
-                                   <%-- <c:if test="${item.status == 3}">
-                                        已删除
-                                    </c:if>--%>
-                                </td>
-                                <td> <a href="<%=basePath%>system/user/assignAppRoleToUser.do?id=${item.id}"> <button type="button" class="btn btn-xs btn-success">应用授权</button></a></td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-
-            </div>
-        </div></div>
-        <div class="page" id="pager" style="margin: 30px;">
+<div class="con-right" id="conRight">
+    <div class="fl yw-lump">
+        <div class="yw-lump-title">
+            <i class="yw-icon icon-partner"></i><span>用户列表</span>
         </div>
-    <!-- End Example Card View -->
+    </div>
+
+    <div class="fl yw-lump mt10">
+        <form id="UserForm" name="UserForm" action="userList.do" method="get">
+            <div class="pd10-28">
+                <div class="fl">
+                    <button class="yw-btn bg-blue cur">全部用户</button>
+                </div>
+                <!--  <div class="fl">
+                     <button class="yw-btn bg-blue cur">硬件列表</button>
+                     <button class="yw-btn bg-gray ml20 cur">满意度调查</button>
+                 </div> -->
+                <div class="fr">
+                    <input type="text" id="searchName" validType="SpecialWord" style="width:150px;"
+                           class="easyui-validatebox" placeholder="搜索关键字：账号或姓名" onkeydown="keyDown(event)" value="${user.searchName}"/>
+                    <input type="hidden" name="searchName" id="hid_search" />
+                    <input type="hidden" name="status" value="1" />
+                    <span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
+                    <span class="yw-btn bg-green ml20 cur"
+                          onclick="window.location.href='userInfo.do?userId=0'">新建</span>
+                </div>
+                <div class="cl"></div>
+            </div>
+
+            <input type="hidden" id="pageNumber" name="pageNo" value="${user.pageNo}"/>
+        </form>
+    </div>
+
+    <div class="fl">
+        <div class="fl yw-lump mlwid250 mt10">
+            <div class="yw-cm-title">
+                <span class="ml26">机构列表</span>
+            </div>
+            <div class="yw-organ-tree-list" style="height: 639px;">
+                <ul id="treeList"></ul>
+            </div>
+        </div>
+        <div class="yw-lump wid-atuo ml260s mt10">
+            <div class="yw-cm-title">
+                <span class="ml26">全部用户</span>
+            </div>
+            <table class="yw-cm-table yw-leftSide yw-bg-hover" id="userList">
+                <tr style="background-color:#D6D3D3;font-weight: bold;"> 
+                    <th>用户账号</th> 
+                    <%--<th>多点登录</th>--%>
+                    <th align="center">操作</th>
+                </tr>
+                <c:forEach var="item" items="${userList}">
+                    <tr>
+                        <td align="center">${item.account}</td> 
+                    </tr>
+                </c:forEach>
+            </table>
+            <div class="page" id="pager">
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

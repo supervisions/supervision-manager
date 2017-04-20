@@ -7,4 +7,6 @@ public interface UserService {
 
 	ReturnResult<User> login(String name, String pwd, boolean rememberMe);
 
+	User getUserByAccount(String username);
+
 }

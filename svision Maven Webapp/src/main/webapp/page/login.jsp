@@ -1,6 +1,5 @@
 <%@ page language="java" pageEncoding="utf-8"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -15,245 +14,150 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<META http-equiv="X-UA-Compatible" content="IE=edge" />
-	<link rel="shortcut icon" href="<%=basePath%>source/img/favicon.ico" type="image/x-icon" >
 	<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<title>云端超级应用平台-登录</title>
-	<link rel="stylesheet" type="text/css" href="<%=basePath %>source/css/cloud-admin.css" >
-
-	<link href="<%=basePath %>source/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-	<script src="<%=basePath %>source/js/jquery-2.0.3.min.js"></script>
-	<script src="<%=basePath %>source/js/jquery.cookie.js"></script>
-	<!-- JQUERY UI-->
-	<script src="<%=basePath %>source/js/jquery-ui-1.10.3.custom.min.js"></script>
-	<!-- BOOTSTRAP -->
-	<script src="<%=basePath %>source/js/bootstrap.min.js"></script>
-
-
-	<!-- UNIFORM -->
-	<script type="text/javascript" src="<%=basePath %>source/js/uniform/jquery.uniform.min.js"></script>
-	<!-- BACKSTRETCH -->
-	<script type="text/javascript" src="<%=basePath %>source/js/jquery.backstretch.min.js"></script>
-	<!-- CUSTOM SCRIPT -->
-	<script src="<%=basePath %>source/js/script.js"></script>
-	<script src="<%=basePath %>source/js/jquery.form.js"></script>
-	<script src="<%=basePath %>source/js/login/pw.js"></script>
-	<script src="<%=basePath %>source/js/common.js"></script>
-	<!-- DATE RANGE PICKER -->
-
-	<!-- UNIFORM -->
-	<link rel="stylesheet" type="text/css" href="<%=basePath %>source/js/uniform/css/uniform.default.min.css" />
+	<title>管理平台-登录</title>
+	<link type="text/css" href="<%=basePath%>source/css/base.css" rel="stylesheet"/>
+	<link type="text/css" href="<%=basePath%>source/css/global.css" rel="stylesheet"/>
+	<link type="text/css" href="<%=basePath%>source/js/easyUI/themes/default/easyui.css" rel="stylesheet"/>
+	<link type="text/css" href="<%=basePath%>source/js/easyUI/themes/icon.css" rel="stylesheet"/>
+	<link rel="shortcut icon" href="<%=basePath%>source/images/favicon.ico" type="image/x-icon" />
+	<script type="text/javascript" src="<%=basePath%>source/js/jquery-1.11.2.min.js"></script>
+	<script src="<%=basePath%>source/js/easyUI/jquery.easyui.min.js" type="text/javascript"></script>
+	<script src="<%=basePath%>source/js/easyUI/easyui-lang-zh_CN.js" type="text/javascript"></script>
+	<script src="<%=basePath%>source/js/common/validate.js"></script>
+	<script src="<%=basePath%>source/js/login/pw.js"></script>
 	<script type="text/javascript">
 		var baseurl = '<%=url%>';
 		$(document).ready(function() {
-			App.setPage("login_bg");  //Set current page
-			App.init(); //Initialise plugins and elements
+			//针对IE不支持placeholder的处理
+			var p2 = document.getElementById("password").getAttribute("placeholder");
+			if(p2!=""){
+				$("#password").hide().after('<input type="text" class="login-input login-pwd easyui-validatebox" name="password2" id="password2" value="请输入密码" />');
+			}
+			$("#password2").focus(function(){
+				$(this).hide();
+				$("#password").show().focus();
+			});
+			$("#password").blur(function(){
+				var v = $(this).val();
+				if(v == ""){
+					$(this).hide();
+					$("#password2").show();
+				}
+			});
+
+			var p1 = document.getElementById("loginName").getAttribute("placeholder");
+			$("#loginName").val(p1).focus(function(){
+				if($(this).val()==p1){
+					$(this).val("");
+				}
+			}).blur(function(){
+				var v = $(this).val();
+				if(v == ""){
+					$(this).val(p1);
+				}
+			});
 			// 在这里写你的代码...
 			$("#loginName").keypress(function(e){
 				$("#login-alert").hide();
-				if(e.keyCode == constantsValue.enterValue){
+				if(e.keyCode == 13){
 					$("#password").focus();
 				}
 			});
 			$("#password").keydown(function(e){
 				$("#login-alert").hide();
-				if(e.keyCode == constantsValue.enterValue){
+				if(e.keyCode == 13){
 					login();
 				}
-			});
-			if ($.cookie !=  undefined && $.cookie("rmbUser") == "true") {
-				var obj =  $("#ck_remme");
-				$(obj).removeAttr("value");
-				$(obj).attr("value","true");
-				$(obj).parent().addClass("checked");
-				$(obj).parent().parent().addClass("focus");
-				$("#loginName").val($.cookie("username"));
-				$("#password").val($.cookie("password"));
-			}
+			});  
 		});
-		function loginCheck(){
-			var obj =  $("#ck_remme");
-			if(document.getElementById('ck_remme').value == "false"){
-				$(obj).removeAttr("value");
-				$(obj).attr("value","true");
-				$(obj).parent().addClass("checked");
-				$(obj).parent().parent().addClass("focus");
+		function loginCheck(obj){
+			var ck = $(obj).parent().find("input[type='checkbox']");
+			if($(obj).hasClass("yw-checkbox-true")){
+				$(obj).removeClass("yw-checkbox-true");
+				ck.attr("value","false");
 			}else{
-				$(obj).removeAttr("value");
-				$(obj).attr("value","false");
-				$(obj).parent().removeClass("checked");
-				$(obj).parent().parent().removeClass("focus");
+				$(obj).addClass("yw-checkbox-true");
+				ck.attr("value","true");
 			}
 		}
-		function swapScreen(id) {
-			jQuery('.visible').removeClass('visible animated fadeInUp');
-			jQuery('#'+id).addClass('visible animated fadeInUp');
+		function remeberMe(obj){
+			var ik = $(obj).parent().find("i[doc='loginCheckFlag']");
+			if(ik.hasClass("yw-checkbox-true")){
+				ik.removeClass("yw-checkbox-true");
+				$(obj).attr("value","false");
+			}else{
+				ik.addClass("yw-checkbox-true");
+				$(obj).attr("value","true");
+			}
 		}
 		function login(){
-			$('#loginForm').submit(function(data){
-				$('#loginForm').ajaxSubmit({
-					success: function (data) {
+
+			if ($('#loginForm').form('validate')) {
+				$('#loginForm').form('submit', {
+					url:"userLogin.do",
+					success:function(data){
 						var item = eval("(" + data + ")");
-						if(item.code == returnResult.result_success){
+						if(item.code == 200){
 							SetPwdAndChk();
 							window.location.href =baseurl+item.gotoUrl;
+							$("#login-alert").html("");
+							$("#login-alert").hide();
 						}
 						else{
-							$("#login-alert").html("<br /><span style='color:white;'>"+item.message+"</span>");
+							$("#login-alert").html("<span style='color:red;'>"+item.message+"</span>");
 							$("#login-alert").show();
 						}
 					}
 				});
-				return false;
-			});
+			}
 		}
 	</script>
 </head>
 
 <body class="login">
-	<section id="page">
-		<!-- HEADER -->
+<div style="width:100%">
+	<ul class="head-ul mr300 mt123"> 
+	</ul>
+</div>
+<div class="box">
+	<div class="logo">
+		<div>
+			<img src="<%=basePath%>source/images/lo_title.jpg"  />
+		</div> 
+	</div>
+	<form method="post"  id="loginForm" >
+		<div class="login-panel">
 
-		<!--/HEADER -->
-		<!-- LOGIN -->
-		<section id="login_bg" class="visible">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-4 col-md-offset-4">
-						<div class="login-box">
-							<h2 class="bigintro" style="max-width:350px; text-align:center;"><img src="<%=basePath %>source/img/login/logo.png" width="99%;"></h2>
-							<div class="divide-40"></div>
-							<form role="form" id="loginForm"  method="post" action="<%=basePath%>userLogin.do">
-								<div class="form-group">
-									<label for="exampleInputEmail1">用户名</label>
-									<i class="fa fa-user"></i>
-									<input type="text"  name="account"  onfocus="javascript:$('#login-alert').hide();" class="form-control" id="loginName"  onblur="GetPwdAndChk();"  >
-								</div>
-								<div class="form-group">
-									<label for="exampleInputPassword1">密码</label>
-									<i class="fa fa-lock"></i>
-									<input type="password"  name="password"   onfocus="javascript:$('#login-alert').hide();" class="form-control" id="password" >
-								</div>
-								<div>
-									<label class="checkbox" onclick="loginCheck();"> <input id="ck_remme" name="rememberMe"  type="checkbox" class="uniform" value="false"  > 记住密码</label>
-
-									<div class="login-helpers"  style="display:none;">
-										<strong><a href="#" onClick="swapScreen('forgot_bg');return false;">忘记密码</a> </strong>
-
-									</div>
-									<button onclick="login();" class="btn btn-danger">登录</button>
-									<div id="login-alert"  style="display:none; text-align: center;"></div>
-								</div>
-							</form>
-							<!-- SOCIAL LOGIN -->
-							<div class="divide-20"></div><div class="divide-20"></div>
-							<div class="center" style="display:none;">
-								<strong>还没有账号？ <a href="#" onclick="swapScreen('register_bg');return false;">
-									立即注册!</a></strong>
-							</div>
-
-							<!-- /SOCIAL LOGIN -->
-
-						</div>
-					</div>
+			<div class="fl login-left">
+				<div class="fl login-title">登录</div>
+				<div class="fl panel">
+					<p class="login-rows mt30">
+						<input type="text" name="account" id="loginName" class="login-input login-name easyui-validatebox" placeholder="用户名"  validType="Length[4,22]" data-options="required:true" value="<shiro:principal/>" onblur="GetPwdAndChk();"/>
+					</p>
+					<p class="login-rows mt30">
+						<input type="password" name="pwd" id="password" class="login-input login-pwd easyui-validatebox" placeholder="密码"  validType="Length[4,22]" data-options="required:true"/>
+					</p>
+					<p class="login-rows mt30">
+						<label class="yw-checkbox">
+							<i class="mt4 mr10"  doc="loginCheckFlag" onClick="loginCheck(this);" id="icheckspan"></i>
+							<input type="checkbox" name="rememberMe" value="false" id="chkRememberPwd"><span  onclick="remeberMe(this);">记住密码</span>
+						</label>
+					</p>
+					<div id="login-alert" class="login-rows" style="display:none;"></div>
+					<p class="login-rows mt10">
+						<span class="login-btn" onclick="login()">登 录</span>
+					</p> 
 				</div>
 			</div>
-		</section>
-		<!--/LOGIN -->
-		<!-- REGISTER -->
-		<section id="register_bg" class="font-400">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-4 col-md-offset-4">
-						<div class="login-box">
-							<h2 class="bigintro">用户注册</h2>
-							<div class="divide-40"></div>
-							<form role="form">
-								<div class="form-group">
-									<label for="exampleInputName">公司名字</label>
-									<i class="fa fa-font"></i>
-									<input type="text" class="form-control" id="exampleInputName" >
-								</div>
-								<div class="form-group">
-									<label for="exampleInputUsername">用户名</label>
-									<i class="fa fa-user"></i>
-									<input type="text" class="form-control" id="exampleInputUsername" >
-								</div>
-								<div class="form-group">
-									<label for="exampleInputEmail1">邮箱</label>
-									<i class="fa fa-envelope"></i>
-									<input type="email" class="form-control" id="exampleInputEmail1" >
-								</div>
-								<div class="form-group">
-									<label for="exampleInputPassword1">密码</label>
-									<i class="fa fa-lock"></i>
-									<input type="password" class="form-control" id="exampleInputPassword1" >
-								</div>
-								<div class="form-group">
-									<label for="exampleInputPassword2">确认密码</label>
-									<i class="fa fa-check-square-o"></i>
-									<input type="password" class="form-control" id="exampleInputPassword2" >
-								</div>
-								<div>
-									<label class="checkbox"> <input type="checkbox" class="uniform" value=""> 我同意 <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
-									<button type="submit" class="btn btn-success">Sign Up</button>
-								</div>
-							</form>
-							<!-- SOCIAL REGISTER -->
-							<div class="divide-20"></div>
-							<div class="center">
-								<strong>Or register using your social account</strong>
-							</div>
-							<div class="divide-20"></div>
-							<div class="social-login center">
-								<a class="btn btn-primary btn-lg">
-									<i class="fa fa-facebook"></i>
-								</a>
-								<a class="btn btn-info btn-lg">
-									<i class="fa fa-twitter"></i>
-								</a>
-								<a class="btn btn-danger btn-lg">
-									<i class="fa fa-google-plus"></i>
-								</a>
-							</div>
-							<!-- /SOCIAL REGISTER -->
-							<div class="login-helpers">
-								<a href="#" onClick="swapScreen('login_bg');return false;"> Back to Login</a> <br>
-							</div>
-						</div>
-					</div>
-				</div>
+
+			<div class="fl login-line"></div>
+			<div class="fl login-right txt-center">
+				<img src="<%=basePath%>source/images/gy_pic.jpg" class="twocode"/>
 			</div>
-		</section>
-		<!--/REGISTER -->
-		<!-- FORGOT PASSWORD -->
-		<section id="forgot_bg">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-4 col-md-offset-4">
-						<div class="login-box">
-							<h2 class="bigintro">找回密码</h2>
-							<div class="divide-40"></div>
-							<form role="form">
-								<div class="form-group">
-									<label for="exampleInputEmail1">请输入您的注册邮箱</label>
-									<i class="fa fa-envelope"></i>
-									<input type="email" class="form-control" id="exampleInputEmail1" >
-								</div>
-								<div>
-									<button type="submit" class="btn btn-info">新密码已经发到您的邮箱</button>
-								</div>
-							</form>
-							<div class="login-helpers">
-								<a href="#" onClick="swapScreen('login_bg');return false;">返回登录页面</a> <br>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- FORGOT PASSWORD -->
-	</section>
+		</div>
+	</form>
+	<div class="cl"></div>
+</div>
 </body>
 </html>

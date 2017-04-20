@@ -37,10 +37,8 @@ public class Constants
   public static final Integer USER_TYPE_ADMIN = 1;
   public static final Integer USER_TYPE_SUPERADMIN = 1;
 
-  public static final Integer USER_STATUS_UNRECOGNIZE = 0;
-  public static final Integer USER_STATUS_EFFICTIVE = 1;
-  public static final Integer USER_STATUS_LOCKED = 2;
-  public static final Integer USER_STATUS_DELETE = 3;
+  public static final Integer USER_STATUS_LOCKED = 0;
+  public static final Integer USER_STATUS_EFFICTIVE = 1;  
 
 
   public static final Integer FLAG_LOCKED = 0;

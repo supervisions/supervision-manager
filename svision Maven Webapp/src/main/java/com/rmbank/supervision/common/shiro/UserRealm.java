@@ -2,10 +2,9 @@ package com.rmbank.supervision.common.shiro;
 
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.common.utils.StringUtil;
-import com.rmbank.supervision.model.*;
-import com.rmbank.supervision.service.PermissionService;
-//import com.rmbank.supervision.service.ResourceService;
-//import com.rmbank.supervision.service.RoleService;
+import com.rmbank.supervision.model.*; 
+import com.rmbank.supervision.service.ResourceService;
+import com.rmbank.supervision.service.RoleService;
 import com.rmbank.supervision.service.UserService;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
@@ -30,14 +29,11 @@ public class UserRealm extends AuthorizingRealm {
 	@Resource(name="userService")
 	private UserService userService;
 
-//	@Resource(name="roleService")
-//	private RoleService roleService;
-//
-	@Resource(name="permissionService")
-	private PermissionService permissionService;
+	@Resource(name="roleService")
+	private RoleService roleService; 
 
-//	@Resource(name="resourceService")
-//	private ResourceService resourceService;
+	@Resource(name="resourceService")
+	private ResourceService resourceService;
 
 	 public UserRealm() {
 	        super.setName(Constants.THE_REALM_NAME);
@@ -46,27 +42,24 @@ public class UserRealm extends AuthorizingRealm {
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-//	   System.out.println(" doGetAuthorizationInfo.................");
-//	   String username = (String)principals.getPrimaryPrincipal();
-//
-//		User user = userService.getUserByAccount(username);
-//		if(null != user){
-//			SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-//			List<ResourceConfig> resourceConfigs = null;
-//
-//			//鎵�湁璧勬簮
-////			resourceConfigs = resourceService.getResources();
-//			//鐢ㄦ埛璧勬簮
-//			resourceConfigs = resourceService.getAllResourceByUserId(user.getId());
-//			if(null !=  resourceConfigs && resourceConfigs.size()> 0 ){
-//				for(ResourceConfig resourceConfig : resourceConfigs){
-//					if(null != resourceConfig ){
-//						authorizationInfo.addStringPermission(resourceConfig.getSrc());
-//					}
-//				}
-//			}
-//			return authorizationInfo;
-//		}
+	   System.out.println(" doGetAuthorizationInfo.................");
+	   String username = (String)principals.getPrimaryPrincipal();
+
+		User user = userService.getUserByAccount(username);
+		if(null != user){
+			SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+			List<ResourceConfig> resourceConfigs = null;
+ 
+			resourceConfigs = resourceService.getAllResourceByUserId(user.getId());
+			if(null !=  resourceConfigs && resourceConfigs.size()> 0 ){
+				for(ResourceConfig resourceConfig : resourceConfigs){
+					if(null != resourceConfig ){
+						authorizationInfo.addStringPermission(resourceConfig.getResource());
+					}
+				}
+			}
+			return authorizationInfo;
+		}
 		return  null;
 	}
 
@@ -104,8 +97,7 @@ public class UserRealm extends AuthorizingRealm {
 	@Override
 	public boolean isPermitted(PrincipalCollection principals, String permission) {
 		String userAccount= (String)principals.getPrimaryPrincipal();
-		if(!StringUtil.isEmpty(userAccount) && (
-//				userAccount.equals("admin") ||
+		if(!StringUtil.isEmpty(userAccount) && ( 
 				userAccount.equals(Constants.USER_SUPER_ADMIN_ACCOUNT))){
 			return true;
 		}

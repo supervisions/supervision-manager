@@ -15,7 +15,7 @@
     <context:property-placeholder location="classpath:jdbc.properties"/>
 
     <!-- Spring启动扫描类文件路径 -->
-	<context:component-scan base-package="com.gwecom.virtualapp">
+	<context:component-scan base-package="com.rmbank.supervision">
 		<context:include-filter type="regex"
 			expression=".dao.*" />
 		<context:include-filter type="regex"
@@ -31,12 +31,11 @@
     <!-- 数据源 -->
     <!--see https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_DruidDataSource%E5%8F%82%E8%80%83%E9%85%8D%E7%BD%AE-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-    <!--<bean id="dataSource" class="com.gwecom.virtualapp.common.sqlDbInit.SqlDBInit" init-method="init">-->
+    <!--<bean id="dataSource" class="com.rmbank.supervision.common.sqlDbInit.SqlDBInit" init-method="init">-->
         <!-- 基本属性 url、user、password -->
-        <property name="url" value="jdbc:mysql://localhost:3306/virtualapp?useUnicode=true&amp;characterEncoding=UTF-8&amp;useServerPrepStmts=false"/>
-        <property name="username" value="root"/>
-        <!--<property name="password" value="ilovepanda2016"/>-->
-        <property name="password" value="123456"/>
+        <property name="url" value="jdbc:mysql://118.178.58.241:3306/supervision?useUnicode=true&amp;characterEncoding=UTF-8&amp;useServerPrepStmts=false"/>
+        <property name="username" value="developer"/> 
+        <property name="password" value="ycyldeveloper"/>
 
         <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="10"/>
@@ -68,13 +67,13 @@
     <!-- 数据访问mybatis  配置管理 -->
 	 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="typeAliasesPackage" value="com.gwecom.virtualapp.model" />
+		<property name="typeAliasesPackage" value="com.rmbank.supervision.model" />
 		<property name="mapperLocations" value="classpath:mybatis/mysql/*.xml" /> 
 	</bean>
     <!-- 数据访问mybatis  sql mapping文件配置管理 -->
 	 <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gwecom.virtualapp.dao" />
-		<property name="annotationClass" value="com.gwecom.virtualapp.dao.MyBatisRepository" />
+		<property name="basePackage" value="com.rmbank.supervision.dao" />
+		<property name="annotationClass" value="com.rmbank.supervision.dao.MyBatisRepository" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
@@ -99,10 +98,10 @@
 
     <aop:config expose-proxy="true" proxy-target-class="true">
         <!-- 只对业务逻辑层实施事务 -->
-        <aop:pointcut id="txPointcut" expression="execution(* com.gwecom.virtualapp..service..*+.*(..))"/>
+        <aop:pointcut id="txPointcut" expression="execution(* com.rmbank.supervision..service..*+.*(..))"/>
         <aop:advisor id="txAdvisor" advice-ref="txAdvice" pointcut-ref="txPointcut"/>
     </aop:config>
 
-    <bean class="com.gwecom.virtualapp.web.spring.SpringUtils"/>
+    <bean class="com.rmbank.supervision.web.spring.SpringUtils"/>
     <import resource="classpath:spring/spring-config-shiro.xml"/>
 </beans>

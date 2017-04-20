@@ -4,12 +4,13 @@
   <resultMap id="BaseResultMap" type="com.rmbank.supervision.model.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
     <result column="pwd" property="pwd" jdbcType="VARCHAR" />
     <result column="salt" property="salt" jdbcType="VARCHAR" />
     <result column="used" property="used" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, pwd, salt, used
+    id, name,account, pwd, salt, used
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -17,14 +18,25 @@
     from t_user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+  
+
+  <select id="getUserByAccount" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.User" >
+    select <include refid="Base_Column_List" /> 
+    from t_user
+    where 1 = 1
+    <if test="account != null">
+      and account = #{account,jdbcType=VARCHAR}
+    </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.rmbank.supervision.model.User" >
-    insert into t_user (id, name, pwd, 
+    insert into t_user (id, name, account,pwd, 
       salt, used)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
       #{salt,jdbcType=VARCHAR}, #{used,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.rmbank.supervision.model.User" >
@@ -35,6 +47,9 @@
       </if>
       <if test="name != null" >
         name,
+      </if>
+      <if test="account != null" >
+        account,
       </if>
       <if test="pwd != null" >
         pwd,
@@ -53,6 +68,9 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
       <if test="pwd != null" >
         #{pwd,jdbcType=VARCHAR},
       </if>
@@ -70,6 +88,9 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
       <if test="pwd != null" >
         pwd = #{pwd,jdbcType=VARCHAR},
       </if>
@@ -84,7 +105,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.rmbank.supervision.model.User" >
     update t_user
-    set name = #{name,jdbcType=VARCHAR},
+    set account = #{account,jdbcType=VARCHAR}, 
+    name = #{name,jdbcType=VARCHAR},
       pwd = #{pwd,jdbcType=VARCHAR},
       salt = #{salt,jdbcType=VARCHAR},
       used = #{used,jdbcType=INTEGER}

@@ -1,74 +1,73 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-	String url = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path;
-
+<% 
+String uri = request.getRequestURI();
+String  url  =  uri.substring(uri.lastIndexOf("/")+1);
 %>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<title>云端超级应用-<sitemesh:write property='title'/></title>
+<title>电子监察平台-<sitemesh:write property='title'/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<!--[if lt IE 9]>
-	<meta http-equiv="refresh" content="0;ie.html" />
-	<![endif]-->
-
-	<link rel="shortcut icon" href="<%=basePath%>source/img/favicon.ico" type="image/x-icon" >
-	<link href="<%=basePath %>source/bootstrap-dist/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-	<link href="<%=basePath %>source/bootstrap-dist/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
-	<link href="<%=basePath %>source/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
-	<link href="<%=basePath %>source/font-awesome/css/animate.css" rel="stylesheet">
-	<link href="<%=basePath %>source/css/base.css" rel="stylesheet">
-	<link href="<%=basePath %>source/font-awesome/css/style.css?v=4.1.0" rel="stylesheet">
-	<link href="<%=basePath %>source/js/plugins/dialog/bootstrap-dialog.min.css" rel="stylesheet">
-
-	<!-- 全局js -->
-	<script src="<%=basePath %>source/js/jquery-2.0.3.min.js"></script>
-	<script src="<%=basePath %>source/js/bootstrap.min.js?v=3.3.6"></script>
-	<script src="<%=basePath %>source/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-	<script src="<%=basePath %>source/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-	<script src="<%=basePath %>source/js/plugins/layer/layer.min.js"></script>
-	<script src="<%=basePath %>source/js/plugins/dialog/bootstrap-dialog.min.js"></script>
-	<script src="<%=basePath %>source/js/plugins/dialog/run_prettify.min.js"></script>
-	<script src="<%=basePath %>source/js/pager/jquery.pager.js"></script>
-	<link href="<%=basePath %>source/js/pager/Pager.css" rel="stylesheet"/>
-	<script src="<%=basePath %>source/js/content.js"></script>
-	<script src="<%=basePath %>source/js/common.js"></script>
-	<script src="<%=basePath %>source/js/plugins/validate/jquery.validate.min.js"></script>
-	<script src="<%=basePath %>source/js/plugins/validate/messages_zh.min.js"></script>
-
-	<script src="<%=basePath %>source/bootstrap-dist/js/validate/js/bootstrapValidator.min.js"></script>
-	<link href="<%=basePath %>source/bootstrap-dist/js/validate/css/bootstrapValidator.min.css" rel="stylesheet">
-
-	<!-- 自定义js -->
-	<script src="<%=basePath %>source/js/hAdmin.js?v=4.1.0"></script>
-
-	<!-- 第三方插件 -->
-	<script src="<%=basePath %>source/js/plugins/pace/pace.min.js"></script>
-	<sitemesh:write property='head' />
+<link type="text/css" href="${pageContext.request.contextPath}/source/css/base.css" rel="stylesheet"/>
+<link type="text/css" href="${pageContext.request.contextPath}/source/css/global.css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/easyUI/jquery.easyui.min.js"></script>
+<script src="${pageContext.request.contextPath}/source/js/easyUI/easyui-lang-zh_CN.js"></script>
+<script src="${pageContext.request.contextPath}/source/js/common/validate.js"></script>
+<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script>
+ 
+<!-- 导入页面引用的特殊js和css文件 -->
+<sitemesh:write property='head' />
+<script type="text/javascript">
+	$.yw={
+			 currURL:'${pageContext.request.contextPath}',
+			 sessionAccount:'${sessionScope.userInfo.account}',
+			 sessionUserId:'${sessionScope.userInfo.id}',
+			 pageURL:'<%=request.getAttribute("requestCurrURL")%>'
+	};
+	//这个方法用来启动该页面的ReverseAjax功能
+	//dwr.engine.setActiveReverseAjax( true);
+	//设置在页面关闭时，通知服务端销毁会话
+	//dwr.engine.setNotifyServerOnPageUnload( true);
+	
+	$(function(){
+		//计算网页高度
+		setHei();
+		$(window).resize(function(){
+			setHei();
+		});
+	});
+	
+	function setHei(){
+		$("#content").removeAttr("style");
+		var h = $(window).height();
+		var hh = document.body.offsetHeight;
+		var t = $("#content").offset().top;
+		if(hh>h)h = hh+20;
+		var v = h-t-1;
+		var rh = $("#conRight").height();
+		if(rh>v){
+			v = rh+50;
+		}
+		$("#content").css("height",v-30);
+	}
+</script>
 </head>
 
-<body class="fixed-sidebar full-height-layout gray-bg" >
-	<div id="wrapper">
-		<jsp:include page="/page/decorators/left.jsp"></jsp:include>
-		<div id="page-wrapper" class="gray-bg dashbard-1">
-			<jsp:include page="/page/decorators/header.jsp"></jsp:include>
-			<div class="row J_mainContent" id="content-main">
-				<sitemesh:write property='body'/>
-			</div>
+<body>
+	<div id="main">
+		<div id="header"><jsp:include page="/page/decorators/header.jsp"></jsp:include></div>
+		<div id="content">
+			<jsp:include page="/page/decorators/left.jsp"></jsp:include>
+			<sitemesh:write property='body'/>
+			<div class="cl"></div>
 		</div>
-		<div id="footer" class="footer">
-			<jsp:include page="/page/decorators/footer.jsp"></jsp:include>
-		</div>
+		<div id="footer"><jsp:include page="/page/decorators/footer.jsp"></jsp:include></div>
 	</div>
 </body>
 </html>

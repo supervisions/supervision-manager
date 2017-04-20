@@ -1,5 +1,8 @@
 package com.rmbank.supervision.dao;
 
+import java.util.List;
+
+import com.rmbank.supervision.model.Role;
 import com.rmbank.supervision.model.UserRole;
 @MyBatisRepository
 public interface UserRoleMapper {
@@ -14,4 +17,6 @@ public interface UserRoleMapper {
     int updateByPrimaryKeySelective(UserRole record);
 
     int updateByPrimaryKey(UserRole record);
+
+	List<Role> getRolesByUserId(Integer id);
 }

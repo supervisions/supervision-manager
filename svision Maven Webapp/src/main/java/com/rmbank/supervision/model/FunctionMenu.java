@@ -4,6 +4,8 @@ import java.util.List;
 
 public class FunctionMenu {
     private Integer id;
+    
+    private String name;
 
     private Integer parentId;
 
@@ -74,5 +76,13 @@ public class FunctionMenu {
 
 	public void setChildMenulist(List<FunctionMenu> childMenulist) {
 		this.childMenulist = childMenulist;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

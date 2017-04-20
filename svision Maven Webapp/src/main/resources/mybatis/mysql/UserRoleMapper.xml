@@ -68,4 +68,12 @@
       role_id = #{roleId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  
+  <select id="getRolesByUserId" resultType="com.rmbank.supervision.model.Role" parameterType="java.lang.Integer" >
+     select r.* from t_user_role ur
+     left join t_role r on ur.role_id = r.id
+     where 1 = 1 
+      and  ur.user_id = #{id,jdbcType=INTEGER} 
+  </select>
 </mapper>

@@ -12,14 +12,14 @@
     </bean>
 
     <!-- 凭证匹配器 -->
-    <bean id="credentialsMatcher" class="com.gwecom.virtualapp.common.shiro.RetryLimitHashedCredentialsMatcher">
+    <bean id="credentialsMatcher" class="com.rmbank.supervision.common.shiro.RetryLimitHashedCredentialsMatcher">
         <property name="hashAlgorithmName" value="md5"/>
         <property name="hashIterations" value="2"/>
         <property name="storedCredentialsHexEncoded" value="true"/>
     </bean>
 
     <!-- Realm实现 -->
-    <bean id="userRealm" class="com.gwecom.virtualapp.common.shiro.UserRealm">
+    <bean id="userRealm" class="com.rmbank.supervision.common.shiro.UserRealm">
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
         <property name="cachingEnabled" value="true"/>
     </bean>
@@ -65,9 +65,9 @@
                 <!--/**=authc-->
                 <!--/login.jsp = authc-->
                 /logout.do = logout
-                /web/** = authc
-                /server/** = authc
-                /client/** = authc
+                /vision/** = authc
+                /system/** = authc
+                /cases/** = authc
             </value>
         </property>
     </bean>

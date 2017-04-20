@@ -16,14 +16,14 @@
 
     <!-- 开启controller注解支持 -->
     <!-- 注意事项请参考：http://jinnianshilongnian.iteye.com/blog/1762632 -->
-    <context:component-scan base-package="com.gwecom.virtualapp">
+    <context:component-scan base-package="com.rmbank.supervision">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Service" />
 	</context:component-scan>
 
  	<mvc:interceptors>
        <!--  使用bean定义一个Interceptor，直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求   -->
-        <bean class="com.gwecom.virtualapp.web.interceptor.PageInterceptor">
+        <bean class="com.rmbank.supervision.web.interceptor.PageInterceptor">
 	        <property name="allowAction">
 				<list>
 					<value>/index.do</value>
@@ -58,7 +58,7 @@
         </property>
 		<property name="customArgumentResolvers">
 			<list>
-				<bean class="com.gwecom.virtualapp.web.bind.method.CurrentUserMethodArgumentResolver" />
+				<bean class="com.rmbank.supervision.web.bind.method.CurrentUserMethodArgumentResolver" />
 			</list>
 		</property>
     </bean>
@@ -69,7 +69,7 @@
     
 	<!-- 全局的异常处理 -->
  	<!--<bean id="exceptionResolver"-->
-		<!--class="com.gwecom.virtualapp.common.exception.CustomSimpleMappingExceptionResolver">-->
+		<!--class="com.rmbank.supervision.common.exception.CustomSimpleMappingExceptionResolver">-->
 		<!--<property name="defaultErrorView" value="common/error" />-->
 		<!--<property name="defaultStatusCode" value="500" />-->
 		<!--<property name="exceptionMappings">-->
@@ -105,6 +105,6 @@
         <property name="securityManager" ref="securityManager"/>
     </bean>
 
-	<bean id="exceptionResolver" class="com.gwecom.virtualapp.rest.interceptor.ShiroExceptionResolver"></bean>
+	<bean id="exceptionResolver" class="com.rmbank.supervision.rest.interceptor.ShiroExceptionResolver"></bean>
 
 </beans>

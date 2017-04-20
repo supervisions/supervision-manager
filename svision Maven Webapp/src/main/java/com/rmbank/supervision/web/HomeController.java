@@ -56,27 +56,28 @@ public class HomeController extends SystemAction {
     }
     @ResponseBody
     @RequestMapping(value={"/userLogin.do"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
-    public JsonResult<User> adminLogin(User user, HttpServletRequest request, HttpServletResponse response) {
+    public JsonResult<User> userLogin(User user, HttpServletRequest request, HttpServletResponse response) {
         JsonResult<User> json = new JsonResult<User>();
         json.setCode(Constants.RESULT_FAILED);
         json.setMessage("登录失败!");
         try {
-            ReturnResult<User> res = this.userService.login(user.getName(), user.getPwd(),user.isRememberMe());
+            ReturnResult<User> res = this.userService.login(user.getAccount(), user.getPwd(),false);
             if (res.getCode().intValue() == ReturnResult.SUCCESS) {
-                User u = res.getResultObject();
-                List<Role> roleList = roleService.getRolesByUserId(u.getId());  
-                //获取该用户类型所有模块
-//                List<FunctionMenu> lf = parseFunctionMenuList(this.functionService.getUserFunctionMenu(role_type));
-                List<FunctionMenu> lf = new ArrayList<FunctionMenu>();
- 
-                List<FunctionMenu> tree = new ArrayList<FunctionMenu>();
-                setFunctionMenuTreeParent(tree,lf);
-                if(tree.size()>0){
-                    lf = tree;
+                User u = res.getResultObject(); 
+                //获取该用户类型所有模块 
+                List<FunctionMenu> lf = new ArrayList<FunctionMenu>(); 
+//                //不是超级管理员
+                if(!u.getAccount().equals(Constants.USER_SUPER_ADMIN_ACCOUNT)){
+                    //获取当前用户资源  
+                    List<Role> roleList = roleService.getRolesByUserId(u.getId());
+                    lf = functionService.getFunctionMenusByUserRoles(roleList);
                 }
-
+                else{
+                    lf = parseFunctionMenuList(this.functionService.getFunctionMenuByParentId(0));
+                } 
                 request.getSession().setAttribute(Constants.USER_SESSION_RESOURCE, lf);
-                
+               
+                json.setGotoUrl(((FunctionMenu)lf.get(0)).getUrl()); 
                 ((User)res.getResultObject()).setSelectedMainMemu(((FunctionMenu)lf.get(0)).getId().intValue());
                 if(((FunctionMenu)lf.get(0)).getChildMenulist() != null){
                     ((User)res.getResultObject()).setSelectedChildMenu(((FunctionMenu)((FunctionMenu)lf.get(0)).getChildMenulist().get(0)).getId().intValue());
@@ -95,43 +96,18 @@ public class HomeController extends SystemAction {
         }
         return json;
     }
+  
 
     private List<FunctionMenu> parseFunctionMenuList(List<FunctionMenu> src)
     {
         for (FunctionMenu f : src) {
-            if(f.getLeaf() == 1) {
+            if(f.getLeaf() == 0) {
                 f.setChildMenulist(this.functionService.getFunctionMenuByParentId(f.getId()));
             }
         }
         return src;
     }
-    //默认就两级菜单
-    private void setFunctionMenuTreeParent(List<FunctionMenu> tree,List<FunctionMenu> list){
-        for(FunctionMenu f:list){
-            if(f.getParentId() == 0){
-                tree.add(f);
-                for(FunctionMenu leaf:list){
-                    if(leaf.getParentId() == f.getId()){
-                        if(null == f.getChildMenulist()){
-                            List<FunctionMenu> child = new ArrayList<FunctionMenu>();
-                            f.setChildMenulist(child);
-                        }
-                        f.getChildMenulist().add(leaf);
-                    }
-                }
-            }
-        }
-        if(tree.size()>0){
-            for(int i=0;i<tree.size();i++){
-                FunctionMenu f = tree.get(i);
-                if(null == f.getChildMenulist() || f.getChildMenulist().size()==0){
-                    tree.remove(f);
-                    i--;
-                }
-            }
-        }
-    }
-
+    
     @ResponseBody
     @RequestMapping({"/jsonLoadSession.do"})
     public JsonResult<User> jsonLoadSession(
@@ -145,7 +121,7 @@ public class HomeController extends SystemAction {
             for (FunctionMenu resource : lf) {
                 if (resource.getId().intValue() == selectedMainMemu.intValue()) {
                     if(resource.getChildMenulist() != null) {
-                        getLoginUser().setSelectedChildMenu(selectedChildMenu);
+                        getLoginUser().setSelectedChildMenu(resource.getChildMenulist().get(0).getId());
                     }else{
                         getLoginUser().setSelectedChildMenu(resource.getId().intValue());
                     }
