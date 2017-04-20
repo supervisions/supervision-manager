@@ -33,7 +33,7 @@
 				<c:if test="${mainItem.id == sessionScope.userInfo.selectedMainMemu}">
 						<c:forEach var="item" items="${mainItem.childMenulist}">
 							<li <c:if test="${item.id == sessionScope.userInfo.selectedChildMenu}">class="yw-left-menu-now"</c:if>>
-								<em></em><span onclick="gotoChildMenu('${pageContext.request.contextPath}${item.url}','${item.id}')">
+								<em></em><span onclick="gotoChildMenu('${pageContext.request.contextPath}/${item.url}','${item.id}')">
 										<i class="fl yw-icon icon-todayjob"></i>${item.name}</span>
 							</li>
 						</c:forEach>
