@@ -16,6 +16,8 @@ public class Organ {
     private Integer sort;
 
     private Integer used;
+    
+    private Integer supervision;
 
     public Integer getId() {
         return id;
@@ -80,4 +82,12 @@ public class Organ {
     public void setUsed(Integer used) {
         this.used = used;
     }
+
+	public Integer getSupervision() {
+		return supervision;
+	}
+
+	public void setSupervision(Integer supervision) {
+		this.supervision = supervision;
+	}
 }
