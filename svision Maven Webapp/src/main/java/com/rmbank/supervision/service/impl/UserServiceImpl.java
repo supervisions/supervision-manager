@@ -1,5 +1,7 @@
 package com.rmbank.supervision.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.shiro.SecurityUtils;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.rmbank.supervision.common.ReturnResult;
 import com.rmbank.supervision.common.shiro.ShiroUsernamePasswordToken;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.EndecryptUtils;
 import com.rmbank.supervision.dao.UserMapper;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.UserService;
@@ -69,5 +72,69 @@ public class UserServiceImpl implements UserService {
 		user.setAccount(username);
 		return userMapper.getUserByAccount(user);
 	}
+	
+	
+	/**
+	 * 获取用户列表
+	 */
+	@Override
+	public List<User> getUserList(User user) {
+		// TODO Auto-generated method stub		
+		return userMapper.getUserList(user);
+	}
+	/**
+	 * 获取用户记录数
+	 */
+	@Override
+	public int getUserCount(User user) {
+		// TODO Auto-generated method stub
+		return userMapper.getUserCount(user);
+	}
 
+	/**
+	 * 编辑用户，根据id回显用户信息
+	 */
+	@Override
+	public User getUserById(Integer id) {
+		// TODO Auto-generated method stub
+		return userMapper.getUserById(id);
+	}
+
+	/**
+	 * 新增用户时查询用户名是否存在
+	 */
+	@Override
+	public List<User> getExistUser(User u) {
+		// TODO Auto-generated method stub
+		return userMapper.getExistUser(u);
+	}
+
+	/**
+	 * 新增用户/修改用户
+	 */
+	@Override
+	public boolean saveOrUpdateUser(User user) {
+		boolean isSuccess = false;
+		try{
+			//id存在则为修改操作
+			if(user.getId()>0){
+				userMapper.updateByPrimaryKeySelective(user);
+				isSuccess = true;
+			}else{
+				User u = EndecryptUtils.md5Password(user.getAccount(), user.getPwd());
+	            if (u != null) {
+	                user.setPwd(u.getPwd());
+	                user.setSalt(u.getSalt());
+	                userMapper.insert(user); 
+					isSuccess = true;
+	            }
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return isSuccess;
+		
+	}
+	
+	
 }

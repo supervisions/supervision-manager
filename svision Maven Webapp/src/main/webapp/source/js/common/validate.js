@@ -47,13 +47,11 @@ $.extend($.fn.validatebox.defaults.rules, {
         validator: function (value, param) {
             return /^[\u0391-\uFFE5\w]+$/.test(value);
         },
-        message: '登录名称只允许汉字、英文字母、数字及下划线。'
+        message: '名称只允许汉字、英文字母、数字及下划线。'
     },
     safepass: {
-        validator: function (value, param) {
-    	            	
-            return safePassword(value);
-            
+        validator: function (value, param) {    	            	
+            return safePassword(value);            
         },
         message: '{0}只能由6-16位英文字母和数字组成'
     },

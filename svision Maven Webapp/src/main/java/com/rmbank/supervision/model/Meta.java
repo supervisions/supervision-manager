@@ -1,6 +1,8 @@
 package com.rmbank.supervision.model;
 
-public class Meta {
+import com.rmbank.supervision.common.utils.Page;
+
+public class Meta extends Page {
     private Integer id;
 
     private Integer pid;

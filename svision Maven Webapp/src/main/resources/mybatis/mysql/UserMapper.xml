@@ -112,4 +112,45 @@
       used = #{used,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  
+  
+  <sql id="sql_query">
+  	from t_user as user
+  	where 1=1 
+	<if test="searchName != null and searchName != ''">
+		and (user.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		OR user.account like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')		
+		)
+	</if>
+  </sql>  
+  <select id="getUserList" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" />
+   	<include refid="sql_query" />
+	order by user.id DESC 
+	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
+        limit #{pageStart}, #{pageSize}
+    </if>
+  </select>
+  <select id="getUserCount" resultType="java.lang.Integer" parameterType="com.rmbank.supervision.model.User">
+  	select count(*) 
+  	<include refid="sql_query"></include>
+  </select>
+  <select id="getUserById" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.User" >
+    select <include refid="Base_Column_List" />			
+	from t_user t
+	where t.id =  #{id,jdbcType=INTEGER} 
+  </select>
+  <select id="getExistUser" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.User" >
+    select <include refid="Base_Column_List" />			
+	from t_user t
+	where 1=1 
+	<if test="id != null and id >0 ">
+		and t.id = #{id,jdbcType=INTEGER} 
+	</if>
+	<if test="account != null">
+		and t.account = #{account,jdbcType=VARCHAR} 
+	</if> 
+  </select>
+  
 </mapper>

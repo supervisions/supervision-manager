@@ -20,8 +20,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.rmbank.supervision.model.Role" >
-    insert into t_role (id, name, description
-      )
+    insert into t_role (id, name, description) 
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}
       )
   </insert>
@@ -68,4 +67,39 @@
       description = #{description,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <sql id="sql_query">
+  	from t_role as role
+  	where 1=1 
+	<if test="searchName != null and searchName != ''">
+		and (role.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		OR role.description like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')		
+		)
+	</if>
+  </sql>  
+  <select id="getRoleList" parameterType="com.rmbank.supervision.model.Role" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" />
+  	<include refid="sql_query" />
+	order by role.id DESC 
+	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
+        limit #{pageStart}, #{pageSize}
+    </if>
+  </select>
+  <select id="getRoleCount" resultType="java.lang.Integer" parameterType="com.rmbank.supervision.model.Role">
+  	select count(*) 
+  	<include refid="sql_query"></include>
+  </select>
+  <select id="getRoleById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> 
+  	from t_role r
+	where r.id =  #{id,jdbcType=INTEGER} 
+  </select>
+  <select id="getExistRole" parameterType="com.rmbank.supervision.model.Role" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> 
+  	from t_role r where r.name=#{name,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteRoleById" parameterType="java.lang.Integer">
+    delete from t_role
+    where ID = #{id,jdbcType=INTEGER}   
+  </delete>
 </mapper>

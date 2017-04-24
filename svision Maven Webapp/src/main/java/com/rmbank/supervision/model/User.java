@@ -2,7 +2,9 @@ package com.rmbank.supervision.model;
 
 import java.util.List;
 
-public class User {
+import com.rmbank.supervision.common.utils.Page;
+
+public class User extends Page{
     private Integer id;
 
     private String name;

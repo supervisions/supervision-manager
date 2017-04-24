@@ -1,6 +1,8 @@
 package com.rmbank.supervision.model;
 
-public class Role {
+import com.rmbank.supervision.common.utils.Page;
+
+public class Role extends Page{
     private Integer id;
 
     private String name;

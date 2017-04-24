@@ -232,8 +232,8 @@
                 <tr style="background-color:#D6D3D3;font-weight: bold;">
                     <th width="4%" style="display:none"></th>
                     <th width="15"></th>
-                    <th>用户账号</th>
-                    <th>联系电话</th>
+                    <th>用户名</th>
+                    <th>用户账号</th>                    
                     <th>电子邮箱</th>
                     <th>组织机构</th>
                     <th>姓名</th>
