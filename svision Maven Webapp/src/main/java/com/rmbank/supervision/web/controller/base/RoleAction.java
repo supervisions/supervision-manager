@@ -147,7 +147,7 @@ public class RoleAction extends SystemAction {
 					return js;
 				}
 			} else {
-				js.setMessage("该账号已存在!");
+				js.setMessage("该角色已存在!");
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -155,6 +155,13 @@ public class RoleAction extends SystemAction {
 		return js;
 	}
 
+	/**
+	 * 删除角色
+	 * @param id
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/jsondeleteRoleById.do", method = RequestMethod.POST)
 	@RequiresPermissions("system/role/jsondeleteRoleById.do")
@@ -166,16 +173,19 @@ public class RoleAction extends SystemAction {
 		JsonResult<Role> js = new JsonResult<Role>();
 		js.setCode(new Integer(1));
 		js.setMessage("删除失败!");
-		try {	
-			
-			roleService.deleteRoleById(id);
-			js.setCode(new Integer(0));
-			js.setMessage("删除成功!");
-			
+		boolean deleteRoleById =false;
+		try {				
+			deleteRoleById= roleService.deleteRoleById(id);
+			if(deleteRoleById){
+				js.setCode(new Integer(0));
+				js.setMessage("删除成功!");
+				return js;
+			}else{
+				return js;
+			}			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		
+		}		
 		return js;
 
 	}

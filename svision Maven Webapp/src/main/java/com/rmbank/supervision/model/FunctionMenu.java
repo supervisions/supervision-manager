@@ -2,7 +2,9 @@ package com.rmbank.supervision.model;
 
 import java.util.List;
 
-public class FunctionMenu {
+import com.rmbank.supervision.common.utils.Page;
+
+public class FunctionMenu extends Page{
     private Integer id;
     
     private String name;
@@ -16,9 +18,48 @@ public class FunctionMenu {
     private Integer sort;
 
     private Integer used;
-
+    
+    private List<FunctionMenu> children;
+    
+	private Integer childrenCount;
+    
+    private String state;
+    
+    private String text;
 
     private int selected;
+    
+    public Integer getChildrenCount() {
+		return childrenCount;
+	}
+
+	public void setChildrenCount(Integer childrenCount) {
+		this.childrenCount = childrenCount;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public int getSelected() {
+		return selected;
+	}
+
+	public void setSelected(int selected) {
+		this.selected = selected;
+	}
 
     private List<FunctionMenu> childMenulist; 
     
@@ -84,5 +125,13 @@ public class FunctionMenu {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<FunctionMenu> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<FunctionMenu> children) {
+		this.children = children;
 	}
 }

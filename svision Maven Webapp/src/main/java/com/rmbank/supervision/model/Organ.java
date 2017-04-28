@@ -1,6 +1,10 @@
 package com.rmbank.supervision.model;
 
-public class Organ {
+import java.util.List;
+
+import com.rmbank.supervision.common.utils.Page;
+
+public class Organ extends Page{
     private Integer id;
 
     private Integer pid;
@@ -18,6 +22,18 @@ public class Organ {
     private Integer used;
     
     private Integer supervision;
+    
+    //Org表的pid对应的org表的name
+    private String parentName;
+    
+    
+    private List<Organ> children;
+    
+    private Integer childrenCount;
+    
+    private String state;
+    
+    private String text;
 
     public Integer getId() {
         return id;
@@ -89,5 +105,45 @@ public class Organ {
 
 	public void setSupervision(Integer supervision) {
 		this.supervision = supervision;
+	}
+
+	public List<Organ> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<Organ> children) {
+		this.children = children;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public Integer getChildrenCount() {
+		return childrenCount;
+	}
+
+	public void setChildrenCount(Integer childrenCount) {
+		this.childrenCount = childrenCount;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 }

@@ -17,11 +17,17 @@ public interface UserService {
 	
 	int getUserCount(User user);
 
+	boolean updateByPrimaryKey(User user);
+	
 	User getUserById(Integer id);
 
 	List<User> getExistUser(User u);
 
-	boolean saveOrUpdateUser(User user);
+	boolean saveOrUpdateUser(User user, Integer [] roleIds , Integer [] orgIds, Integer postId);
+
+	boolean deleteUserById(Integer id);
+
+	boolean updateUserUsedById(User user);
 
 
 }

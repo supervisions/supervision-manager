@@ -1,5 +1,7 @@
 package com.rmbank.supervision.dao;
 
+import java.util.List;
+
 import com.rmbank.supervision.model.Organ;
 @MyBatisRepository
 public interface OrganMapper {
@@ -14,4 +16,14 @@ public interface OrganMapper {
     int updateByPrimaryKeySelective(Organ record);
 
     int updateByPrimaryKey(Organ record);
+    
+    List<Organ> getOrganList(Organ organ);
+    
+    List<Organ> getOrganListByPid(Organ organ);
+    
+    int getOrganCount(Organ organ);
+
+	List<Organ> getOrganByPId(Organ organ);
+
+	List<Organ> getExistOrgan(Organ o);
 }

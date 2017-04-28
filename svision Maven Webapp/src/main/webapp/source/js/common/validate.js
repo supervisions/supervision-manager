@@ -47,7 +47,7 @@ $.extend($.fn.validatebox.defaults.rules, {
         validator: function (value, param) {
             return /^[\u0391-\uFFE5\w]+$/.test(value);
         },
-        message: '名称只允许汉字、英文字母、数字及下划线。'
+        message: '只允许汉字、英文字母、数字及下划线。'
     },
     safepass: {
         validator: function (value, param) {    	            	

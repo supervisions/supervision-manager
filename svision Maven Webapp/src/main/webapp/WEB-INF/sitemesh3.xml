@@ -13,5 +13,7 @@
      <mapping path="**/system/role/json**" exclue="true" />  
      <mapping path="**/system/organ/json**" exclue="true" />
      <mapping path="**/system/resource/json**" exclue="true" /> 
+     <mapping path="**/system/config/json**" exclue="true" />
+     <mapping path="**/system/function/json**" exclue="true" />
 </sitemesh>
     

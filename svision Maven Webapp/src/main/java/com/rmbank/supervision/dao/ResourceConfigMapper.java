@@ -1,5 +1,7 @@
 package com.rmbank.supervision.dao;
 
+import java.util.List;
+
 import com.rmbank.supervision.model.ResourceConfig;
 @MyBatisRepository
 public interface ResourceConfigMapper {
@@ -14,4 +16,13 @@ public interface ResourceConfigMapper {
     int updateByPrimaryKeySelective(ResourceConfig record);
 
     int updateByPrimaryKey(ResourceConfig record);
+
+	List<ResourceConfig> getResourceList(ResourceConfig resourceConfig);
+
+	int getResourceCount(ResourceConfig resourceConfig);
+
+	ResourceConfig getResourceById(Integer id);
+
+	List<ResourceConfig> getExistRresource(ResourceConfig resourceConfig);
+
 }

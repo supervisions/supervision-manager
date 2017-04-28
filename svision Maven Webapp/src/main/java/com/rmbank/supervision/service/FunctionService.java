@@ -9,5 +9,7 @@ public interface FunctionService {
 	List<FunctionMenu> getFunctionMenuByParentId(Integer id);
 
 	List<FunctionMenu> getFunctionMenusByUserRoles(List<Role> roleList);
+
+	List<FunctionMenu> getOrganByParentId(FunctionMenu functionMenu);
  
 }

@@ -17,6 +17,17 @@ public interface UserRoleMapper {
     int updateByPrimaryKeySelective(UserRole record);
 
     int updateByPrimaryKey(UserRole record);
-
+    
+    /**
+     * 根据用户ID去查询用户角色
+     * @param id
+     * @return
+     */
 	List<Role> getRolesByUserId(Integer id);
+
+	/**
+	 * 根据用户id删除
+	 * @param id
+	 */
+	void deleteByUserId(Integer userId);
 }

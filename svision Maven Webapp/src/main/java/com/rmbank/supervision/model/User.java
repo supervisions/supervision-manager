@@ -15,10 +15,12 @@ public class User extends Page{
 
     private String salt;
 
-    private Integer used;
+    private Integer used;  
     
     
-
+    private String orgName;
+    private String roleName;
+    
     private boolean rememberMe;
 
     private int selectedMainMemu;
@@ -135,5 +137,21 @@ public class User extends Page{
 
 	public void setAccount(String account) {
 		this.account = account;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
 	}
 }

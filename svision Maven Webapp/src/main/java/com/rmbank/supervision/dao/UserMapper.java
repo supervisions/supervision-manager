@@ -15,7 +15,7 @@ public interface UserMapper {
 
     int updateByPrimaryKeySelective(User record);
 
-    int updateByPrimaryKey(User record);
+    void updateByPrimaryKey(User record);
 
 	User getUserByAccount(User temp);
 	
@@ -47,8 +47,14 @@ public interface UserMapper {
 	List<User> getExistUser(User u);
 
 	/**
-	 * 根据id修改用户
+	 * 根据id修改用户状态
 	 * @param user
 	 */
-	void updateUserById(User user);
+	void updateUserUsedById(User user);
+
+	/**
+	 * 根据id删除用户
+	 * @param id
+	 */
+	void deleteUserById(Integer id);
 }

@@ -1,176 +1,86 @@
-<%@ page language="java" import="java.util.*" contentType="text/html;charset=utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
 %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta charset="utf-8">
-<title>任务管理</title>
-<meta http-equiv="refresh" content="3600">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" />
-<script
-	src="${pageContext.request.contextPath}/source/js/pager/jquery.pager.js"></script>
-<link
-	href="${pageContext.request.contextPath}/source/js/pager/Pager.css"
-	rel="stylesheet" />
+<meta charset="utf-8"> 
+<title>组织机构管理</title> 
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" />
+	<script src="${pageContext.request.contextPath}/source/js/pager/jquery.pager.js"></script>
+	<link href="${pageContext.request.contextPath}/source/js/pager/Pager.css" rel="stylesheet" />
+	<link rel="shortcut icon" href="<%=basePath%>source/images/favicon.ico" type="image/x-icon" />
 <script type="text/javascript">
 		$(document).ready(function(){
+			//showProcess(true, '温馨提示', '正在加载数据...');
 			$("#pager").pager({
-			    pagenumber:'${Role.pageNo}',                         /* 表示初始页数 */
-			    pagecount:'${Role.pageCount}',                      /* 表示总页数 */
-			    totalCount:'${Role.totalCount}',				   /* 表示总记录数 */
+			    pagenumber:'${Config.pageNo}',                         /* 表示初始页数 */
+			    pagecount:'${Config.pageCount}',                      /* 表示总页数 */
+			    totalCount:'${Config.totalCount}',				   /* 表示总记录数 */
 			    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
 			});		
-			$("#seaarchNameTemp").keypress(function(e){
-				if(e.keyCode == 13){
-					search();
-				}
-			});				
-		}); 		 
-PageClick = function(pageclickednumber) {
-	$("#pager").pager({
-	    pagenumber:pageclickednumber,                 /* 表示启示页 */
-	    pagecount:'${Role.pageCount}',                  /* 表示最大页数pagecount */
-	    buttonClickCallback:PageClick                 /* 表示点击页数时的调用的方法就可实现javascript分页功能 */            
-	});	
-	$("#pageNumber").val(pageclickednumber);          /* 给pageNumber从新赋值 */
-	/* 执行Action */
-	pagesearch();
-}
-function search(){
-	$("#pageNumber").val("1");
-	$("#hid_serarch").val(encodeURI($("#seaarchNameTemp").val()));
-	pagesearch(); 
-} 
-function pagesearch(){
-	if ($('#taskForm').form('validate')) {
-		taskForm.submit();
+
+		//加载机构树
+	 	$("#treeList").tree({	 		
+			 	 url: 'jsonLoadMetaTreeList.do?rootId='+0, 			 	 
+			 	 onClick:function(node){//单击事件			 	 	
+   				 	if(node.children.length !=0 ){   				 		
+   				 		var pid = node.id; 
+   				 		//根据pid查询子级机构
+   				 		getOrganListByPid(pid);
+ 				 	}
+   				 },
+   				 onLoadSuccess:function(){
+   				 	//$("#treeList").combotree('state', 'open');
+					//showProcess(false);
+   				    var cyId = $.trim($("#hid_companyId").val());
+   				 	if(cyId.length>0){
+   				 		var node = $("#treeList").tree("find",cyId); 
+						$('#treeList').tree("select", node.target);   				 		
+   				 	} 
+   				 }
+  				/*  required: false, //是否必须
+  				 //multiple:true,  //是否支持多选  				 
+  				 editable:false, //是否支持用户自定义输入	  				 		 
+  				 onSelect:function(record){ // 	当节点被选中时触发。  	  				 			
+				 	 	$("#orgPid").val(record.id); 
+  				 },
+  				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。  				  
+  				 	$("#treeList").combotree('tree').tree('options').url = 'area/jsonLoadAreaTreeList.do?pid='+ node.id;
+  				 },
+  				 onLoadSuccess:function(){ //当数据加载成功时触发。
+  				 	
+  				 	//根据所对应的机构选中复选框
+  				 	$("#treeList").combotree('setValues', orgpid);
+  				 	var orgId = $("#orgId").val();  
+  				 	
+  				 	//判断是新增还是编辑	 	
+  				 	if(orgId>0){  				 	
+  				 		//var pId = $("#areaId").val();
+  				 		//var orgName = $("#orgName").val();
+  				 		//$("#treeList").combotree("setText",orgName);  				 		
+  				 	}else{
+						//$("#cmbParentArea").combotree("disable",true);
+	   				 	$("#treeList").combotree("setText","=请选择所属机构=");
+					}
+  				} */
+		});	
+		});
+function metaState(id,used,name){
+	var operation=null;
+	if(used==0){
+		operation="确认禁用配置："+name+"?";		
+	}else if(used==1){
+		operation="确认启用配置："+name+"?";	
 	}
-}
-function showdialog(){
-	var wz = getDialogPosition($('#taskInfoWindow').get(0),100);
-	$('#taskInfoWindow').window({
-		  	top: 100,
-		    left: wz[1],
-		    onBeforeClose: function () {
-		    },
-		    onClose:function(){
-		    	$('#saveTaskForm .easyui-validatebox').val(''); 
-		    }
-	});
-	$('#taskInfoWindow').window('open');
-}
-function saveTask(obj){
-	if ($('#saveTaskForm').form('validate')) {
-		$(obj).attr("onclick", ""); 
-		showProcess(true, '温馨提示', '正在提交数据...'); 
-		 $('#saveTaskForm').form('submit',{
-		  		success:function(data){ 
-					showProcess(false);
-		  			data = $.parseJSON(data);
-		  			if(data.code==0){
-	  					$('#taskInfoWindow').window('close');
-		  				$.messager.alert('保存信息',data.message,'info',function(){
-	        			});
-	  					search();
-		  			}else{
-						$.messager.alert('错误信息',data.message,'error',function(){
-	        			});
-						$(obj).attr("onclick", "saveTask(this);"); 
-		  			}
-		  		}
-		  	 });  
-	}
-}  
-function getDateModel(date){
-	var year = date.getFullYear();
-	var month = date.getMonth()+1;
-	if(month <10){
-		month = "0"+month;
-	}
-	var day = date.getDate();
-	if(day <10){
-		day = "0"+day;
-	}
-	var dates = year+"-"+month+"-"+day;
-	return dates;
-}
-function getSelectDate(date){
-	var dates = getDateModel(date);
-	$("#startTimes").val(dates);
-}
-function sltSchStime(date){
-	var dates = getDateModel(date);
-	$("#startedTimes").val(dates);
-}
-function sltSchEtime(date){
-	var dates = getDateModel(date);
-	$("#endTimes").val(dates);
-}
- function runTask(id){
-	$.messager.confirm("执行确认","确认执行该任务,并在后台自动运行?",function(r){  
-		    if (r){  
-		  //  $.messager.alert('任务开始启动!');
-			$.ajax({
-				url : "userInfo.do?id="+id,
-				type : "post",  
-		    	dataType : "json",								
-				success : function(data) { 									
-		  			if(data.code == 0){ 
-		  				$.messager.alert('任务启动信息',data.message,'info',function(){ 
-		  					search(); 
-		  					//window.location.href="taskList.do";
-		      		});
-		  			}else{		  			    
-						$.messager.alert('错误信息','任务启动失败！','error');
-		  			}  
-			    } 
-			});
-	    }  
-	}); 
-}  
-function runTaskNow(id){
-	$.messager.confirm("执行确认","确认立即执行该任务?",function(r){  
-		    if (r){  
-		  //  $.messager.alert('任务开始启动!');
-			$.ajax({
-				url : "<%=basePath%>dataUtil/jsonloadTaskRun.do?id="+id,
-				type : "post",  
-		    	dataType : "json",								
-				success : function(data) { 									
-		  			if(data.code == 0){ 
-		  				$.messager.alert('任务启动信息',data.message,'info',function(){ 
-		  					runTaskAction(id);
-		  					//window.location.href="taskList.do";
-		      			});
-		  			}else{		  			    
-						$.messager.alert('错误信息','任务启动失败！','error');
-		  			}  
-			    } 
-			});
-	    }  
-	}); 
-} 
-function runTaskAction(id){
- //  $.messager.alert('任务开始启动!');
-	$.ajax({
-		url : "<%=basePath%>dataUtil/jsonloadTaskRunRightNow.do?id="+id,
-		type : "post",  
-    	dataType : "json",								
-		success : function(data) {  
-	    } 
-	}); 
-	search();  
-}
-function deleteRole(id){
-	$.messager.confirm("删除确认","确认删除该任务?",function(r){  
+	$.messager.confirm("修改确认",operation,function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsondeleteRoleById.do?id="+id,
+				url : "jsonMetaStateById.do?id="+id+"&used="+used,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -179,111 +89,185 @@ function deleteRole(id){
 		  					search();  
 		      			});
 		  			}else{		  			    
-						$.messager.alert('错误信息','删除失败！','error');
+						$.messager.alert('错误信息','修改用户状态失败！','error');
 		  			}  
 			    } 
 			});
 	    }  
 	}); 
 }
-function StopTask(id){
-	$.messager.confirm("终止确认","确认立即终止该任务?",function(r){  
-			    if (r){   
-				$.ajax({
-					url : "jsonloadTaskStop.do?id="+id,
-					type : "post",  
-			    	dataType : "json",								
-					success : function(data) { 									
-			  			if(data.code == 0){ 
-			  				$.messager.alert('操作信息',data.message,'info',function(){ 
-			  					search(); 
-			  					//window.location.href="taskList.do";
-			      		});
-			  			}else{		  			    
-							$.messager.alert('错误信息','任务终止失败！','error');
-			  			}  
-				    } 
+function getOrganListByPid(pid){
+	  $.ajax({
+		url : "jsonLoadOrganListByPid.do?pid="+pid,
+		type : "post",  
+		dataType:"json",
+		success : function(data) { 
+  			if(data.code == 0){ 
+  				 $("#pageNumber").val(1); 
+  				 $("#pager").pager({
+				    pagenumber:data.obj.pageNo,                         /* 表示初始页数 */
+				    pagecount:data.obj.pageCount,                      /* 表示总页数 */
+				    totalCount:data.obj.totalCount,
+				    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
 				});
-		    }  
-		}); 
+				$("#organList").html("");
+				fillOrganList(data.list);
+  			}else{
+				$.messager.alert('错误信息',data.message,'error');
+  			} 
+		}
+	});
+};
+function fillOrganList(lst){
+	var html = "<tbody>";
+	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>机构名称</span></th><th>上级机构</th><th>描述</th><th>操作</th></tr>";
+	for(var i = 0; i<lst.length;i++){
+		html += "<tr>";
+		html += "<td  style='display:none'>"+lst[i].id+"</td><td onclick=goToOrganInfo(\'"+lst[i].id+"\') align='left' ><span style='margin-left:40px'>"+lst[i].name+"</span></td><td onclick=goToOrganInfo(\'"+lst[i].id+"\') align='left' >"+lst[i].parentName+"</td>";
+		html += "<td onclick=goToOrganInfo(\'"+lst[i].id+"\')>"+lst[i].description+"</td>";
+		html +="<td align='left'>"+"<a href='javascript:void(0);' onclick=OperatOrgan(\'"+lst[i].id+"\',\'DELETE\')  style='padding-left:5px;margin-top:25px' >删除</a> </td>";
+		html += "</tr>";
+	}
+	html += "</tbody>";
+	$("#organList").html(html);
 }
+PageClick = function(pageclickednumber) {
+	$("#pager").pager({
+	    pagenumber:pageclickednumber,                 /* 表示启示页 */
+	    pagecount:'${organ.pageCount}',                  /* 表示最大页数pagecount */
+	    buttonClickCallback:PageClick                 /* 表示点击页数时的调用的方法就可实现javascript分页功能 */            
+	});
+	
+	$("#pageNumber").val(pageclickednumber);          /* 给pageNumber从新赋值 */
+	/* 执行Action */
+	pagesearch();
+}
+function search(){
+	$("#pageNumber").val("1");
+	pagesearch();
+}
+
+function pagesearch(){
+	if ($('#organForm').form('validate')) {
+		organForm.submit();
+	} 
+}
+	function OperatOrgan(organId,operate){
+		showProcess(true, '温馨提示', '正在操作，请等待...');
+		$.ajax({
+			url : "jsonOperateOrgan.do?organId="+organId+"&status="+operate,
+			type : "post",
+			dataType:"json",
+			success : function(data) {
+				showProcess(false);
+				if(data.code == 0){
+					$.messager.show({
+						title:'操作信息',
+						msg:'服务器响应操作，请稍后。。。',
+						showType:'fade',
+						width:300,
+						modal:true,
+						height:150,
+						timeout:4000,
+						style:{
+							right:'',
+							bottom:''
+						}
+					});
+					setTimeout(function () {
+						$.messager.alert('操作信息', data.message, 'info',function() {
+							var pageNo = $.trim($("#pageNumber").val());
+							if(pageNo.length == 0 ||pageNo==""){
+								pageNo = 1;
+							}
+							window.location.href="configList.do?pageNo="+pageNo;
+						});
+					}, 5000);
+				}else{
+					$.messager.alert('操作信息', data.message, 'error');
+				}
+			}
+		});
+	}
+	function goToOrganInfo(organId){
+		window.location.href="organInfo.do?organId="+organId;
+	}
 </script>
 </head>
+
 <body>
-	<div class="con-right" id="conRight">	
+
+	<div class="con-right" id="conRight">
 		<div class="fl yw-lump">
 			<div class="yw-lump-title">
-				<i class="yw-icon icon-partner"></i><span>预设配置列表</span> 
+				<i class="yw-icon icon-partner"></i><span>配置列表</span><input type="hidden" value="${Config.id}" id="hid_organId" />
 			</div>
 		</div>
 		<div class="fl yw-lump mt10">
-			<form id="taskForm" name="taskForm"
+			<form id="organForm" name="organForm"
 				action="configList.do" method="get">
-				<div class=pd10>
-					<div class="fl">  
-						<span>条件查询：</span>
-						<input type="text" id="seaarchNameTemp" validType="SpecialWord" class="easyui-validatebox" placeholder="搜索" value="${Config.searchName}" /> 
-						<input type="hidden" name="searchName" id="hid_serarch" /> 
-						
-						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
+				<div class="pd10-28">
+					<div class="fl">
+						 <button class="yw-btn bg-blue cur">全部配置</button>  
 					</div>
-
 					<div class="fr">
-						<span class="yw-btn bg-green cur" onclick="window.location.href='roleInfo.do?id=0';">新增配置</span>  -->
+						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox"
+							   style="width: 120px;" placeholder="搜索关键字：名称" value="${Config.searchName}" />
+						<span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
+						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='configInfo.do?id=0';">新建</span>
 					</div>
-						<div class="cl"></div>				
-                     <input type="hidden" id="pageNumber" name="pageNo" value="${Config.pageNo}" />
-                     </div>
-		     	</form>
-		     	</div>
-				
-           <div class="fl yw-lump"> 
-				<table class="yw-cm-table yw-center yw-bg-hover" id="taskList">
+					<div class="cl"></div>
+				</div>
+
+				<input type="hidden" id="pageNumber" name="pageNo"
+					value="" />
+			</form>
+		</div>
+		<div class="fl">
+			<div class="fl yw-lump mlwid250 mt10">
+				<div class="yw-cm-title">
+					<span class="ml26">配置列表</span>
+				</div>
+				<div class="yw-organ-tree-list" style="height: 639px;">
+					<!-- 加载机构树 -->
+					<ul  id="treeList"></ul>
+				</div>
+			</div>
+			<div class="yw-lump wid-atuo ml260s mt10" >
+				<div class="yw-cm-title">
+					<span class="ml26">全部配置</span>
+				</div>
+				<table class="yw-cm-table yw-leftSide yw-bg-hover" id="organList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
-						<th width="4%" style="display:none">&nbsp;</th>
-						<th width="10%">是否最后一级</th>	
-						<th width="10%">上级部门</th>
-						<th width="10%">层级</th>	
-						<th width="10%">名称</th>	
-						<th width="10%">关键字</th>	
-						<th width="10%">描述</th>							
-						<th width="10%">状态</th>	
-						<th width="10%">操作</th>	
-							
+						<th width="4%" style="display:none">&nbsp;</th>						
+						<th><span style='margin-left:40px'>配置状态</span></th>
+						<th>配置名称</th>						
+						<th>关键字</th>
+						<th>操作</th>
 					</tr>
 					<c:forEach var="item" items="${configList}">
-						<tr> 							
-							<td>${item.leafed}</td>
-							<td>${item.pid}</td>
-							<td>${item.level}</td>
-							<td>${item.name}</td>
-							<td>${item.key}</td>
-							<td>${item.description}</td>
-							<td>${item.used}</td>							
-							<td>
-								<a style="color:blue" onclick="deleteRole(${item.id});">删除</a>
-								<a style="color:blue" onclick="window.location.href='roleInfo.do?id=${item.id}';">编辑</a>
-							</td>
-						</tr>
+					<tr>
+						<td>
+							<c:if test="${item.used == 0 }">禁用</c:if>
+							<c:if test="${item.used == 1 }">启用</c:if>						
+						</td>
+						<td>${item.name}</td>
+						<td>${item.key}</td>							
+						<td>
+							<c:if test="${item.used == 1}">
+								<a style="color:blue"
+									onclick="metaState(${item.id},0,'${item.name}');">禁用</a>
+							</c:if> <c:if test="${item.used == 0}">
+								<a style="color:blue"
+									onclick="metaState(${item.id},1,'${item.name}');">启用</a>
+							</c:if> <a style="color:blue" onclick="window.location.href='configInfo.do?id=${item.id}';">编辑</a>
+						</td>
+					</tr>
 					</c:forEach>
 				</table>
 				<div class="page" id="pager"></div>
-				</div>
 			</div>
-
- 		
-
-  </body>
+		</div>
+	</div>
+</body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

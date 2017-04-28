@@ -28,4 +28,10 @@ public class FunctionServiceImpl implements FunctionService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<FunctionMenu> getOrganByParentId(FunctionMenu functionMenu) {
+		// TODO Auto-generated method stub
+		return functionMenuMapper.getOrganByParentId(functionMenu);
+	}
 }

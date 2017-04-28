@@ -15,7 +15,11 @@ import com.rmbank.supervision.common.shiro.ShiroUsernamePasswordToken;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.common.utils.EndecryptUtils;
 import com.rmbank.supervision.dao.UserMapper;
+import com.rmbank.supervision.dao.UserOrganMapper;
+import com.rmbank.supervision.dao.UserRoleMapper;
 import com.rmbank.supervision.model.User;
+import com.rmbank.supervision.model.UserOrgan;
+import com.rmbank.supervision.model.UserRole;
 import com.rmbank.supervision.service.UserService;
 
 
@@ -25,6 +29,10 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private UserRoleMapper userRoleMapper;
+    @Resource 
+    private UserOrganMapper userOrganMapper;
     
 	@Override
 	public ReturnResult<User> login(String name, String pwd, boolean rememberMe) {
@@ -113,27 +121,123 @@ public class UserServiceImpl implements UserService {
 	 * 新增用户/修改用户
 	 */
 	@Override
-	public boolean saveOrUpdateUser(User user) {
+	public boolean saveOrUpdateUser(User user, Integer [] roleIds, Integer [] orgIds,Integer postId) {
 		boolean isSuccess = false;
-		try{
+		try{			
 			//id存在则为修改操作
 			if(user.getId()>0){
+				//修改用户的数据
 				userMapper.updateByPrimaryKeySelective(user);
+				//根据用户id删除用户-机构表中用户id对应的数据
+				userOrganMapper.deleteByUserId(user.getId());
+				//根据用户id删除用户-角色表中用户id对应的数据
+				userRoleMapper.deleteByUserId(user.getId());
+				for (Integer roleId : roleIds) {
+					UserRole userRole=new UserRole();
+					userRole.setId(0);
+					userRole.setUserId(user.getId());
+					userRole.setRoleId(roleId);					
+					userRoleMapper.insert(userRole);				
+				}
+				for (Integer orgId : orgIds) {
+					UserOrgan userOrg=new UserOrgan();
+					userOrg.setId(0);
+					userOrg.setUserId(user.getId());
+					userOrg.setOrgId(orgId);
+					userOrg.setPostId(postId);
+					userOrganMapper.insert(userOrg);
+				}
+						
 				isSuccess = true;
-			}else{
+			}else{//新增用户
+				//insert返回用户主键
+				int userId =0;
 				User u = EndecryptUtils.md5Password(user.getAccount(), user.getPwd());
 	            if (u != null) {
 	                user.setPwd(u.getPwd());
 	                user.setSalt(u.getSalt());
 	                userMapper.insert(user); 
-					isSuccess = true;
+	                userId= user.getId();
+	                System.out.println("返回的userID"+userId);
 	            }
+				if(userId !=0 ){
+					for (Integer roleId : roleIds) {
+						UserRole userRole=new UserRole();
+						userRole.setId(0);
+						userRole.setUserId(userId);
+						userRole.setRoleId(roleId);					
+						userRoleMapper.insert(userRole);				
+					}
+					for (Integer orgId : orgIds) {
+						UserOrgan userOrg=new UserOrgan();
+						userOrg.setId(0);
+						userOrg.setUserId(userId);
+						userOrg.setOrgId(orgId);
+						userOrg.setPostId(postId);
+						userOrganMapper.insert(userOrg);
+					}							
+					isSuccess = true;
+				}
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 		return isSuccess;
 		
+	}
+
+	/**
+	 * 删除用户
+	 */
+	@Override
+	public boolean deleteUserById(Integer id) {
+		boolean isSuccess = false;
+		try{
+			userMapper.deleteUserById(id);
+			//根据用户id删除用户-机构表中用户id对应的数据
+			userOrganMapper.deleteByUserId(id);
+			//根据用户id删除用户-角色表中用户id对应的数据
+			userRoleMapper.deleteByUserId(id);
+			isSuccess = true;
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return isSuccess;
+	}
+
+	
+	/**
+	 * 修改用户状态
+	 */
+	@Override
+	public boolean updateUserUsedById(User user) {
+		boolean isSuccess = false;
+		try{
+			userMapper.updateUserUsedById(user);	
+			isSuccess = true;
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return isSuccess;
+	}
+
+	/**
+	 * 重置用户密码
+	 */
+	@Override
+	public boolean updateByPrimaryKey(User user) {
+		// TODO Auto-generated method stub		
+		boolean isSuccess = false;
+		try{
+			User u = EndecryptUtils.md5Password(user.getAccount(), user.getPwd());
+			user.setPwd(u.getPwd());
+			user.setSalt(u.getSalt());
+			userMapper.updateByPrimaryKey(user);	
+			isSuccess = true;
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return isSuccess;
 	}
 	
 	

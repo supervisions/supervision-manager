@@ -123,5 +123,21 @@
     </if> 
     order by sort asc
   </select>
-  
+  <sql id="sql_query">
+	from t_function as fun
+	where 1=1
+	<if test="parentId != null">
+		and fun.parent_id=#{parentId,jdbcType=INTEGER}
+	</if>
+	<if test="searchName != null and searchName != ''">
+		and (fun.name like
+		CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		)
+	</if>
+  </sql>
+  <select id="getOrganByParentId" parameterType="com.rmbank.supervision.model.FunctionMenu" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+	<include refid="sql_query" /> 
+  </select>
 </mapper>

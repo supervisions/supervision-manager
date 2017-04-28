@@ -18,19 +18,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	href="${pageContext.request.contextPath}/source/js/pager/Pager.css"
 	rel="stylesheet" />
 <script type="text/javascript">
-		$(document).ready(function(){
-			$("#pager").pager({
-			    pagenumber:'${User.pageNo}',                         /* 表示初始页数 */
-			    pagecount:'${User.pageCount}',                      /* 表示总页数 */
-			    totalCount:'${User.totalCount}',				   /* 表示总记录数 */
-			    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
-			});		
-			$("#seaarchNameTemp").keypress(function(e){
-				if(e.keyCode == 13){
-					search();
-				}
-			});				
-		}); 		 
+$(document).ready(function(){
+	
+	$("#pager").pager({
+	    pagenumber:'${User.pageNo}',                         /* 表示初始页数 */
+	    pagecount:'${User.pageCount}',                      /* 表示总页数 */
+	    totalCount:'${User.totalCount}',				   /* 表示总记录数 */
+	    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
+	});		
+	$("#seaarchNameTemp").keypress(function(e){
+		if(e.keyCode == 13){
+			search();
+		}
+	});		
+	
+			
+}); 		 
 PageClick = function(pageclickednumber) {
 	$("#pager").pager({
 	    pagenumber:pageclickednumber,                 /* 表示启示页 */
@@ -64,7 +67,81 @@ function showdialog(){
 	});
 	$('#taskInfoWindow').window('open');
 }
-function saveTask(obj){
+function deleteUser(id,name){
+	$.messager.confirm("删除确认","确认删除用户："+name+"?",function(r){  
+		    if (r){   
+			$.ajax({
+				url : "jsondeleteUserById.do?id="+id,
+				type : "post",  
+		    	dataType : "json",								
+				success : function(data) { 									
+		  			if(data.code == 0){ 
+		  				$.messager.alert('操作信息',data.message,'info',function(){ 
+		  					search();  
+		      			});
+		  			}else{		  			    
+						$.messager.alert('错误信息','删除失败！','error');
+		  			}  
+			    } 
+			});
+	    }  
+	}); 
+}
+function updateUser(id,used,name){
+	var operation=null;
+	if(used==0){
+		operation="确认禁用用户："+name+"  ?";		
+	}else if(used==1){
+		operation="确认启用用户："+name+"  ?";	
+	}
+	$.messager.confirm("修改确认",operation,function(r){  
+		    if (r){   
+			$.ajax({
+				url : "jsonupdateUserById.do?id="+id+"&used="+used,
+				type : "post",  
+		    	dataType : "json",								
+				success : function(data) { 									
+		  			if(data.code == 0){ 
+		  				$.messager.alert('操作信息',data.message,'info',function(){ 
+		  					search();  
+		      			});
+		  			}else{		  			    
+						$.messager.alert('错误信息','修改用户状态失败！','error');
+		  			}  
+			    } 
+			});
+	    }  
+	}); 
+}
+function resetUserPwd(id,name){
+	$.messager.confirm("重置密码确认","确认重置用户："+name+"的密码？：",function(r){  
+		    if (r){   
+			$.ajax({
+				url : "jsonResetUserPwd.do?id="+id,
+				type : "post",  
+		    	dataType : "json",								
+				success : function(data) { 									
+		  			if(data.code == 0){ 
+		  				$.messager.alert('操作信息',data.message,'info',function(){ 
+		  					search();  
+		      			});
+		  			}else{		  			    
+						$.messager.alert('错误信息','重置密码失败！','error');
+		  			}  
+			    } 
+			});
+	    }  
+	}); 
+}
+
+/* function subStr(obj){
+	var str = $(".orgName").html();
+	if(str.length>15){
+		alert()
+		$(".orgName").html()=str.substring(0,15) + "...";
+	}
+}  */
+<%-- function saveTask(obj){
 	if ($('#saveTaskForm').form('validate')) {
 		$(obj).attr("onclick", ""); 
 		showProcess(true, '温馨提示', '正在提交数据...'); 
@@ -165,28 +242,9 @@ function runTaskAction(id){
 	    } 
 	}); 
 	search();  
-}
-function deleteTask(id){
-	$.messager.confirm("删除确认","确认删除该任务?",function(r){  
-		    if (r){   
-			$.ajax({
-				url : "jsondeleteTaskById.do?id="+id,
-				type : "post",  
-		    	dataType : "json",								
-				success : function(data) { 									
-		  			if(data.code == 0){ 
-		  				$.messager.alert('操作信息',data.message,'info',function(){ 
-		  					search();  
-		      			});
-		  			}else{		  			    
-						$.messager.alert('错误信息','删除失败！','error');
-		  			}  
-			    } 
-			});
-	    }  
-	}); 
-}
-function StopTask(id){
+} --%>
+
+/* function StopTask(id){
 	$.messager.confirm("终止确认","确认立即终止该任务?",function(r){  
 			    if (r){   
 				$.ajax({
@@ -206,7 +264,7 @@ function StopTask(id){
 				});
 		    }  
 		}); 
-}
+} */
 </script>
 </head>
 <body>
@@ -241,33 +299,38 @@ function StopTask(id){
 				<table class="yw-cm-table yw-center yw-bg-hover" id="taskList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>
-					<th width="20%">状态</th>
-					<th width="20%">用户名</th>
-					<th width="20%">用户账号</th>
-
-					<th width="15%">操作</th>				
-					<!--  	<th width="8%" >删除任务</th> -->
+					<th width="8%">状态</th>
+					<th width="15%">用户名称</th>
+					<th width="15%">用户账号</th>
+					<th width="20%">所属机构</th>
+								
+					<th width="25%">操作</th>				
+					
 					</tr>
 					<c:forEach var="item" items="${userList}">
 						<tr> 
 							<td><c:if test="${item.used == 1}">
-								<span>有效</span>
+								<span>启用</span>
 							</c:if> <c:if test="${item.used == 0}">
-								<span>无效</span>
+								<span>禁用</span>
 							</c:if></td>
 							<td>${item.name}</td>
 						<td>${item.account}</td>
-
+						<td title="${item.orgName}" class="orgName">${item.orgName}</td>
+						
 						<td><c:if test="${item.used == 1}">
-								<a style="color:blue" onclick="runTask(${item.id});">删除</a>
+								<a style="color:blue" onclick="updateUser(${item.id},0,'${item.name}');">禁用</a>
 							</c:if> 
 							<c:if test="${item.used == 0}">
-								<a style="color:blue" onclick="runTask(${item.id});">删除</a>
+								<a style="color:blue" onclick="updateUser(${item.id},1,'${item.name}');">启用</a>
 							</c:if>
-							<%-- <a style="color:blue" onclick="window.location.href='userInfo.do?id=${item.id}';">编辑</a>&nbsp;&nbsp; --%>
+							<a style="color:blue" onclick="deleteUser(${item.id},'${item.name}');">删除</a>							
+							<a style="color:blue" onclick="window.location.href='userInfo.do?id=${item.id}';">编辑</a>
+							<a style="color:blue" onclick="resetUserPwd(${item.id},'${item.name}');">重置密码</a>
 							</td>
 						</tr>
 					</c:forEach>
+					
 				</table>
 				<div class="page" id="pager"></div>
 				</div>

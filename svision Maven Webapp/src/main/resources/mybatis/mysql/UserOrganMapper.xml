@@ -4,10 +4,11 @@
   <resultMap id="BaseResultMap" type="com.rmbank.supervision.model.UserOrgan" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="org_id" property="orgId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="post_id" property="postId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, org_id, post_id
+    id, user_id, org_id, post_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -20,9 +21,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.rmbank.supervision.model.UserOrgan" >
-    insert into t_user_org (id, org_id, post_id
+    insert into t_user_org (id, user_id, org_id, post_id
       )
-    values (#{id,jdbcType=INTEGER}, #{orgId,jdbcType=INTEGER}, #{postId,jdbcType=INTEGER}
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{orgId,jdbcType=INTEGER}, #{postId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.rmbank.supervision.model.UserOrgan" >
@@ -30,6 +31,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="userId != null" >
+        user_id,
       </if>
       <if test="orgId != null" >
         org_id,
@@ -42,6 +46,9 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
       <if test="orgId != null" >
         #{orgId,jdbcType=INTEGER},
       </if>
@@ -53,6 +60,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.rmbank.supervision.model.UserOrgan" >
     update t_user_org
     <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
       <if test="orgId != null" >
         org_id = #{orgId,jdbcType=INTEGER},
       </if>
@@ -64,8 +74,25 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.rmbank.supervision.model.UserOrgan" >
     update t_user_org
-    set org_id = #{orgId,jdbcType=INTEGER},
+    set user_id = #{userId,jdbcType=INTEGER},
+      org_id = #{orgId,jdbcType=INTEGER},
       post_id = #{postId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getOrgsByUserId" resultType="com.rmbank.supervision.model.Organ" parameterType="java.lang.Integer" >
+  	SELECT o.* FROM t_user_org uo
+     LEFT JOIN t_org o ON uo.org_id = o.id
+     WHERE 1 = 1 
+      AND  uo.user_id =#{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByUserId" parameterType="java.lang.Integer">
+  	 delete from t_user_org
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <select id="getPostsByUserId" parameterType="java.lang.Integer" resultType="com.rmbank.supervision.model.Meta">
+  	SELECT m.* FROM t_user_org uo
+     LEFT JOIN t_meta m ON uo.Post_id = m.id
+     WHERE 1 = 1 
+      AND  uo.user_id =#{userId,jdbcType=INTEGER}
+  </select>
 </mapper>

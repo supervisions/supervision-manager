@@ -3,6 +3,8 @@ package com.rmbank.supervision.model;
 public class UserOrgan {
     private Integer id;
 
+    private Integer userId;
+    
     private Integer orgId;
 
     private Integer postId;
@@ -30,4 +32,12 @@ public class UserOrgan {
     public void setPostId(Integer postId) {
         this.postId = postId;
     }
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 }

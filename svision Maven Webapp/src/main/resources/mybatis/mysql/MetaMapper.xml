@@ -13,12 +13,23 @@
     <result column="used" property="used" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, pid, level, path, leafed, name, key, description, used
+     `id` `pid`, `level`, `path`, `leafed`, `name`, `key`, `description`, `used`
   </sql>
+  <sql id="sql_query">
+  	from t_meta as meta  	
+  	where 1=1 
+  	<if test="pid != null">
+		and meta.pid=#{pid,jdbcType=INTEGER}
+	</if>
+	<if test="searchName != null and searchName != ''">
+		and (meta.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		OR meta.key like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		OR meta.used like CONCAT('%',#{searchName,jdbcType=INTEGER},'%')		
+		)
+	</if>
+  </sql>  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_meta
+    select * from t_meta   
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -26,10 +37,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.rmbank.supervision.model.Meta" >
-    insert into t_meta (id, pid, level, 
-      path, leafed, name, 
-      key, description, used
-      )
+    insert into t_meta (`id`, `pid`, `level`, `path`, `leafed`, `name`, `key`, `description`, `used`      )
     values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, 
       #{path,jdbcType=VARCHAR}, #{leafed,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{key,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{used,jdbcType=INTEGER}
@@ -100,31 +108,31 @@
     update t_meta
     <set >
       <if test="pid != null" >
-        pid = #{pid,jdbcType=INTEGER},
+        `pid` = #{pid,jdbcType=INTEGER},
       </if>
       <if test="level != null" >
-        level = #{level,jdbcType=INTEGER},
+        `level` = #{level,jdbcType=INTEGER},
       </if>
       <if test="path != null" >
-        path = #{path,jdbcType=VARCHAR},
+        `path` = #{path,jdbcType=VARCHAR},
       </if>
       <if test="leafed != null" >
-        leafed = #{leafed,jdbcType=INTEGER},
+        `leafed` = #{leafed,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
       <if test="key != null" >
-        key = #{key,jdbcType=VARCHAR},
+        `key` = #{key,jdbcType=VARCHAR},
       </if>
       <if test="description != null" >
-        description = #{description,jdbcType=VARCHAR},
+        `description` = #{description,jdbcType=VARCHAR},
       </if>
       <if test="used != null" >
-        used = #{used,jdbcType=INTEGER},
+        `used` = #{used,jdbcType=INTEGER},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where `id` = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.rmbank.supervision.model.Meta" >
     update t_meta
@@ -138,4 +146,33 @@
       used = #{used,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getMetaList" parameterType="com.rmbank.supervision.model.Meta" resultMap="BaseResultMap">
+  	select *
+  	<include refid="sql_query" />
+	order by meta.id DESC 
+	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
+        limit #{pageStart}, #{pageSize}
+    </if>
+  </select>  
+  <select id="getConfigCount" resultType="java.lang.Integer" parameterType="com.rmbank.supervision.model.Meta">
+  	select count(*) 
+  	<include refid="sql_query"></include>
+  </select>
+  <select id="getMeatListByKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select m1.* from t_meta m 
+	LEFT JOIN t_meta m1 on m.id = m1.pid
+	where m.`key` = #{key,jdbcType=VARCHAR}
+  </select>
+  <update id="MetaStateById" parameterType="java.lang.Integer">
+  	update t_meta set used=#{used,jdbcType=INTEGER} where id=#{id,jdbcType=INTEGER}
+  </update>
+  <select id="getConfigListByPid" parameterType="com.rmbank.supervision.model.Meta" resultMap="BaseResultMap">
+  	select * from t_meta where pid=#{pid,jdbcType=INTEGER}		
+  </select>
+  <select id="getExistMeta" parameterType="com.rmbank.supervision.model.Meta" resultMap="BaseResultMap">
+  	select * from t_meta where name=#{name,jdbcType=VARCHAR}	
+  </select>
+  <select id="getUserPost" resultMap="BaseResultMap">
+  	SELECT m.name FROM t_user u, t_meta m, t_user_org uo WHERE u.id=uo.user_id AND uo.post_id = m.id;
+  </select>
 </mapper>

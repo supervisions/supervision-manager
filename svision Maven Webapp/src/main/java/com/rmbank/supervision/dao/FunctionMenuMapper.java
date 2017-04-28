@@ -18,4 +18,6 @@ public interface FunctionMenuMapper {
     int updateByPrimaryKey(FunctionMenu record);
 
 	List<FunctionMenu> getFunctionMenuByCondition(FunctionMenu functionMenu);
+
+	List<FunctionMenu> getOrganByParentId(FunctionMenu functionMenu);
 }

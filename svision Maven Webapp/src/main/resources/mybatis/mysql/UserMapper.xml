@@ -33,7 +33,7 @@
     delete from t_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.rmbank.supervision.model.User" >
+  <insert id="insert" parameterType="com.rmbank.supervision.model.User" useGeneratedKeys="true" keyProperty="id">
     insert into t_user (id, name, account,pwd, 
       salt, used)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
@@ -119,27 +119,50 @@
   	from t_user as user
   	where 1=1 
 	<if test="searchName != null and searchName != ''">
-		and (user.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
-		OR user.account like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')		
-		)
+		and (
+			user.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+			or user.account like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+     	)
 	</if>
   </sql>  
-  <select id="getUserList" resultMap="BaseResultMap">
+  
+  <select id="getUserList" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.User">
+	SELECT u.* , 
+	(SELECT GROUP_CONCAT( org.name SEPARATOR "," ) FROM t_org org
+	LEFT JOIN t_user_org uo ON org.`id` = uo.`org_id`
+	WHERE uo.`user_id` = u.id) AS orgName ,
+	(SELECT GROUP_CONCAT( role.name SEPARATOR "," ) FROM t_role role
+	LEFT JOIN t_user_role ur ON role.`id` = ur.`role_id`
+	WHERE ur.`user_id` = u.id) AS roleName
+	FROM t_user u
+	order by u.id DESC 
+	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
+        limit #{pageStart}, #{pageSize}
+    </if>
+  </select>
+  
+  <!-- <select id="getUserList" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.User">
   	select <include refid="Base_Column_List" />
    	<include refid="sql_query" />
 	order by user.id DESC 
 	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
         limit #{pageStart}, #{pageSize}
     </if>
-  </select>
+  </select> -->
   <select id="getUserCount" resultType="java.lang.Integer" parameterType="com.rmbank.supervision.model.User">
   	select count(*) 
   	<include refid="sql_query"></include>
   </select>
   <select id="getUserById" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.User" >
-    select <include refid="Base_Column_List" />			
-	from t_user t
-	where t.id =  #{id,jdbcType=INTEGER} 
+   SELECT u.* , 
+	(SELECT GROUP_CONCAT( org.name SEPARATOR "," ) FROM t_org org
+	LEFT JOIN t_user_org uo ON org.`id` = uo.`org_id`
+	WHERE uo.`user_id` = u.id) AS orgName ,
+	(SELECT GROUP_CONCAT( role.name SEPARATOR "," ) FROM t_role role
+	LEFT JOIN t_user_role ur ON role.`id` = ur.`role_id`
+	WHERE ur.`user_id` = u.id) AS roleName
+	FROM t_user u
+	where u.id =  #{id,jdbcType=INTEGER} 
   </select>
   <select id="getExistUser" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.User" >
     select <include refid="Base_Column_List" />			
@@ -152,5 +175,14 @@
 		and t.account = #{account,jdbcType=VARCHAR} 
 	</if> 
   </select>
+  <delete id="deleteUserById" parameterType="java.lang.Integer">
+    delete from t_user
+    where ID = #{id,jdbcType=INTEGER}   
+  </delete>
+  <update id="updateUserUsedById"> 
+  	update t_user set used=#{used,jdbcType=INTEGER} 
+  	where id=#{id,jdbcType=INTEGER}
+  </update>
+  
   
 </mapper>

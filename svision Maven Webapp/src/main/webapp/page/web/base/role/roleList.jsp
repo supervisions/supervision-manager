@@ -18,19 +18,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	href="${pageContext.request.contextPath}/source/js/pager/Pager.css"
 	rel="stylesheet" />
 <script type="text/javascript">
-		$(document).ready(function(){
-			$("#pager").pager({
-			    pagenumber:'${Role.pageNo}',                         /* 表示初始页数 */
-			    pagecount:'${Role.pageCount}',                      /* 表示总页数 */
-			    totalCount:'${Role.totalCount}',				   /* 表示总记录数 */
-			    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
-			});		
-			$("#seaarchNameTemp").keypress(function(e){
-				if(e.keyCode == 13){
-					search();
-				}
-			});				
-		}); 		 
+$(document).ready(function(){
+	$("#pager").pager({
+	    pagenumber:'${Role.pageNo}',                         /* 表示初始页数 */
+	    pagecount:'${Role.pageCount}',                      /* 表示总页数 */
+	    totalCount:'${Role.totalCount}',				   /* 表示总记录数 */
+	    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
+	});		
+	$("#seaarchNameTemp").keypress(function(e){
+		if(e.keyCode == 13){
+			search();
+		}
+	});				
+}); 		 
 PageClick = function(pageclickednumber) {
 	$("#pager").pager({
 	    pagenumber:pageclickednumber,                 /* 表示启示页 */
@@ -51,6 +51,27 @@ function pagesearch(){
 		taskForm.submit();
 	}
 }
+function deleteRole(id,name){
+	$.messager.confirm("删除确认","确认删除角色："+name+"?",function(r){  
+		    if (r){   
+			$.ajax({
+				url : "jsondeleteRoleById.do?id="+id,
+				type : "post",  
+		    	dataType : "json",								
+				success : function(data) { 									
+		  			if(data.code == 0){ 
+		  				$.messager.alert('操作信息',data.message,'info',function(){ 
+		  					search();  
+		      			});
+		  			}else{		  			    
+						$.messager.alert('错误信息','删除失败！','error');
+		  			}  
+			    } 
+			});
+	    }  
+	}); 
+}
+<%-- 
 function showdialog(){
 	var wz = getDialogPosition($('#taskInfoWindow').get(0),100);
 	$('#taskInfoWindow').window({
@@ -165,27 +186,7 @@ function runTaskAction(id){
 	    } 
 	}); 
 	search();  
-}
-function deleteRole(id){
-	$.messager.confirm("删除确认","确认删除该任务?",function(r){  
-		    if (r){   
-			$.ajax({
-				url : "jsondeleteRoleById.do?id="+id,
-				type : "post",  
-		    	dataType : "json",								
-				success : function(data) { 									
-		  			if(data.code == 0){ 
-		  				$.messager.alert('操作信息',data.message,'info',function(){ 
-		  					search();  
-		      			});
-		  			}else{		  			    
-						$.messager.alert('错误信息','删除失败！','error');
-		  			}  
-			    } 
-			});
-	    }  
-	}); 
-}
+} 
 function StopTask(id){
 	$.messager.confirm("终止确认","确认立即终止该任务?",function(r){  
 			    if (r){   
@@ -206,7 +207,9 @@ function StopTask(id){
 				});
 		    }  
 		}); 
-}
+}--%>
+
+
 </script>
 </head>
 <body>
@@ -229,7 +232,7 @@ function StopTask(id){
 					</div>
 
 					<div class="fr">
-						<span class="yw-btn bg-green cur" onclick="window.location.href='roleInfo.do?id=0';">新增角色</span>  -->
+						<span class="yw-btn bg-green cur" onclick="window.location.href='roleInfo.do?id=0';">新增角色</span>
 					</div>
 						<div class="cl"></div>				
                      <input type="hidden" id="pageNumber" name="pageNo" value="${Role.pageNo}" />
@@ -241,18 +244,21 @@ function StopTask(id){
 				<table class="yw-cm-table yw-center yw-bg-hover" id="taskList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>
-					<th width="20%">名称</th>
-					<th width="20%">描述</th>	
+					<th width="20%">角色名称</th>
+					<th width="20%">角色描述</th>	
+					<th width="20%">授权</th>	
 					<th width="20%">操作</th>			
 					</tr>
 					<c:forEach var="item" items="${roleList}">
 						<tr> 							
 							<td>${item.name}</td>
 							<td>${item.description}</td>
+							<td><a style="color:blue" onclick="window.location.href='#';">资源授权</a></td>
 							<td>
-								<a style="color:blue" onclick="deleteRole(${item.id});">删除</a>
+								<a style="color:blue" onclick="deleteRole(${item.id},'${item.name}');">删除</a>
 								<a style="color:blue" onclick="window.location.href='roleInfo.do?id=${item.id}';">编辑</a>
 							</td>
+							
 						</tr>
 					</c:forEach>
 				</table>
