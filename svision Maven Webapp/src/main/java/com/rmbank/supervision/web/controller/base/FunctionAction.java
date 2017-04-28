@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.model.FunctionMenu;
+import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.service.FunctionService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
@@ -65,15 +66,18 @@ public class FunctionAction extends SystemAction{
 			List<FunctionMenu> list1 = new ArrayList<FunctionMenu>();
 			list1 = functionService.getOrganByParentId(fun);
 			if(list1.size() > 0){
-				for(FunctionMenu f: list1){
+				/*for(FunctionMenu f: list1){
 					f.setText(f.getName());
 				}
 				a.setChildren(list1);
-				a.setState("closed");
-			}else{
+				a.setState("open");*/
+				list1 = setChildren(list1);
+			}/*else{
 				a.setChildren(new ArrayList<FunctionMenu>());
 				a.setState("open");
-			}
+			}*/
+			a.setChildren(list1);
+			a.setState("open");
 		}
 		//加载子节点，方式二，无子节点仍有展开按钮，加载速度快
 //		if(list.size() > 0){
@@ -83,6 +87,25 @@ public class FunctionAction extends SystemAction{
 //			}
 //		}
 		return list;// json.toString();
+	}
+	
+	private List<FunctionMenu> setChildren(List<FunctionMenu> ls) {
+		// TODO Auto-generated method stub
+		for (FunctionMenu c : ls) {
+			c.setText(c.getName());
+			FunctionMenu c1 = new FunctionMenu();
+			c1.setParentId(c.getId());
+			List<FunctionMenu> lst = functionService.getOrganByParentId(c1);
+			if (lst.size() > 0) {
+				lst = setChildren(lst);
+				c.setChildren(lst);
+				c.setState("open");
+			} else {
+				c.setChildren(new ArrayList<FunctionMenu>());
+				c.setState("open");
+			}
+		}
+		return ls;// json.toString();
 	}
 
 }

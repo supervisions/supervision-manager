@@ -23,20 +23,22 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 	$("#moudleId").combotree({
 			 url: 'system/function/jsonLoadFunctionTreeList.do',  
   				 required: false,
-  				 onSelect:function(record){   				 	 				 	
-				 	$("#moudle_Id").val(record.id); 				 	
+  				 onSelect:function(node){ 
+  				 			 			 	 				 	
+				 	$("#moudle_Id").val(node.id); 				 	
   				 },
   				 onBeforeExpand:function(node){
   				 	$("#moudleId").combotree('tree').tree('options').url = 'system/function/jsonLoadFunctionTreeList.do?pid='+ node.id;
   				 },
   				 onLoadSuccess:function(){
-  				 	var resourceId = $("#resourceId").val();
+  				 	//编辑时默认选中
+  				 	var mid=$("#moudle_Id").val();
+  				 	$("#moudleId").combotree('setValue', mid);
   				 	
-  				 	if(resourceId>0){
-  				 		//var pId = $("#areaId").val();
+  				 	var resourceId = $("#resourceId").val();  				 	
+  				 	if(resourceId>0){  				 		
   				 		var moudleName = $("#moudleName").val();
-  				 		$("#moudleId").combotree("setText",moudleName);
-  				 		
+  				 		$("#moudleId").combotree("setText",moudleName);  				 		
   				 	}else{
 					//$("#moudleId").combotree("disable",true);
    				 	$("#moudleId").combotree("setText","=请选择所属模块=");
@@ -46,8 +48,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 });
 	
 	//新增/编辑资源
-	function saveResource(obj){
-	 	
+	function saveResource(obj){	 	
 		var moudleId=$("#moudle_Id").val()
 		//alert(moudleId);
 		if(moudleId=="" || moudleId==null){	
@@ -125,7 +126,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<input type="hidden" id="OrganName" value="" />
 							<td align="right">所属模块:</td>
 							<td align="left" required="true">
-								<input type="hidden" id="moudle_Id" name="moudle_Id" value=""/>
+								<input type="hidden" id="moudle_Id" name="moudle_Id" value="${ResourceConfig.moudleId }"/>
 								<input type="hidden" id="moudleName" value="${ResourceConfig.functionName}"/>
 								<input id="moudleId" name="moudleId" doc="pointInfo" type="text"
 								class="easyui-combotree" required="true" style="width:254px;height:28px;" />

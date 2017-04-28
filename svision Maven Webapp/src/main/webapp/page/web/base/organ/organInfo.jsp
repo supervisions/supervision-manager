@@ -45,7 +45,7 @@
   				 	
   				 	//判断是新增还是编辑	 	
   				 	if(orgId>0){  				 	
-  				 		//var pId = $("#areaId").val();
+  				 		
   				 		//var orgName = $("#orgName").val();
   				 		//$("#orgParentTree").combotree("setText",orgName);  				 		
   				 	}else{
