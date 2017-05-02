@@ -62,20 +62,61 @@ function getOrganListByPid(pid){
 				});
 				$("#organList").html("");
 				fillOrganList(data.list);
+				var usedTdLength=$(".usedTds").length;
+				var usedValue="";
+				var supervisionState="";
+				var stateBtn="";
+				for(var i=0; i<usedTdLength; i++){
+					usedValue=$(".usedTds").eq(i).html();
+					stateBtn=$(".stateBut").eq(i).html();
+					supervisionState=$(".supervisionState").eq(i).html();
+					if(usedValue==0){			
+						$(".usedTds").eq(i).html("禁用");
+						$(".stateBut").eq(i).html("启用");
+					}else if(usedValue==1){
+						$(".usedTds").eq(i).html("启用");
+						$(".stateBut").eq(i).html("禁用");
+					}
+					if(supervisionState==1){
+						$(".supervisionState").eq(i).html("是");
+					}else if(supervisionState==0){
+						$(".supervisionState").eq(i).html("否");
+					}
+				}
   			}else{
 				$.messager.alert('错误信息',data.message,'error');
   			} 
 		}
 	});
 };
+function deleteOrg(id,name){
+		$.messager.confirm("删除确认","确认删除机构："+name+"?",function(r){  
+			    if (r){   
+				$.ajax({
+					url : "jsondeleteOrganById.do?id="+id,
+					type : "post",  
+			    	dataType : "json",								
+					success : function(data) { 									
+			  			if(data.code == 0){ 
+			  				$.messager.alert('操作信息',data.message,'info',function(){ 
+			  					search();  
+			      			});
+			  			}else{		  			    
+							$.messager.alert('错误信息','删除失败！','error');
+			  			}  
+				    } 
+				});
+		    }  
+		}); 
+	}
 function fillOrganList(lst){
 	var html = "<tbody>";
 	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>机构状态</span></th><th>机构名称</th><th>上级机构</th><th>是否监察部门</th><th>操作</th></tr>";
 	for(var i = 0; i<lst.length;i++){
 		html += "<tr>";
-		html += "<td  style='display:none'>"+lst[i].id+"</td><td onclick=goToOrganInfo(\'"+lst[i].used+"\') align='left' ><span style='margin-left:40px'>"+lst[i].used+"</span></td><td onclick=goToOrganInfo(\'"+lst[i].id+"\') align='left' ><span style='margin-left:40px'>"+lst[i].name+"</span></td><td onclick=goToOrganInfo(\'"+lst[i].id+"\') align='left' >"+lst[i].parentName+"</td>";
-		html += "<td onclick=goToOrganInfo(\'"+lst[i].id+"\')>"+lst[i].description+"</td>";
-		html +="<td align='left'>"+"<a href='javascript:void(0);' onclick=OperatOrgan(\'"+lst[i].id+"\',\'DELETE\')  style='padding-left:5px;margin-top:25px' >删除</a> </td>";
+		html += "<td  style='display:none'>"+lst[i].id+"</td><td align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td align='left' ><span>"+lst[i].name+"</span></td><td align='left' >"+lst[i].parentName+"</td>";
+		html += "<td class='supervisionState'>"+lst[i].supervision+"</td>";
+		html +="<td align='left'>"+"<a style='color:blue' onclick=deleteOrg(\'"+lst[i].id+"\',\'"+lst[i].name+"\')>删除</a> </td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";
@@ -84,7 +125,7 @@ function fillOrganList(lst){
 PageClick = function(pageclickednumber) {
 	$("#pager").pager({
 	    pagenumber:pageclickednumber,                 /* 表示启示页 */
-	    pagecount:'${organ.pageCount}',                  /* 表示最大页数pagecount */
+	    pagecount:'${Organ.pageCount}',                  /* 表示最大页数pagecount */
 	    buttonClickCallback:PageClick                 /* 表示点击页数时的调用的方法就可实现javascript分页功能 */            
 	});
 	

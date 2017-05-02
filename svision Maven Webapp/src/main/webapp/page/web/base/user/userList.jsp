@@ -19,6 +19,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	rel="stylesheet" />
 <script type="text/javascript">
 $(document).ready(function(){
+	var trLength=$(".orgName").length;
+	var valueLength=0;	
+	var orgNames="";	
+	for(var i=0; i<trLength; i++){
+		valueLength=$(".orgName").eq(i).html().length;
+		if(valueLength>15){			
+			orgNames=$(".orgName").eq(i).html().substr(0,15);
+			$(".orgName").eq(i).html(orgNames+"......");
+			
+		}
+	}
 	
 	$("#pager").pager({
 	    pagenumber:'${User.pageNo}',                         /* 表示初始页数 */
@@ -31,6 +42,7 @@ $(document).ready(function(){
 			search();
 		}
 	});		
+	
 	
 			
 }); 		 
@@ -302,8 +314,7 @@ function runTaskAction(id){
 					<th width="8%">状态</th>
 					<th width="15%">用户名称</th>
 					<th width="15%">用户账号</th>
-					<th width="20%">所属机构</th>
-								
+					<th width="20%">所属机构</th>								
 					<th width="25%">操作</th>				
 					
 					</tr>

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.model.FunctionMenu;
-import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.service.FunctionService;
 import com.rmbank.supervision.web.controller.SystemAction;
 

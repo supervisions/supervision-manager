@@ -15,7 +15,7 @@
 	<link href="${pageContext.request.contextPath}/source/js/pager/Pager.css" rel="stylesheet" />
 	<link rel="shortcut icon" href="<%=basePath%>source/images/favicon.ico" type="image/x-icon" />
 <script type="text/javascript">
-		$(document).ready(function(){
+		$(document).ready(function(){			
 			//showProcess(true, '温馨提示', '正在加载数据...');
 			$("#pager").pager({
 			    pagenumber:'${Config.pageNo}',                         /* 表示初始页数 */
@@ -24,52 +24,66 @@
 			    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
 			});		
 
-		//加载机构树
-	 	$("#treeList").tree({	 		
-			 	 url: 'jsonLoadMetaTreeList.do?rootId='+0, 			 	 
-			 	 onClick:function(node){//单击事件			 	 	
-   				 	if(node.children.length !=0 ){   				 		
-   				 		var pid = node.id; 
-   				 		//根据pid查询子级机构
-   				 		getOrganListByPid(pid);
- 				 	}
-   				 },
-   				 onLoadSuccess:function(){
-   				 	//$("#treeList").combotree('state', 'open');
-					//showProcess(false);
-   				    var cyId = $.trim($("#hid_companyId").val());
-   				 	if(cyId.length>0){
-   				 		var node = $("#treeList").tree("find",cyId); 
-						$('#treeList').tree("select", node.target);   				 		
-   				 	} 
-   				 }
-  				/*  required: false, //是否必须
-  				 //multiple:true,  //是否支持多选  				 
-  				 editable:false, //是否支持用户自定义输入	  				 		 
-  				 onSelect:function(record){ // 	当节点被选中时触发。  	  				 			
-				 	 	$("#orgPid").val(record.id); 
-  				 },
-  				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。  				  
-  				 	$("#treeList").combotree('tree').tree('options').url = 'area/jsonLoadAreaTreeList.do?pid='+ node.id;
-  				 },
-  				 onLoadSuccess:function(){ //当数据加载成功时触发。
-  				 	
-  				 	//根据所对应的机构选中复选框
-  				 	$("#treeList").combotree('setValues', orgpid);
-  				 	var orgId = $("#orgId").val();  
-  				 	
-  				 	//判断是新增还是编辑	 	
-  				 	if(orgId>0){  				 	
-  				 		//var pId = $("#areaId").val();
-  				 		//var orgName = $("#orgName").val();
-  				 		//$("#treeList").combotree("setText",orgName);  				 		
-  				 	}else{
-						//$("#cmbParentArea").combotree("disable",true);
-	   				 	$("#treeList").combotree("setText","=请选择所属机构=");
-					}
-  				} */
-		});	
+			//加载机构树
+		 	$("#treeList").tree({	 		
+				 	 url: 'jsonLoadMetaTreeList.do?rootId='+0, 			 	 
+				 	 onClick:function(node){//单击事件	
+				 	 	//当子节点不为0的时候去根据pid去查询			 	 	
+	   				 	if(node.children.length !=0 ){   				 		
+	   				 		var pid = node.id; 
+	   				 		//根据pid查询子级机构
+	   				 		getMetaListByPid(pid);
+	 				 	}
+	   				 },
+	   				 /* onBeforeSelect:function(node){                    
+	                    //返回树对象
+						var tree = $(this).tree;
+						//选中的节点是否为叶子节点,如果不是叶子节点,清除选中
+						var isLeaf = tree('isLeaf', node.target);	
+						alert(isLeaf);				
+	                    if(!isLeaf){
+	                    	 $.messager.alert("温馨提示！","根节点不可选，请选择子节点！",'error');
+	                        $("#moudle_Id").tree("unselect");
+	                       
+	                    }
+	                 }, */
+	   				 onLoadSuccess:function(){
+	   				 	//$("#treeList").combotree('state', 'open');
+						//showProcess(false);
+	   				    var cyId = $.trim($("#hid_companyId").val());
+	   				 	if(cyId.length>0){
+	   				 		var node = $("#treeList").tree("find",cyId); 
+							$('#treeList').tree("select", node.target);   				 		
+	   				 	} 
+	   				 }
+	  				/*  required: false, //是否必须
+	  				 //multiple:true,  //是否支持多选  				 
+	  				 editable:false, //是否支持用户自定义输入	  				 		 
+	  				 onSelect:function(record){ // 	当节点被选中时触发。  	  				 			
+					 	 	$("#orgPid").val(record.id); 
+	  				 },
+	  				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。  				  
+	  				 	$("#treeList").combotree('tree').tree('options').url = 'area/jsonLoadAreaTreeList.do?pid='+ node.id;
+	  				 },
+	  				 onLoadSuccess:function(){ //当数据加载成功时触发。
+	  				 	
+	  				 	//根据所对应的机构选中复选框
+	  				 	$("#treeList").combotree('setValues', orgpid);
+	  				 	var orgId = $("#orgId").val();  
+	  				 	
+	  				 	//判断是新增还是编辑	 	
+	  				 	if(orgId>0){  				 	
+	  				 		//var pId = $("#areaId").val();
+	  				 		//var orgName = $("#orgName").val();
+	  				 		//$("#treeList").combotree("setText",orgName);  				 		
+	  				 	}else{
+							//$("#cmbParentArea").combotree("disable",true);
+		   				 	$("#treeList").combotree("setText","=请选择所属机构=");
+						}
+	  				} */
+			});	
 		});
+//修改配置状态		
 function metaState(id,used,name){
 	var operation=null;
 	if(used==0){
@@ -96,9 +110,10 @@ function metaState(id,used,name){
 	    }  
 	}); 
 }
-function getOrganListByPid(pid){
+//根据pid去查询配置
+function getMetaListByPid(pid){
 	  $.ajax({
-		url : "jsonLoadOrganListByPid.do?pid="+pid,
+		url : "jsonLoadConfigListByPid.do?pid="+pid,
 		type : "post",  
 		dataType:"json",
 		success : function(data) { 
@@ -110,31 +125,46 @@ function getOrganListByPid(pid){
 				    totalCount:data.obj.totalCount,
 				    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
 				});
-				$("#organList").html("");
-				fillOrganList(data.list);
+				$("#metaList").html("");
+				fillMetaList(data.list);
+				var usedTdLength=$(".usedTds").length;
+				var usedValue="";
+				var stateBtn="";
+				for(var i=0; i<usedTdLength; i++){
+					usedValue=$(".usedTds").eq(i).html();
+					stateBtn=$(".stateBut").eq(i).html();
+					if(usedValue==0){			
+						$(".usedTds").eq(i).html("禁用");
+						$(".stateBut").eq(i).html("启用");
+					}else if(usedValue==1){
+						$(".usedTds").eq(i).html("启用");
+						$(".stateBut").eq(i).html("禁用");
+					}
+				}
   			}else{
 				$.messager.alert('错误信息',data.message,'error');
   			} 
 		}
 	});
 };
-function fillOrganList(lst){
+function fillMetaList(lst){
 	var html = "<tbody>";
-	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>机构名称</span></th><th>上级机构</th><th>描述</th><th>操作</th></tr>";
+	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>配置状态</span></th><th>配置名称</th><th>关键字</th><th>操作</th></tr>";
 	for(var i = 0; i<lst.length;i++){
 		html += "<tr>";
-		html += "<td  style='display:none'>"+lst[i].id+"</td><td onclick=goToOrganInfo(\'"+lst[i].id+"\') align='left' ><span style='margin-left:40px'>"+lst[i].name+"</span></td><td onclick=goToOrganInfo(\'"+lst[i].id+"\') align='left' >"+lst[i].parentName+"</td>";
-		html += "<td onclick=goToOrganInfo(\'"+lst[i].id+"\')>"+lst[i].description+"</td>";
-		html +="<td align='left'>"+"<a href='javascript:void(0);' onclick=OperatOrgan(\'"+lst[i].id+"\',\'DELETE\')  style='padding-left:5px;margin-top:25px' >删除</a> </td>";
+		html += "<td  style='display:none'>"+lst[i].id+"</td><td onclick=goToMetaInfo(\'"+lst[i].id+"\') align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td onclick=goToMetaInfo(\'"+lst[i].id+"\') align='left' >"+lst[i].name+"</td>";
+		html += "<td onclick=goToMetaInfo(\'"+lst[i].id+"\')>"+lst[i].key+"</td>";
+		html +="<td align='left'>"+"<a href='javascript:void(0);' onclick=goToMetaInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a>&nbsp;<a href='javascript:void(0);' class='stateBut' onclick=metaState(\'"+lst[i].id+"\',0,\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >启用</a>  </td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";
-	$("#organList").html(html);
+	$("#metaList").html(html);
 }
+
 PageClick = function(pageclickednumber) {
 	$("#pager").pager({
 	    pagenumber:pageclickednumber,                 /* 表示启示页 */
-	    pagecount:'${organ.pageCount}',                  /* 表示最大页数pagecount */
+	    pagecount:'${Config.pageCount}',               /* 表示最大页数pagecount */
 	    buttonClickCallback:PageClick                 /* 表示点击页数时的调用的方法就可实现javascript分页功能 */            
 	});
 	
@@ -142,56 +172,57 @@ PageClick = function(pageclickednumber) {
 	/* 执行Action */
 	pagesearch();
 }
+
 function search(){
 	$("#pageNumber").val("1");
 	pagesearch();
 }
 
 function pagesearch(){
-	if ($('#organForm').form('validate')) {
-		organForm.submit();
+	if ($('#configForm').form('validate')) {
+		configForm.submit();
 	} 
 }
-	function OperatOrgan(organId,operate){
-		showProcess(true, '温馨提示', '正在操作，请等待...');
-		$.ajax({
-			url : "jsonOperateOrgan.do?organId="+organId+"&status="+operate,
-			type : "post",
-			dataType:"json",
-			success : function(data) {
-				showProcess(false);
-				if(data.code == 0){
-					$.messager.show({
-						title:'操作信息',
-						msg:'服务器响应操作，请稍后。。。',
-						showType:'fade',
-						width:300,
-						modal:true,
-						height:150,
-						timeout:4000,
-						style:{
-							right:'',
-							bottom:''
+function OperatOrgan(organId,operate){
+	showProcess(true, '温馨提示', '正在操作，请等待...');
+	$.ajax({
+		url : "jsonOperateOrgan.do?organId="+organId+"&status="+operate,
+		type : "post",
+		dataType:"json",
+		success : function(data) {
+			showProcess(false);
+			if(data.code == 0){
+				$.messager.show({
+					title:'操作信息',
+					msg:'服务器响应操作，请稍后。。。',
+					showType:'fade',
+					width:300,
+					modal:true,
+					height:150,
+					timeout:4000,
+					style:{
+						right:'',
+						bottom:''
+					}
+				});
+				setTimeout(function () {
+					$.messager.alert('操作信息', data.message, 'info',function() {
+						var pageNo = $.trim($("#pageNumber").val());
+						if(pageNo.length == 0 ||pageNo==""){
+							pageNo = 1;
 						}
+						window.location.href="configList.do?pageNo="+pageNo;
 					});
-					setTimeout(function () {
-						$.messager.alert('操作信息', data.message, 'info',function() {
-							var pageNo = $.trim($("#pageNumber").val());
-							if(pageNo.length == 0 ||pageNo==""){
-								pageNo = 1;
-							}
-							window.location.href="configList.do?pageNo="+pageNo;
-						});
-					}, 5000);
-				}else{
-					$.messager.alert('操作信息', data.message, 'error');
-				}
+				}, 5000);
+			}else{
+				$.messager.alert('操作信息', data.message, 'error');
 			}
-		});
-	}
-	function goToOrganInfo(organId){
-		window.location.href="organInfo.do?organId="+organId;
-	}
+		}
+	});
+}
+function goToMetaInfo(metaId){
+	window.location.href="configInfo.do?id="+metaId;
+}
 </script>
 </head>
 
@@ -204,21 +235,20 @@ function pagesearch(){
 			</div>
 		</div>
 		<div class="fl yw-lump mt10">
-			<form id="organForm" name="organForm"
+			<form id="configForm" name="configForm"
 				action="configList.do" method="get">
 				<div class="pd10-28">
 					<div class="fl">
 						 <button class="yw-btn bg-blue cur">全部配置</button>  
 					</div>
 					<div class="fr">
-						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox"
+						<input type="text" id="searchName" name="searchName"  validType="SpecialWord" class="easyui-validatebox"
 							   style="width: 120px;" placeholder="搜索关键字：名称" value="${Config.searchName}" />
 						<span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
 						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='configInfo.do?id=0';">新建</span>
 					</div>
 					<div class="cl"></div>
 				</div>
-
 				<input type="hidden" id="pageNumber" name="pageNo"
 					value="" />
 			</form>
@@ -237,7 +267,7 @@ function pagesearch(){
 				<div class="yw-cm-title">
 					<span class="ml26">全部配置</span>
 				</div>
-				<table class="yw-cm-table yw-leftSide yw-bg-hover" id="organList">
+				<table class="yw-cm-table yw-leftSide yw-bg-hover" id="metaList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>						
 						<th><span style='margin-left:40px'>配置状态</span></th>
@@ -248,19 +278,20 @@ function pagesearch(){
 					<c:forEach var="item" items="${configList}">
 					<tr>
 						<td>
-							<c:if test="${item.used == 0 }">禁用</c:if>
-							<c:if test="${item.used == 1 }">启用</c:if>						
+							<c:if test="${item.used == 0 }"><span style='margin-left:40px'>禁用</span></c:if>
+							<c:if test="${item.used == 1 }"><span style='margin-left:40px'>启用</span></c:if>						
 						</td>
 						<td>${item.name}</td>
 						<td>${item.key}</td>							
 						<td>
+							<a style="color:blue" onclick="window.location.href='configInfo.do?id=${item.id}';">编辑</a>
 							<c:if test="${item.used == 1}">
 								<a style="color:blue"
 									onclick="metaState(${item.id},0,'${item.name}');">禁用</a>
 							</c:if> <c:if test="${item.used == 0}">
 								<a style="color:blue"
 									onclick="metaState(${item.id},1,'${item.name}');">启用</a>
-							</c:if> <a style="color:blue" onclick="window.location.href='configInfo.do?id=${item.id}';">编辑</a>
+							</c:if>							
 						</td>
 					</tr>
 					</c:forEach>

@@ -15,10 +15,10 @@ public class User extends Page{
 
     private String salt;
 
-    private Integer used;  
-    
+    private Integer used;      
     
     private String orgName;
+    
     private String roleName;
     
     private boolean rememberMe;

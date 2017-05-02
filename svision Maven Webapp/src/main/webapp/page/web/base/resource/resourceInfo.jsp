@@ -24,9 +24,21 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			 url: 'system/function/jsonLoadFunctionTreeList.do',  
   				 required: false,
   				 onSelect:function(node){ 
-  				 			 			 	 				 	
+  				 	//alert($(this).tree('getRoot', node.target));
+  				 	//$(this).tree('getRoot', node.target);		 			 	 				 	
 				 	$("#moudle_Id").val(node.id); 				 	
   				 },
+  				 onBeforeSelect:function(node){                    
+                    //返回树对象
+					var tree = $(this).tree;
+					//选中的节点是否为叶子节点,如果不是叶子节点,清除选中
+					var isLeaf = tree('isLeaf', node.target);					
+                    if(!isLeaf){
+                    	 $.messager.alert("温馨提示！","根节点不可选，请选择子节点！",'error');
+                        $("#moudle_Id").tree("unselect");
+                       
+                    }
+                 },
   				 onBeforeExpand:function(node){
   				 	$("#moudleId").combotree('tree').tree('options').url = 'system/function/jsonLoadFunctionTreeList.do?pid='+ node.id;
   				 },
@@ -49,16 +61,15 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	
 	//新增/编辑资源
 	function saveResource(obj){	 	
-		var moudleId=$("#moudle_Id").val()
+		var moudleId=$("#moudle_Id").val();
 		//alert(moudleId);
 		if(moudleId=="" || moudleId==null){	
 			$.messager.alert("温馨提示！","请选择所属模块!",'error');
 			return false;
 		}		
-		
-		if ($('#userInfoForm').form('validate')) {			
+		if ($('#resourceInfoForm').form('validate')) {			
 			$(obj).attr("onclick", "");				 
-			$('#userInfoForm').form('submit',{				 
+			$('#resourceInfoForm').form('submit',{				 
 		  		success:function(data){ 
 					showProcess(false);
 		  			data = $.parseJSON(data);				  			
@@ -69,7 +80,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		  			}else{
 						$.messager.alert('错误信息',data.message,'error',function(){
 	        			});
-						$(obj).attr("onclick", "saveUser(this);"); 
+						$(obj).attr("onclick", "saveResource(this);"); 
 		  			}
 		  		}
 			});
@@ -97,7 +108,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div>
-			<form id="userInfoForm" name="userInfoForm"
+			<form id="resourceInfoForm" name="resourceInfoForm"
 				action="<%=basePath%>system/resource/jsonSaveOrUpdateResource.do"
 				method="post">
 				<div id="tab1" class="yw-tab">

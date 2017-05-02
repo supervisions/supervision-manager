@@ -8,24 +8,25 @@ package com.rmbank.supervision.common.utils;
  *
  */
 public class Page {
-	private String searchName;
+	private String searchName; //搜索条件
 	/**
-	 * 鍒嗛〉璧峰琛屾暟锛岃嚜鍔ㄨ绠�
+	 * 分页起始行数，自动计算
 	 */
-	private Integer pageStart;
+	private Integer pageStart; //开始页数
 	/**
-	 * 姣忛〉璁板綍鏁帮紝闇�缃�
+	 * 每页记录数，需设置
 	 */
-	private Integer pageSize;
+	private Integer pageSize; //总页数
 	/**
-	 * 褰撳墠椤垫暟锛岄渶璁剧疆
+	 * 当前页数，需设置
 	 */
-	private Integer pageNo;
+	private Integer pageNo; //当前页数
 	/**
-	 * 鍒嗛〉璧峰琛屾暟锛岃嚜鍔ㄨ绠�
+	 * 分页起始行数，自动计算
 	 */
-	private Integer pageCount;
-	private Integer totalCount;
+	private Integer pageCount; 
+	
+	private Integer totalCount; 
 
 	private Integer pageEnd;
 

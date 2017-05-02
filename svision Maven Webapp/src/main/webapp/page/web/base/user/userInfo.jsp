@@ -20,6 +20,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 
 <script type="text/javascript">
 	$(document).ready(function(){
+		
 		//获取用户所属的机构id
 		var userOrgLength =$("input[name='userOrgId']").length;		
 		var userOrg = new Array(userOrgLength);		
@@ -31,7 +32,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			 	 url: 'system/organ/jsonLoadOrganTreeList.do',  
   				 required: false, //是否必须
   				 multiple:true,  //是否支持多选  				 
-  				 editable:false, //是否支持用户自定义输入	  				 		 
+  				 editable:false, //是否支持用户自定义输入	
+  				 cascadeCheck:false,  				 		 
   				 onSelect:function(record){ // 	当节点被选中时触发。
 				 	 	$("#areaId").val(record.id); 
   				 },
@@ -76,7 +78,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		  			}else{
 						$.messager.alert('错误信息',data.message,'error',function(){
 	        			});
-						$(obj).attr("onclick", "saveUser(this);"); 
+						$(obj).attr("onclick", "saveOrUpdateUser(this);"); 
 		  			}
 		  		}
 			});
@@ -89,7 +91,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>system/user/userList.do'"></i><span>角色列表</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>system/user/userList.do'"></i><span>用户列表</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
@@ -107,7 +109,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		</div>
 			<form id="userInfoForm" name="userInfoForm" action="<%=basePath%>system/user/jsonSaveOrUpdateUser.do" method="post">
 				<div id="tab1" class="yw-tab">
-				<table class="yw-cm-table font16" id="taskTable">
+				<table class="yw-cm-table font16" id="userTable">
 					<tr>
 						<td width="8%" align="right">用户名称:</td>
 						<td> 

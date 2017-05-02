@@ -82,7 +82,7 @@
 												'error', function() {
 												});
 										$(obj).attr("onclick",
-												"saveUser(this);");
+												"saveOrgan(this);");
 									}
 								}
 							});

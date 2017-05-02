@@ -57,7 +57,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		  			}else{
 						$.messager.alert('错误信息',data.message,'error',function(){
 	        			});
-						$(obj).attr("onclick", "saveUser(this);"); 
+						$(obj).attr("onclick", "saveRole(this);"); 
 		  			}
 		  		}
 			});

@@ -1,6 +1,7 @@
 package com.rmbank.supervision.web.controller.base;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,6 +118,7 @@ public class OrganAction extends SystemAction {
         }
         return js;
     }
+    
 	/**
 	 * 跳转到新增机构/编辑机构
 	 */

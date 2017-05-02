@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.model.Meta;
-import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.service.ConfigService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
@@ -45,7 +43,7 @@ public class ConfigAction extends SystemAction {
 	 * @throws UnsupportedEncodingException
 	 */
 	@RequestMapping(value = "/configList.do")
-	@RequiresPermissions("system/role/configList.do")
+	@RequiresPermissions("system/config/configList.do")
 	public String configList(Meta meta, HttpServletRequest request,
 			HttpServletResponse response) throws UnsupportedEncodingException{
 		// 判断搜索名是否为空，不为空则转为utf-8编码
@@ -80,6 +78,49 @@ public class ConfigAction extends SystemAction {
 
 		return "web/base/config/configList";
 	}
+	
+	/**
+	 * 根据pid查询配置
+	 * @param pid
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+    @RequestMapping(value = "/jsonLoadConfigListByPid.do", method = RequestMethod.POST)
+    @RequiresPermissions("system/config/jsonLoadConfigListByPid.do")
+    public JsonResult<Meta> jsonLoadOrganListByPid(
+            @RequestParam(value = "pid", required = false) Integer pid,
+            HttpServletRequest request, HttpServletResponse response) {
+		
+        JsonResult<Meta> js = new JsonResult<Meta>();
+        js.setCode(new Integer(1));
+        js.setMessage("获取数据失败!");
+        Meta meta = new Meta();
+        meta.setPid(pid);
+        if (meta.getPageNo() == null){
+        	meta.setPageNo(1);
+        	meta.setPageSize(Constants.DEFAULT_PAGE_SIZE);
+        }        	
+        try{
+            List<Meta> lc  = configService.getConfigListByPid(meta);
+            int totalCount = configService.getConfigCount(meta);
+            for(Meta c : lc){
+                if(c.getKey()==null){
+                    c.setKey("");
+                }                
+            }
+            meta.setTotalCount(totalCount);
+            js.setObj(meta);
+            js.setCode(0);
+            js.setList(lc);
+            js.setMessage("获取数据成功!");
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return js;
+    }
 	
 	 /**
      * 跳转到新增配置/编辑配置页面
@@ -157,10 +198,7 @@ public class ConfigAction extends SystemAction {
 				meta.setLeafed(1);
 				meta.setKey(new String());
 				meta.setPath(meta.getPid().toString());
-			}
-			
-			
-			
+			}			
 			//如为编辑，则给新建meta对象赋传来的id值
 			if (meta.getId() > 0) {
 				mt.setId(meta.getId());
@@ -236,7 +274,7 @@ public class ConfigAction extends SystemAction {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/jsonLoadMetaTreeList.do")
-	public List<Meta> getOrganList(
+	public List<Meta> getMetaList(
 			@RequestParam(value = "pid", required = false) Integer pid,
 			HttpServletRequest request, HttpServletResponse response) {
 
