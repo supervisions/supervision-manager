@@ -25,38 +25,37 @@
 	$(document).ready(function() {
 		//判断是否是子配置
 		isFirst();	
-		
-		/* var taskId = $("#hid_taskId").val();
-		if (taskId > 0) {
-			var itemTypeId = $("#hid_itemTypeId").val();
-			var array = itemTypeId.split(",");
-			$.each(array, function(index, arr) {
-				$("#itemType" + arr).attr("checked", "checked");
-			});
-			showOtherTime();
-		}
-		var flag = $("#flag").val();
-		if (flag == 1) {
-			$("#taskName").attr("disabled", true);
-			$("#ftimes").attr("disabled", true);
-		} */
 	});
 
 	function isFirst(){
 		//判断是否是子配置		
 		var cfgType=$('input:radio[name="configType"]:checked').val();		
-		if(cfgType == 0){
+		if(cfgType == 0){									
 			$("#configPid").hide();
-			$("#configKey").show();
+			$("#configKey").show();		
+			return 0;
 		}else if(cfgType == 1) {
+			$("#kerValue").val("null");			
 			$("#configPid").show();
 			$("#configKey").hide();
+			return 1;
 		}
 	}
-	function saveMeta(obj){
+	function saveMeta(obj){	
+		if(isFirst()==1){
+			if($(":input[name=pid]").val()==0){			
+				$.messager.alert("温馨提示！","请选择所属配置!",'error');
+				return false;
+			}
+		}else if(isFirst()==0){			
+			if($("#kerValue").val()=="null"){			
+				$.messager.alert("温馨提示！","请修改关键字!",'error');
+				return false;
+			}
+		}		
 		if ($('#metaInfoForm').form('validate')) {
 			$(obj).attr("onclick", ""); 
-			showProcess(true, '温馨提示', '正在提交数据...'); 
+			//showProcess(true, '温馨提示', '正在提交数据...'); 
 			$('#metaInfoForm').form('submit',{
 		  		success:function(data){
 					showProcess(false);
@@ -132,10 +131,10 @@
 						<tr id="configPid">
 							<td width="8%" align="right">所属配置:</td>
 							<td>
-								<select name="pid" class="easyui-combobox"
+								<select id="pidValue" name="pid" class="easyui-combobox"
 								style="width:254px;height:28px;">	
 									<c:if test="${Config.pid ==0 || Config.pid ==null }">	
-										<option value="-1" selected="selected">请选择所属配置</option>											
+										<option value="0" selected="selected">请选择所属配置</option>											
 									</c:if>								
 									<c:forEach var="ascription" items="${configList }">										
 										<c:if test="${Config.pid !=0 and Config.pid !=null}">
@@ -152,7 +151,7 @@
 						</tr>
 						<tr id="configKey">
 							<td width="8%" align="right">关键字:</td>
-							<td><input id="userAccount" name="key" type="text"
+							<td><input id="kerValue" name="key" type="text"
 								doc="taskInfo" value="${Config.key}" required="false"
 								class="easyui-validatebox" validType="loginName"
 								style="width:254px;height:28px;" /> <span style="color:red">*</span>

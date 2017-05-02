@@ -103,8 +103,7 @@
   	FROM t_resource r, t_function f WHERE r.`moudle_id`=f.`id`
   	<if test="searchName != null and searchName != ''">
 		and (r.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
-			OR r.resource like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
-			OR functionName like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')		
+			OR r.resource like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')				
 		)
 	</if>  	
 	order by r.id DESC 
@@ -123,8 +122,14 @@
   	and r.id=#{id,jdbcType=INTEGER}
   </select>
   <select id="getExistRresource" parameterType="com.rmbank.supervision.model.ResourceConfig" resultMap="BaseResultMap">
-  	select <include refid="Base_Column_List" />
-  	from t_resource where name=#{name,jdbcType=VARCHAR} and resource=#{resource,jdbcType=VARCHAR}
+  	SELECT <include refid="Base_Column_List" />
+  	FROM `t_resource` re WHERE 1=1
+  	<if test="name != null">
+		and re.name = #{name,jdbcType=VARCHAR} 
+	</if>
+	<if test="resource != null">
+		and re.resource = #{resource,jdbcType=VARCHAR} 
+	</if>  	
   </select>
   
 </mapper>

@@ -19,6 +19,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	rel="stylesheet" />
 <script type="text/javascript">
 $(document).ready(function(){
+	var trLength=$(".orgName").length;
+	var valueLength=0;	
+	var orgNames="";	
+	for(var i=0; i<trLength; i++){
+		valueLength=$(".orgName").eq(i).html().length;
+		if(valueLength>15){			
+			orgNames=$(".orgName").eq(i).html().substr(0,15);
+			$(".orgName").eq(i).html(orgNames+"......");
+			
+		}
+	}
 	
 	$("#pager").pager({
 	    pagenumber:'${User.pageNo}',                         /* 表示初始页数 */
@@ -31,6 +42,7 @@ $(document).ready(function(){
 			search();
 		}
 	});		
+	
 	
 			
 }); 		 
@@ -280,7 +292,7 @@ function runTaskAction(id){
 				<div class=pd10>
 					<div class="fl">  
 						<span>条件查询：</span>
-						<input type="text" id="seaarchNameTemp" validType="SpecialWord" class="easyui-validatebox" placeholder="搜索" value="${User.searchName}" /> 
+						<input type="text" id="seaarchNameTemp" validType="SpecialWord" class="easyui-validatebox" placeholder="搜索关键字：名称，账号" value="${User.searchName}" /> 
 						<input type="hidden" name="searchName" id="hid_serarch" /> 
 						
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
@@ -302,8 +314,7 @@ function runTaskAction(id){
 					<th width="8%">状态</th>
 					<th width="15%">用户名称</th>
 					<th width="15%">用户账号</th>
-					<th width="20%">所属机构</th>
-								
+					<th width="20%">所属机构</th>								
 					<th width="25%">操作</th>				
 					
 					</tr>
@@ -318,7 +329,8 @@ function runTaskAction(id){
 						<td>${item.account}</td>
 						<td title="${item.orgName}" class="orgName">${item.orgName}</td>
 						
-						<td><c:if test="${item.used == 1}">
+						<td>
+							<c:if test="${item.used == 1}">
 								<a style="color:blue" onclick="updateUser(${item.id},0,'${item.name}');">禁用</a>
 							</c:if> 
 							<c:if test="${item.used == 0}">

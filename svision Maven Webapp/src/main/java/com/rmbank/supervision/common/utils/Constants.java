@@ -72,7 +72,8 @@ public class Constants
   public static final Integer SERVER_INSTANCE_ENABLE = 1;
   public static final Integer SERVER_INSTANCE_WAIT = 2;
   
-  public static final String META_POSITION_Key = "POSITION";
+  public static final String META_POSITION_KEY = "POSITION";
+  public static final String META_PROJECT_KEY = "PROJECT";
 
 
   public static final Integer STATIC_MODULE_ID = 99999;

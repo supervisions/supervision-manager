@@ -96,7 +96,10 @@
   </select>
   <select id="getExistRole" parameterType="com.rmbank.supervision.model.Role" resultMap="BaseResultMap">
   	select <include refid="Base_Column_List" /> 
-  	from t_role r where r.name=#{name,jdbcType=VARCHAR}
+  	from t_role r where 1=1
+  	<if test="name != null">
+		and r.name = #{name,jdbcType=VARCHAR} 
+	</if>
   </select>
   <delete id="deleteRoleById" parameterType="java.lang.Integer">
     delete from t_role

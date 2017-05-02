@@ -8,6 +8,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * 效能监察控制器
+ * @author DELL
+ *
+ */
 @Scope("prototype")
 @Controller
 @RequestMapping("/vision/efficiency")

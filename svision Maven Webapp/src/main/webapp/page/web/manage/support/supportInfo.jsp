@@ -114,7 +114,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="yw-cm-table font16" id="taskTable">
 						<tr>
-							<td width="8%" align="right">资源名称</td>
+							<td width="8%" align="right">项目名称</td>
 							<td><input id="" class="easyui-validatebox"
 								name="name" type="text" doc="taskInfo" value="${ResourceConfig.name}"
 								required="true" validType="loginName"
@@ -124,7 +124,39 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td width="8%"></td>
 						</tr>
 						<tr>
-							<td width="8%" align="right">资源地址</td>
+							<td width="8%" align="right">项目分类</td>
+							<td><select name="postId" class="easyui-combobox"
+								style="width:254px;height:28px;">
+									
+									<c:forEach var="position" items="${meatListByKey}">
+										<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
+									</c:forEach>
+							</select> <span style="color:red">*</span></td>
+							<td width="8%"></td>
+						</tr>
+						<tr>
+						<td width="8%" align="right">项目属性</td>
+						<td><select name="postId" class="easyui-combobox"
+							style="width:254px;height:28px;">								
+								<c:forEach var="project" items="${meatListByKey}">
+									<option value="${project.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${project.name}</option>
+								</c:forEach>
+						</select> <span style="color:red">*</span></td>
+						<td width="8%"></td>
+					</tr>
+						<tr>
+							<input type="hidden" id="OrganName" value="" />
+							<td align="right">立项时间:</td>
+							<td align="left" required="true">
+								<input type="hidden" id="moudle_Id" name="moudle_Id" value="${ResourceConfig.moudleId }"/>
+								<input type="hidden" id="moudleName" value="${ResourceConfig.functionName}"/>
+								<input id="" name="" class="easyui-datebox" data-options="sharedCalendar:'#cc'" style="width:254px;height:28px;" />
+								<span style="color:red">*</span>
+								<div id="cc" class="easyui-calendar" style="width:254px;height:28px;"></div>
+							</td>								
+						</tr>					
+						<tr>
+							<td width="8%" align="right">选择单位</td>
 							<td><input id="" class="easyui-validatebox"
 								name="resource" type="text" doc="taskInfo" value="${ResourceConfig.resource}"
 								required="true" validType="loginName"
@@ -133,18 +165,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>							
 							<td width="8%"></td>
 						</tr>
-						<tr>
-							<input type="hidden" id="OrganName" value="" />
-							<td align="right">所属模块:</td>
-							<td align="left" required="true">
-								<input type="hidden" id="moudle_Id" name="moudle_Id" value="${ResourceConfig.moudleId }"/>
-								<input type="hidden" id="moudleName" value="${ResourceConfig.functionName}"/>
-								<input id="moudleId" name="moudleId" doc="pointInfo" type="text"
-								class="easyui-combotree" required="true" style="width:254px;height:28px;" />
-								<span style="color:red">*</span>
-							</td>								
-						</tr>		
-				
 					</table>
 				</div>
 			</form>

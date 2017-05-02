@@ -148,7 +148,7 @@ function resetUserPwd(id,name){
 				<div class=pd10>
 					<div class="fl">  
 						<span>条件查询：</span>
-						<input type="text" id="seaarchNameTemp" validType="SpecialWord" class="easyui-validatebox" placeholder="搜索" value="${ResourceConfig.searchName}" /> 
+						<input type="text" id="seaarchNameTemp" validType="SpecialWord" class="easyui-validatebox" placeholder="搜索关键字：名称，地址" value="${ResourceConfig.searchName}" /> 
 						<input type="hidden" name="searchName" id="hid_serarch" /> 
 						
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						

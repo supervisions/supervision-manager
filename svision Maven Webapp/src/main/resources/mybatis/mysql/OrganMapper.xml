@@ -160,7 +160,7 @@
 		</if>
 	</sql>
 	<select id="getOrganCount" resultType="java.lang.Integer"
-		parameterType="com.rmbank.supervision.model.User">
+		parameterType="com.rmbank.supervision.model.Organ">
 		select count(*)
 		<include refid="sql_query"></include>
 	</select>
@@ -182,6 +182,10 @@
 		SELECT o.*,o1.name AS parentName FROM t_org o
 		LEFT JOIN t_org o1 ON o.pid=o1.id
 		WHERE o.pid=#{pid,jdbcType=INTEGER}
+		<if test="searchName != null and searchName != ''">
+			and (o.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')	
+			)
+		</if>	
 		order by o.id asc
 		<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">			
 			limit #{pageStart}, #{pageSize}

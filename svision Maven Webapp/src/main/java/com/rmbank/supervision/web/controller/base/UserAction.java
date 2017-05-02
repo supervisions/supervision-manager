@@ -1,6 +1,7 @@
 package com.rmbank.supervision.web.controller.base;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +29,6 @@ import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
-
-
-
-
-
 
 
 @Scope("prototype")
@@ -65,10 +61,10 @@ public class UserAction extends SystemAction  {
 	    @RequiresPermissions("system/user/userList.do")
 	    public String userList(User user, 
 	            HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException { 
-	    	//判断搜索名是否为空，不为空则转为utf-8编码
+	    	//判断搜索名是否为空，不为空则转为utf-8编码    	
+			
 			if(user.getSearchName() != null && user.getSearchName() != ""){
-				String searchName = new String(user.getSearchName().getBytes(
-						"iso8859-1"), "utf-8");
+				String searchName =  URLDecoder.decode(user.getSearchName(),"utf-8");
 				user.setSearchName(searchName);
 			}
 			//设置页面初始值及页面大小
@@ -81,15 +77,7 @@ public class UserAction extends SystemAction  {
 			try{
 				//t_user取满足要求的参数数据
 				userList =  userService.getUserList(user);
-				//当机构名称长度大于15时用......代替
-				int OrgNameLength =0;
-				/*for (User u : userList) {					
-					OrgNameLength= u.getOrgName().length();
-					if(OrgNameLength>15){
-						String substring = u.getOrgName().substring(0, 14)+"......";
-						u.setOrgName(substring);
-					}					
-				}*/
+				
 				//t_user取满足要求的记录总数
 				totalCount = userService.getUserCount(user);
 			}catch(Exception ex){ 
@@ -146,7 +134,7 @@ public class UserAction extends SystemAction  {
 			req.setAttribute("organList",organList);*/
 			
 			//获取职务列表			
-			List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_POSITION_Key);
+			List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_POSITION_KEY);
 			req.setAttribute("meatListByKey", meatListByKey);
 			
 			//根据用户ID查询用户所对应的职务,用于编辑的时候回显用户所属职务

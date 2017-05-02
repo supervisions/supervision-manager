@@ -42,12 +42,12 @@ $.extend($.fn.validatebox.defaults.rules, {
             return /^13\d{9}$/g.test(value)||(/^15\d{9}$/g.test(value))|| (/^18\d{9}/g.test(value)||(/^17\d{9}$/g.test(value)));
         },
         message: '请输入正确的手机号码'
-    },
+    },     
     loginName: {
         validator: function (value, param) {
             return /^[\u0391-\uFFE5\w]+$/.test(value);
         },
-        message: '只允许汉字、英文字母、数字及下划线。'
+        message: '登录名称只允许汉字、英文字母、数字及下划线。'
     },
     safepass: {
         validator: function (value, param) {    	            	

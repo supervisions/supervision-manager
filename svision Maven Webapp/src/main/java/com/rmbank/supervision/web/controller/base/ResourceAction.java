@@ -1,6 +1,7 @@
 package com.rmbank.supervision.web.controller.base;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +47,7 @@ public class ResourceAction extends SystemAction {
 			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
 		//判断搜索名是否为空，不为空则转为utf-8编码
 		if(resourceConfig.getSearchName() != null && resourceConfig.getSearchName() != ""){
-			String searchName = new String(resourceConfig.getSearchName().getBytes(
-					"iso8859-1"), "utf-8");
+			String searchName = URLDecoder.decode(resourceConfig.getSearchName(),"utf-8");
 			resourceConfig.setSearchName(searchName);
 		}
 		//设置页面初始值及页面大小

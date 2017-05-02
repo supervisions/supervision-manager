@@ -167,7 +167,13 @@
   	update t_meta set used=#{used,jdbcType=INTEGER} where id=#{id,jdbcType=INTEGER}
   </update>
   <select id="getConfigListByPid" parameterType="com.rmbank.supervision.model.Meta" resultMap="BaseResultMap">
-  	select * from t_meta where pid=#{pid,jdbcType=INTEGER}		
+  	select * from t_meta meta where meta.pid=#{pid,jdbcType=INTEGER}  	
+	<if test="searchName != null and searchName != ''">
+		and (meta.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+			OR meta.key like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+			OR meta.used like CONCAT('%',#{searchName,jdbcType=INTEGER},'%')		
+		)
+	</if>	
   </select>
   <select id="getExistMeta" parameterType="com.rmbank.supervision.model.Meta" resultMap="BaseResultMap">
   	select * from t_meta where name=#{name,jdbcType=VARCHAR}	
