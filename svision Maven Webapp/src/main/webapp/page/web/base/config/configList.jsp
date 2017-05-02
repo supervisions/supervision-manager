@@ -154,7 +154,7 @@ function fillMetaList(lst){
 		html += "<tr>";
 		html += "<td  style='display:none'>"+lst[i].id+"</td><td onclick=goToMetaInfo(\'"+lst[i].id+"\') align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td onclick=goToMetaInfo(\'"+lst[i].id+"\') align='left' >"+lst[i].name+"</td>";
 		html += "<td onclick=goToMetaInfo(\'"+lst[i].id+"\')>"+lst[i].key+"</td>";
-		html +="<td align='left'>"+"<a href='javascript:void(0);' onclick=goToMetaInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a>&nbsp;<a href='javascript:void(0);' class='stateBut' onclick=metaState(\'"+lst[i].id+"\',0,\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >启用</a>  </td>";
+		html +="<td align='left'>"+"<a href='javascript:void(0);' onclick=goToMetaInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a>&nbsp;<a href='javascript:void(0);' class='stateBut' onclick=metaState(\'"+lst[i].id+"\',\'"+lst[i].used+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >启用</a>  </td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";
@@ -287,10 +287,10 @@ function goToMetaInfo(metaId){
 							<a style="color:blue" onclick="window.location.href='configInfo.do?id=${item.id}';">编辑</a>
 							<c:if test="${item.used == 1}">
 								<a style="color:blue"
-									onclick="metaState(${item.id},0,'${item.name}');">禁用</a>
+									onclick="metaState(${item.id},${item.used},'${item.name}');">禁用</a>
 							</c:if> <c:if test="${item.used == 0}">
 								<a style="color:blue"
-									onclick="metaState(${item.id},1,'${item.name}');">启用</a>
+									onclick="metaState(${item.id},${item.used},'${item.name}');">启用</a>
 							</c:if>							
 						</td>
 					</tr>

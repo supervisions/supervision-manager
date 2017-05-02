@@ -249,7 +249,12 @@ public class ConfigAction extends SystemAction {
 		js.setMessage("修改配置状态失败!");
 		
 		boolean metaState =false;
-		try {					
+		try {		
+			if(meta.getUsed()==1){
+				meta.setUsed(0);
+			}else if(meta.getUsed()==0){
+				meta.setUsed(1);
+			}
 			metaState= configService.MetaStateById(meta);
 			if(metaState){
 				js.setCode(new Integer(0));
