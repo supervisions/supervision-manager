@@ -171,7 +171,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					
 					<tr>
 						<td width="8%" align="right">职务名称</td>
-						<td><select name="postId" class="easyui-combobox"
+						<td><select name="postId" multiple="multiple" class="easyui-combobox"
 							style="width:254px;height:28px;">
 								
 								<c:forEach var="position" items="${meatListByKey}">

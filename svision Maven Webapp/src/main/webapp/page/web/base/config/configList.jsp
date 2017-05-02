@@ -23,14 +23,15 @@
 			    totalCount:'${Config.totalCount}',				   /* 表示总记录数 */
 			    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
 			});		
-
+			
+			var pid =-1;
 			//加载机构树
 		 	$("#treeList").tree({	 		
 				 	 url: 'jsonLoadMetaTreeList.do?rootId='+0, 			 	 
 				 	 onClick:function(node){//单击事件	
 				 	 	//当子节点不为0的时候去根据pid去查询			 	 	
 	   				 	if(node.children.length !=0 ){   				 		
-	   				 		var pid = node.id; 
+	   				 		pid = node.id; 
 	   				 		//根据pid查询子级机构
 	   				 		getMetaListByPid(pid);
 	 				 	}
@@ -56,31 +57,6 @@
 							$('#treeList').tree("select", node.target);   				 		
 	   				 	} 
 	   				 }
-	  				/*  required: false, //是否必须
-	  				 //multiple:true,  //是否支持多选  				 
-	  				 editable:false, //是否支持用户自定义输入	  				 		 
-	  				 onSelect:function(record){ // 	当节点被选中时触发。  	  				 			
-					 	 	$("#orgPid").val(record.id); 
-	  				 },
-	  				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。  				  
-	  				 	$("#treeList").combotree('tree').tree('options').url = 'area/jsonLoadAreaTreeList.do?pid='+ node.id;
-	  				 },
-	  				 onLoadSuccess:function(){ //当数据加载成功时触发。
-	  				 	
-	  				 	//根据所对应的机构选中复选框
-	  				 	$("#treeList").combotree('setValues', orgpid);
-	  				 	var orgId = $("#orgId").val();  
-	  				 	
-	  				 	//判断是新增还是编辑	 	
-	  				 	if(orgId>0){  				 	
-	  				 		//var pId = $("#areaId").val();
-	  				 		//var orgName = $("#orgName").val();
-	  				 		//$("#treeList").combotree("setText",orgName);  				 		
-	  				 	}else{
-							//$("#cmbParentArea").combotree("disable",true);
-		   				 	$("#treeList").combotree("setText","=请选择所属机构=");
-						}
-	  				} */
 			});	
 		});
 //修改配置状态		
@@ -100,6 +76,7 @@ function metaState(id,used,name){
 				success : function(data) { 									
 		  			if(data.code == 0){ 
 		  				$.messager.alert('操作信息',data.message,'info',function(){ 
+		  				
 		  					search();  
 		      			});
 		  			}else{		  			    
@@ -154,7 +131,7 @@ function fillMetaList(lst){
 		html += "<tr>";
 		html += "<td  style='display:none'>"+lst[i].id+"</td><td onclick=goToMetaInfo(\'"+lst[i].id+"\') align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td onclick=goToMetaInfo(\'"+lst[i].id+"\') align='left' >"+lst[i].name+"</td>";
 		html += "<td onclick=goToMetaInfo(\'"+lst[i].id+"\')>"+lst[i].key+"</td>";
-		html +="<td align='left'>"+"<a href='javascript:void(0);' onclick=goToMetaInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a>&nbsp;<a href='javascript:void(0);' class='stateBut' onclick=metaState(\'"+lst[i].id+"\',\'"+lst[i].used+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >启用</a>  </td>";
+		html += "<td align='left'>"+"<a href='javascript:void(0);' onclick=goToMetaInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a>&nbsp;<a href='javascript:void(0);' class='stateBut' onclick=metaState(\'"+lst[i].id+"\',\'"+lst[i].used+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >启用</a></td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";

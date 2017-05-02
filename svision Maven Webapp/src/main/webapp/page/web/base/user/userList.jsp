@@ -329,7 +329,8 @@ function runTaskAction(id){
 						<td>${item.account}</td>
 						<td title="${item.orgName}" class="orgName">${item.orgName}</td>
 						
-						<td><c:if test="${item.used == 1}">
+						<td>
+							<c:if test="${item.used == 1}">
 								<a style="color:blue" onclick="updateUser(${item.id},0,'${item.name}');">禁用</a>
 							</c:if> 
 							<c:if test="${item.used == 0}">

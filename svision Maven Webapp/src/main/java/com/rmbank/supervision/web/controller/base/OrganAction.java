@@ -161,6 +161,7 @@ public class OrganAction extends SystemAction {
 			if (organ.getId() == null || organ.getId() == 0) {
 				organ.setId(0);
 				organ.setSort(1);
+				organ.setPath("");
 				organ.setLeaf(1);
 				organ.setLevel(1);
 				if (organ.getPid() == null) {
