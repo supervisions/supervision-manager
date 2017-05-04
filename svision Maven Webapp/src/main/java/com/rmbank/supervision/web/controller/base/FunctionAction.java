@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ public class FunctionAction extends SystemAction{
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/jsonLoadFunctionTreeList.do")
+	@RequiresPermissions("system/function/jsonLoadFunctionTreeList.do")
 	public List<FunctionMenu> getOrganList(
 			@RequestParam(value = "parentId", required = false) Integer parentId,
 			HttpServletRequest request, HttpServletResponse response) {

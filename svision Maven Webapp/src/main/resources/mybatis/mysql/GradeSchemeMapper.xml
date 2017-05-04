@@ -66,7 +66,7 @@
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.rmbank.supervision.model.GradeScheme" >
     update t_grade_scheme
-    <set >
+    <set>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -90,4 +90,48 @@
       used = #{used,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <sql id="sql_query">
+  	from t_grade_scheme as gs
+  	where 1=1 
+	<if test="searchName != null and searchName != ''">
+		and (
+			gs.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')			
+     	)
+	</if>
+  </sql>  
+  <select id="getGradeSchemeList" parameterType="com.rmbank.supervision.model.GradeScheme" resultMap="BaseResultMap">
+  	SELECT gs.*, o.name AS orgName FROM t_grade_scheme gs
+	LEFT JOIN t_org o ON o.id = gs.org_id 
+	where 1=1 
+	<if test="searchName != null and searchName != ''">
+		and (
+			gs.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')			
+     	)
+	</if>
+  	order by gs.id DESC 
+	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
+        limit #{pageStart}, #{pageSize}
+    </if>
+  </select>
+  <select id="getGradeSchemeCount" parameterType="com.rmbank.supervision.model.GradeScheme" resultType="java.lang.Integer">
+  	select count(*) 
+  	<include refid="sql_query"/>
+  </select>
+  <select id="getExistGradeScheme" parameterType="com.rmbank.supervision.model.GradeScheme" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/>
+  	from t_grade_scheme where name=#{name,jdbcType=VARCHAR}
+  </select>
+  <select id="getGradeSchemeListASC" parameterType="com.rmbank.supervision.model.GradeScheme" resultMap="BaseResultMap">
+  	SELECT gs.*, o.name AS orgName FROM t_grade_scheme gs
+	LEFT JOIN t_org o ON o.id = gs.org_id 
+	where 1=1 
+	<if test="searchName != null and searchName != ''">
+		and (
+			gs.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')			
+     	)
+	</if>
+	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
+        limit #{pageStart}, #{pageSize}
+    </if>
+  </select>
 </mapper>

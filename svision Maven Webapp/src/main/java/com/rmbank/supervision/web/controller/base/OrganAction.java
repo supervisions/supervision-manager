@@ -32,7 +32,7 @@ public class OrganAction extends SystemAction {
 	private OrganService organService;
 
 	/**
-	 * 获取结构列表
+	 * 获取机构列表
 	 * 
 	 * @param organ
 	 * @param request
@@ -304,7 +304,6 @@ public class OrganAction extends SystemAction {
 			list1 = organService.getOrganByPId(org);
 			if (list1.size() > 0) {
 				list1 = setChildren(list1);
-
 			}
 			a.setChildren(list1);
 			a.setState("open");
@@ -320,7 +319,6 @@ public class OrganAction extends SystemAction {
 	}
 
 	private List<Organ> setChildren(List<Organ> ls) {
-		// TODO Auto-generated method stub
 		for (Organ c : ls) {
 			c.setText(c.getName());
 			Organ c1 = new Organ();

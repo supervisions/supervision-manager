@@ -279,6 +279,7 @@ public class ConfigAction extends SystemAction {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/jsonLoadMetaTreeList.do")
+	@RequiresPermissions("system/config/jsonLoadMetaTreeList.do")
 	public List<Meta> getMetaList(
 			@RequestParam(value = "pid", required = false) Integer pid,
 			HttpServletRequest request, HttpServletResponse response) {

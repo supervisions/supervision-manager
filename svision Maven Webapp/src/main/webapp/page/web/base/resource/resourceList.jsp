@@ -166,16 +166,16 @@ function resetUserPwd(id,name){
 				<table class="yw-cm-table yw-center yw-bg-hover" id="taskList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>						
-						<th width="15%">资源名称</th>	
-						<th width="8%">资源地址</th>
+						<th width="10%">资源名称</th>	
+						<th width="20%" align="left">资源地址</th>
 						<th width="8%">所属模块</th>
-						<th width="25%">操作</th>			
+						<th width="15%">操作</th>			
 					
 					</tr>
 					<c:forEach var="item" items="${resourceList}">
 						<tr>
 						<td>${item.name}</td>
-						<td>${item.resource}</td>
+						<td align="left">${item.resource}</td>
 						<td>${item.functionName}</td>
 						<td>
 							<a style="color:blue" onclick="deleteResource(${item.id},'${item.name}');">删除</a>							

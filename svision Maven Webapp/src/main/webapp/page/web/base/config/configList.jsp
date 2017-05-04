@@ -34,6 +34,8 @@
 	   				 		pid = node.id; 
 	   				 		//根据pid查询子级机构
 	   				 		getMetaListByPid(pid);
+	 				 	}else{
+	 				 		 $.messager.alert("温馨提示！","该节点下没有配置！",'info');
 	 				 	}
 	   				 },
 	   				 /* onBeforeSelect:function(node){                    

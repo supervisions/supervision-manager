@@ -68,6 +68,7 @@
                 /vision/** = authc
                 /system/** = authc
                 /cases/** = authc
+                /manage/** = authc
             </value>
         </property>
     </bean>

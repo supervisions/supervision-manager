@@ -1,6 +1,10 @@
 package com.rmbank.supervision.model;
 
-public class GradeSchemeDetail {
+import java.util.List;
+
+import com.rmbank.supervision.common.utils.Page;
+
+public class GradeSchemeDetail extends Page{
     private Integer id;
 
     private Integer gradeId;
@@ -16,6 +20,50 @@ public class GradeSchemeDetail {
     private String name;
 
     private Integer grade;
+    
+    private String schemaName;
+    
+    private String pName;
+    
+    
+    private Integer childrenCount;
+    
+    private String state;
+    
+    private String text;
+    
+    private List<GradeSchemeDetail> children;
+    public Integer getChildrenCount() {
+		return childrenCount;
+	}
+
+	public void setChildrenCount(Integer childrenCount) {
+		this.childrenCount = childrenCount;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public List<GradeSchemeDetail> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<GradeSchemeDetail> children) {
+		this.children = children;
+	}    
 
     public Integer getId() {
         return id;
@@ -80,4 +128,20 @@ public class GradeSchemeDetail {
     public void setGrade(Integer grade) {
         this.grade = grade;
     }
+
+	public String getSchemaName() {
+		return schemaName;
+	}
+
+	public void setSchemaName(String schemaName) {
+		this.schemaName = schemaName;
+	}
+
+	public String getpName() {
+		return pName;
+	}
+
+	public void setpName(String pName) {
+		this.pName = pName;
+	}
 }

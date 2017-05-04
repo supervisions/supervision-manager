@@ -20,67 +20,57 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 
 <script type="text/javascript">
 	$(document).ready(function(){	 	
-	 	$("#moudleId").combotree({
-			 url: 'system/function/jsonLoadFunctionTreeList.do',  
-  				 required: false,
-  				 onSelect:function(node){ 
-  				 	//alert($(this).tree('getRoot', node.target));
-  				 	//$(this).tree('getRoot', node.target);		 			 	 				 	
-				 	$("#moudle_Id").val(node.id); 				 	
+	 	//加载机构树
+	 	$("#orgParentTree").combotree({
+			 	 url: 'system/organ/jsonLoadOrganTreeList.do',  
+  				 required: false, //是否必须				 
+  				 editable:false, //是否支持用户自定义输入	
+  				 cascadeCheck:false, //是否支持级联选中 				 		 
+  				 onSelect:function(record){ // 	当节点被选中时触发。
+  				 		alert(record.name);
+				 	 	$("#orgId").val(record.id); 
   				 },
-  				 onBeforeSelect:function(node){                    
-                    //返回树对象
-					var tree = $(this).tree;
-					//选中的节点是否为叶子节点,如果不是叶子节点,清除选中
-					var isLeaf = tree('isLeaf', node.target);					
-                    if(!isLeaf){
-                    	 $.messager.alert("温馨提示！","根节点不可选，请选择子节点！",'error');
-                        $("#moudle_Id").tree("unselect");
-                       
-                    }
-                 },
-  				 onBeforeExpand:function(node){
-  				 	$("#moudleId").combotree('tree').tree('options').url = 'system/function/jsonLoadFunctionTreeList.do?pid='+ node.id;
+  				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。
+  				 	$("#orgParentTree").combotree('tree').tree('options').url = 'area/jsonLoadAreaTreeList.do?pid='+ node.id;
   				 },
-  				 onLoadSuccess:function(){
-  				 	//编辑时默认选中
-  				 	var mid=$("#moudle_Id").val();
-  				 	$("#moudleId").combotree('setValue', mid);
-  				 	
-  				 	var resourceId = $("#resourceId").val();  				 	
-  				 	if(resourceId>0){  				 		
-  				 		var moudleName = $("#moudleName").val();
-  				 		$("#moudleId").combotree("setText",moudleName);  				 		
+  				 onLoadSuccess:function(){ //当数据加载成功时触发。
+  				 	//根据方案所对应的机构选中 
+  				 	var orgId=$("#orgId").val();  				 	
+  				 	$("#orgParentTree").combotree('setValues', orgId);
+  				 	if(orgId>0){  				 	
+  				 		var orgName = $("#orgName").val();  				 		
+  				 		$("#orgParentTree").combotree("setText",orgName);
+  				 		
   				 	}else{
-					//$("#moudleId").combotree("disable",true);
-   				 	$("#moudleId").combotree("setText","=请选择所属模块=");
+					//$("#cmbParentArea").combotree("disable",true);
+   				 	$("#orgParentTree").combotree("setText","=请选择所属机构=");
 				}
   			}
-		});	 	
+		});	
 	 });
 	
 	//新增/编辑资源
-	function saveResource(obj){	 	
-		var moudleId=$("#moudle_Id").val();
+	function saveScheme(obj){	 	
+		var moudleId=$("#orgId").val();
 		//alert(moudleId);
 		if(moudleId=="" || moudleId==null){	
-			$.messager.alert("温馨提示！","请选择所属模块!",'error');
+			$.messager.alert("温馨提示！","请选择所属机构!",'error');
 			return false;
 		}		
-		if ($('#resourceInfoForm').form('validate')) {			
+		if ($('#gradeSchemeInfoForm').form('validate')) {			
 			$(obj).attr("onclick", "");				 
-			$('#resourceInfoForm').form('submit',{				 
+			$('#gradeSchemeInfoForm').form('submit',{				 
 		  		success:function(data){ 
 					showProcess(false);
 		  			data = $.parseJSON(data);				  			
 		  			if(data.code==0){	 					
 		  				$.messager.alert('保存信息',data.message,'info',function(){
-		  					window.location.href="system/resource/resourceList.do";
+		  					window.location.href="manage/casemanage/casemanageList.do";
 	        			});
 		  			}else{
 						$.messager.alert('错误信息',data.message,'error',function(){
 	        			});
-						$(obj).attr("onclick", "saveResource(this);"); 
+						$(obj).attr("onclick", "saveScheme(this);"); 
 		  			}
 		  		}
 			});
@@ -92,7 +82,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>system/resource/resourceList.do'"></i><span>角色列表</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/casemanage/casemanageList.do'"></i><span>方案列表</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
@@ -104,64 +94,62 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
-				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveResource(this);">保存</span>
+				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveScheme(this);">保存</span>
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div>
-			<form id="resourceInfoForm" name="resourceInfoForm"
-				action="<%=basePath%>system/resource/jsonSaveOrUpdateResource.do"
+			<form id="gradeSchemeInfoForm" name="gradeSchemeInfoForm"
+				action="<%=basePath%>manage/casemanage/jsonSaveOrUpdateGradeScheme.do"
 				method="post">
 				<div id="tab1" class="yw-tab">
 					<table class="yw-cm-table font16" id="taskTable">
 						<tr>
-							<td width="8%" align="right">项目名称</td>
+							<td width="10%" align="right">方案名称：</td>
 							<td><input id="" class="easyui-validatebox"
-								name="name" type="text" doc="taskInfo" value="${ResourceConfig.name}"
+								name="name" type="text" doc="taskInfo" value="${GradeScheme.name}"
 								required="true" validType="loginName"
 								style="width:254px;height:28px;" /> <input type="hidden"
-								id="resourceId" name="id" doc="taskInfo" value="${ResourceConfig.id}" /> <span
+								id="resourceId" name="id" doc="taskInfo" value="${GradeScheme.id}" /> <span
 								style="color:red">*</span></td>
 							<td width="8%"></td>
 						</tr>
 						<tr>
-							<td width="8%" align="right">项目分类</td>
-							<td><select name="postId" class="easyui-combobox"
-								style="width:254px;height:28px;">									
-									<c:forEach var="position" items="${meatListByKey}">
-										<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
-									</c:forEach>
-							</select> <span style="color:red">*</span></td>
+							<td width="10%" align="right">所属机构：</td>
+							<td>
+								<input type="hidden" id="orgName" value="${GradeScheme.orgName }"/>
+								<input type="hidden" id="orgId" value="${GradeScheme.orgId}"/>
+								<input id="orgParentTree" name="orgId" value="" style="width:254px;height:28px;" class="easyui-combotree" />
+								<span style="color:red">*</span>
+							</td>
 							<td width="8%"></td>
 						</tr>
 						<tr>
-						<td width="8%" align="right">项目属性</td>
-						<td><select name="postId" class="easyui-combobox"
-							style="width:254px;height:28px;">								
-								<c:forEach var="project" items="${meatListByKey}">
-									<option value="${project.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${project.name}</option>
-								</c:forEach>
-						</select> <span style="color:red">*</span></td>
-						<td width="8%"></td>
-					</tr>
+							<td width="10%" align="right">是否授权下级：</td>
+							<td>
+								<c:if test="${GradeScheme.inherit == 1 }">
+									<label><input type="radio" name="inherit" value="1"
+										checked="checked" />是</label>
+									<label><input type="radio" name="inherit" value="0" />否</label>
+								</c:if> 
+								<c:if test="${GradeScheme.inherit == 0 || GradeScheme.inherit == null}">
+									<label><input type="radio" name="inherit" value="1" />是</label>
+									<label><input type="radio" name="inherit" value="0" checked="checked" />否</label>
+										
+								</c:if>
+							</td>
+						</tr>							
 						<tr>
-							<input type="hidden" id="OrganName" value="" />
-							<td align="right">立项时间:</td>
-							<td align="left" required="true">
-								<input type="hidden" id="moudle_Id" name="moudle_Id" value="${ResourceConfig.moudleId }"/>
-								<input type="hidden" id="moudleName" value="${ResourceConfig.functionName}"/>
-								<input id="" name="" class="easyui-datebox" data-options="sharedCalendar:'#cc'" style="width:254px;height:28px;" />
-								<span style="color:red">*</span>
-								<div id="cc" class="easyui-calendar" style="width:254px;height:28px;"></div>
-							</td>								
-						</tr>					
-						<tr>
-							<td width="8%" align="right">选择单位</td>
-							<td><input id="" class="easyui-validatebox"
-								name="resource" type="text" doc="taskInfo" value="${ResourceConfig.resource}"
-								required="true" validType="loginName"
-								style="width:254px;height:28px;" /> 
-								<span style="color:red">*</span>
-							</td>							
+							<td width="10%" align="right">状态：</td>
+							<td>
+								<c:if test="${GradeScheme.used == 1}">
+									<label><input type="radio" name="used" value="1" checked="checked" />启用</label>									
+									<label><input type="radio" name="used" value="0" />禁用</label>
+								</c:if> 
+								<c:if test="${GradeScheme.used == 0 or GradeScheme.used==null}">
+									<label><input type="radio" name="used" value="1" />启用</label>
+									<label><input type="radio" name="used" value="0" checked="checked" />禁用</label>									
+								</c:if>
+							</td>					
 							<td width="8%"></td>
 						</tr>
 					</table>

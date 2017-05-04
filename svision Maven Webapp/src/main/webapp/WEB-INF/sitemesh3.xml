@@ -15,5 +15,10 @@
      <mapping path="**/system/resource/json**" exclue="true" /> 
      <mapping path="**/system/config/json**" exclue="true" />
      <mapping path="**/system/function/json**" exclue="true" />
+     <mapping path="**/system/function/json**" exclue="true" />
+     <mapping path="**/manage/casemanage/json**" exclue="true" />
+     <mapping path="**/manage/casedetail/json**" exclue="true" />
+     <mapping path="**/manage/branch/json**" exclue="true" />
+     <mapping path="**/manage/support/json**" exclue="true" />
 </sitemesh>
     

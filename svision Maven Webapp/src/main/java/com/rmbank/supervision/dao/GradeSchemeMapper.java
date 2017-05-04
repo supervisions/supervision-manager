@@ -1,6 +1,9 @@
 package com.rmbank.supervision.dao;
 
+import java.util.List;
+
 import com.rmbank.supervision.model.GradeScheme;
+import com.rmbank.supervision.model.Role;
 @MyBatisRepository
 public interface GradeSchemeMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +17,12 @@ public interface GradeSchemeMapper {
     int updateByPrimaryKeySelective(GradeScheme record);
 
     int updateByPrimaryKey(GradeScheme record);
+    
+    List<GradeScheme> getGradeSchemeList(GradeScheme gradeScheme);
+
+	int getGradeSchemeCount(GradeScheme gradeScheme);
+
+	List<GradeScheme> getExistGradeScheme(GradeScheme gradeScheme);
+
+	List<GradeScheme> getGradeSchemeListASC(GradeScheme gradeScheme);
 }
