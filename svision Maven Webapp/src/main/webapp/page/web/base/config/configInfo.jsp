@@ -108,7 +108,7 @@
 							<td width="8%" align="right">配置名称:</td>
 							<td><input id="userAccount" name="name" type="text"
 								doc="taskInfo" value="${Config.name}" required="true"
-								class="easyui-validatebox" validType="loginName"
+								class="easyui-validatebox" validType="baseValue"
 								style="width:254px;height:28px;" /> 
 								<input type="hidden" name="id" value="${Config.id}" />
 								<span style="color:red">*</span>
@@ -162,7 +162,7 @@
 							<td width="8%" align="right">配置描述:</td>
 							<td><input id="userAccount" name="description" type="text"
 								doc="taskInfo" value="${Config.description}" required="false"
-								class="easyui-validatebox" validType="loginName"
+								class="easyui-validatebox" validType="baseValue"
 								style="width:254px;height:28px;" /> <span style="color:red">*</span>
 							</td>
 							<td width="8%"></td>

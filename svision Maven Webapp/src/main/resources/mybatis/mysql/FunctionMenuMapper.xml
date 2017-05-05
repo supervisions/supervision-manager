@@ -140,4 +140,9 @@
   	<include refid="Base_Column_List" />
 	<include refid="sql_query" /> 
   </select>
+  <select id="getFunctionMenuList" parameterType="com.rmbank.supervision.model.FunctionMenu" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+	<include refid="sql_query" /> 
+  </select>
 </mapper>

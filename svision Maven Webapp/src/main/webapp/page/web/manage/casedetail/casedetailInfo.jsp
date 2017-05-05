@@ -36,8 +36,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
   				 	
   				 	var resourceId = $("#resourceId").val();			 	
   				 	if(resourceId>0){  				 		
-  				 		var moudleName = $("#moudleName").val();
-  				 		$("#pid").combotree("setText",moudleName);  				 		
+  				 		var pName = $("#pName").val();
+  				 		$("#pid").combotree("setText",pName);  				 		
   				 	}else{
 					//$("#moudleId").combotree("disable",true);
    				 	$("#pid").combotree("setText","=请选择所属模块=");
@@ -86,7 +86,7 @@ function checkGrade(obj){
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>system/resource/resourceList.do'"></i><span>角色列表</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/casedetail/casedetailList.do'"></i><span>方案明细列表</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
@@ -111,7 +111,7 @@ function checkGrade(obj){
 							<td width="8%" align="right">指标名称</td>
 							<td><input id="" class="easyui-validatebox"
 								name="name" type="text" doc="taskInfo" value="${SchemeDetail.name}"
-								required="true" validType="loginName"
+								required="true" validType="baseValue"
 								style="width:254px;height:28px;" /> <input type="hidden"
 								id="resourceId" name="id" doc="taskInfo" value="${SchemeDetail.id}" /> <span
 								style="color:red">*</span></td>
@@ -120,6 +120,7 @@ function checkGrade(obj){
 						<tr>
 							<td width="8%" align="right">上级指标</td>
 							<td>
+								<input type="hidden" id="pName" value="${SchemeDetail.pName}"/>
 								<input type="hidden" id="gradeId" name="gradeId" value="">
 								<input type="hidden" id="defaultPid" value="${SchemeDetail.pid}">
 								<input id="pid" name="pid" doc="pointInfo" type="text"
@@ -132,7 +133,7 @@ function checkGrade(obj){
 							<td width="8%" align="right">分值</td>
 							<td><input id="grade" oninput="checkGrade(this)" class="easyui-validatebox"
 								name="grade" type="text" doc="taskInfo" value="${SchemeDetail.grade}"
-								required="true" validType="loginName"
+								required="true" validType="number"
 								style="width:254px;height:28px;" /> 
 								<span style="color:red">*</span>
 							</td>							

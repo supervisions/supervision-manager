@@ -65,7 +65,7 @@ function deleteGradeScheme(id,name){
 				success : function(data) {
 		  			if(data.code == 0){ 
 		  				$.messager.alert('操作信息',data.message,'info',function(){ 
-		  					search();  
+		  					window.location.href="manage/casemanage/casemanageList.do?pageNo="+${GradeScheme.pageNo};
 		      			});
 		  			}else{		  			    
 						$.messager.alert('错误信息','删除失败！','error');
@@ -101,6 +101,10 @@ function updateGradeScheme(id,used,name){
 	    }  
 	}); 
 }
+
+function editManage(id,orgName){
+	window.location.href="manage/casemanage/casemanageInfo.do?id="+id+"&orgName="+orgName;
+}
 </script>
   </head>
   
@@ -125,7 +129,7 @@ function updateGradeScheme(id,used,name){
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>
 					</div>
 					<div class="fr">
-						<span class="fl yw-btn bg-green cur" onclick="window.location.href='manage/casemanage/casemanageInfo.do?='+ 0">新建方案</span>
+						<span class="fl yw-btn bg-green cur" onclick="window.location.href='manage/casemanage/casemanageInfo.do?id='+ 0">新建方案</span>
 					</div>
 					<div class="cl"></div>
 				</div>
@@ -170,7 +174,7 @@ function updateGradeScheme(id,used,name){
 									<a style="color:blue" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">启用</a>
 								</c:if>
 								<a style="color:blue" onclick="deleteGradeScheme(${item.id},'${item.name}');">删除</a>							
-								<a style="color:blue" onclick="window.location.href='manage/casemanage/casemanageInfo.do?id=${item.id}';">编辑</a>
+								<a style="color:blue" onclick="editManage(${item.id},'${item.orgName }');">编辑</a>
 								
 							</td>
 						</tr>

@@ -71,144 +71,13 @@ function deleteRole(id,name){
 	    }  
 	}); 
 }
-<%-- 
-function showdialog(){
-	var wz = getDialogPosition($('#taskInfoWindow').get(0),100);
-	$('#taskInfoWindow').window({
-		  	top: 100,
-		    left: wz[1],
-		    onBeforeClose: function () {
-		    },
-		    onClose:function(){
-		    	$('#saveTaskForm .easyui-validatebox').val(''); 
-		    }
-	});
-	$('#taskInfoWindow').window('open');
+function authorizeResource(id,name){
+	$("#toAid").val(id);
+	$("#toAname").val(name);
+	$("#toARfrom").submit();
+	
+	//window.location.href="toAuthorizationResource.do?id="+id+"&name="+name;
 }
-function saveTask(obj){
-	if ($('#saveTaskForm').form('validate')) {
-		$(obj).attr("onclick", ""); 
-		showProcess(true, '温馨提示', '正在提交数据...'); 
-		 $('#saveTaskForm').form('submit',{
-		  		success:function(data){ 
-					showProcess(false);
-		  			data = $.parseJSON(data);
-		  			if(data.code==0){
-	  					$('#taskInfoWindow').window('close');
-		  				$.messager.alert('保存信息',data.message,'info',function(){
-	        			});
-	  					search();
-		  			}else{
-						$.messager.alert('错误信息',data.message,'error',function(){
-	        			});
-						$(obj).attr("onclick", "saveTask(this);"); 
-		  			}
-		  		}
-		  	 });  
-	}
-}  
-function getDateModel(date){
-	var year = date.getFullYear();
-	var month = date.getMonth()+1;
-	if(month <10){
-		month = "0"+month;
-	}
-	var day = date.getDate();
-	if(day <10){
-		day = "0"+day;
-	}
-	var dates = year+"-"+month+"-"+day;
-	return dates;
-}
-function getSelectDate(date){
-	var dates = getDateModel(date);
-	$("#startTimes").val(dates);
-}
-function sltSchStime(date){
-	var dates = getDateModel(date);
-	$("#startedTimes").val(dates);
-}
-function sltSchEtime(date){
-	var dates = getDateModel(date);
-	$("#endTimes").val(dates);
-}
- function runTask(id){
-	$.messager.confirm("执行确认","确认执行该任务,并在后台自动运行?",function(r){  
-		    if (r){  
-		  //  $.messager.alert('任务开始启动!');
-			$.ajax({
-				url : "userInfo.do?id="+id,
-				type : "post",  
-		    	dataType : "json",								
-				success : function(data) { 									
-		  			if(data.code == 0){ 
-		  				$.messager.alert('任务启动信息',data.message,'info',function(){ 
-		  					search(); 
-		  					//window.location.href="taskList.do";
-		      		});
-		  			}else{		  			    
-						$.messager.alert('错误信息','任务启动失败！','error');
-		  			}  
-			    } 
-			});
-	    }  
-	}); 
-}  
-function runTaskNow(id){
-	$.messager.confirm("执行确认","确认立即执行该任务?",function(r){  
-		    if (r){  
-		  //  $.messager.alert('任务开始启动!');
-			$.ajax({
-				url : "<%=basePath%>dataUtil/jsonloadTaskRun.do?id="+id,
-				type : "post",  
-		    	dataType : "json",								
-				success : function(data) { 									
-		  			if(data.code == 0){ 
-		  				$.messager.alert('任务启动信息',data.message,'info',function(){ 
-		  					runTaskAction(id);
-		  					//window.location.href="taskList.do";
-		      			});
-		  			}else{		  			    
-						$.messager.alert('错误信息','任务启动失败！','error');
-		  			}  
-			    } 
-			});
-	    }  
-	}); 
-} 
-function runTaskAction(id){
- //  $.messager.alert('任务开始启动!');
-	$.ajax({
-		url : "<%=basePath%>dataUtil/jsonloadTaskRunRightNow.do?id="+id,
-		type : "post",  
-    	dataType : "json",								
-		success : function(data) {  
-	    } 
-	}); 
-	search();  
-} 
-function StopTask(id){
-	$.messager.confirm("终止确认","确认立即终止该任务?",function(r){  
-			    if (r){   
-				$.ajax({
-					url : "jsonloadTaskStop.do?id="+id,
-					type : "post",  
-			    	dataType : "json",								
-					success : function(data) { 									
-			  			if(data.code == 0){ 
-			  				$.messager.alert('操作信息',data.message,'info',function(){ 
-			  					search(); 
-			  					//window.location.href="taskList.do";
-			      		});
-			  			}else{		  			    
-							$.messager.alert('错误信息','任务终止失败！','error');
-			  			}  
-				    } 
-				});
-		    }  
-		}); 
-}--%>
-
 
 </script>
 </head>
@@ -220,6 +89,11 @@ function StopTask(id){
 			</div>
 		</div>
 		<div class="fl yw-lump mt10">
+			
+			<form id="toARfrom" action="toAuthorizationResource.do" method="post">
+				<input id="toAid" type="hidden" name="id" value="">
+				<input id="toAname" type="hidden" name="name" value="">
+			</form>
 			<form id="taskForm" name="taskForm"
 				action="roleList.do" method="get">
 				<div class=pd10>
@@ -234,37 +108,36 @@ function StopTask(id){
 					<div class="fr">
 						<span class="yw-btn bg-green cur" onclick="window.location.href='roleInfo.do?id=0';">新增角色</span>
 					</div>
-						<div class="cl"></div>				
-                     <input type="hidden" id="pageNumber" name="pageNo" value="${Role.pageNo}" />
-                     </div>
-		     	</form>
-		     	</div>
-				
-           <div class="fl yw-lump"> 
-				<table class="yw-cm-table yw-center yw-bg-hover" id="taskList">
-					<tr style="background-color:#D6D3D3;font-weight: bold;">
-						<th width="4%" style="display:none">&nbsp;</th>
-					<th width="20%">角色名称</th>
-					<th width="20%">角色描述</th>	
-					<th width="20%">授权</th>	
-					<th width="20%">操作</th>			
+					<div class="cl"></div>				
+                    	<input type="hidden" id="pageNumber" name="pageNo" value="${Role.pageNo}" />
+                </div>
+		     </form>
+		 </div>	
+          <div class="fl yw-lump"> 
+			<table class="yw-cm-table yw-center yw-bg-hover" id="taskList">
+				<tr style="background-color:#D6D3D3;font-weight: bold;">
+					<th width="4%" style="display:none">&nbsp;</th>
+				<th width="20%">角色名称</th>
+				<th width="20%">角色描述</th>	
+				<th width="20%">授权</th>	
+				<th width="20%">操作</th>			
+				</tr>
+				<c:forEach var="item" items="${roleList}">
+					<tr> 							
+						<td>${item.name}</td>
+						<td>${item.description}</td>
+						<td><a style="color:blue" onclick="authorizeResource(${item.id},'${item.name}')">资源授权</a></td>
+						<td>
+							<a style="color:blue" onclick="deleteRole(${item.id},'${item.name}');">删除</a>
+							<a style="color:blue" onclick="window.location.href='roleInfo.do?id=${item.id}';">编辑</a>
+						</td>
+						
 					</tr>
-					<c:forEach var="item" items="${roleList}">
-						<tr> 							
-							<td>${item.name}</td>
-							<td>${item.description}</td>
-							<td><a style="color:blue" onclick="window.location.href='#';">资源授权</a></td>
-							<td>
-								<a style="color:blue" onclick="deleteRole(${item.id},'${item.name}');">删除</a>
-								<a style="color:blue" onclick="window.location.href='roleInfo.do?id=${item.id}';">编辑</a>
-							</td>
-							
-						</tr>
-					</c:forEach>
-				</table>
-				<div class="page" id="pager"></div>
-				</div>
+				</c:forEach>
+			</table>
+			<div class="page" id="pager"></div>
 			</div>
+		</div>
 
  		
 

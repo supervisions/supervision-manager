@@ -15,6 +15,7 @@
 	<link href="${pageContext.request.contextPath}/source/js/pager/Pager.css" rel="stylesheet" />
 	<link rel="shortcut icon" href="<%=basePath%>source/images/favicon.ico" type="image/x-icon" />
 <script type="text/javascript">
+		var pid=0;
 		$(document).ready(function(){
 			//showProcess(true, '温馨提示', '正在加载数据...');
 			$("#pager").pager({
@@ -23,13 +24,13 @@
 			    totalCount:'${Organ.totalCount}',
 			    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
 			});
-
+		
 		//加载机构树
 	 	$("#treeList").tree({	 		
 			 	 url: 'jsonLoadOrganTreeList.do?rootId='+0, 			 	 
 			 	 onClick:function(node){//单击事件			 	 	
    				 	if(node.children.length !=0 ){   				 		
-   				 		var pid = node.id; 
+   				 		 pid= node.id; 
    				 		//根据pid查询子级机构
    				 		getOrganListByPid(pid);
  				 	}
@@ -89,26 +90,27 @@ function getOrganListByPid(pid){
 		}
 	});
 };
-function deleteOrg(id,name){
-		$.messager.confirm("删除确认","确认删除机构："+name+"?",function(r){  
-			    if (r){   
-				$.ajax({
-					url : "jsondeleteOrganById.do?id="+id,
-					type : "post",  
-			    	dataType : "json",								
-					success : function(data) { 									
-			  			if(data.code == 0){ 
-			  				$.messager.alert('操作信息',data.message,'info',function(){ 
-			  					search();  
-			      			});
-			  			}else{		  			    
-							$.messager.alert('错误信息','删除失败！','error');
-			  			}  
-				    } 
-				});
-		    }  
-		}); 
-	}
+
+function deleteOrgan(id,name){
+	$.messager.confirm("删除确认","确认删除机构："+name+"?",function(r){  
+		    if (r){   
+			$.ajax({
+				url : "jsondeleteOrganById.do?id="+id,
+				type : "post",  
+		    	dataType : "json",								
+				success : function(data) { 									
+		  			if(data.code == 0){ 
+		  				$.messager.alert('操作信息',data.message,'info',function(){ 
+		  					search();  
+		      			});
+		  			}else{		  			    
+						$.messager.alert('错误信息','删除失败！','error');
+		  			}  
+			    } 
+			});
+	    }  
+	}); 
+}
 function fillOrganList(lst){
 	var html = "<tbody>";
 	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>机构状态</span></th><th>机构名称</th><th>上级机构</th><th>是否监察部门</th><th>操作</th></tr>";
@@ -116,7 +118,7 @@ function fillOrganList(lst){
 		html += "<tr>";
 		html += "<td  style='display:none'>"+lst[i].id+"</td><td align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td align='left' ><span>"+lst[i].name+"</span></td><td align='left' >"+lst[i].parentName+"</td>";
 		html += "<td class='supervisionState'>"+lst[i].supervision+"</td>";
-		html +="<td align='left'>"+"<a style='color:blue' onclick=deleteOrg(\'"+lst[i].id+"\',\'"+lst[i].name+"\')>删除</a> </td>";
+		html +="<td align='left'>"+"<a style='color:blue' onclick=deleteOrgan(\'"+lst[i].id+"\',\'"+lst[i].name+"\')>删除</a>&nbsp;<a onclick=goToOrganInfo(\'"+lst[i].id+"\')  style='color:blue' >编辑</a></td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";
@@ -143,46 +145,46 @@ function pagesearch(){
 		organForm.submit();
 	} 
 }
-	function OperatOrgan(organId,operate){
-		showProcess(true, '温馨提示', '正在操作，请等待...');
-		$.ajax({
-			url : "jsonOperateOrgan.do?organId="+organId+"&status="+operate,
-			type : "post",
-			dataType:"json",
-			success : function(data) {
-				showProcess(false);
-				if(data.code == 0){
-					$.messager.show({
-						title:'操作信息',
-						msg:'服务器响应操作，请稍后。。。',
-						showType:'fade',
-						width:300,
-						modal:true,
-						height:150,
-						timeout:4000,
-						style:{
-							right:'',
-							bottom:''
+function OperatOrgan(organId,operate){
+	showProcess(true, '温馨提示', '正在操作，请等待...');
+	$.ajax({
+		url : "jsonOperateOrgan.do?organId="+organId+"&status="+operate,
+		type : "post",
+		dataType:"json",
+		success : function(data) {
+			showProcess(false);
+			if(data.code == 0){
+				$.messager.show({
+					title:'操作信息',
+					msg:'服务器响应操作，请稍后。。。',
+					showType:'fade',
+					width:300,
+					modal:true,
+					height:150,
+					timeout:4000,
+					style:{
+						right:'',
+						bottom:''
+					}
+				});
+				setTimeout(function () {
+					$.messager.alert('操作信息', data.message, 'info',function() {
+						var pageNo = $.trim($("#pageNumber").val());
+						if(pageNo.length == 0 ||pageNo==""){
+							pageNo = 1;
 						}
+						window.location.href="organList.do?pageNo="+pageNo;
 					});
-					setTimeout(function () {
-						$.messager.alert('操作信息', data.message, 'info',function() {
-							var pageNo = $.trim($("#pageNumber").val());
-							if(pageNo.length == 0 ||pageNo==""){
-								pageNo = 1;
-							}
-							window.location.href="organList.do?pageNo="+pageNo;
-						});
-					}, 5000);
-				}else{
-					$.messager.alert('操作信息', data.message, 'error');
-				}
+				}, 5000);
+			}else{
+				$.messager.alert('操作信息', data.message, 'error');
 			}
-		});
-	}
-	function goToOrganInfo(organId){
-		window.location.href="organInfo.do?organId="+organId;
-	}
+		}
+	});
+}
+function goToOrganInfo(organId){
+	window.location.href="organInfo.do?id="+organId;
+}
 </script>
 </head>
 
@@ -224,7 +226,7 @@ function pagesearch(){
 					<ul  id="treeList"></ul>
 				</div>
 			</div>
-			<div class="yw-lump wid-atuo ml260s mt10" >
+			<div class="yw-lump wid-atuo ml260s mt10">
 				<div class="yw-cm-title">
 					<span class="ml26">全部机构</span>
 				</div>
@@ -256,7 +258,10 @@ function pagesearch(){
 									<span>否</span>
 								</c:if>
 							</td>
-							<td align="left"><a href="javascript:void(0);" onclick="OperatOrgan('','DELETE')"  style="padding-left:5px;margin-top:25px" >删除</a> </td>
+							<td align="left">
+								<a style="color:blue" onclick="deleteOrgan(${item.id },'${item.name }')">删除</a>
+								<a style="color:blue" onclick="goToOrganInfo(${item.id })">编辑</a>
+							</td>
 						</tr>
 					</c:forEach>
 				</table>

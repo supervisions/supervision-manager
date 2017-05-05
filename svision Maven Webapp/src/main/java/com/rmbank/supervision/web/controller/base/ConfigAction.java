@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.model.Meta;
+import com.rmbank.supervision.model.Role;
 import com.rmbank.supervision.service.ConfigService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
@@ -122,6 +124,40 @@ public class ConfigAction extends SystemAction {
         return js;
     }
 	
+	
+	/**
+	 * 删除配置
+	 * @param id
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/jsonDeleteConfigById.do", method = RequestMethod.POST)
+	@RequiresPermissions("system/config/jsonDeleteConfigById.do")
+	public JsonResult<Meta> jsondeleteRoleById(
+			@RequestParam(value = "id", required = false) Integer id,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		// 新建一个json对象 并赋初值
+		JsonResult<Meta> js = new JsonResult<Meta>();
+		js.setCode(new Integer(1));
+		js.setMessage("删除配置失败!");
+		try {				
+			boolean state = configService.deleteMetaById(id);
+			if(state){
+				js.setCode(new Integer(0));
+				js.setMessage("删除配置成功!");
+				return js;
+			}else{
+				return js;
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return js;
+
+	}
 	 /**
      * 跳转到新增配置/编辑配置页面
      * @return

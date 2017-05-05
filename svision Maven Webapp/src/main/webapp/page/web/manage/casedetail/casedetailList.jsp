@@ -105,26 +105,6 @@ function getGradeSchemeDetailListByPid(pid,gradeId){
 		}
 	});
 };
-function deleteOrg(id,name){
-		$.messager.confirm("删除确认","确认删除机构："+name+"?",function(r){  
-			    if (r){   
-				$.ajax({
-					url : "jsondeleteOrganById.do?id="+id,
-					type : "post",  
-			    	dataType : "json",								
-					success : function(data) { 									
-			  			if(data.code == 0){ 
-			  				$.messager.alert('操作信息',data.message,'info',function(){ 
-			  					search();  
-			      			});
-			  			}else{		  			    
-							$.messager.alert('错误信息','删除失败！','error');
-			  			}  
-				    } 
-				});
-		    }  
-		}); 
-	}
 function fillOrganList(lst){
 	var html = "<tbody>";
 	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>指标名称</span></th><th>上级指标</th><th>所属方案</th><th>分值</th><th>操作</th></tr>";
@@ -132,7 +112,7 @@ function fillOrganList(lst){
 		html += "<tr>";
 		html += "<td  style='display:none'>"+lst[i].id+"</td><td align='left' ><span style='margin-left:40px'>"+lst[i].name+"</span></td><td align='left' ><span>"+lst[i].pName+"</span></td><td align='left' >"+lst[i].schemaName+"</td>";
 		html += "<td class='supervisionState'>"+lst[i].grade+"</td>";
-		html +="<td align='left'>"+"<a style='color:blue'>删除</a> <a style='color:blue'onclick=edit(\'"+lst[i].id+"\')>编辑</a> </td>";
+		html +="<td align='left'>"+"<a style='color:blue' onclick=deleteDetail(\'"+lst[i].id+"\',\'"+lst[i].name+"\')>删除</a> <a style='color:blue'onclick=editDetail(\'"+lst[i].id+"\',\'"+lst[i].pName+"\')>编辑</a> </td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";
@@ -159,49 +139,33 @@ function pagesearch(){
 		organForm.submit();
 	} 
 }
-	function OperatOrgan(organId,operate){
-		showProcess(true, '温馨提示', '正在操作，请等待...');
-		$.ajax({
-			url : "jsonOperateOrgan.do?organId="+organId+"&status="+operate,
-			type : "post",
-			dataType:"json",
-			success : function(data) {
-				showProcess(false);
-				if(data.code == 0){
-					$.messager.show({
-						title:'操作信息',
-						msg:'服务器响应操作，请稍后。。。',
-						showType:'fade',
-						width:300,
-						modal:true,
-						height:150,
-						timeout:4000,
-						style:{
-							right:'',
-							bottom:''
-						}
-					});
-					setTimeout(function () {
-						$.messager.alert('操作信息', data.message, 'info',function() {
-							var pageNo = $.trim($("#pageNumber").val());
-							if(pageNo.length == 0 ||pageNo==""){
-								pageNo = 1;
-							}
-							window.location.href="organList.do?pageNo="+pageNo;
-						});
-					}, 5000);
-				}else{
-					$.messager.alert('操作信息', data.message, 'error');
-				}
-			}
-		});
-	}
-	function goToOrganInfo(organId){
-		window.location.href="casedetailInfo.do?id="+id;
-	}
-	function edit(id){
-		window.location.href="casedetailInfo.do?id="+id;
-	}
+
+function deleteDetail(id,name){
+	$.messager.confirm("删除确认","确认删除方案明细："+name+"?",function(r){  
+		    if (r){   
+			$.ajax({
+				url : "jsondeleteDetailById.do?id="+id,
+				type : "post",  
+		    	dataType : "json",								
+				success : function(data) {
+		  			if(data.code == 0){ 
+		  				$.messager.alert('操作信息',data.message,'info',function(){ 
+		  					search();
+		      			});
+		  			}else{		  			    
+						$.messager.alert('错误信息','删除失败！','error');
+		  			}  
+			    } 
+			});
+	    }  
+	}); 
+}
+function goToOrganInfo(organId){
+	window.location.href="casedetailInfo.do?id="+id;
+}
+function editDetail(id,pName){
+	window.location.href="casedetailInfo.do?id="+id+"&pName="+pName;
+}
 </script>
 </head>
 
@@ -265,8 +229,8 @@ function pagesearch(){
 							<td  align="left">${item.schemaName }</td>
 							<td  align="left">${item.grade }</td>
 							<td align="left">
-								<a href="javascript:void(0);" style="color:blue" onclick="OperatOrgan('','DELETE')">删除</a>
-								<a href="javascript:void(0);" style="color:blue"  onclick="window.location.href='casedetailInfo.do?id=${item.id }'">编辑</a>
+								<a href="javascript:void(0);" style="color:blue" onclick="deleteDetail(${item.id},'${item.name}')">删除</a>
+								<a href="javascript:void(0);" style="color:blue" onclick="editDetail(${item.id},'${item.pName }');">编辑</a>
 							</td>
 						</tr>
 					</c:forEach>

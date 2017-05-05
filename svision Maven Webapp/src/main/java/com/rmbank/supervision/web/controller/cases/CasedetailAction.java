@@ -103,7 +103,6 @@ public class CasedetailAction {
             HttpServletRequest request, HttpServletResponse response) {
     	
         JsonResult<GradeSchemeDetail> js = new JsonResult<GradeSchemeDetail>();
-        
         js.setCode(new Integer(1));
         js.setMessage("获取数据失败!");
         GradeSchemeDetail detail = new GradeSchemeDetail();
@@ -120,12 +119,11 @@ public class CasedetailAction {
                 if(c.getpName()==null){
                     c.setpName("");
                 }   
-                if(c.getLeafed()==0){
+                if(c.getLeafed()==0 && c.getPid()!=0){
                 	GradeSchemeDetail det = new GradeSchemeDetail();
                 	det.setPid(c.getId());
                 	det.setGradeId(c.getGradeId());
                 	deylist = gradeSchemeDetailService.getSchemeDetailListByPidAndGradeId(det);
-                	
                 }
             }
             lc.addAll(deylist);
@@ -140,21 +138,61 @@ public class CasedetailAction {
         }
         return js;
     }
+    
+    /**
+     * 删除方案明细
+     * @param id
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+	@RequestMapping(value = "/jsondeleteDetailById.do", method = RequestMethod.POST)
+	@RequiresPermissions("manage/casedetail/jsondeleteDetailById.do")
+	public JsonResult<GradeSchemeDetail> jsondeleteGradeSchemeById(
+			@RequestParam(value = "id", required = false) Integer id,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		// 新建一个json对象 并赋初值
+		JsonResult<GradeSchemeDetail> js = new JsonResult<GradeSchemeDetail>();
+		js.setCode(new Integer(1));
+		js.setMessage("删除失败!");
+		try {					
+			int state= gradeSchemeDetailService.deleteByPrimaryKey(id);
+			if(state==1){
+				js.setCode(new Integer(0));
+				js.setMessage("删除成功!");
+				return js;
+			}else {
+				return js;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}			
+		return js;
+	}
 	
 	/**
 	 * 跳转到新增/编辑方案
 	 * @param request
 	 * @param response
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping("/casedetailInfo.do")
 	@RequiresPermissions("manage/casedetail/casedetailInfo.do")
-	public String exitCasedetail(@RequestParam(value = "id", required = false) Integer id,
-			HttpServletRequest request, HttpServletResponse response){
+	public String exitCasedetail(GradeSchemeDetail detail,
+			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
 		
-		//获取方案集合
+		
 		GradeSchemeDetail schemeDetail= new GradeSchemeDetail();
-		schemeDetail=gradeSchemeDetailService.getGradeSchemeDetailById(id);
+		//若为编辑回显指标属性
+		if(detail.getId() != null && detail.getId() != 0){
+			String pName=new String(detail.getpName().getBytes("iso8859-1"), "utf-8");
+			schemeDetail=gradeSchemeDetailService.getGradeSchemeDetailById(detail.getId());
+			schemeDetail.setpName(pName);
+		}
+		
 		request.setAttribute("SchemeDetail", schemeDetail);
 		
 		return "web/manage/casedetail/casedetailInfo";

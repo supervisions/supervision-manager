@@ -20,4 +20,6 @@ public interface ResourceService {
 
 	boolean deleteResourceById(Integer id);
 
+	List<ResourceConfig> getResourceListBymoudleId(ResourceConfig resourceConfig);
+
 }

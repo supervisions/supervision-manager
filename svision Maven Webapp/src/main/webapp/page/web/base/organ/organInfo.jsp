@@ -122,29 +122,17 @@
 							<td width="8%" align="right">机构名称</td>
 							<td><input id="orgName" class="easyui-validatebox"
 								name="name" type="text" doc="taskInfo" value="${Organ.name}"
-								required="true" validType="loginName"
+								required="true" validType="baseValue"
 								style="width:254px;height:28px;" /> <input type="hidden"
 								id="orgId" name="id" doc="taskInfo" value="${Organ.id}" /> <span
 								style="color:red">*</span></td>
 							<td width="8%"></td>
-						</tr>						
-						<%-- <tr>
-							<td width="8%" align="right">机构层级</td>
-							<td><input id="userAccount" name="path" type="text"
-								doc="taskInfo" value="${Organ.level}" required="true"
-								class="easyui-validatebox" validType="loginName"
-								style="width:254px;height:28px;" /> <span style="color:red">*</span>
-							</td>
-							<td width="8%"></td>
-						</tr>		 --%>							
+						</tr>								
 						<tr>
 							<input type="hidden" id="OrganName" value="" />
 							<td align="right" width="8%">所属机构:</td>
 							<td>							
 								<input id="orgPid" name="pid" type="hidden" value="${Organ.pid }" />
-								<%-- <input type="hidden" id="organName" value="${Organ.organName}"/> --%>
-								<!-- <input id="orgParentTree" name="orgId" type="text" 						
-								class="easyui-tree" style="width:254px;height:28px;"  data-options="checkbox:true" /> -->
 								<input id="orgParentTree" name="" value="" style="width:254px;height:28px;" checkbox="true"  class="easyui-combotree" />
 								
 								<span style="color:red">*</span>

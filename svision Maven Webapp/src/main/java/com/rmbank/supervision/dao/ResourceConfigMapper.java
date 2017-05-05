@@ -25,4 +25,6 @@ public interface ResourceConfigMapper {
 
 	List<ResourceConfig> getExistRresource(ResourceConfig resourceConfig);
 
+	List<ResourceConfig> getResourceListBymoudleId(ResourceConfig resourceConfig);
+
 }

@@ -113,7 +113,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<tr>
 						<td width="8%" align="right">用户名称:</td>
 						<td> 
-							<input id="userName" class="easyui-validatebox" name="name" type="text"  doc="taskInfo" value="${User.name}" required="true" validType="loginName" style="width:254px;height:28px;"/>
+							<input id="userName" class="easyui-validatebox" name="name" type="text"  doc="taskInfo" value="${User.name}" required="true" validType="baseValue" style="width:254px;height:28px;"/>
 							<input type="hidden" id="userId" name="id" doc="taskInfo" value="${User.id}"/>								
 							<span style="color:red">*</span>
 						</td>
@@ -125,7 +125,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td>
 								<input id="userAccount" name="account" type="text"
 								doc="taskInfo" value="${User.account}" required="true"
-								class="easyui-validatebox" validType="loginName"
+								class="easyui-validatebox" validType="baseValue"
 								style="width:254px;height:28px;" />
 								<span style="color:red">*</span>
 							</td>
@@ -160,9 +160,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<c:forEach var="userOrg" items="${userOrgList}">
 								<input name="userOrgId" type="hidden" value="${userOrg.id }" />
 							</c:forEach>
-							<input id="orgName" name="orgName" type="hidden" value="${User.orgName }" />
-							<!-- <input id="orgParentTree" name="orgId" type="text" 						
-							class="easyui-tree" style="width:254px;height:28px;"  data-options="checkbox:true" /> -->
+							<input id="orgName" name="orgName" type="hidden" value="${User.orgName }" />				
 							<input id="orgParentTree" name="orgId" value="" style="width:254px;height:28px;" checkbox="true"  class="easyui-combotree" />
 							
 							<span style="color:red">*</span>
@@ -172,8 +170,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<tr>
 						<td width="8%" align="right">职务名称</td>
 						<td><select name="postId" multiple="multiple" class="easyui-combobox"
-							style="width:254px;height:28px;">
-								
+							style="width:254px;height:28px;">								
 								<c:forEach var="position" items="${meatListByKey}">
 									<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
 								</c:forEach>

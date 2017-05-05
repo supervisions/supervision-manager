@@ -131,5 +131,9 @@
 		and re.resource = #{resource,jdbcType=VARCHAR} 
 	</if>  	
   </select>
-  
+  <select id="getResourceListBymoudleId" parameterType="com.rmbank.supervision.model.ResourceConfig" resultMap="BaseResultMap">
+  	SELECT r.*,f.name AS functionName 
+  	FROM t_resource r, t_function f 
+  	where moudle_id=#{moudleId,jdbcType=VARCHAR}
+  </select>
 </mapper>

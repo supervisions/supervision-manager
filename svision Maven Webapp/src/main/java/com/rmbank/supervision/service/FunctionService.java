@@ -11,5 +11,7 @@ public interface FunctionService {
 	List<FunctionMenu> getFunctionMenusByUserRoles(List<Role> roleList);
 
 	List<FunctionMenu> getOrganByParentId(FunctionMenu functionMenu);
+
+	List<FunctionMenu> getFunctionMenuList(FunctionMenu functionMenu);
  
 }

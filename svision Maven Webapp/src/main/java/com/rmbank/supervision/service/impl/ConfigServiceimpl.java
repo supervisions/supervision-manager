@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+
 import com.rmbank.supervision.dao.MetaMapper;
 import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.service.ConfigService;
@@ -145,6 +146,21 @@ public class ConfigServiceimpl implements ConfigService {
 	public List<Meta> getUserPost() {
 		// TODO Auto-generated method stub
 		return metaMapper.getUserPost();
+	}
+
+	/**
+	 * 根据id删除配置
+	 */
+	@Override
+	public boolean deleteMetaById(Integer id) {
+		boolean isSuccess = false;
+		try{
+			metaMapper.deleteByPrimaryKey(id);
+			isSuccess = true;
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return isSuccess;
 	}
 
 }

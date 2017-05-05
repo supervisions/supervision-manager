@@ -97,9 +97,6 @@ public class ResourceAction extends SystemAction {
 		return "web/base/resource/resourceInfo";
 	}
 	
-	/**
-	 * 
-	 */
 	
 	/**
 	 * 新增/编辑资源

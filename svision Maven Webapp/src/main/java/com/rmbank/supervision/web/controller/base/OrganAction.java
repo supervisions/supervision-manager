@@ -286,15 +286,6 @@ public class OrganAction extends SystemAction {
 
 		List<Organ> list = new ArrayList<Organ>();
 		list = organService.getOrganByPId(organ);
-		// for(Organ a:list){
-		// a.setName(a.getName());
-		// if(a.getChildrenCount() > 0){
-		// a.setState("closed");
-		// }else{
-		// a.setChildren(new ArrayList<Organ>());
-		// a.setState("open");
-		// }
-		// }
 		// 加载子节点，方式一，无子节点则无展开按钮
 		for (Organ a : list) {
 			a.setText(a.getName());

@@ -1,5 +1,7 @@
 package com.rmbank.supervision.dao;
 
+import java.util.List;
+
 import com.rmbank.supervision.model.RoleResource;
 @MyBatisRepository
 public interface RoleResourceMapper {
@@ -14,4 +16,8 @@ public interface RoleResourceMapper {
     int updateByPrimaryKeySelective(RoleResource record);
 
     int updateByPrimaryKey(RoleResource record);
+
+	List<RoleResource> selectByRoleId(Integer roleId);
+
+	int deleteByRoleId(Integer roleId);
 }

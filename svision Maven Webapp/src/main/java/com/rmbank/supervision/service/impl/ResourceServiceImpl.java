@@ -96,4 +96,11 @@ public class ResourceServiceImpl implements ResourceService {
 		return isSuccess;
 	}
 
+	@Override
+	public List<ResourceConfig> getResourceListBymoudleId(
+			ResourceConfig resourceConfig) {
+		// TODO Auto-generated method stub
+		return resourceConfigMapper.getResourceListBymoudleId(resourceConfig);
+	}
+
 }

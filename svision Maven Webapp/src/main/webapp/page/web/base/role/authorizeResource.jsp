@@ -38,12 +38,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 
 	
 	
-	function saveRole(obj){ 
-		var userName = $("#userName").val();
-		var userAccount = $("#userAccount").val();
-		var pwd = $("#pwd").val();
-		var ppwd = $("#ppwd").val();			
-		
+	function saveRole(obj){ 		
 		if ($('#userInfoForm').form('validate')) {			
 			$(obj).attr("onclick", "");				 
 			$('#userInfoForm').form('submit',{				 
@@ -76,8 +71,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	<div class="fl yw-lump mt10">
 		<div class="yw-bi-rows">
 			<div class="yw-bi-tabs mt5" id="ywTabs">
-			<span class="yw-bi-now">基本信息</span>
-				
+			<span class="yw-bi-now">资源授权</span>
 			</div>
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
@@ -86,27 +80,23 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div>
-			<form id="userInfoForm" name="userInfoForm" action="<%=basePath%>system/role/jsonSaveOrUpdateRole.do" method="post">
+			<form id="userInfoForm" name="userInfoForm" action="<%=basePath%>system/role/jsonSaveOrUpdateRoleResource.do" method="post">
 				<div id="tab1" class="yw-tab">
+				<span style="font-size: 20px">当前角色:</span><input class="easyui-validatebox" readonly="readonly" value="${resourceConfig.name }"style="width:228px;height:20px; padding-left: 12px; background-color: #ccc;"/>		
 				<table class="yw-cm-table font16" id="taskTable">
+					<input type="hidden" name="roleId" value="${resourceConfig.id }">
+					<c:forEach var="item" items="${resourceList }">
 					<tr>
-						<td width="8%" align="right">角色名称:</td>
-						<td> 
-							<input id="userName" class="easyui-validatebox" name="name" type="text"  doc="taskInfo" value="${Role.name}" required="true" validType="baseValue" style="width:254px;height:28px;"/>
-							<input type="hidden" id="" name="id" doc="taskInfo" value="${Role.id}"/>								
-							<span style="color:red">*</span>
-						</td>
-						<td width="8%"></td>
-					</tr> 
-					<tr>
-						<td width="8%" align="right">角色描述:</td>
-						<td> 
-							<input id="userAccount" name="description" type="text"  doc="taskInfo" value="${Role.description}" required="true" class="easyui-validatebox" validType="baseValue" style="width:254px;height:28px;"/>								
-							<span style="color:red">*</span>
-						</td>
-						<td width="8%"></td>
+						<td style="color: red;">${item.name }</td>
+					</tr>
+					<tr>						
+						<c:forEach var="rse" items="${item.itemList }">
+							<td>
+								<label><input type="checkbox"  name="resourceId" value="${rse.id }" <c:forEach var="roleResource" items="${roleResourceList }"><c:if test="${roleResource.resourceId ==rse.id  }">checked="checked"</c:if></c:forEach>>${rse.name }</label>
+							</td>
+						</c:forEach>
 					</tr> 	
-                                   
+                    </c:forEach>               
 				</table>  
 				</div>
 			</form>

@@ -186,10 +186,10 @@
 			and (o.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')	
 			)
 		</if>	
-		order by o.id asc
+		<!--order by o.id asc
 		<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">			
 			limit #{pageStart}, #{pageSize}
-		</if>
+		</if> -->
 	</select>
 	
 	<select id="getOrganByPId" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.Organ">

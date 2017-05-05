@@ -89,16 +89,23 @@ public class CasemanageAction {
 	 * @param request
 	 * @param response
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping("/casemanageInfo.do")
 	@RequiresPermissions("manage/casemanage/casemanageInfo.do")
-	public String exitGradeScheme(@RequestParam(value = "id", required = false) Integer id,
-			HttpServletRequest request, HttpServletResponse response){
+	public String exitGradeScheme(
+			@RequestParam(value = "id", required = false) Integer id,
+			@RequestParam(value = "orgName", required = false) String orgName,
+			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
 		//根据参数id判断是新增还是编辑，新增为0，不用传值；编辑为选中的参数id值，取对象，传值
+		if(orgName!= null && orgName != ""){
+			orgName =  new String(orgName.getBytes("iso8859-1"), "utf-8");
+		}
 		if(id != null && id != 0){
 			GradeScheme gradeScheme = new GradeScheme();
 			try{
 				gradeScheme = gradeSchemeService.selectByPrimaryKey(id);
+				gradeScheme.setOrgName(orgName);
 			}catch(Exception ex){
 				ex.printStackTrace();
 			}

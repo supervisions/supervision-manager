@@ -3,13 +3,12 @@ package com.rmbank.supervision.web.controller.base;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -17,10 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.model.FunctionResourceVM;
+import com.rmbank.supervision.model.ResourceConfig;
 import com.rmbank.supervision.model.Role;
+import com.rmbank.supervision.model.RoleResource;
+import com.rmbank.supervision.service.FunctionService;
+import com.rmbank.supervision.service.ResourceService;
+import com.rmbank.supervision.service.RoleResourceService;
 import com.rmbank.supervision.service.RoleService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
@@ -35,7 +39,13 @@ public class RoleAction extends SystemAction {
 	 */
 	@Resource
 	private RoleService roleService;
-
+	@Resource
+	private RoleResourceService roleResourceService;
+	@Resource
+	private FunctionService functionService;
+	@Resource
+	private ResourceService resourceService;
+	
 	/**
 	 * 角色列表
 	 * 
@@ -76,6 +86,106 @@ public class RoleAction extends SystemAction {
 		request.setAttribute("roleList", roleList);
 
 		return "web/base/role/roleList";
+	}
+
+	/**
+	 * 跳转到资源授权页面 
+	 * @throws UnsupportedEncodingException 
+	 **/
+	@RequestMapping(value = "/toAuthorizationResource.do")
+	@RequiresPermissions("system/role/toAuthorizationResource.do")
+	public String authorizeResource(ResourceConfig resourceConfig,
+			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{		
+		//根据角色id回显该角色对应的资源
+		List<RoleResource> roleResourceList=roleResourceService.selectByRoleId(resourceConfig.getId());
+		request.setAttribute("roleResourceList", roleResourceList);
+		
+		//根据moudleId获取资源
+		ResourceConfig resource=new ResourceConfig();
+		//List<ResourceConfig> resourceList=resourceService.getResourceListBymoudleId(resourceConfig);
+		List<ResourceConfig> resourceList=resourceService.getResourceList(resource);
+		List<FunctionResourceVM> list = new ArrayList<FunctionResourceVM>();
+		
+		
+		/*Collections.sort(resourceList, new Comparator<ResourceConfig>() {
+            public int compare(ResourceConfig arg0, ResourceConfig arg1) {
+                return arg0.getMoudleId().compareTo(arg1.getMoudleId());
+            }
+        });*/
+		
+		
+		int tempId = 0;
+		FunctionResourceVM frvm = null;
+		Map<Integer,Integer> map = new HashMap<Integer,Integer>();
+		for(ResourceConfig rc : resourceList){
+			if(tempId != rc.getMoudleId()){
+				tempId = rc.getMoudleId(); 
+				frvm = new FunctionResourceVM();
+			}else{ 
+				List<ResourceConfig> itemList = new ArrayList<ResourceConfig>();//用于当做FunctionResourceVM的itemList
+				
+				frvm.setId(rc.getMoudleId());
+				frvm.setName(rc.getFunctionName());
+				for(ResourceConfig rc1 : resourceList){
+					if(rc1.getMoudleId() == tempId){ 
+						itemList.add(rc1);
+					}
+				}
+				frvm.setItemList(itemList);
+				if(map.isEmpty()){
+					list.add(frvm);
+					map.put(frvm.getId(), frvm.getId());
+				}else{
+					if(map.get(frvm.getId()) == null){ 
+						list.add(frvm);
+						map.put(frvm.getId(), frvm.getId());
+					}
+				}
+			}
+		}
+		 
+		request.setAttribute("resourceList", list);
+		request.setAttribute("resourceConfig", resourceConfig);
+		return "web/base/role/authorizeResource";
+	}
+	
+	/**
+	 * 资源授权
+	 * @param roleId
+	 * @param resourceIds
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/jsonSaveOrUpdateRoleResource.do", method = RequestMethod.POST)
+	@RequiresPermissions("system/role/jsonSaveOrUpdateRoleResource.do")
+	public JsonResult<RoleResource> jsonSaveOrUpdateRoleResource(
+			@RequestParam(value="roleId", required=false) Integer roleId,
+			@RequestParam(value="resourceId", required=false) Integer [] resourceIds,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		// 新建一个json对象 并赋初值
+		JsonResult<RoleResource> js = new JsonResult<RoleResource>();
+		js.setCode(new Integer(1));
+		js.setMessage("保存失败!");
+		boolean state = false;
+		try {
+			//当roleId不等于0并且不等于null的时候才去新增
+			if (roleId != 0 && roleId !=null) {
+				state = roleResourceService.saveRoleResource(roleId,resourceIds);
+				if (state) {
+					js.setCode(new Integer(0));
+					js.setMessage("保存成功!");
+					return js;
+				} else {
+					return js;
+				}
+			}				
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return js;
 	}
 
 	/**

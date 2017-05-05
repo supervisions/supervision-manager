@@ -34,5 +34,7 @@ public interface ConfigService {
 
 	List<Meta> getUserPost();
 
+	boolean deleteMetaById(Integer id);
+
 	
 }

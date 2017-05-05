@@ -27,8 +27,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
   				 editable:false, //是否支持用户自定义输入	
   				 cascadeCheck:false, //是否支持级联选中 				 		 
   				 onSelect:function(record){ // 	当节点被选中时触发。
-  				 		alert(record.name);
-				 	 	$("#orgId").val(record.id); 
+				 	//alert(record.name);
+			 	 	$("#orgId").val(record.id); 
   				 },
   				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。
   				 	$("#orgParentTree").combotree('tree').tree('options').url = 'area/jsonLoadAreaTreeList.do?pid='+ node.id;
@@ -107,7 +107,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td width="10%" align="right">方案名称：</td>
 							<td><input id="" class="easyui-validatebox"
 								name="name" type="text" doc="taskInfo" value="${GradeScheme.name}"
-								required="true" validType="loginName"
+								required="true" validType="baseValue"
 								style="width:254px;height:28px;" /> <input type="hidden"
 								id="resourceId" name="id" doc="taskInfo" value="${GradeScheme.id}" /> <span
 								style="color:red">*</span></td>
@@ -116,6 +116,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td width="10%" align="right">所属机构：</td>
 							<td>
+								
 								<input type="hidden" id="orgName" value="${GradeScheme.orgName }"/>
 								<input type="hidden" id="orgId" value="${GradeScheme.orgId}"/>
 								<input id="orgParentTree" name="orgId" value="" style="width:254px;height:28px;" class="easyui-combotree" />

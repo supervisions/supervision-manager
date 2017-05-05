@@ -117,7 +117,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td width="8%" align="right">资源名称</td>
 							<td><input id="" class="easyui-validatebox"
 								name="name" type="text" doc="taskInfo" value="${ResourceConfig.name}"
-								required="true" validType="loginName"
+								required="true" validType="baseValue"
 								style="width:254px;height:28px;" /> <input type="hidden"
 								id="resourceId" name="id" doc="taskInfo" value="${ResourceConfig.id}" /> <span
 								style="color:red">*</span></td>
@@ -127,7 +127,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td width="8%" align="right">资源地址</td>
 							<td><input id="" class="easyui-validatebox"
 								name="resource" type="text" doc="taskInfo" value="${ResourceConfig.resource}"
-								required="true" validType="loginName"
+								required="true" validType=""
 								style="width:254px;height:28px;" /> 
 								<span style="color:red">*</span>
 							</td>							
