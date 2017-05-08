@@ -112,7 +112,7 @@
       used = #{used,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  
+  <!-- 超级管理员获取资源 -->
    <select id="getFunctionMenuByCondition" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.FunctionMenu" >
     select
     <include refid="Base_Column_List" /> 
@@ -123,6 +123,7 @@
     </if> 
     order by sort asc
   </select>
+  
   <sql id="sql_query">
 	from t_function as fun
 	where 1=1
@@ -145,4 +146,9 @@
   	<include refid="Base_Column_List" />
 	<include refid="sql_query" /> 
   </select>
+  <select id="getFunctionMenusById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" />
+  	from t_function where id=#{id,jdbcType=INTEGER}
+  </select>
+  
 </mapper>

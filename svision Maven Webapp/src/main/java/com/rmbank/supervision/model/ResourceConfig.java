@@ -13,7 +13,21 @@ public class ResourceConfig extends Page{
 
     private String resource;
     
-    //moudle_id对应的function的name
+    private String parentName;
+    
+    private Integer parentId; 
+    
+    private String url;
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	//moudle_id对应的function的name
     private String functionName;
     
     public Integer getId() {
@@ -62,5 +76,20 @@ public class ResourceConfig extends Page{
 
 	public void setMoudleId(Integer moudleId) {
 		this.moudleId = moudleId;
+	}
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 }

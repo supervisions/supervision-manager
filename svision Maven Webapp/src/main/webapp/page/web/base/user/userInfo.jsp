@@ -59,6 +59,16 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 });	
 	//新增or修改用户
 	function saveOrUpdateUser(obj){ 
+		var orgId=$("input[name='orgId']").val();
+		if(orgId==undefined){
+			$.messager.alert("温馨提示！","请选择所属机构!",'error');
+			return false;
+		}
+		var postId=$("input[name='postId']").val();
+		if(postId==undefined || postId==""){
+			$.messager.alert("温馨提示！","请选择用户职务!",'error');
+			return false;
+		}
 		var roleId=$("input[name='roleId']").is(':checked');
 		if(roleId==false){	
 			$.messager.alert("温馨提示！","请选择用户角色!",'error');
@@ -170,7 +180,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<tr>
 						<td width="8%" align="right">职务名称</td>
 						<td><select name="postId" multiple="multiple" class="easyui-combobox"
-							style="width:254px;height:28px;">								
+							style="width:254px;height:28px;" editable="false">								
 								<c:forEach var="position" items="${meatListByKey}">
 									<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
 								</c:forEach>

@@ -3,6 +3,7 @@ package com.rmbank.supervision.service;
 import java.util.List;
 
 import com.rmbank.supervision.model.ResourceConfig;
+import com.rmbank.supervision.model.Role;
 
 public interface ResourceService {
 
@@ -22,4 +23,5 @@ public interface ResourceService {
 
 	List<ResourceConfig> getResourceListBymoudleId(ResourceConfig resourceConfig);
 
+	List<ResourceConfig> getResourceConfigsByUserRoles(List<Role> roleList);
 }

@@ -13,5 +13,7 @@ public interface FunctionService {
 	List<FunctionMenu> getOrganByParentId(FunctionMenu functionMenu);
 
 	List<FunctionMenu> getFunctionMenuList(FunctionMenu functionMenu);
+
+	FunctionMenu getFunctionMenusById(Integer moudleId);
  
 }

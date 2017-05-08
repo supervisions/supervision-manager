@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService {
                         null);
 //                token.setRememberMe(rememberMe);
                 subject.login(token);
+                boolean state = subject.isAuthenticated();
                 if (subject.isAuthenticated()) {
                     res.setCode(Integer.valueOf(1));
                     res.setMessage("登录成功！");

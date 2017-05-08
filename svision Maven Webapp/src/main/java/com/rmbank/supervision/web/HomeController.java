@@ -10,23 +10,27 @@ import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.model.FunctionMenu;
 import com.rmbank.supervision.model.ResourceConfig;
 import com.rmbank.supervision.model.Role;
+import com.rmbank.supervision.model.RoleResource;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.FunctionService;
 import com.rmbank.supervision.service.ResourceService;
+import com.rmbank.supervision.service.RoleResourceService;
 import com.rmbank.supervision.service.RoleService;
 import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class HomeController extends SystemAction {
@@ -43,6 +47,9 @@ public class HomeController extends SystemAction {
     @Resource(name="roleService")
     private RoleService roleService;
 
+    @Resource(name="roleResourceService")
+    private RoleResourceService roleResourceService;
+    
     /***
      * 首页 返回至/page/login.jsp页面
      * @return
@@ -68,15 +75,102 @@ public class HomeController extends SystemAction {
                 List<FunctionMenu> lf = new ArrayList<FunctionMenu>(); 
 //                //不是超级管理员
                 if(!u.getAccount().equals(Constants.USER_SUPER_ADMIN_ACCOUNT)){
-                    //获取当前用户资源  
+                    //获取当前用户角色  
                     List<Role> roleList = roleService.getRolesByUserId(u.getId());
-                    lf = functionService.getFunctionMenusByUserRoles(roleList);
+                    /*//根据角色查询资源
+                    List<RoleResource> roleResourceList=new ArrayList<RoleResource>();                    
+                    for (Role role : roleList) {
+                    	List<RoleResource> rrl=new ArrayList<RoleResource>();
+                    	rrl=roleResourceService.selectByRoleId(role.getId());
+                    	roleResourceList.addAll(rrl);
+					}
+                    //用户角色所对应的资源
+                    List<ResourceConfig> resourceList = new ArrayList<ResourceConfig>(); 
+                    for (RoleResource roleResource : roleResourceList) {
+                    	ResourceConfig resourceById=new ResourceConfig();
+                    	resourceById = resourceService.getResourceById(roleResource.getResourceId());
+                    	resourceList.add(resourceById);
+                    }
+                    //根据用户对应的资源查询function  
+                    List<FunctionMenu> fList=new ArrayList<FunctionMenu>();
+                    Map<String,String> map = new HashMap<String,String>();
+                    FunctionMenu functionMenu=null;
+                    for(ResourceConfig rcf : resourceList) {
+                    	functionMenu=functionService.getFunctionMenusById(rcf.getMoudleId());
+                    	if(map.isEmpty()){
+                    		fList.add(functionMenu);
+         					map.put(functionMenu.getName(), functionMenu.getName());
+         				}else{
+	     					if(map.get(functionMenu.getName())==null){ 
+	     						fList.add(functionMenu);
+	     						map.put(functionMenu.getName(), functionMenu.getName());
+	     					}
+         				}
+                    	 //lf.add(functionMenu);        
+					}
+                    Map<String,String> map1 = new HashMap<String,String>();
+                    FunctionMenu functionMenusById=null;
+                    for (FunctionMenu am : fList) {
+                    	functionMenusById = functionService.getFunctionMenusById(am.getParentId());
+                    	if(map1.isEmpty()){
+                    		lf.add(functionMenusById);
+                    		map1.put(functionMenusById.getName(), functionMenusById.getName());
+         				}else{
+	     					if(map1.get(functionMenusById.getName())==null){ 
+	     						lf.add(functionMenusById);
+	     						map1.put(functionMenusById.getName(), functionMenusById.getName());
+	     					}
+         				}
+                    	
+					}*/
+                    
+                    //根据用户角色查询一级按钮
+                   	//lf = functionService.getFunctionMenusByUserRoles(roleList);
+                    List<ResourceConfig> ResourceConfigList = resourceService.getResourceConfigsByUserRoles(roleList);
+                    FunctionMenu FM=new FunctionMenu();
+                    Map<Integer,Integer> map = new HashMap<Integer,Integer>();
+                    for(ResourceConfig rcfl : ResourceConfigList){
+                    	if(map.isEmpty()){
+                    		FM.setName(rcfl.getParentName());
+                    		FM.setUrl(rcfl.getUrl());
+                    	}else{
+                    		FM.setName(rcfl.getParentName());
+                    		Map<Integer,Integer> map1 = new HashMap<Integer,Integer>();
+    	                    List<FunctionMenu> functionMenu=new ArrayList<FunctionMenu>();
+    	                    for (ResourceConfig rcf : ResourceConfigList) {
+    	                    	FunctionMenu fm=new FunctionMenu();
+    	                    	fm.setName(rcf.getFunctionName());
+    	                    	fm.setLeaf(1);
+    	                    	fm.setUrl(rcf.getUrl());
+    	                    	fm.setParentId(rcf.getParentId());
+    	                    	if(map1.isEmpty()){
+    	                    		functionMenu.add(fm);
+    	                    		map1.put(rcf.getMoudleId(), rcf.getParentId());
+    	         				}else{
+    		     					if(map1.get(rcf.getMoudleId())==null && map1.get(rcf.getParentId())==null){ 
+    		     						functionMenu.add(fm);
+    		     						map1.put(rcf.getMoudleId(), rcf.getParentId());
+    		     					}
+    	         				}
+    						}
+    	                    FM.setChildren(functionMenu);
+    	                    lf.add(FM);
+						}
+	                    
+                    }
+                    /*FunctionMenu functionMenu=new FunctionMenu();
+                    functionMenu.setName("基础管理");
+                    functionMenu.setUrl("system/user/userList.do");
+                    functionMenu.setParentId(8);                    
+                    lf.add(functionMenu);*/
+                    
                 }
                 else{
+                	List<FunctionMenu> functionMenuByParentId = this.functionService.getFunctionMenuByParentId(0);
                     lf = parseFunctionMenuList(this.functionService.getFunctionMenuByParentId(0));
                 } 
                 request.getSession().setAttribute(Constants.USER_SESSION_RESOURCE, lf);
-               
+                
                 json.setGotoUrl(((FunctionMenu)lf.get(0)).getUrl()); 
                 ((User)res.getResultObject()).setSelectedMainMemu(((FunctionMenu)lf.get(0)).getId().intValue());
                 if(((FunctionMenu)lf.get(0)).getChildMenulist() != null){

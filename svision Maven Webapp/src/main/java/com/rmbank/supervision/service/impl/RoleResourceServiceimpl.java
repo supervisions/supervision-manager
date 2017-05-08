@@ -54,23 +54,25 @@ public class RoleResourceServiceimpl implements RoleResourceService {
 		return 0;
 	}
 
+	
 	@Override
 	public boolean saveRoleResource(Integer roleId, Integer[] resourceIds) {
 		// TODO Auto-generated method stub
 		boolean isSuccess = false;
 		try {
 			roleResourceMapper.deleteByRoleId(roleId);
-			for (Integer resId : resourceIds) {
-				RoleResource roleResource=new RoleResource();
-				roleResource.setId(0);
-				roleResource.setRoleId(roleId);
-				roleResource.setResourceId(resId);
-				roleResource.setControl(1);
-				roleResourceMapper.insert(roleResource);
+			if(resourceIds!=null){
+				for (Integer resId : resourceIds) {
+					RoleResource roleResource=new RoleResource();
+					roleResource.setId(0);
+					roleResource.setRoleId(roleId);
+					roleResource.setResourceId(resId);
+					roleResource.setControl(1);
+					roleResourceMapper.insert(roleResource);
+				}
 			}
 			isSuccess = true;
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return isSuccess;
@@ -81,5 +83,7 @@ public class RoleResourceServiceimpl implements RoleResourceService {
 		// TODO Auto-generated method stub
 		return roleResourceMapper.selectByRoleId(id);
 	}
+
+	
 
 }

@@ -136,4 +136,15 @@
   	FROM t_resource r, t_function f 
   	where moudle_id=#{moudleId,jdbcType=VARCHAR}
   </select>
+  <select id="getResourceConfigsByUserRoles" parameterType="java.util.List" resultMap="BaseResultMap">
+  	SELECT r.*,f.`name` AS functionName,f.`parent_id` AS parentId,f.url,
+	(SELECT ff.name FROM t_function ff WHERE ff.id = f.`parent_id`)AS parentName
+	FROM t_role_resource rr
+	LEFT JOIN t_resource r ON rr.`resource_id` = r.`id`
+	LEFT JOIN t_function f ON r.`moudle_id` = f.`id`
+	WHERE rr.`role_id` in
+	<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+	  #{item.id,jdbcType=INTEGER}  
+	</foreach>  
+  </select>
 </mapper>

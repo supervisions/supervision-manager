@@ -29,6 +29,8 @@ public class FunctionMenu extends Page{
 
     private int selected;
     
+    private List<FunctionMenu> childMenulist; 
+    
     public Integer getChildrenCount() {
 		return childrenCount;
 	}
@@ -61,7 +63,7 @@ public class FunctionMenu extends Page{
 		this.selected = selected;
 	}
 
-    private List<FunctionMenu> childMenulist; 
+   
     
     public Integer getId() {
         return id;

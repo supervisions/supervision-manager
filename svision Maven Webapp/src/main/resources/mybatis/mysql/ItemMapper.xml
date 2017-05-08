@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rmbank.supervision.dao.ItemMapper" >
+  <resultMap id="BaseResultMap" type="com.rmbank.supervision.model.Item" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="supervision_type_id" property="supervisionTypeId" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="stage_index" property="stageIndex" jdbcType="TINYINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="supervision_org_id" property="supervisionOrgId" jdbcType="INTEGER" />
+    <result column="supervision_user_id" property="supervisionUserId" jdbcType="INTEGER" />
+    <result column="preparer_org_id" property="preparerOrgId" jdbcType="INTEGER" />
+    <result column="preparer_id" property="preparerId" jdbcType="INTEGER" />
+    <result column="preparer_time" property="preparerTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, supervision_type_id, pid, stage_index, name, supervision_org_id, supervision_user_id, 
+    preparer_org_id, preparer_id, preparer_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_item
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.rmbank.supervision.model.Item" >
+    insert into t_item (id, supervision_type_id, pid, 
+      stage_index, name, supervision_org_id, 
+      supervision_user_id, preparer_org_id, preparer_id, 
+      preparer_time)
+    values (#{id,jdbcType=INTEGER}, #{supervisionTypeId,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, 
+      #{stageIndex,jdbcType=TINYINT}, #{name,jdbcType=VARCHAR}, #{supervisionOrgId,jdbcType=INTEGER}, 
+      #{supervisionUserId,jdbcType=INTEGER}, #{preparerOrgId,jdbcType=INTEGER}, #{preparerId,jdbcType=INTEGER}, 
+      #{preparerTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rmbank.supervision.model.Item" >
+    insert into t_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="supervisionTypeId != null" >
+        supervision_type_id,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="stageIndex != null" >
+        stage_index,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="supervisionOrgId != null" >
+        supervision_org_id,
+      </if>
+      <if test="supervisionUserId != null" >
+        supervision_user_id,
+      </if>
+      <if test="preparerOrgId != null" >
+        preparer_org_id,
+      </if>
+      <if test="preparerId != null" >
+        preparer_id,
+      </if>
+      <if test="preparerTime != null" >
+        preparer_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="supervisionTypeId != null" >
+        #{supervisionTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="stageIndex != null" >
+        #{stageIndex,jdbcType=TINYINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="supervisionOrgId != null" >
+        #{supervisionOrgId,jdbcType=INTEGER},
+      </if>
+      <if test="supervisionUserId != null" >
+        #{supervisionUserId,jdbcType=INTEGER},
+      </if>
+      <if test="preparerOrgId != null" >
+        #{preparerOrgId,jdbcType=INTEGER},
+      </if>
+      <if test="preparerId != null" >
+        #{preparerId,jdbcType=INTEGER},
+      </if>
+      <if test="preparerTime != null" >
+        #{preparerTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rmbank.supervision.model.Item" >
+    update t_item
+    <set >
+      <if test="supervisionTypeId != null" >
+        supervision_type_id = #{supervisionTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="stageIndex != null" >
+        stage_index = #{stageIndex,jdbcType=TINYINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="supervisionOrgId != null" >
+        supervision_org_id = #{supervisionOrgId,jdbcType=INTEGER},
+      </if>
+      <if test="supervisionUserId != null" >
+        supervision_user_id = #{supervisionUserId,jdbcType=INTEGER},
+      </if>
+      <if test="preparerOrgId != null" >
+        preparer_org_id = #{preparerOrgId,jdbcType=INTEGER},
+      </if>
+      <if test="preparerId != null" >
+        preparer_id = #{preparerId,jdbcType=INTEGER},
+      </if>
+      <if test="preparerTime != null" >
+        preparer_time = #{preparerTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rmbank.supervision.model.Item" >
+    update t_item
+    set supervision_type_id = #{supervisionTypeId,jdbcType=INTEGER},
+      pid = #{pid,jdbcType=INTEGER},
+      stage_index = #{stageIndex,jdbcType=TINYINT},
+      name = #{name,jdbcType=VARCHAR},
+      supervision_org_id = #{supervisionOrgId,jdbcType=INTEGER},
+      supervision_user_id = #{supervisionUserId,jdbcType=INTEGER},
+      preparer_org_id = #{preparerOrgId,jdbcType=INTEGER},
+      preparer_id = #{preparerId,jdbcType=INTEGER},
+      preparer_time = #{preparerTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

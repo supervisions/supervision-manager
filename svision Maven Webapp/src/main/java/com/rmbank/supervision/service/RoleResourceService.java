@@ -20,6 +20,8 @@ public interface RoleResourceService {
 	boolean saveRoleResource(Integer roleId, Integer[] resourceIds);
 
 	List<RoleResource> selectByRoleId(Integer id);
+
+	//List<RoleResource> getRoleResourceListByRoleId(Integer id);
 	
 
 }

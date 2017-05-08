@@ -40,4 +40,10 @@ public class FunctionServiceImpl implements FunctionService{
 		// TODO Auto-generated method stub
 		return functionMenuMapper.getFunctionMenuList(functionMenu);
 	}
+
+	@Override
+	public FunctionMenu getFunctionMenusById(Integer id) {
+		// TODO Auto-generated method stub
+		return functionMenuMapper.getFunctionMenusById(id);
+	}
 }

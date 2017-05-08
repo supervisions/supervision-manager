@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.rmbank.supervision.dao.ResourceConfigMapper;
 import com.rmbank.supervision.model.ResourceConfig;
+import com.rmbank.supervision.model.Role;
 import com.rmbank.supervision.service.ResourceService;
 @Service("resourceService")
 public class ResourceServiceImpl implements ResourceService {
@@ -101,6 +102,12 @@ public class ResourceServiceImpl implements ResourceService {
 			ResourceConfig resourceConfig) {
 		// TODO Auto-generated method stub
 		return resourceConfigMapper.getResourceListBymoudleId(resourceConfig);
+	}
+
+	@Override
+	public List<ResourceConfig> getResourceConfigsByUserRoles(List<Role> roleList) {
+		// TODO Auto-generated method stub
+		return resourceConfigMapper.getResourceConfigsByUserRoles(roleList);
 	}
 
 }

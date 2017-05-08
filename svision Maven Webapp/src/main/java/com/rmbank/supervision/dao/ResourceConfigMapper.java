@@ -3,6 +3,7 @@ package com.rmbank.supervision.dao;
 import java.util.List;
 
 import com.rmbank.supervision.model.ResourceConfig;
+import com.rmbank.supervision.model.Role;
 @MyBatisRepository
 public interface ResourceConfigMapper {
     int deleteByPrimaryKey(Integer id);
@@ -26,5 +27,6 @@ public interface ResourceConfigMapper {
 	List<ResourceConfig> getExistRresource(ResourceConfig resourceConfig);
 
 	List<ResourceConfig> getResourceListBymoudleId(ResourceConfig resourceConfig);
-
+	
+	List<ResourceConfig> getResourceConfigsByUserRoles(List<Role> roleList);
 }
