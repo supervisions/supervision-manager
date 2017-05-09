@@ -81,63 +81,56 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
 				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="yw-cm-table font16" id="taskTable">
+					<table class="yw-cm-table font16" id="taskTable" border="1">
 						<tr>
-							<td width="12%" align="right">项目名称：</td>
-							<td><input id="" class="easyui-validatebox"
-								name="name" type="text" doc="taskInfo" value=""
-								required="true" validType="baseValue"
-								style="width:254px;height:28px;" /> <input type="hidden"
-								id="resourceId" name="id" value="" /> <span
-								style="color:red">*</span></td>
-							<td width="12%"></td>
+							<td width="15%" align="right">项目名称：</td>
+							<td align="left">${Showitem.name }</td>
 						</tr>
 						<tr>
-							<td width="12%" align="right">项目分类：</td>
-							<td><select id="supervisionTypeId" name="supervisionTypeId" class="easyui-combobox"
-								style="width:254px;height:28px;">
-									<option value="-1">请选择项目分类</option>									
-									<c:forEach var="position" items="${meatListByKey}">
-										<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
-									</c:forEach>
-							</select> <span style="color:red">*</span></td>
-							<td width="8%"></td>
-						</tr>
-						<tr>							
-							<td width="12%" align="right">立项时间：</td>
-							<td align="left" required="true">								
-								<input id="" name="pTime" class="easyui-datebox" data-options="sharedCalendar:'#cc'" style="width:254px;height:28px;" />
-								<span style="color:red">*</span>
-								<div id="cc" class="easyui-calendar" style="width:254px;height:28px;"></div>
-							</td>								
+							<td width="15%" align="right">项目分类：</td>
+							<td align="left">${Showitem.sType }</td>
 						</tr>
 						<tr>
-							<td width="12%" align="right">工作要求、方案：</td>
-							<td>
-								<input class="easyui-validatebox" name="content" type="text" value=""
-								 required="true" validType="baseValue" style="width:254px;height:28px;" />
-								<span style="color:red">*</span>
-							</td>
-							<td width="8%"></td>
-						</tr>				
-					</table>
-					<table style="font-size: 16px;">
-						<tr>
-							<td align="left" style="padding-left: 63px;">选择单位：</td>
-							<td>
-								<c:forEach var="item" items="${OrgList }">
-									<tr><td style="font-weight: 900;">${item.name }</td></tr>
-									<tr style="width: 100%;">
-										<td>
-											<c:forEach var="org" items="${item.itemList }">
-												<label style="float:left;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
-											</c:forEach>
-										</td>
-									</tr>
-								</c:forEach>
-							</td>
+							<td width="15%" align="right">立项时间：</td>
+							<td align="left">${Showitem.showDate}</td>
 						</tr>
-					</table>
+						<tr>
+							<td width="15%" align="right">项目属性：</td>
+							<td align="left"></td>
+						</tr>
+						<tr>
+							<td width="15%" align="right">工作要求、方案：</td>
+							<td align="left"></td>
+						</tr>
+						<tr>
+							<td width="15%" align="right">上传资料：</td>
+							<td align="left"></td>
+						</tr>
+						<tr>
+							<td width="15%" align="right">监察结论：</td>
+							<td align="left"></td>
+						</tr>
+						<tr>
+							<td width="15%" align="right">整改意见：</td>
+							<td align="left"></td>
+						</tr>
+						<tr>
+							<td width="15%" align="right">整改报告：</td>
+							<td align="left"></td>
+						</tr>
+						<tr>
+							<td width="15%" align="right">跟踪监察：</td>
+							<td align="left"></td>
+						</tr>
+						<tr>
+							<td width="15%" align="right">上报跟踪监察整改报告：</td>
+							<td align="left"></td>
+						</tr>
+						<tr>
+							<td width="15%" align="right">其他：</td>
+							<td align="left"></td>
+						</tr>
+					</table>	
 				</div>
 			</form>
 		</div> 

@@ -1,7 +1,7 @@
 package com.rmbank.supervision.dao;
 
 import com.rmbank.supervision.model.ItemProcessFile;
-
+@MyBatisRepository
 public interface ItemProcessFileMapper {
     int deleteByPrimaryKey(Integer id);
 

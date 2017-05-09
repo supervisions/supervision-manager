@@ -108,9 +108,11 @@ public class CasedetailAction {
         GradeSchemeDetail detail = new GradeSchemeDetail();
         detail.setPid(pid);
         detail.setGradeId(gradeId);
+        
         if (detail.getPageNo() == null)
         	detail.setPageNo(1);
         detail.setPageSize(Constants.DEFAULT_PAGE_SIZE);
+        
         try{
             List<GradeSchemeDetail> lc = gradeSchemeDetailService.getSchemeDetailListByPidAndGradeId(detail);
             int totalCount = gradeSchemeDetailService.getGradeSchemeDetailCount(detail);

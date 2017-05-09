@@ -165,19 +165,15 @@
 		<include refid="sql_query"></include>
 	</select>
 	
-	<!-- <select id="getOrganList" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.Organ">
+	<select id="getOrganList" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.Organ">
 		select
-		<include refid="Base_Column_List" />,
-		(select p.name from t_org as p where p.pid = org.id) AS parentName
-		<include refid="sql_query" />
-		<if test="id != null and id !=''">			
-			
-		</if>
+		<include refid="Base_Column_List" />
+		<include refid="sql_query" />		
 		order by org.id asc
 		<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">			
 			limit #{pageStart}, #{pageSize}
 		</if>
-	</select> -->
+	</select>
 	<select id="getOrganListByPid" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.Organ">
 		SELECT o.*,o1.name AS parentName FROM t_org o
 		LEFT JOIN t_org o1 ON o.pid=o1.id

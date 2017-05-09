@@ -2,7 +2,11 @@ package com.rmbank.supervision.model;
 
 import java.util.Date;
 
-public class Item {
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.rmbank.supervision.common.utils.Page;
+
+public class Item extends Page {
     private Integer id;
 
     private Integer supervisionTypeId;
@@ -20,9 +24,16 @@ public class Item {
     private Integer preparerOrgId;
 
     private Integer preparerId;
-
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date preparerTime;
 
+    
+    private String orgName;
+    
+    private String sType;
+    
+    private String showDate;
     public Integer getId() {
         return id;
     }
@@ -102,4 +113,28 @@ public class Item {
     public void setPreparerTime(Date preparerTime) {
         this.preparerTime = preparerTime;
     }
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public String getsType() {
+		return sType;
+	}
+
+	public void setsType(String sType) {
+		this.sType = sType;
+	}
+
+	public String getShowDate() {
+		return showDate;
+	}
+
+	public void setShowDate(String showDate) {
+		this.showDate = showDate;
+	}
 }

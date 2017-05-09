@@ -40,7 +40,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
   				 		$("#pid").combotree("setText",pName);  				 		
   				 	}else{
 					//$("#moudleId").combotree("disable",true);
-   				 	$("#pid").combotree("setText","=请选择所属模块=");
+   				 	$("#pid").combotree("setText","=请选择所属指标=");
 				}
   			}
 		});	 	

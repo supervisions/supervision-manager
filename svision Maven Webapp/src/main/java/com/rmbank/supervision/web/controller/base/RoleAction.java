@@ -104,7 +104,7 @@ public class RoleAction extends SystemAction {
 		ResourceConfig resource=new ResourceConfig();
 		//List<ResourceConfig> resourceList=resourceService.getResourceListBymoudleId(resourceConfig);
 		List<ResourceConfig> resourceList=resourceService.getResourceList(resource);
-		List<FunctionResourceVM> list = new ArrayList<FunctionResourceVM>();
+		
 		
 		
 		/*Collections.sort(resourceList, new Comparator<ResourceConfig>() {
@@ -113,7 +113,7 @@ public class RoleAction extends SystemAction {
             }
         });*/
 		
-		
+		List<FunctionResourceVM> list = new ArrayList<FunctionResourceVM>();
 		int tempId = 0;
 		FunctionResourceVM frvm = null;
 		Map<Integer,Integer> map = new HashMap<Integer,Integer>();

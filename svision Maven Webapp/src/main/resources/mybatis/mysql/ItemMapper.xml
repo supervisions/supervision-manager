@@ -18,16 +18,16 @@
     preparer_org_id, preparer_id, preparer_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_item
-    where id = #{id,jdbcType=INTEGER}
+    select i.*,m.name AS sType
+    from t_item AS i
+    LEFT JOIN `t_meta` AS m ON m.`id`=i.`supervision_type_id`
+    WHERE i.`id`=#{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.rmbank.supervision.model.Item" >
+  <insert id="insert" parameterType="com.rmbank.supervision.model.Item" useGeneratedKeys="true" keyProperty="id">
     insert into t_item (id, supervision_type_id, pid, 
       stage_index, name, supervision_org_id, 
       supervision_user_id, preparer_org_id, preparer_id, 
@@ -150,4 +150,58 @@
       preparer_time = #{preparerTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <sql id="sql_query">
+	from t_item as item
+	where 1=1
+	<if test="searchName != null and searchName != ''">
+		and (name like
+		CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		)
+	</if>
+	<if test="supervisionTypeId !=0 and supervisionTypeId!=null">
+		and (supervision_type_id like
+		CONCAT('%',#{supervisionTypeId,jdbcType=INTEGER},'%')
+		)
+	</if> 
+	<if test="schBeginTime != null and schBeginTime != ''">
+		and `preparer_time`>=#{schBeginTime,jdbcType=VARCHAR}
+	</if>
+	<if test="schEndTime != null and schEndTime != ''">
+		and `preparer_time`&lt;=#{schEndTime,jdbcType=VARCHAR}
+	</if>
+  </sql>
+  <select id="getExistItem" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.Item">
+  	select name from t_item  where name=#{name,jdbcType=VARCHAR} 
+  </select>  
+  <select id="getItemList" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.Item">
+  	SELECT i.* ,o.name AS orgName,m.name AS sType FROM t_item AS i
+	LEFT JOIN `t_org` AS o ON o.`id`=i.`supervision_org_id`
+	LEFT JOIN `t_meta` AS m ON m.`id`=i.`supervision_type_id`
+	where 1=1
+	<if test="searchName != null and searchName != ''">
+		and (i.name like
+		CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		)
+	</if>
+	<if test="supervisionTypeId !=0 and supervisionTypeId!=null">
+		and (i.supervision_type_id like
+		CONCAT('%',#{supervisionTypeId,jdbcType=INTEGER},'%')
+		)
+	</if> 
+	<if test="schBeginTime != null and schBeginTime != ''">
+		and i.`preparer_time`>=#{schBeginTime,jdbcType=VARCHAR}
+	</if>
+	<if test="schEndTime != null and schEndTime != ''">
+		and i.`preparer_time`&lt;=#{schEndTime,jdbcType=VARCHAR}
+	</if>
+	ORDER BY i.`id` DESC
+	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
+        limit #{pageStart}, #{pageSize}
+    </if>
+    
+  </select>
+  <select id="getItemCount" parameterType="com.rmbank.supervision.model.Item" resultType="java.lang.Integer">
+  	select count(*)
+	<include refid="sql_query"></include>
+  </select>
 </mapper>

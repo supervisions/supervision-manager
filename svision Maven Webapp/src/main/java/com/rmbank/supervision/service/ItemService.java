@@ -1,11 +1,12 @@
-package com.rmbank.supervision.dao;
+package com.rmbank.supervision.service;
 
 import java.util.List;
 
 import com.rmbank.supervision.model.Item;
-@MyBatisRepository
-public interface ItemMapper {
-    int deleteByPrimaryKey(Integer id);
+
+public interface ItemService {
+	
+	int deleteByPrimaryKey(Integer id);
 
     int insert(Item record);
 
@@ -17,9 +18,13 @@ public interface ItemMapper {
 
     int updateByPrimaryKey(Item record);
 
-	List<Item> getExistItem(Item item);
+	List<Item> getExistItem(Item im);
+
+	boolean saveOrUpdateItem(Item item, Integer[] orgIds);
 
 	List<Item> getItemList(Item item);
 
 	int getItemCount(Item item);
+
+	boolean deleteItemById(Integer id);
 }

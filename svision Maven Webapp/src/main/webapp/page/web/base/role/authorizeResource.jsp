@@ -20,20 +20,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 
 <script type="text/javascript">
 	$(document).ready(function(){
-	 	var taskId = $("#hid_taskId").val();
-	 	if(taskId>0){
-	 		var itemTypeId = $("#hid_itemTypeId").val();
-	 		var array = itemTypeId.split(",");
-	 		$.each(array,function(index,arr){
-	 			$("#itemType"+arr).attr("checked","checked");
-	 		}); 
-	 		showOtherTime();
-	 	}	
-	 	var flag = $("#flag").val();
-	 	if(flag == 1){ 
-	 		$("#taskName").attr("disabled",true);
-	 		$("#ftimes").attr("disabled",true); 
-	 	}
+	 	
 	 });
 	 
 	
@@ -87,7 +74,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<input type="hidden" name="roleId" value="${resourceConfig.id }">
 					<c:forEach var="item" items="${resourceList }">
 					<tr>
-						<td style="color: red;">${item.name }</td>
+						<td style="font-weight: 900;">${item.name }</td>
 					</tr>
 					<tr>						
 						<c:forEach var="rse" items="${item.itemList }">

@@ -126,7 +126,10 @@ public class HomeController extends SystemAction {
                     
                     //根据用户角色查询一级按钮
                    	//lf = functionService.getFunctionMenusByUserRoles(roleList);
+                   
+                    //查询当前用户权限拥有的资源
                     List<ResourceConfig> ResourceConfigList = resourceService.getResourceConfigsByUserRoles(roleList);
+                    
                     FunctionMenu FM=new FunctionMenu();
                     Map<Integer,Integer> map = new HashMap<Integer,Integer>();
                     for(ResourceConfig rcfl : ResourceConfigList){

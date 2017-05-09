@@ -1,7 +1,7 @@
 package com.rmbank.supervision.dao;
 
 import com.rmbank.supervision.model.ItemProcessGrade;
-
+@MyBatisRepository
 public interface ItemProcessGradeMapper {
     int deleteByPrimaryKey(Integer id);
 

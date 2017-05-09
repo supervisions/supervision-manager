@@ -20,67 +20,36 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 
 <script type="text/javascript">
 	$(document).ready(function(){	 	
-	 	$("#moudleId").combotree({
-			 url: 'system/function/jsonLoadFunctionTreeList.do',  
-  				 required: false,
-  				 onSelect:function(node){ 
-  				 	//alert($(this).tree('getRoot', node.target));
-  				 	//$(this).tree('getRoot', node.target);		 			 	 				 	
-				 	$("#moudle_Id").val(node.id); 				 	
-  				 },
-  				 onBeforeSelect:function(node){                    
-                    //返回树对象
-					var tree = $(this).tree;
-					//选中的节点是否为叶子节点,如果不是叶子节点,清除选中
-					var isLeaf = tree('isLeaf', node.target);					
-                    if(!isLeaf){
-                    	 $.messager.alert("温馨提示！","根节点不可选，请选择子节点！",'error');
-                        $("#moudle_Id").tree("unselect");
-                       
-                    }
-                 },
-  				 onBeforeExpand:function(node){
-  				 	$("#moudleId").combotree('tree').tree('options').url = 'system/function/jsonLoadFunctionTreeList.do?pid='+ node.id;
-  				 },
-  				 onLoadSuccess:function(){
-  				 	//编辑时默认选中
-  				 	var mid=$("#moudle_Id").val();
-  				 	$("#moudleId").combotree('setValue', mid);
-  				 	
-  				 	var resourceId = $("#resourceId").val();  				 	
-  				 	if(resourceId>0){  				 		
-  				 		var moudleName = $("#moudleName").val();
-  				 		$("#moudleId").combotree("setText",moudleName);  				 		
-  				 	}else{
-					//$("#moudleId").combotree("disable",true);
-   				 	$("#moudleId").combotree("setText","=请选择所属模块=");
-				}
-  			}
-		});	 	
+	 	
 	 });
 	
-	//新增/编辑资源
-	function saveResource(obj){	 	
-		var moudleId=$("#moudle_Id").val();
-		//alert(moudleId);
-		if(moudleId=="" || moudleId==null){	
-			$.messager.alert("温馨提示！","请选择所属模块!",'error');
+	//新增/编辑项目
+	function saveItem(obj){	 	
+		var typeId=$("input[name='supervisionTypeId']").val();
+		var orgIds=$("input[type='checkbox']:checked").length;
+
+		if(typeId==-1){	
+			$.messager.alert("温馨提示！","请选择项目分类!",'error');
 			return false;
-		}		
-		if ($('#resourceInfoForm').form('validate')) {			
+		}
+		if(orgIds==0){
+			$.messager.alert("温馨提示！","请选择完成单位!",'error');
+			return false;
+		}
+		if ($('#itemInfoForm').form('validate')) {			
 			$(obj).attr("onclick", "");				 
-			$('#resourceInfoForm').form('submit',{				 
+			$('#itemInfoForm').form('submit',{				 
 		  		success:function(data){ 
 					showProcess(false);
 		  			data = $.parseJSON(data);				  			
 		  			if(data.code==0){	 					
 		  				$.messager.alert('保存信息',data.message,'info',function(){
-		  					window.location.href="system/resource/resourceList.do";
+		  					window.location.href="manage/branch/branchList.do";
 	        			});
 		  			}else{
 						$.messager.alert('错误信息',data.message,'error',function(){
 	        			});
-						$(obj).attr("onclick", "saveResource(this);"); 
+						$(obj).attr("onclick", "saveItem(this);"); 
 		  			}
 		  		}
 			});
@@ -92,7 +61,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>system/resource/resourceList.do'"></i><span>角色列表</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/branch/branchList.do'"></i><span>项目列表</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
@@ -104,72 +73,74 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
-				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveResource(this);">保存</span>
+				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItem(this);">保存</span>
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div>
-			<form id="resourceInfoForm" name="resourceInfoForm"
-				action="<%=basePath%>system/resource/jsonSaveOrUpdateResource.do"
+			<form id="itemInfoForm" name="itemInfoForm"
+				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
 				method="post">
 				<div id="tab1" class="yw-tab">
 					<table class="yw-cm-table font16" id="taskTable">
 						<tr>
-							<td width="8%" align="right">项目名称</td>
+							<td width="12%" align="right">项目名称：</td>
 							<td><input id="" class="easyui-validatebox"
-								name="name" type="text" doc="taskInfo" value="${ResourceConfig.name}"
-								required="true" validType="loginName"
+								name="name" type="text" doc="taskInfo" value=""
+								required="true" validType="baseValue"
 								style="width:254px;height:28px;" /> <input type="hidden"
-								id="resourceId" name="id" doc="taskInfo" value="${ResourceConfig.id}" /> <span
+								id="resourceId" name="id" value="" /> <span
 								style="color:red">*</span></td>
-							<td width="8%"></td>
+							<td width="12%"></td>
 						</tr>
 						<tr>
-							<td width="8%" align="right">项目分类</td>
-							<td><select name="postId" class="easyui-combobox"
+							<td width="12%" align="right">项目分类：</td>
+							<td><select id="supervisionTypeId" name="supervisionTypeId" class="easyui-combobox"
 								style="width:254px;height:28px;">
-									
+									<option value="-1">请选择项目分类</option>									
 									<c:forEach var="position" items="${meatListByKey}">
 										<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
 									</c:forEach>
 							</select> <span style="color:red">*</span></td>
 							<td width="8%"></td>
 						</tr>
-						<tr>
-						<td width="8%" align="right">项目属性</td>
-						<td><select name="postId" class="easyui-combobox"
-							style="width:254px;height:28px;">								
-								<c:forEach var="project" items="${meatListByKey}">
-									<option value="${project.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${project.name}</option>
-								</c:forEach>
-						</select> <span style="color:red">*</span></td>
-						<td width="8%"></td>
-					</tr>
-						<tr>
-							<input type="hidden" id="OrganName" value="" />
-							<td align="right">立项时间:</td>
-							<td align="left" required="true">
-								<input type="hidden" id="moudle_Id" name="moudle_Id" value="${ResourceConfig.moudleId }"/>
-								<input type="hidden" id="moudleName" value="${ResourceConfig.functionName}"/>
-								<input id="" name="" class="easyui-datebox" data-options="sharedCalendar:'#cc'" style="width:254px;height:28px;" />
+						<tr>							
+							<td width="12%" align="right">立项时间：</td>
+							<td align="left" required="true">								
+								<input id="" name="pTime" class="easyui-datebox" data-options="sharedCalendar:'#cc'" style="width:254px;height:28px;" />
 								<span style="color:red">*</span>
 								<div id="cc" class="easyui-calendar" style="width:254px;height:28px;"></div>
 							</td>								
-						</tr>					
+						</tr>
 						<tr>
-							<td width="8%" align="right">选择单位</td>
-							<td><input id="" class="easyui-validatebox"
-								name="resource" type="text" doc="taskInfo" value="${ResourceConfig.resource}"
-								required="true" validType="loginName"
-								style="width:254px;height:28px;" /> 
+							<td width="12%" align="right">工作要求、方案：</td>
+							<td>
+								<input class="easyui-validatebox" name="content" type="text" value=""
+								 required="true" validType="baseValue" style="width:254px;height:28px;" />
 								<span style="color:red">*</span>
-							</td>							
+							</td>
 							<td width="8%"></td>
+						</tr>				
+					</table>
+					<table style="font-size: 16px;">
+						<tr>
+							<td align="left" style="padding-left: 63px;">选择单位：</td>
+							<td>
+								<c:forEach var="item" items="${OrgList }">
+									<tr><td style="font-weight: 900;">${item.name }</td></tr>
+									<tr style="width: 100%;">
+										<td>
+											<c:forEach var="org" items="${item.itemList }">
+												<label style="float:left;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
+											</c:forEach>
+										</td>
+									</tr>
+								</c:forEach>
+							</td>
 						</tr>
 					</table>
 				</div>
 			</form>
 		</div> 
-	
 	<div class="cl"></div>
 </div>
 <div class="cl"></div>
