@@ -23,6 +23,7 @@ import com.rmbank.supervision.model.OrganVM;
 import com.rmbank.supervision.service.ConfigService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
+import com.rmbank.supervision.web.controller.SystemAction;
 
 /**
  * 中支立项Action
@@ -32,7 +33,7 @@ import com.rmbank.supervision.service.OrganService;
 @Scope("prototype")
 @Controller
 @RequestMapping("/manage/support")
-public class SupportAction {
+public class SupportAction extends SystemAction {
 
 	/**
 	 * 资源注入

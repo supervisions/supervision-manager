@@ -77,8 +77,10 @@ public class HomeController extends SystemAction {
                 if(!u.getAccount().equals(Constants.USER_SUPER_ADMIN_ACCOUNT)){
                     //获取当前用户角色  
                     List<Role> roleList = roleService.getRolesByUserId(u.getId());
-                    /*//根据角色查询资源
-                    List<RoleResource> roleResourceList=new ArrayList<RoleResource>();                    
+                    
+                    
+                    //根据角色查询资源
+                    /*List<RoleResource> roleResourceList=new ArrayList<RoleResource>();                    
                     for (Role role : roleList) {
                     	List<RoleResource> rrl=new ArrayList<RoleResource>();
                     	rrl=roleResourceService.selectByRoleId(role.getId());
@@ -123,56 +125,55 @@ public class HomeController extends SystemAction {
          				}
                     	
 					}*/
-                    
+                   
                     //根据用户角色查询一级按钮
                    	//lf = functionService.getFunctionMenusByUserRoles(roleList);
-                   
+                    
+                    
+                    
                     //查询当前用户权限拥有的资源
                     List<ResourceConfig> ResourceConfigList = resourceService.getResourceConfigsByUserRoles(roleList);
-                    
-                    FunctionMenu FM=new FunctionMenu();
-                    Map<Integer,Integer> map = new HashMap<Integer,Integer>();
-                    for(ResourceConfig rcfl : ResourceConfigList){
-                    	if(map.isEmpty()){
-                    		FM.setName(rcfl.getParentName());
-                    		FM.setUrl(rcfl.getUrl());
-                    	}else{
-                    		FM.setName(rcfl.getParentName());
-                    		Map<Integer,Integer> map1 = new HashMap<Integer,Integer>();
-    	                    List<FunctionMenu> functionMenu=new ArrayList<FunctionMenu>();
-    	                    for (ResourceConfig rcf : ResourceConfigList) {
-    	                    	FunctionMenu fm=new FunctionMenu();
-    	                    	fm.setName(rcf.getFunctionName());
-    	                    	fm.setLeaf(1);
-    	                    	fm.setUrl(rcf.getUrl());
-    	                    	fm.setParentId(rcf.getParentId());
-    	                    	if(map1.isEmpty()){
-    	                    		functionMenu.add(fm);
-    	                    		map1.put(rcf.getMoudleId(), rcf.getParentId());
-    	         				}else{
-    		     					if(map1.get(rcf.getMoudleId())==null && map1.get(rcf.getParentId())==null){ 
-    		     						functionMenu.add(fm);
-    		     						map1.put(rcf.getMoudleId(), rcf.getParentId());
-    		     					}
-    	         				}
-    						}
-    	                    FM.setChildren(functionMenu);
-    	                    lf.add(FM);
+                    String Pname=null;
+                    Map<String,String> map = new HashMap<String,String>();
+                    for (ResourceConfig rcf : ResourceConfigList) {
+						if(Pname==null || !rcf.getParentName().equals(Pname)){
+							Pname=rcf.getParentName();
+							FunctionMenu functionMenu=new FunctionMenu();
+							functionMenu.setName(rcf.getParentName());
+							functionMenu.setUrl(rcf.getUrl());
+							functionMenu.setId(rcf.getMoudleId());
+							List<FunctionMenu> fList= new ArrayList<FunctionMenu>();
+							Integer mid=0;
+							for (ResourceConfig rcl : ResourceConfigList) {
+								if(mid==0 || rcl.getMoudleId()!=mid){
+									mid=rcl.getMoudleId();
+									FunctionMenu fm=new FunctionMenu();
+									fm.setName(rcl.getFunctionName());
+									fm.setUrl(rcl.getUrl());
+									fm.setId(rcl.getMoudleId());
+									fList.add(fm);
+									
+								}
+							}
+							functionMenu.setChildMenulist(fList);
+							lf.add(functionMenu);
 						}
-	                    
-                    }
+					}
+                    
                     /*FunctionMenu functionMenu=new FunctionMenu();
+                    functionMenu.setId(8);
                     functionMenu.setName("基础管理");
                     functionMenu.setUrl("system/user/userList.do");
-                    functionMenu.setParentId(8);                    
+                    functionMenu.setParentId(0);    
                     lf.add(functionMenu);*/
                     
                 }
                 else{
-                	List<FunctionMenu> functionMenuByParentId = this.functionService.getFunctionMenuByParentId(0);
+                	
                     lf = parseFunctionMenuList(this.functionService.getFunctionMenuByParentId(0));
                 } 
                 request.getSession().setAttribute(Constants.USER_SESSION_RESOURCE, lf);
+               
                 
                 json.setGotoUrl(((FunctionMenu)lf.get(0)).getUrl()); 
                 ((User)res.getResultObject()).setSelectedMainMemu(((FunctionMenu)lf.get(0)).getId().intValue());

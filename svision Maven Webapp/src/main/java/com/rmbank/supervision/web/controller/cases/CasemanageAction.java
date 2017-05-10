@@ -25,6 +25,7 @@ import com.rmbank.supervision.model.GradeScheme;
 import com.rmbank.supervision.model.Role;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.GradeSchemeService;
+import com.rmbank.supervision.web.controller.SystemAction;
 
 
 
@@ -36,7 +37,7 @@ import com.rmbank.supervision.service.GradeSchemeService;
 @Scope("prototype")
 @Controller
 @RequestMapping("/manage/casemanage")
-public class CasemanageAction {
+public class CasemanageAction extends SystemAction {
 
 	@Resource
 	private GradeSchemeService gradeSchemeService;

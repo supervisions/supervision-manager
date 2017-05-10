@@ -25,6 +25,7 @@ import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.ResourceConfig;
 import com.rmbank.supervision.service.GradeSchemeDetailService;
 import com.rmbank.supervision.service.GradeSchemeService;
+import com.rmbank.supervision.web.controller.SystemAction;
 
 
 /**
@@ -35,13 +36,12 @@ import com.rmbank.supervision.service.GradeSchemeService;
 @Scope("prototype")
 @Controller
 @RequestMapping("/manage/casedetail")
-public class CasedetailAction {
+public class CasedetailAction extends SystemAction {
 
 	@Resource
 	private GradeSchemeDetailService  gradeSchemeDetailService;
 	@Resource
 	private GradeSchemeService gradeSchemeService;
-	
 	
 	
 	/**

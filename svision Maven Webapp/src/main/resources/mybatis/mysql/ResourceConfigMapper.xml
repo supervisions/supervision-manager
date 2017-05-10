@@ -146,5 +146,6 @@
 	<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
 	  #{item.id,jdbcType=INTEGER}  
 	</foreach>  
+	ORDER BY f.`sort` ASC
   </select>
 </mapper>

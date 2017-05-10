@@ -43,7 +43,7 @@ import com.rmbank.supervision.web.controller.SystemAction;
 @Scope("prototype")
 @Controller
 @RequestMapping("/manage/branch")
-public class BranchAction  extends SystemAction {
+public class BranchAction extends SystemAction {
 	
 	/**
 	 * 资源注入
