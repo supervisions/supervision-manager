@@ -133,43 +133,77 @@ public class HomeController extends SystemAction {
                     
                     //查询当前用户权限拥有的资源
                     List<ResourceConfig> ResourceConfigList = resourceService.getResourceConfigsByUserRoles(roleList);
-                    String Pname=null;
+                    
                     Map<String,String> map = new HashMap<String,String>();
                     for (ResourceConfig rcf : ResourceConfigList) {
-						if(Pname==null || !rcf.getParentName().equals(Pname)){
-							Pname=rcf.getParentName();
+						if(map.isEmpty()){
+							map.put(rcf.getParentName(), rcf.getParentName());
 							FunctionMenu functionMenu=new FunctionMenu();
 							functionMenu.setName(rcf.getParentName());
 							functionMenu.setUrl(rcf.getUrl());
-							functionMenu.setId(rcf.getMoudleId());
-							List<FunctionMenu> fList= new ArrayList<FunctionMenu>();
-							Integer mid=0;
+							functionMenu.setId(rcf.getMoudleId());							
+							List<FunctionMenu> fList= new ArrayList<FunctionMenu>();							
+							Map<Integer,Integer> map1=new HashMap<Integer, Integer>();
+							Integer pid=rcf.getParentId();							 
 							for (ResourceConfig rcl : ResourceConfigList) {
-								if(mid==0 || rcl.getMoudleId()!=mid){
-									mid=rcl.getMoudleId();
+								if(map1.isEmpty()){
+									map1.put(rcl.getMoudleId(),rcl.getParentId());
 									FunctionMenu fm=new FunctionMenu();
 									fm.setName(rcl.getFunctionName());
 									fm.setUrl(rcl.getUrl());
 									fm.setId(rcl.getMoudleId());
 									fList.add(fm);
-									
-								}
+								}else {
+									if(map1.get(rcl.getMoudleId())==null && rcl.getParentId()==pid){
+										map1.put(rcl.getMoudleId(),rcl.getParentId());
+										FunctionMenu fm=new FunctionMenu();
+										fm.setName(rcl.getFunctionName());
+										fm.setUrl(rcl.getUrl());
+										fm.setId(rcl.getMoudleId());
+										fList.add(fm);
+									}
+								}								
 							}
 							functionMenu.setChildMenulist(fList);
 							lf.add(functionMenu);
+						}else {
+							if(map.get(rcf.getParentName())==null){
+								map.put(rcf.getParentName(), rcf.getParentName());
+								FunctionMenu functionMenu=new FunctionMenu();
+								functionMenu.setName(rcf.getParentName());
+								functionMenu.setUrl(rcf.getUrl());
+								functionMenu.setId(rcf.getMoudleId());								
+								List<FunctionMenu> fList= new ArrayList<FunctionMenu>();								
+								Map<Integer,Integer> map1=new HashMap<Integer, Integer>();
+								Integer pid=rcf.getParentId();					 
+								for (ResourceConfig rcl : ResourceConfigList) {
+									if(map1.isEmpty() && rcl.getParentId()==pid){
+										map1.put(rcl.getMoudleId(),rcl.getParentId());
+										FunctionMenu fm=new FunctionMenu();
+										fm.setName(rcl.getFunctionName());
+										fm.setUrl(rcl.getUrl());
+										fm.setId(rcl.getMoudleId());
+										fList.add(fm);
+									}else {
+										if(map1.get(rcl.getMoudleId())==null && rcl.getParentId()==pid){
+											map1.put(rcl.getMoudleId(),rcl.getParentId());
+											FunctionMenu fm=new FunctionMenu();
+											fm.setName(rcl.getFunctionName());
+											fm.setUrl(rcl.getUrl());
+											fm.setId(rcl.getMoudleId());
+											fList.add(fm);
+										}
+									}								
+								}
+								functionMenu.setChildMenulist(fList);
+								lf.add(functionMenu);
+							}
 						}
-					}
-                    
-                    /*FunctionMenu functionMenu=new FunctionMenu();
-                    functionMenu.setId(8);
-                    functionMenu.setName("基础管理");
-                    functionMenu.setUrl("system/user/userList.do");
-                    functionMenu.setParentId(0);    
-                    lf.add(functionMenu);*/
+					}                   
+       
                     
                 }
-                else{
-                	
+                else{                	
                     lf = parseFunctionMenuList(this.functionService.getFunctionMenuByParentId(0));
                 } 
                 request.getSession().setAttribute(Constants.USER_SESSION_RESOURCE, lf);

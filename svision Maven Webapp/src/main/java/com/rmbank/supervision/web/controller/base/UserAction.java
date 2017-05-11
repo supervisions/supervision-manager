@@ -61,8 +61,9 @@ public class UserAction extends SystemAction  {
 	    @RequiresPermissions("system/user/userList.do")
 	    public String userList(User user, 
 	            HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException { 
-	    	//判断搜索名是否为空，不为空则转为utf-8编码    	
-			
+	    	
+	    	
+	    	//判断搜索名是否为空，不为空则转为utf-8编码 		
 			if(user.getSearchName() != null && user.getSearchName() != ""){
 				String searchName =  URLDecoder.decode(user.getSearchName(),"utf-8");
 				user.setSearchName(searchName);
@@ -74,18 +75,28 @@ public class UserAction extends SystemAction  {
 			int totalCount =  0;
 			//分页集合
 			List<User> userList = new ArrayList<User>();
-			try{
-				//t_user取满足要求的参数数据
-				userList =  userService.getUserList(user);
+			
+			//获取当前登录用户
+	    	User lgUser = this.getLoginUser();
+	    	//判断当前登录账号是不是超级管理员
+			if(lgUser.getAccount().equals(Constants.USER_SUPER_ADMIN_ACCOUNT)){
+				try{
+					//t_user取满足要求的参数数据
+					userList =  userService.getUserList(user);
+					
+					//t_user取满足要求的记录总数
+					totalCount = userService.getUserCount(user);
+				}catch(Exception ex){ 
+					ex.printStackTrace();
+				}	
+			}else {
 				
-				//t_user取满足要求的记录总数
-				totalCount = userService.getUserCount(user);
-			}catch(Exception ex){ 
-				ex.printStackTrace();
-			}			
+			}
+			
 			user.setTotalCount(totalCount); 	
 			//通过request对象传值到前台
-			request.setAttribute("User", user);    	
+			request.setAttribute("User", user);
+			
 	    	request.setAttribute("userList", userList);
 	    	
 	    	//获取用户对应的职务

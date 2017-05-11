@@ -122,7 +122,8 @@ public class RoleAction extends SystemAction {
 				tempId = rc.getMoudleId(); 
 				frvm = new FunctionResourceVM();
 			}else{ 
-				List<ResourceConfig> itemList = new ArrayList<ResourceConfig>();//用于当做FunctionResourceVM的itemList
+				//用于当做FunctionResourceVM的itemList
+				List<ResourceConfig> itemList = new ArrayList<ResourceConfig>();
 				
 				frvm.setId(rc.getMoudleId());
 				frvm.setName(rc.getFunctionName());

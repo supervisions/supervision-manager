@@ -6,6 +6,7 @@ import com.rmbank.supervision.model.*;
 import com.rmbank.supervision.service.ResourceService;
 import com.rmbank.supervision.service.RoleService;
 import com.rmbank.supervision.service.UserService;
+
 import org.apache.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -19,6 +20,7 @@ import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
 import javax.annotation.Resource;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,12 +47,12 @@ public class UserRealm extends AuthorizingRealm {
 	   System.out.println(" doGetAuthorizationInfo.................");
 	   String username = (String)principals.getPrimaryPrincipal();
 
-		User user = userService.getUserByAccount(username);
+		User user = userService.getUserByAccount(username); //
 		if(null != user){
 			SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 			List<ResourceConfig> resourceConfigs = null;
- 
-			resourceConfigs = resourceService.getAllResourceByUserId(user.getId());
+			List<Role> roleList = roleService.getRolesByUserId(user.getId());
+			resourceConfigs = resourceService.getResourceConfigsByUserRoles(roleList);
 			if(null !=  resourceConfigs && resourceConfigs.size()> 0 ){
 				for(ResourceConfig resourceConfig : resourceConfigs){
 					if(null != resourceConfig ){
@@ -96,14 +98,14 @@ public class UserRealm extends AuthorizingRealm {
 
 	@Override
 	public boolean isPermitted(PrincipalCollection principals, String permission) {
-		return true;
-		/*String userAccount= (String)principals.getPrimaryPrincipal();
+		//return true;
+		String userAccount= (String)principals.getPrimaryPrincipal();
 		if(!StringUtil.isEmpty(userAccount) && ( 
 				userAccount.equals(Constants.USER_SUPER_ADMIN_ACCOUNT))){
 			return true;
 		}
 		org.apache.shiro.authz.Permission p = this.getPermissionResolver().resolvePermission(permission);
-		return this.isPermitted(principals, p);*/
+		return this.isPermitted(principals, p);
 	}
 
     public void clearAllCachedAuthorizationInfo() {

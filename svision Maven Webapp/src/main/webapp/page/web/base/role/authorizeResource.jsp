@@ -76,12 +76,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<tr>
 						<td style="font-weight: 900;">${item.name }</td>
 					</tr>
-					<tr>						
-						<c:forEach var="rse" items="${item.itemList }">
-							<td>
-								<label><input type="checkbox"  name="resourceId" value="${rse.id }" <c:forEach var="roleResource" items="${roleResourceList }"><c:if test="${roleResource.resourceId ==rse.id  }">checked="checked"</c:if></c:forEach>>${rse.name }</label>
-							</td>
-						</c:forEach>
+					<tr>	
+						<td>					
+							<c:forEach var="rse" items="${item.itemList }">
+								<label style="float: left;"><input type="checkbox"  name="resourceId" value="${rse.id }" <c:forEach var="roleResource" items="${roleResourceList }"><c:if test="${roleResource.resourceId ==rse.id  }">checked="checked"</c:if></c:forEach>>${rse.name }</label>
+							</c:forEach>
+						</td>
 					</tr> 	
                     </c:forEach>               
 				</table>  
