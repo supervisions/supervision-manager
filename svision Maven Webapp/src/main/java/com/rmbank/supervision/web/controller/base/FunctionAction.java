@@ -40,16 +40,15 @@ public class FunctionAction extends SystemAction{
 			@RequestParam(value = "parentId", required = false) Integer parentId,
 			HttpServletRequest request, HttpServletResponse response) {
     	
-		FunctionMenu functionMenu = new FunctionMenu();
-		
+		FunctionMenu functionMenu = new FunctionMenu();		
     	if (parentId != null){
     		functionMenu.setParentId(parentId);
 		}else {
 			functionMenu.setParentId(0);
 		}
-		
-		List<FunctionMenu> list = new ArrayList<FunctionMenu>();
-		list = functionService.getOrganByParentId(functionMenu);
+		//获取根节点
+		List<FunctionMenu> list = functionService.getFunctionMenuByParentId(functionMenu);
+	
 //		for(Organ a:list){
 //			a.setName(a.getName());
 //			if(a.getChildrenCount() > 0){ 
@@ -61,11 +60,11 @@ public class FunctionAction extends SystemAction{
 //		}
 		//加载子节点，方式一，无子节点则无展开按钮
 		for(FunctionMenu a:list){
-			a.setText(a.getName());
+			a.setText(a.getName()); //设置根节点的名称
 			FunctionMenu fun = new FunctionMenu();
 			fun.setParentId(a.getId());
-			List<FunctionMenu> list1 = new ArrayList<FunctionMenu>();
-			list1 = functionService.getOrganByParentId(fun);
+			List<FunctionMenu> list1 = new ArrayList<FunctionMenu>();//获取子节点的集合
+			list1 = functionService.getFunctionMenuByParentId(fun);
 			if(list1.size() > 0){
 				/*for(FunctionMenu f: list1){
 					f.setText(f.getName());
@@ -96,7 +95,7 @@ public class FunctionAction extends SystemAction{
 			c.setText(c.getName());
 			FunctionMenu c1 = new FunctionMenu();
 			c1.setParentId(c.getId());
-			List<FunctionMenu> lst = functionService.getOrganByParentId(c1);
+			List<FunctionMenu> lst = functionService.getFunctionMenuByParentId(c1);
 			if (lst.size() > 0) {
 				lst = setChildren(lst);
 				c.setChildren(lst);

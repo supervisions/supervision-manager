@@ -29,5 +29,7 @@ public interface UserService {
 
 	boolean updateUserUsedById(User user);
 
+	List<User> getUserListByOrgId(User lgUser);
+
 
 }

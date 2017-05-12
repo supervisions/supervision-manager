@@ -90,6 +90,16 @@ public class UserAction extends SystemAction  {
 					ex.printStackTrace();
 				}	
 			}else {
+				try{
+					lgUser.setSearchName(user.getSearchName());
+					//t_user取满足要求的参数数据
+					userList =  userService.getUserListByOrgId(lgUser);
+					
+					//t_user取满足要求的记录总数
+					totalCount = userService.getUserCount(user);
+				}catch(Exception ex){ 
+					ex.printStackTrace();
+				}	
 				
 			}
 			

@@ -136,7 +136,7 @@
 		)
 	</if>
   </sql>
-  <select id="getOrganByParentId" parameterType="com.rmbank.supervision.model.FunctionMenu" resultMap="BaseResultMap">
+  <select id="getFunctionMenuByParentId" parameterType="com.rmbank.supervision.model.FunctionMenu" resultMap="BaseResultMap">
   	select
   	<include refid="Base_Column_List" />
 	<include refid="sql_query" /> 

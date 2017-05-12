@@ -57,4 +57,6 @@ public interface UserMapper {
 	 * @param id
 	 */
 	void deleteUserById(Integer id);
+
+	List<User> getUserListByOrgId(User lgUser);
 }

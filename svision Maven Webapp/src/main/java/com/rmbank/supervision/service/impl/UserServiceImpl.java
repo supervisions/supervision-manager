@@ -240,6 +240,12 @@ public class UserServiceImpl implements UserService {
 		}
 		return isSuccess;
 	}
+
+	@Override
+	public List<User> getUserListByOrgId(User lgUser) {
+		// TODO Auto-generated method stub
+		return userMapper.getUserListByOrgId(lgUser);
+	}
 	
 	
 }

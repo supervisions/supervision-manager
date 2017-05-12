@@ -19,7 +19,7 @@ public interface FunctionMenuMapper {
 
 	List<FunctionMenu> getFunctionMenuByCondition(FunctionMenu functionMenu);
 
-	List<FunctionMenu> getOrganByParentId(FunctionMenu functionMenu);
+	List<FunctionMenu> getFunctionMenuByParentId(FunctionMenu functionMenu);
 
 	List<FunctionMenu> getFunctionMenuList(FunctionMenu functionMenu);
 

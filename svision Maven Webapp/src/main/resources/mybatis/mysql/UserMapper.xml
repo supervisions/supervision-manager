@@ -189,6 +189,22 @@
   	update t_user set used=#{used,jdbcType=INTEGER} 
   	where id=#{id,jdbcType=INTEGER}
   </update>
-  
+  <select id="getUserListByOrgId" parameterType="com.rmbank.supervision.model.User" resultMap="BaseResultMap">
+  	SELECT u.*,(SELECT GROUP_CONCAT( org.name SEPARATOR "," ) FROM t_org org
+	LEFT JOIN t_user_org uo ON org.`id` = uo.`org_id` WHERE uo.`user_id` = u.id) AS orgName ,
+	(SELECT GROUP_CONCAT( role.name SEPARATOR "," ) FROM t_role role
+	LEFT JOIN t_user_role ur ON role.`id` = ur.`role_id` WHERE ur.`user_id` = u.id) AS roleName	
+  	FROM t_user AS u WHERE u.id IN(
+	  SELECT uo1.user_id FROM `t_user_org` AS uo1 WHERE uo1.org_id IN
+	  (SELECT uo.org_id FROM `t_user_org` AS uo WHERE uo.user_id =#{id,jdbcType=INTEGER})
+	)
+	<if test="searchName != null and searchName != ''">
+	 and (
+			u.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+			or u.account like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+     	)
+	</if>
+	order by u.id DESC 
+  </select>
   
 </mapper>
