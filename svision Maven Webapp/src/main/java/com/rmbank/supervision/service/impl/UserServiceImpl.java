@@ -14,9 +14,11 @@ import com.rmbank.supervision.common.ReturnResult;
 import com.rmbank.supervision.common.shiro.ShiroUsernamePasswordToken;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.common.utils.EndecryptUtils;
+import com.rmbank.supervision.dao.OrganMapper;
 import com.rmbank.supervision.dao.UserMapper;
 import com.rmbank.supervision.dao.UserOrganMapper;
 import com.rmbank.supervision.dao.UserRoleMapper;
+import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.model.UserOrgan;
 import com.rmbank.supervision.model.UserRole;
@@ -33,6 +35,8 @@ public class UserServiceImpl implements UserService {
     private UserRoleMapper userRoleMapper;
     @Resource 
     private UserOrganMapper userOrganMapper;
+    @Resource
+    private OrganMapper organMapper;
     
 	@Override
 	public ReturnResult<User> login(String name, String pwd, boolean rememberMe) {
@@ -241,10 +245,58 @@ public class UserServiceImpl implements UserService {
 		return isSuccess;
 	}
 
+	
+	
 	@Override
 	public List<User> getUserListByOrgId(User lgUser) {
 		// TODO Auto-generated method stub
 		return userMapper.getUserListByOrgId(lgUser);
+	}
+
+	@Override
+	public int getUserCountByOrgId(User lgUser) {
+		// TODO Auto-generated method stub
+		return userMapper.getUserCountByOrgId(lgUser);
+	}
+
+	/**
+	 * 根据用户ID查询所属的机构ID
+	 */
+	@Override
+	public List<Integer> getUserOrgIdsByUserId(Integer id) {
+		// TODO Auto-generated method stub
+		return userOrganMapper.getUserOrgIdsByUserId(id);
+	}
+
+	/**
+	 * 查询用户对应机构下的子机构
+	 * 
+	 */
+	@Override
+	public List<Integer> getUserOrgIdsByList(List<Integer> userOrgIds) {
+		// TODO Auto-generated method stub
+		return organMapper.getUserOrgIdsByList(userOrgIds);
+	}
+
+	@Override
+	public List<User> getUserByOrgids(List<Integer> userOrgIds) {
+		// TODO Auto-generated method stub
+		return userMapper.getUserByOrgids(userOrgIds);
+	}
+
+	@Override
+	public List<Organ> getUserOrgByList(List<Integer> userOrgIds) {
+		// TODO Auto-generated method stub
+		return organMapper.getUserOrgByList(userOrgIds);
+	}
+
+	/**
+	 * 点击机构树时根据机构ID查询对应的用户
+	 */
+	@Override
+	public List<User> getUserListByOrgId(Integer orgId) {
+		// TODO Auto-generated method stub
+		return userMapper.getUserListByOrgId(orgId);
 	}
 	
 	

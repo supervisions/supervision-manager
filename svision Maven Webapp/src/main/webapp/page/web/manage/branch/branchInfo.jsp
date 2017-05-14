@@ -37,7 +37,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			return false;
 		}
 		if ($('#itemInfoForm').form('validate')) {			
-			$(obj).attr("onclick", "");				 
+			$(obj).attr("onclick", "");	
+			showProcess(true, '温馨提示', '正在提交数据...');			 
 			$('#itemInfoForm').form('submit',{				 
 		  		success:function(data){ 
 					showProcess(false);

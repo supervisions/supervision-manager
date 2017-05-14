@@ -31,7 +31,12 @@
   				 required: false, //是否必须
   				 //multiple:true,  //是否支持多选  				 
   				 editable:false, //是否支持用户自定义输入	  				 		 
-  				 onSelect:function(record){ // 	当节点被选中时触发。  	  				 			
+  				 onSelect:function(record){ // 	当节点被选中时触发。  	
+  				 		if(record.path=="" ||record.path==null){  				 			
+  				 			$("#orgPath").val(record.id);  				 			
+  				 		}else{
+  				 			$("#orgPath").val(record.path+"."+record.id);
+  				 		}  				 		  				 			
 				 	 	$("#orgPid").val(record.id); 
   				 },
   				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。  				  
@@ -123,9 +128,11 @@
 							<td><input id="orgName" class="easyui-validatebox"
 								name="name" type="text" doc="taskInfo" value="${Organ.name}"
 								required="true" validType="baseValue"
-								style="width:254px;height:28px;" /> <input type="hidden"
-								id="orgId" name="id" doc="taskInfo" value="${Organ.id}" /> <span
-								style="color:red">*</span></td>
+								style="width:254px;height:28px;" /> 
+								<input type="hidden"id="orgId" name="id" doc="taskInfo" value="${Organ.id}" /> 
+								<span style="color:red">*</span>
+								<input type="hidden" name="path" id="orgPath" value="">
+							</td>			
 							<td width="8%"></td>
 						</tr>								
 						<tr>

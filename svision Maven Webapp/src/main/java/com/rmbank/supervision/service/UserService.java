@@ -3,6 +3,7 @@ package com.rmbank.supervision.service;
 import java.util.List;
 
 import com.rmbank.supervision.common.ReturnResult;
+import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.User;
 
 
@@ -30,6 +31,18 @@ public interface UserService {
 	boolean updateUserUsedById(User user);
 
 	List<User> getUserListByOrgId(User lgUser);
+
+	int getUserCountByOrgId(User lgUser);
+
+	List<Integer> getUserOrgIdsByUserId(Integer id);
+
+	List<Integer> getUserOrgIdsByList(List<Integer> userOrgIds);
+
+	List<User> getUserByOrgids(List<Integer> userOrgIds);
+	
+	List<Organ> getUserOrgByList(List<Integer> userOrgIds);
+
+	List<User> getUserListByOrgId(Integer orgId);
 
 
 }

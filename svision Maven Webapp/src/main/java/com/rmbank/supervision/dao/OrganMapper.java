@@ -26,4 +26,11 @@ public interface OrganMapper {
 	List<Organ> getOrganByPId(Organ organ);
 
 	List<Organ> getExistOrgan(Organ o);
+
+	List<Integer> getUserOrgIdsByList(List<Integer> userOrgIds);
+
+	List<Organ> getUserOrgByList(List<Integer> userOrgIds);
+
+	List<Organ> getOrganByOrgIds(List<Integer> userOrgIds);
+
 }

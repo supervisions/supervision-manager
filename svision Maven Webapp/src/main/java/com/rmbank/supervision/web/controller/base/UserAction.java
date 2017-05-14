@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.context.annotation.Scope;
@@ -47,7 +48,7 @@ public class UserAction extends SystemAction  {
 		private OrganService organService; 		
 		@Resource
 		private ConfigService configService; 
-		
+	
 		
 		/**
 	     * 用户管理列表
@@ -62,10 +63,10 @@ public class UserAction extends SystemAction  {
 	    public String userList(User user, 
 	            HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException { 
 	    	
-	    	
 	    	//判断搜索名是否为空，不为空则转为utf-8编码 		
 			if(user.getSearchName() != null && user.getSearchName() != ""){
-				String searchName =  URLDecoder.decode(user.getSearchName(),"utf-8");
+				String searchName =  new String(user.getSearchName().getBytes(
+						"iso8859-1"), "utf-8");
 				user.setSearchName(searchName);
 			}
 			//设置页面初始值及页面大小
@@ -93,20 +94,34 @@ public class UserAction extends SystemAction  {
 				try{
 					lgUser.setSearchName(user.getSearchName());
 					//t_user取满足要求的参数数据
-					userList =  userService.getUserListByOrgId(lgUser);
+					/*userList =  userService.getUserListByOrgId(lgUser);
 					
 					//t_user取满足要求的记录总数
-					totalCount = userService.getUserCount(user);
+					totalCount = userService.getUserCountByOrgId(lgUser);*/
+					
+					//根据用户ID查询用户所属的机构id
+					List<Integer> userOrgIds=userService.getUserOrgIdsByUserId(lgUser.getId());
+					//将用户所属的机构存入到session中
+					HttpSession session = request.getSession();
+					session.setAttribute("userOrgIds", userOrgIds);
+					
+					//根据机构ID查询用户
+					userList=userService.getUserByOrgids(userOrgIds);					
+					totalCount = userService.getUserCountByOrgId(lgUser);
+
+					//查询用户对应机构下的下一级机构
+					//List<Integer> childrenOrgid=userService.getUserOrgIdsByList(userOrgIds);
+					//List<Organ> childrenOrg=userService.getUserOrgByList(userOrgIds);
+					//userOrgIds.addAll(childrenOrgid);					
+
 				}catch(Exception ex){ 
 					ex.printStackTrace();
 				}	
-				
 			}
 			
 			user.setTotalCount(totalCount); 	
 			//通过request对象传值到前台
-			request.setAttribute("User", user);
-			
+			request.setAttribute("User", user);			
 	    	request.setAttribute("userList", userList);
 	    	
 	    	//获取用户对应的职务
@@ -116,6 +131,43 @@ public class UserAction extends SystemAction  {
 	    	return "web/base/user/userList";
 	    }
 	    
+	    
+    	 /**
+	     * 根据机构ID查询用户
+	     */
+	    @ResponseBody
+		@RequestMapping(value = "/jsonLoadUserListByOrgId.do", method = RequestMethod.POST)
+		@RequiresPermissions("system/user/jsonLoadUserListByOrgId.do")
+		public JsonResult<User> jsonLoadUserListByOrgId(
+				@RequestParam(value = "orgId", required = false) Integer orgId,
+				HttpServletRequest request, HttpServletResponse response) {
+			
+			// 新建一个json对象 并赋初值
+			JsonResult<User> js = new JsonResult<User>();
+	        js.setCode(new Integer(1));
+	        js.setMessage("获取数据失败!");
+	        User user = new User();
+	        
+	        if (user.getPageNo() == null)
+	        	user.setPageNo(1);
+	        user.setPageSize(Constants.DEFAULT_PAGE_SIZE);
+	        try{
+	            List<User> lc = userService.getUserListByOrgId(orgId);	
+	            int totalCount = userService.getUserCountByOrgId(user);
+	            user.setTotalCount(totalCount);
+	            js.setObj(user);
+	            js.setCode(0);
+	            js.setList(lc);
+	            js.setMessage("获取数据成功!");
+	        }
+	        catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return js;
+		}
+    	
+	    	
+	    	
 	    /**
 	     * 跳转到新增用户/编辑页面
 	     * @return
@@ -124,7 +176,6 @@ public class UserAction extends SystemAction  {
 	    @RequiresPermissions("system/user/userInfo.do")
 	    public String editUser(@RequestParam(value = "id", required = false) Integer id,
 				HttpServletRequest req, HttpServletResponse res){
-	    	
 	    	//根据参数id判断是新增还是编辑，新增为0，不用传值；编辑为选中的参数id值，取对象，传值
 			if(id != null && id != 0){
 				User user = new User();

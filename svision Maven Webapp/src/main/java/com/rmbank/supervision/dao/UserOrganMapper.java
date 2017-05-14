@@ -36,4 +36,13 @@ public interface UserOrganMapper {
      * 
      */
 	List<UserOrgan> getPostsByUserId(Integer userId);
+
+	/**
+	 * 根据用户ID查询所属的机构ID
+	 * @param id
+	 * @return
+	 */
+	List<Integer> getUserOrgIdsByUserId(Integer id);
+
+	
 }

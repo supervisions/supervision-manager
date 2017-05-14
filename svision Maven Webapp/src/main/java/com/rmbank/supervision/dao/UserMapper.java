@@ -59,4 +59,10 @@ public interface UserMapper {
 	void deleteUserById(Integer id);
 
 	List<User> getUserListByOrgId(User lgUser);
+
+	int getUserCountByOrgId(User lgUser);
+
+	List<User> getUserByOrgids(List<Integer> userOrgIds);
+
+	List<User> getUserListByOrgId(Integer orgId);
 }

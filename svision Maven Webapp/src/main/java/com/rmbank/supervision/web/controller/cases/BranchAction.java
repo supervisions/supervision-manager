@@ -194,8 +194,8 @@ public class BranchAction extends SystemAction {
 			if (lc.size() == 0) {  
 				State = itemService.saveOrUpdateItem(item,OrgIds);
 				//新增项目成功后返回的itemId 
-				Integer itemId =item.getId();
-				System.out.println(itemId);
+//				Integer itemId =item.getId();
+//				System.out.println(itemId);
 				if(State){
 					js.setCode(new Integer(0));
 					js.setMessage("保存项目信息成功!");

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.context.annotation.Scope;
@@ -161,7 +162,7 @@ public class OrganAction extends SystemAction {
 			if (organ.getId() == null || organ.getId() == 0) {
 				organ.setId(0);
 				organ.setSort(1);
-				organ.setPath("");
+				organ.setPath(organ.getPath());
 				organ.setLeaf(1);
 				organ.setLevel(1);
 				if (organ.getPid() == null) {
@@ -275,17 +276,24 @@ public class OrganAction extends SystemAction {
 	public List<Organ> getOrganList(
 			@RequestParam(value = "pid", required = false) Integer pid,
 			HttpServletRequest request, HttpServletResponse response) {
-
+		
 		Organ organ = new Organ();
-
 		if (pid != null) {
 			organ.setPid(pid);
 		} else {
 			organ.setPid(0);
 		}
 
+		//获取用户所属的机构
+		HttpSession session = request.getSession();
+		List<Integer> userOrgIds= (List<Integer>) session.getAttribute("userOrgIds");
+		
 		List<Organ> list = new ArrayList<Organ>();
-		list = organService.getOrganByPId(organ);
+		if(userOrgIds!=null){
+			list = organService.getOrganByOrgIds(userOrgIds);
+		}else{
+			list = organService.getOrganByPId(organ);	
+		}
 		// 加载子节点，方式一，无子节点则无展开按钮
 		for (Organ a : list) {
 			a.setText(a.getName());

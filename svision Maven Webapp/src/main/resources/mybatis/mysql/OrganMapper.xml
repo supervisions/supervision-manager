@@ -201,4 +201,24 @@
 		select <include refid="Base_Column_List" />
 		from t_org where name=#{name,jdbcType=VARCHAR}
 	</select>
+	
+	<select id="getUserOrgIdsByList" resultType="java.lang.Integer">
+		SELECT o.id FROM t_org AS o WHERE o.pid IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		  #{item}  
+		</foreach>  
+	</select>
+	<select id="getUserOrgByList" resultMap="BaseResultMap">
+		SELECT o.* FROM t_org AS o WHERE o.pid IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		  #{item}  
+		</foreach>  
+	</select>
+	<select id="getOrganByOrgIds" resultMap="BaseResultMap">
+		SELECT o.* FROM t_org AS o WHERE o.id IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		  #{item}  
+		</foreach> 
+	</select>
+	
 </mapper>

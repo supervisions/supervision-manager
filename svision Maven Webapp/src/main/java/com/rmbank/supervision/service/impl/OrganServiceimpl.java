@@ -144,6 +144,12 @@ public class OrganServiceimpl implements OrganService {
 		return userOrganMapper.getPostsByUserId(userId);
 	}
 
+	@Override
+	public List<Organ> getOrganByOrgIds(List<Integer> userOrgIds) {
+		// TODO Auto-generated method stub
+		return organMapper.getOrganByOrgIds(userOrgIds);
+	}
+
 	
 	/*
 	 * 自己@Override

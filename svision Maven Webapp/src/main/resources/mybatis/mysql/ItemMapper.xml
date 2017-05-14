@@ -27,7 +27,7 @@
     delete from t_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.rmbank.supervision.model.Item" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.rmbank.supervision.model.Item">
     insert into t_item (id, supervision_type_id, pid, 
       stage_index, name, supervision_org_id, 
       supervision_user_id, preparer_org_id, preparer_id, 

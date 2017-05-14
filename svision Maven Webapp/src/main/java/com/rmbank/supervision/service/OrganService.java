@@ -73,6 +73,13 @@ public interface OrganService {
 	 * @return
 	 */
 	List<UserOrgan> getPostsByUserId(Integer userId);
+
+	/**
+	 * 根据用户所属的机构ID加载树
+	 * @param userOrgIds
+	 * @return
+	 */
+	List<Organ> getOrganByOrgIds(List<Integer> userOrgIds);
     
 
 }
