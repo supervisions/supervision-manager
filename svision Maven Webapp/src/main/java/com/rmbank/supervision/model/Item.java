@@ -25,7 +25,37 @@ public class Item extends Page {
 
     private Integer preparerId;
     
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Integer status;
+    
+    private Integer isStept;
+    
+    private Date entTime;
+    
+    public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Integer getIsStept() {
+		return isStept;
+	}
+
+	public void setIsStept(Integer isStept) {
+		this.isStept = isStept;
+	}
+
+	public Date getEntTime() {
+		return entTime;
+	}
+
+	public void setEntTime(Date entTime) {
+		this.entTime = entTime;
+	}
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date preparerTime;
 
     
