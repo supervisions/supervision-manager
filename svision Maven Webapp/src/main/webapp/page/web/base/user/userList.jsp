@@ -16,17 +16,9 @@
 	<link rel="shortcut icon" href="<%=basePath%>source/images/favicon.ico" type="image/x-icon" />
 <script type="text/javascript">
 $(document).ready(function(){
-	//当机构的长度超过15的时候用....表示
-	var trLength=$(".orgName").length;
-	var valueLength=0;	
-	var orgNames="";	
-	for(var i=0; i<trLength; i++){
-		valueLength=$(".orgName").eq(i).html().length;
-		if(valueLength>15){			
-			orgNames=$(".orgName").eq(i).html().substr(0,15);
-			$(".orgName").eq(i).html(orgNames+"......");
-		}
-	}
+	//截取机构长度
+	subOrgname();
+	
 	//加载机构树
  	$("#treeList").tree({	 		
 	 	 url: '<%=basePath%>system/organ/jsonLoadOrganTreeList.do?id=${userOrgIds}', 			 	 
@@ -57,7 +49,20 @@ $(document).ready(function(){
 		}
 	});				
 }); 
-
+//截取机构长度
+function subOrgname(){
+	//当机构的长度超过15的时候用....表示
+	var trLength=$(".orgName").length;
+	var valueLength=0;	
+	var orgNames="";	
+	for(var i=0; i<trLength; i++){
+		valueLength=$(".orgName").eq(i).html().length;
+		if(valueLength>15){			
+			orgNames=$(".orgName").eq(i).html().substr(0,15);
+			$(".orgName").eq(i).html(orgNames+"......");
+		}
+	}
+}
 		 
 PageClick = function(pageclickednumber) {
 	$("#pager").pager({
@@ -165,7 +170,7 @@ function getUserListByOrgId(orgId){
 				});
 				$("#metaList").html("");
 				fillMetaList(data.list);
-				/* var usedTdLength=$(".usedTds").length;
+				var usedTdLength=$(".usedTds").length;
 				var usedValue="";
 				var stateBtn="";
 				for(var i=0; i<usedTdLength; i++){
@@ -178,7 +183,9 @@ function getUserListByOrgId(orgId){
 						$(".usedTds").eq(i).html("启用");
 						$(".stateBut").eq(i).html("禁用");
 					}
-				} */
+				}
+				//截取机构长度
+				subOrgname();
   			}else{
 				$.messager.alert('错误信息',data.message,'error');
   			} 
@@ -187,16 +194,20 @@ function getUserListByOrgId(orgId){
 };
 function fillMetaList(lst){
 	var html = "<tbody>";
-	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>配置状态</span></th><th>配置名称</th><th>关键字</th><th>操作</th></tr>";
+	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th width='15%'><span style='margin-left:40px'>状态</span></th><th width='15%'>用户名称</th><th width='15%'>用户账号</th><th width='25%'>所属机构</th><th width='25%'>操作</th></tr>";
 	for(var i = 0; i<lst.length;i++){
 		html += "<tr>";
-		html += "<td  style='display:none'>"+lst[i].id+"</td><td onclick=goToMetaInfo(\'"+lst[i].id+"\') align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td onclick=goToMetaInfo(\'"+lst[i].id+"\') align='left' >"+lst[i].name+"</td>";
-		html += "<td onclick=goToMetaInfo(\'"+lst[i].id+"\')>"+lst[i].key+"</td>";
-		html += "<td align='left'>"+"<a href='javascript:void(0);' onclick=goToMetaInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a>&nbsp;<a href='javascript:void(0);' class='stateBut' onclick=metaState(\'"+lst[i].id+"\',\'"+lst[i].used+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >启用</a>&nbsp;<a href='javascript:void(0);' onclick=deleteConfig(\'"+lst[i].id+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >删除</a></td>";
+		html += "<td  style='display:none'>"+lst[i].id+"</td><td align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td align='left' >"+lst[i].name+"</td><td align='left'>"+lst[i].account+"</td>";
+		html += "<td align='left' class='orgName' title=\'"+lst[i].orgName+"\'>"+lst[i].orgName+"</td>";
+		html += "<td align='left'>"+"<a href='javascript:void(0);' class='stateBut' onclick=updateUser(\'"+lst[i].id+"\',\'"+lst[i].used+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >启用</a>&nbsp;<a href='javascript:void(0);' onclick=deleteUser(\'"+lst[i].id+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >删除</a>&nbsp;<a href='javascript:void(0);' onclick=goToUserInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a>&nbsp;<a href='javascript:void(0);' onclick=resetUserPwd(\'"+lst[i].id+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >重置密码</a></td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";
-	$("#metaList").html(html);
+	$("#userList").html(html);
+}
+
+function goToUserInfo(id){
+	window.location.href="userInfo.do?id="+id;
 }
 </script>
 </head>
@@ -214,7 +225,7 @@ function fillMetaList(lst){
 				action="userList.do" method="get">
 				<div class="pd10-28">
 					<div class="fl">
-						 <button class="yw-btn bg-blue cur">全部机构</button>  
+						 <button class="yw-btn bg-blue cur">全部用户</button>  
 					</div>
 					<div class="fr">
 						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox"
@@ -243,7 +254,7 @@ function fillMetaList(lst){
 				<div class="yw-cm-title">
 					<span class="ml26">用户列表</span>
 				</div>
-				<table class="yw-cm-table yw-leftSide yw-bg-hover" id="organList">
+				<table class="yw-cm-table yw-leftSide yw-bg-hover" id="userList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>
 						<th width="15%"><span style='margin-left:40px'>状态</span></th>

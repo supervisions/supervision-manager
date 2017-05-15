@@ -22,4 +22,6 @@ public interface ItemMapper {
 	List<Item> getItemList(Item item);
 
 	int getItemCount(Item item);
+
+	List<Item> getItemListByType(Item item);
 }

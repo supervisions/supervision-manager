@@ -171,21 +171,7 @@ public class BranchAction extends SystemAction {
 			//如为新增，则给id置0
 			if (item.getId() == null || item.getId() == 0) {
 				item.setId(0);					
-			} 
-			//如为编辑
-			/*if (item.getId() > 0) {
-				im.setId(item.getId());
-				
-				State = userService.saveOrUpdateUser(user,roleIds,orgIds,postId);
-				if(State){
-					js.setCode(new Integer(0));
-					js.setMessage("保存用户信息成功!");
-					return js;
-				}else{
-					return js;
-				}
-			}*/
-			
+			} 		
 			//创建用于新增时根据项目名称去查询项目是否存在的对象
 			Item im = new Item();
 			im.setName(item.getName());

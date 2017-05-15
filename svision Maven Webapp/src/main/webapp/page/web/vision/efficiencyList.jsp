@@ -20,9 +20,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#pager").pager({
-	    pagenumber:'${Role.pageNo}',                         /* 表示初始页数 */
-	    pagecount:'${Role.pageCount}',                      /* 表示总页数 */
-	    totalCount:'${Role.totalCount}',				   /* 表示总记录数 */
+	    pagenumber:'${Item.pageNo}',                         /* 表示初始页数 */
+	    pagecount:'${Item.pageCount}',                      /* 表示总页数 */
+	    totalCount:'${Item.totalCount}',				   /* 表示总记录数 */
 	    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
 	});		
 	$("#seaarchNameTemp").keypress(function(e){
@@ -34,7 +34,7 @@ $(document).ready(function(){
 PageClick = function(pageclickednumber) {
 	$("#pager").pager({
 	    pagenumber:pageclickednumber,                 /* 表示启示页 */
-	    pagecount:'${Role.pageCount}',                  /* 表示最大页数pagecount */
+	    pagecount:'${Item.pageCount}',                  /* 表示最大页数pagecount */
 	    buttonClickCallback:PageClick                 /* 表示点击页数时的调用的方法就可实现javascript分页功能 */            
 	});	
 	$("#pageNumber").val(pageclickednumber);          /* 给pageNumber从新赋值 */
@@ -95,18 +95,16 @@ function authorizeResource(id,name){
 				<input id="toAname" type="hidden" name="name" value="">
 			</form>
 			<form id="taskForm" name="taskForm"
-				action="roleList.do" method="get">
+				action="efficiencyList.do" method="get">
 				<div class=pd10>
 					<div class="fl">  
 						<span>条件查询：</span>
 						<input type="text" id="seaarchNameTemp" validType="SpecialWord" class="easyui-validatebox" placeholder="搜索" value="${Role.searchName}" /> 
-						<input type="hidden" name="searchName" id="hid_serarch" /> 
-						
+						<input type="hidden" name="searchName" id="hid_serarch" />						
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
 					</div>
-
 					<div class="fr">
-						<span class="yw-btn bg-green cur" onclick="window.location.href='roleInfo.do?id=0';">新增项目</span>
+						<span class="yw-btn bg-green cur" onclick="window.location.href='efficiencyInfo.do?id=0';">添加工作事项</span>
 					</div>
 					<div class="cl"></div>				
                     	<input type="hidden" id="pageNumber" name="pageNo" value="${Role.pageNo}" />
@@ -129,16 +127,19 @@ function authorizeResource(id,name){
 					<th>状态提醒</th>
 					<th>操作</th>			
 				</tr>
-				<c:forEach var="item" items="${roleList}">
+				<c:forEach var="item" items="${itemList}">
 					<tr> 							
+						<td></td>
+						<td></td>
 						<td>${item.name}</td>
-						<td>${item.description}</td>
-						<td><a style="color:blue" onclick="authorizeResource(${item.id},'${item.name}')">资源授权</a></td>
-						<td>
-							<a style="color:blue" onclick="deleteRole(${item.id},'${item.name}');">删除</a>
-							<a style="color:blue" onclick="window.location.href='roleInfo.do?id=${item.id}';">编辑</a>
-						</td>
-						
+						<td></td>
+						<td>${item.orgName}</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
 					</tr>
 				</c:forEach>
 			</table>

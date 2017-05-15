@@ -27,4 +27,6 @@ public interface ItemService {
 	int getItemCount(Item item);
 
 	boolean deleteItemById(Integer id);
+
+	List<Item> getItemListByType(Item item);
 }

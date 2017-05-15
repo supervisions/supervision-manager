@@ -103,8 +103,6 @@ public class RoleAction extends SystemAction {
 		//根据moudleId获取资源
 		ResourceConfig resource=new ResourceConfig();
 		//List<ResourceConfig> resourceList=resourceService.getResourceListBymoudleId(resourceConfig);
-		List<ResourceConfig> resourceList=resourceService.getResourceList(resource);
-		
 		
 		
 		/*Collections.sort(resourceList, new Comparator<ResourceConfig>() {
@@ -112,6 +110,8 @@ public class RoleAction extends SystemAction {
                 return arg0.getMoudleId().compareTo(arg1.getMoudleId());
             }
         });*/
+		
+		List<ResourceConfig> resourceList=resourceService.getResourceList(resource);
 		
 		List<FunctionResourceVM> list = new ArrayList<FunctionResourceVM>();
 		int tempId = 0;

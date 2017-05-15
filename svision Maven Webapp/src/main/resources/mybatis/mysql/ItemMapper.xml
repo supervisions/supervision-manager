@@ -204,4 +204,19 @@
   	select count(*)
 	<include refid="sql_query"></include>
   </select>
+  
+  <select id="getItemListByType" parameterType="com.rmbank.supervision.model.Item" resultMap="BaseResultMap">
+  	SELECT i.*,o.name as orgName FROM t_item AS i
+	LEFT JOIN t_org AS o ON o.id=i.`supervision_org_id`
+	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
+	<if test="searchName != null and searchName != ''">
+		and (i.name like
+		CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		)
+	</if>
+    ORDER BY i.`id` DESC
+	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
+        limit #{pageStart}, #{pageSize}
+    </if>
+  </select>
 </mapper>

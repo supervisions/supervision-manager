@@ -325,7 +325,12 @@ public class UserAction extends SystemAction  {
 			js.setCode(new Integer(1));
 			js.setMessage("修改用户状态失败!");			
 			
-			try {					
+			try {
+				if(user.getUsed()==1){
+					user.setUsed(0);
+				}else if(user.getUsed()==0){
+					user.setUsed(1);
+				}
 				boolean state = userService.updateUserUsedById(user);
 				if(state){
 					js.setCode(new Integer(0));

@@ -60,21 +60,13 @@ public class ItemServiceimpl implements ItemService {
 	@Override
 	public boolean saveOrUpdateItem(Item item, Integer[] orgIds) {
 		boolean isSuccess = false;
-		try{
-			//id存在则为修改操作
-			if(item.getId()>0){
-				itemMapper.deleteByPrimaryKey(item.getId());
-				itemMapper.updateByPrimaryKeySelective(item);
-				isSuccess = true;
-			}else{	               
-				for (Integer i : orgIds) {
-					item.setSupervisionOrgId(i);
-					itemMapper.insert(item); 
-				}
-				
-				isSuccess = true;
+		try{		               
+			for (Integer i : orgIds) {
+				item.setSupervisionOrgId(i);
+				itemMapper.insert(item); 
+			}				
+			isSuccess = true;
          
-			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
@@ -104,6 +96,12 @@ public class ItemServiceimpl implements ItemService {
 			ex.printStackTrace();
 		}
 		return isSuccess;
+	}
+
+	@Override
+	public List<Item> getItemListByType(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListByType(item);
 	}
 
 }
