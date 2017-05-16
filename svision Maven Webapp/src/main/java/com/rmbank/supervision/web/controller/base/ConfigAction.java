@@ -342,7 +342,11 @@ public class ConfigAction extends SystemAction {
 //				list1 = setChildren(list1);
 //			}
 //			a.setChildren(list1);
-			a.setState("closed");
+			if(a.getChildrenCount()>0){
+				a.setState("closed");
+			}else{
+				a.setState("open");
+			}			
 		}
 		return list;// json.toString();
 	}
