@@ -16,6 +16,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css"> 
+	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/easyUI/jquery.easyui.min.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/easyUI/easyui-lang-zh_CN.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/common/validate.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script>
 	<script
 	src="${pageContext.request.contextPath}/source/js/pager/jquery.pager.js"></script>
 	<link
@@ -108,12 +114,11 @@ function edit(id){
 							</c:forEach>
 						</select>
 						<select name="used" class="easyui-combobox" style="width:99px;height:32px;">									
-							<option value="" >是否完成</option>
+							<option value="" >是否完结</option>
 							<option value="1" >是</option>
 							<option value="0" >否</option>
 						</select>
-						
-						<input type="hidden" name="flag" value="0"/> 
+						 
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>
 					</div>
 					<div class="fr">

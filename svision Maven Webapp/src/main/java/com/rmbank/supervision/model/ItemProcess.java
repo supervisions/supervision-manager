@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class ItemProcess {
     private Integer id;
+    
+    private String uuid;
 
     private Integer itemId;
 
@@ -102,4 +104,12 @@ public class ItemProcess {
     public void setPreparerTime(Date preparerTime) {
         this.preparerTime = preparerTime;
     }
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 }

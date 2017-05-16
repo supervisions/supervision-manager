@@ -17,6 +17,12 @@
 
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css"> 
+	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/easyUI/jquery.easyui.min.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/easyUI/easyui-lang-zh_CN.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/common/validate.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script>
 <!--
 <link rel="stylesheet" type="text/css" href="styles.css">
 -->

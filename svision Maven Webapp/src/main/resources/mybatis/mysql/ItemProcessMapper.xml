@@ -7,6 +7,7 @@
     <result column="defined" property="defined" jdbcType="BIT" />
     <result column="content_type_id" property="contentTypeId" jdbcType="INTEGER" />
     <result column="org_id" property="orgId" jdbcType="INTEGER" />
+    <result column="uuid" property="uuid" jdbcType="VARCHAR" />
     <result column="last" property="last" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="preparer_org_id" property="preparerOrgId" jdbcType="INTEGER" />
@@ -14,7 +15,7 @@
     <result column="preparer_time" property="preparerTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, item_id, defined, content_type_id, org_id, last, content, preparer_org_id, preparer_id, 
+    id, item_id, defined, content_type_id,uuid, org_id, last, content, preparer_org_id, preparer_id, 
     preparer_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -31,11 +32,11 @@
     insert into t_item_process (id, item_id, defined, 
       content_type_id, org_id, last, 
       content, preparer_org_id, preparer_id, 
-      preparer_time)
+      preparer_time,uuid)
     values (#{id,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, #{defined,jdbcType=BIT}, 
       #{contentTypeId,jdbcType=INTEGER}, #{orgId,jdbcType=INTEGER}, #{last,jdbcType=VARCHAR}, 
       #{content,jdbcType=VARCHAR}, #{preparerOrgId,jdbcType=INTEGER}, #{preparerId,jdbcType=INTEGER}, 
-      #{preparerTime,jdbcType=TIMESTAMP})
+      #{preparerTime,jdbcType=TIMESTAMP},#{uuid,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.rmbank.supervision.model.ItemProcess" >
     insert into t_item_process
@@ -70,6 +71,9 @@
       <if test="preparerTime != null" >
         preparer_time,
       </if>
+      <if test="uuid != null" >
+        uuid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -101,6 +105,9 @@
       </if>
       <if test="preparerTime != null" >
         #{preparerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -134,6 +141,9 @@
       <if test="preparerTime != null" >
         preparer_time = #{preparerTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="uuid != null" >
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -147,7 +157,8 @@
       content = #{content,jdbcType=VARCHAR},
       preparer_org_id = #{preparerOrgId,jdbcType=INTEGER},
       preparer_id = #{preparerId,jdbcType=INTEGER},
-      preparer_time = #{preparerTime,jdbcType=TIMESTAMP}
+      preparer_time = #{preparerTime,jdbcType=TIMESTAMP},
+      uuid = #{uuid,jdbcType=VARCHAR}, 
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

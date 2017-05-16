@@ -12,6 +12,12 @@
 %>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css"> 
+	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/easyUI/jquery.easyui.min.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/easyUI/easyui-lang-zh_CN.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/common/validate.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <META http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="shortcut icon" href="<%=basePath%>source/img/favicon.ico" type="image/x-icon" >
