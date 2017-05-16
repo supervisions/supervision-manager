@@ -139,7 +139,7 @@ public class EfficiencyVisionAction extends SystemAction {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}			
+		}	
 		return js;
 	}
 }

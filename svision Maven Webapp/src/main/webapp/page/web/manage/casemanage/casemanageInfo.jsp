@@ -30,8 +30,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				 	//alert(record.name);
 			 	 	$("#orgId").val(record.id); 
   				 },
-  				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。
-  				 	$("#orgParentTree").combotree('tree').tree('options').url = 'area/jsonLoadAreaTreeList.do?pid='+ node.id;
+  				 onBeforeExpand:function(node){//节点展开前触发，返回 false 则取消展开动作。
+  				 	alert("789");
+  				 	$('#orgParentTree').combotree('options').url ='system/organ/jsonLoadOrganTreeList.do?pid='+ node.id;
   				 },
   				 onLoadSuccess:function(){ //当数据加载成功时触发。
   				 	//根据方案所对应的机构选中 
@@ -40,7 +41,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
   				 	if(orgId>0){  				 	
   				 		var orgName = $("#orgName").val();  				 		
   				 		$("#orgParentTree").combotree("setText",orgName);
-  				 		
   				 	}else{
 					//$("#cmbParentArea").combotree("disable",true);
    				 	$("#orgParentTree").combotree("setText","=请选择所属机构=");

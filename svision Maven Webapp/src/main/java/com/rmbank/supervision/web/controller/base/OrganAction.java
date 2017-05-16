@@ -290,30 +290,33 @@ public class OrganAction extends SystemAction {
 		
 		List<Organ> list = new ArrayList<Organ>();
 		if(userOrgIds!=null){
-			list = organService.getOrganByOrgIds(userOrgIds);
+			if(pid != null){				
+				list = organService.getOrganByPId(organ);	
+			}else {
+				list = organService.getOrganByOrgIds(userOrgIds);
+			}			
 		}else{
 			list = organService.getOrganByPId(organ);	
 		}
 		// 加载子节点，方式一，无子节点则无展开按钮
 		for (Organ a : list) {
 			a.setText(a.getName());
-			Organ org = new Organ();
+			/*Organ org = new Organ();
 			org.setPid(a.getId());
 			List<Organ> list1 = new ArrayList<Organ>();
 			list1 = organService.getOrganByPId(org);
 			if (list1.size() > 0) {
 				list1 = setChildren(list1);
 			}
-			a.setChildren(list1);
-			a.setState("open");
+			a.setChildren(list1);*/
+			if(a.getChildrenCount()>0){
+				a.setState("closed");
+			}else{
+				a.setState("open");
+			}
+			
 		}
-		// 加载子节点，方式二，无子节点仍有展开按钮，加载速度快
-		// if(list.size() > 0){
-		// for(Organ a:list){
-		// a.setText(a.getName());
-		// a.setState("closed");
-		// }
-		// }
+		
 		return list;// json.toString();
 	}
 

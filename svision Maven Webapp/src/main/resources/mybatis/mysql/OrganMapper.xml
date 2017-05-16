@@ -11,9 +11,13 @@
 		<result column="sort" property="sort" jdbcType="INTEGER" />
 		<result column="used" property="used" jdbcType="INTEGER" />
 		<result column="supervision" property="supervision" jdbcType="INTEGER" />
+		<result column="childrenCount" property="childrenCount" jdbcType="INTEGER" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, pid, level, path, leaf, name, sort, used, supervision
+	</sql>
+	<sql id="Query_Column_List">
+		org.id, org.pid, org.level, org.path, org.leaf, org.name, org.sort, org.used, org.supervision
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
@@ -190,7 +194,8 @@
 	
 	<select id="getOrganByPId" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.Organ">
 		select
-		<include refid="Base_Column_List" />
+		<include refid="Query_Column_List" />, 
+			(select count(*) from t_org as o where o.pid = org.id ) as childrenCount
 		<include refid="sql_query" /> 
 	</select> 
 	<!-- <select id="getOrganByPId" parameterType="com.rmbank.supervision.model.Organ" resultMap="BaseResultMap">

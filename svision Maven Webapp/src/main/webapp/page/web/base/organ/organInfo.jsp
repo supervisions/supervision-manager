@@ -40,17 +40,14 @@
 				 	 	$("#orgPid").val(record.id); 
   				 },
   				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。  				  
-  				 	$("#orgParentTree").combotree('tree').tree('options').url = 'area/jsonLoadAreaTreeList.do?pid='+ node.id;
+  				 	$("#orgParentTree").combotree('tree').tree('options').url = 'system/organ/jsonLoadOrganTreeList.do?pid='+ node.id;
   				 },
-  				 onLoadSuccess:function(){ //当数据加载成功时触发。
-  				 	
+  				 onLoadSuccess:function(){ //当数据加载成功时触发。  				 	
   				 	//根据所对应的机构选中复选框
   				 	$("#orgParentTree").combotree('setValues', orgpid);
-  				 	var orgId = $("#orgId").val();  
-  				 	
+  				 	var orgId = $("#orgId").val();  				 	
   				 	//判断是新增还是编辑	 	
-  				 	if(orgId>0){  				 	
-  				 		
+  				 	if(orgId>0){ 				 		
   				 		//var orgName = $("#orgName").val();
   				 		//$("#orgParentTree").combotree("setText",orgName);  				 		
   				 	}else{

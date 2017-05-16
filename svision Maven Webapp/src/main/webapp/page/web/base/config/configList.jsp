@@ -27,38 +27,30 @@
 			var pid =-1;
 			//加载机构树
 		 	$("#treeList").tree({	 		
-				 	 url: 'jsonLoadMetaTreeList.do?rootId='+0, 			 	 
-				 	 onClick:function(node){//单击事件	
-				 	 	//当子节点不为0的时候去根据pid去查询			 	 	
-	   				 	if(node.children.length !=0 ){   				 		
-	   				 		pid = node.id; 
-	   				 		//根据pid查询子级机构
-	   				 		getMetaListByPid(pid);
-	 				 	}else{
-	 				 		 $.messager.alert("温馨提示！","该节点下没有配置！",'info');
-	 				 	}
-	   				 },
-	   				 /* onBeforeSelect:function(node){                    
-	                    //返回树对象
-						var tree = $(this).tree;
-						//选中的节点是否为叶子节点,如果不是叶子节点,清除选中
-						var isLeaf = tree('isLeaf', node.target);	
-						alert(isLeaf);				
-	                    if(!isLeaf){
-	                    	 $.messager.alert("温馨提示！","根节点不可选，请选择子节点！",'error');
-	                        $("#moudle_Id").tree("unselect");
-	                       
-	                    }
-	                 }, */
-	   				 onLoadSuccess:function(){
-	   				 	//$("#treeList").combotree('state', 'open');
-						//showProcess(false);
-	   				    var cyId = $.trim($("#hid_companyId").val());
-	   				 	if(cyId.length>0){
-	   				 		var node = $("#treeList").tree("find",cyId); 
-							$('#treeList').tree("select", node.target);   				 		
-	   				 	} 
-	   				 }
+			 	 url: 'jsonLoadMetaTreeList.do?rootId='+0, 			 	 
+			 	 onClick:function(node){//单击事件	
+  				 		pid = node.id; 
+  				 		//根据pid查询下级配置
+  				 		getMetaListByPid(pid);	 				 	
+   				 },
+   				 onBeforeExpand:function(node){    //节点展开前触发，返回 false 则取消展开动作。
+ 				 	 	$('#treeList').tree('options').url ='jsonLoadMetaTreeList.do?pid='+ node.id;
+ 				 },
+   				 /* onBeforeSelect:function(node){                    
+                    //返回树对象
+					var tree = $(this).tree;
+					//选中的节点是否为叶子节点,如果不是叶子节点,清除选中
+					var isLeaf = tree('isLeaf', node.target);	
+					alert(isLeaf);				
+                    if(!isLeaf){
+                    	 $.messager.alert("温馨提示！","根节点不可选，请选择子节点！",'error');
+                        $("#moudle_Id").tree("unselect");
+                       
+                    }
+                 }, */
+   				 onLoadSuccess:function(){
+   				 	   				 	
+   				 }
 			});	
 		});
 //修改配置状态		

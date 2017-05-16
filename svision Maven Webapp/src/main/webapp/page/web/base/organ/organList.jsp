@@ -27,13 +27,14 @@
 		
 		//加载机构树
 	 	$("#treeList").tree({	 		
-			 	 url: 'jsonLoadOrganTreeList.do?rootId='+0, 			 	 
-			 	 onClick:function(node){//单击事件			 	 	
-   				 	if(node.children.length !=0 ){   				 		
-   				 		 pid= node.id; 
-   				 		//根据pid查询子级机构
-   				 		getOrganListByPid(pid);
- 				 	}
+			 	 url: 'jsonLoadOrganTreeList.do?', 			 	 
+			 	 onClick:function(node){//单击事件			 	 			 		
+				 	pid= node.id; 
+				 	//根据pid查询子级机构
+				 	getOrganListByPid(pid);
+   				 },
+   				 onBeforeExpand:function(node){   				 
+   				 	$('#treeList').tree('options').url = 'jsonLoadOrganTreeList.do?pid='+ node.id;
    				 },
    				 onLoadSuccess:function(){
    				 	//$("#treeList").combotree('state', 'open');

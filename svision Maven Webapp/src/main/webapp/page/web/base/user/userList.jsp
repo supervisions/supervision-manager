@@ -21,18 +21,20 @@ $(document).ready(function(){
 	
 	//加载机构树
  	$("#treeList").tree({	 		
-	 	 url: '<%=basePath%>system/organ/jsonLoadOrganTreeList.do?id=${userOrgIds}', 			 	 
+	 	 url: '<%=basePath%>system/organ/jsonLoadOrganTreeList.do?', 			 	 
 	 	 onClick:function(node){//单击事件		 	 	
 	 		orgId = node.id;
 	 		//机构ID查询用户
 	 		getUserListByOrgId(orgId);
  		},
-		 onLoadSuccess:function(){		 	
+ 		onBeforeExpand:function(node){   				 
+			$('#treeList').tree('options').url = '<%=basePath%>system/organ/jsonLoadOrganTreeList.do?pid='+ node.id;
+		},
+		onLoadSuccess:function(){		 	
 		    var cyId = $.trim($("#hid_companyId").val());
 		 	if(cyId.length>0){
 		 		var node = $("#treeList").tree("find",cyId); 
-			$('#treeList').tree("select", node.target);
-		 		
+				$('#treeList').tree("select", node.target);		 		
 		 	} 
 		 }	
 	});
