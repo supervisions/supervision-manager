@@ -42,7 +42,7 @@ public class ItemServiceimpl implements ItemService {
 	@Override
 	public int updateByPrimaryKeySelective(Item record) {
 		// TODO Auto-generated method stub
-		return 0;
+		return itemMapper.updateByPrimaryKeySelective(record);
 	}
 
 	@Override

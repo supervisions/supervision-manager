@@ -31,7 +31,9 @@ public class Item extends Page {
     
     private Date entTime;
     
-    public Integer getStatus() {
+   
+
+	public Integer getStatus() {
 		return status;
 	}
 

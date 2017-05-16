@@ -220,5 +220,9 @@
 		  #{item}  
 		</foreach> 
 	</select>
-	
+	<select id="getUserOrgByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT * FROM t_org WHERE id IN(
+			SELECT uo.org_id FROM `t_user_org` AS uo WHERE uo.user_id =#{id,jdbcType=INTEGER}
+		)
+	</select>
 </mapper>

@@ -78,7 +78,26 @@ function authorizeResource(id,name){
 	
 	//window.location.href="toAuthorizationResource.do?id="+id+"&name="+name;
 }
-
+function setProject(id){
+	$.messager.confirm("立项确认","是否确认立项?",function(r){  
+		    if (r){   
+			$.ajax({
+				url : "jsonsetProjectById.do?id="+id,
+				type : "post",  
+		    	dataType : "json",								
+				success : function(data) { 									
+		  			if(data.code == 0){ 
+		  				$.messager.alert('操作信息',data.message,'info',function(){ 
+		  					search();  
+		      			});
+		  			}else{		  			    
+						$.messager.alert('错误信息','删除失败！','error');
+		  			}  
+			    } 
+			});
+	    }  
+	}); 
+}
 </script>
 </head>
 <body>
@@ -88,8 +107,7 @@ function authorizeResource(id,name){
 				<i class="yw-icon icon-partner"></i><span>项目列表</span> 
 			</div>
 		</div>
-		<div class="fl yw-lump mt10">
-			
+		<div class="fl yw-lump mt10">			
 			<form id="toARfrom" action="toAuthorizationResource.do" method="post">
 				<input id="toAid" type="hidden" name="id" value="">
 				<input id="toAname" type="hidden" name="name" value="">
@@ -104,7 +122,11 @@ function authorizeResource(id,name){
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
 					</div>
 					<div class="fr">
-						<span class="yw-btn bg-green cur" onclick="window.location.href='efficiencyInfo.do?id=0';">添加工作事项</span>
+						<c:if test="${userOrg.supervision ==1 }">
+							<span class="yw-btn bg-green cur" onclick="window.location.href='efficiencyInfo.do?id=0';">添加工作事项</span>
+							
+						</c:if>
+						
 					</div>
 					<div class="cl"></div>				
                     	<input type="hidden" id="pageNumber" name="pageNo" value="${Role.pageNo}" />
@@ -115,10 +137,10 @@ function authorizeResource(id,name){
 			<table class="yw-cm-table yw-center yw-bg-hover" id="taskList">
 				<tr style="background-color:#D6D3D3;font-weight: bold;">
 					<th width="4%" style="display:none">&nbsp;</th>
-					<th>立项情况</th>
-					<th>状态</th>	
+					<th width="6%">立项情况</th>
+					<th width="4%">状态</th>	
 					<th>工作事项</th>	
-					<th>查看</th>	
+					<th width="6%">查看</th>	
 					<th>被监察对象</th>	
 					<th>签收情况</th>	
 					<th>部门完成情况</th>	
@@ -129,14 +151,58 @@ function authorizeResource(id,name){
 				</tr>
 				<c:forEach var="item" items="${itemList}">
 					<tr> 							
-						<td></td>
-						<td></td>
+						<td>
+							<c:if test="">
+								<span style="color: red;" onclick="setProject(${item.id })">未立项</span>
+							</c:if>
+							<c:if test="">
+								<span>已立项</span>
+							</c:if>
+						</td>
+						<td  style="color:green;">
+							<c:if test="${item.status == 0 }">
+								<span>新</span>
+							</c:if>
+							<c:if test="${item.status == 1 }">
+								<span>正常</span>
+							</c:if>
+							<c:if test="${item.status == 2 }">
+								<span>退回</span>
+							</c:if>
+							<c:if test="${item.status == 3 }">
+								<span>逾期</span>
+							</c:if>
+							<c:if test="${item.status == 4 }">
+								<span>完结</span>
+							</c:if>
+						</td>
 						<td>${item.name}</td>
-						<td></td>
+						<td><a href="">查看</a></td>
 						<td>${item.orgName}</td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td>
+							<c:if test="">
+								<span>未签收</span>
+							</c:if>
+							<c:if test="">
+								<span>已签收</span>
+							</c:if>
+						</td>
+						<td>
+							<c:if test="${item.status == 4 }">
+								<span>完成</span>
+							</c:if>
+							<c:if test="${item.status != 4 }">
+								<span>未完成</span>
+							</c:if>
+						</td>
+						<td>
+							<c:if test="${item.status == 4 }">
+								<span>完结</span>
+							</c:if>
+							<c:if test="${item.status != 4 }">
+								<span>未完结</span>
+							</c:if>
+						</td>
 						<td></td>
 						<td></td>
 						<td></td>

@@ -24,61 +24,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$("#cmbParentArea").combotree({
-				 url: 'area/jsonLoadAreaTreeList.do',  
-   				 required: false,
-   				 onSelect:function(record){ 
- 				 	 	$("#areaId").val(record.id); 
-   				 },
-   				 onBeforeExpand:function(node){
-   				 	$("#cmbParentArea").combotree('tree').tree('options').url = 'area/jsonLoadAreaTreeList.do?pid='+ node.id;
-   				 },
-   				 onLoadSuccess:function(){
-   				 	var deviceId = $("#deviceId").val();
-   				 	
-   				 	if(deviceId>0){
-   				 		//var pId = $("#areaId").val();
-   				 		var areaName = $("#areaName").val();
-   				 		$("#cmbParentArea").combotree("setText",areaName);
-   				 		
-   				 	}else{
-						//$("#cmbParentArea").combotree("disable",true);
-	   				 	$("#cmbParentArea").combotree("setText","=请选择所属区域=");
-					}
-   				 }
-			});
+			
 		});
 		  
 		
-		function saveDevicePoint(obj) {
-			var areaId = $("#cmbParentArea").combotree("getValue");
-			var flag = $("#hid_flag").val();
-			$("#areaId").val(areaId);
-			if ($('#devicePointForm').form('validate')) {
-				$(obj).attr("onclick", "");
-				showProcess(true, '温馨提示', '正在提交数据...');
-				$('#devicePointForm').form('submit',{
-					success : function(data) {
-						showProcess(false);
-						data = $.parseJSON(data);
-						if (data.code == 0) {
-							$.messager.alert('保存信息',data.message,'info',
-											function() {
-												window.location.href = "device/deviceList.do?flag="+flag;
-											});
-							//$("#i_back").click();
-						} else {
-							$.messager.alert('错误信息',
-									data.message, 'error',
-									function() {
-									});
-							$(obj).attr("onclick",
-									"saveDevicePoint(this);");
-						}
-					}
-				});
-			}
-		}
+		
 	</script>
   </head>
   
@@ -97,7 +47,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<span class="yw-bi-now">基本信息</span>
 				</div>
 				<div class="fr">
-					<span class="yw-btn bg-red mr26" id="saveBtn" onclick="saveDevicePoint(this);">保存</span> 
+					<span class="yw-btn bg-red mr26" id="saveBtn" onclick="">保存</span> 
 					<span class="yw-btn bg-green mr26"  onclick="$('#i_back').click();">返回</span>
 				</div>
 			</div>
@@ -107,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<table class="yw-cm-table font16">
 				<tr>	
 					<td align="right" width="12%">监察项目：</td>
-					<td  align="left" ><input  name="pointName" doc="pointInfo"  onblur="valueTrim(this);"   type="text" value="${Device.pointName}" class="easyui-validatebox" required="true" validType="Length[1,100]" style="width:354px;height:28px;" />
+					<td  align="left" ><input  name="name" type="text" value="" class="easyui-validatebox" required="true" style="width:354px;height:28px;" />
 					<span style="color:red">*</span>
 					</td>
 					
@@ -115,31 +65,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 				<tr>	
 					<td align="right">监察内容：</td>
-					<td  align="left" ><input  name="type" doc="pointInfo"  onblur="valueTrim(this);"   type="text" value="${Device.type}" class="easyui-validatebox"  validType="Length[1,30]" style="width:354px;height:28px;" />
+					<td  align="left" ><input  name="content" type="text" value=""  class="easyui-validatebox"  style="width:354px;height:28px;" />
 					<span style="color:red">*</span>
 					</td>
 				</tr>
 				<tr>	
 					<td align="right">规定完成时间：</td>
-					<td  align="left" ><input  name="pointNumber" doc="pointInfo" onblur="valueTrim(this);"    type="text" value="${Device.pointNumber}" class="easyui-validatebox" required="true" validType="Length[1,100]" style="width:354px;height:28px;" />
+					<td  align="left" ><input  name="EndTime" type="text" value="" class="easyui-datebox" data-options="sharedCalendar:'#sj'"style="width:354px;height:32px;" />
 					<span style="color:red">*</span>
+					<div id="sj" class="easyui-calendar"></div>
 					</td> 
 			    </tr>
 				<tr>
 					<td align="right">是否分节点监察：</td>
-					<td  align="left" ><input  name="pointNaming" doc="pointInfo"  onblur="valueTrim(this);"   type="text" value="${Device.pointNaming}" class="easyui-validatebox" required="true" validType="Length[1,250]" style="width:354px;height:28px;" />
+					<td  align="left" >
+					<select name="isStept" class="easyui-validatebox" required="true" style="width:354px;height:32px;">
+						<option value="0">否</option>
+						<option value="1">是</option>
+					</select>
 					<span style="color:red">*</span>
 					</td> 
 			    </tr>
 				<tr>	
 					<td align="right">被监察对象:</td>
-					<td  align="left" ><input  name="ipAddress" doc="pointInfo"  type="text" value="${Device.ipAddress}" class="easyui-validatebox" required="true" validType="IP" style="width:354px;height:28px;" />
+					<td  align="left" ><input  name="" type="text" value="" class="easyui-validatebox" required="true" style="width:354px;height:28px;" />
 					<span style="color:red">*</span> 
 					</td> 
 				</tr>
 				<tr>	
 					<td align="right">责任领导:</td>
-					<td  align="left" ><input  name="port" doc="pointInfo"  type="text" value="${Device.port}" class="easyui-validatebox" required="true" validType="number" style="width:354px;height:28px;" />
+					<td  align="left" ><input  name="" type="text" value="" class="easyui-validatebox" required="true" style="width:354px;height:28px;" />
 					<span style="color:red">*</span>
 					</td>
 			    </tr>

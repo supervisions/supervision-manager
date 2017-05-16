@@ -298,6 +298,12 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userMapper.getUserListByOrgId(orgId);
 	}
+
+	@Override
+	public List<Organ> getUserOrgByUserId(Integer id) {
+		// TODO Auto-generated method stub
+		return organMapper.getUserOrgByUserId(id);
+	}
 	
 	
 }
