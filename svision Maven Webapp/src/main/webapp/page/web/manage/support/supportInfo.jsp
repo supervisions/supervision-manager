@@ -83,29 +83,27 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="yw-cm-table font16" id="taskTable">
 						<tr>
-							<td width="12%" align="right">项目名称：</td>
-							<td><input id="" class="easyui-validatebox"
+							<td width="8%" align="right">项目名称：</td>
+							<td colspan="2"><input id="" class="easyui-validatebox"
 								name="name" type="text" doc="taskInfo" value=""
 								required="true" validType="baseValue"
 								style="width:254px;height:28px;" /> <input type="hidden"
 								id="resourceId" name="id" value="" /> <span
-								style="color:red">*</span></td>
-							<td width="12%"></td>
+								style="color:red">*</span></td> 
 						</tr>
-						<tr>
-							<td width="12%" align="right">项目分类：</td>
-							<td><select id="supervisionTypeId" name="supervisionTypeId" class="easyui-combobox"
+						<tr> 
+							<td align="right">项目分类：</td>
+							<td colspan="2"><select id="supervisionTypeId" name="supervisionTypeId" class="easyui-combobox"
 								style="width:254px;height:28px;">
 									<option value="-1">请选择项目分类</option>									
 									<c:forEach var="position" items="${meatListByKey}">
 										<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
 									</c:forEach>
-							</select> <span style="color:red">*</span></td>
-							<td width="8%"></td>
-						</tr>
+							</select> <span style="color:red">*</span></td> 
+						</tr> 
 						<tr>							
-							<td width="12%" align="right">立项时间：</td>
-							<td align="left" required="true">								
+							<td align="right">立项时间：</td>
+							<td align="left" required="true" colspan="2">								
 								<input id="" name="pTime" class="easyui-datebox" data-options="sharedCalendar:'#cc'" style="width:254px;height:28px;" />
 								<span style="color:red">*</span>
 								<div id="cc" class="easyui-calendar" style="width:254px;height:28px;"></div>

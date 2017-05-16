@@ -107,11 +107,6 @@ function edit(id){
 								<option value="${position.id}">${position.name}</option>
 							</c:forEach>
 						</select>
-						<!-- <select name="" class="easyui-combobox" style="width:129px;height:32px;">									
-							<option value="" selected="selected">请选择项目属性</option>							
-							<option value="1">分行立项分行完成</option>
-							<option value="0">分行立项中支完成</option>							
-						</select> -->
 						<select name="used" class="easyui-combobox" style="width:99px;height:32px;">									
 							<option value="" >是否完成</option>
 							<option value="1" >是</option>
