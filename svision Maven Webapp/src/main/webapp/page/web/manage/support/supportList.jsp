@@ -16,6 +16,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css"> 
+	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/easyUI/jquery.easyui.min.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/easyUI/easyui-lang-zh_CN.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/common/validate.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script>
 	<script
 	src="${pageContext.request.contextPath}/source/js/pager/jquery.pager.js"></script>
 	<link
@@ -107,18 +113,12 @@ function edit(id){
 								<option value="${position.id}">${position.name}</option>
 							</c:forEach>
 						</select>
-						<!-- <select name="" class="easyui-combobox" style="width:129px;height:32px;">									
-							<option value="" selected="selected">请选择项目属性</option>							
-							<option value="1">分行立项分行完成</option>
-							<option value="0">分行立项中支完成</option>							
-						</select> -->
 						<select name="used" class="easyui-combobox" style="width:99px;height:32px;">									
-							<option value="" >是否完成</option>
+							<option value="" >是否完结</option>
 							<option value="1" >是</option>
 							<option value="0" >否</option>
 						</select>
-						
-						<input type="hidden" name="flag" value="0"/> 
+						 
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>
 					</div>
 					<div class="fr">

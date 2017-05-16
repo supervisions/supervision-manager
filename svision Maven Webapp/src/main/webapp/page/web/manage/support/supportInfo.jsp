@@ -18,9 +18,141 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <link rel="stylesheet" type="text/css" href="styles.css">
 -->
 
+    <%--//////////--%>
+    <%--<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/bootstrap.css" media="screen" />--%> 
+	<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script>
+    <link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/my.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/prettify.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/shCore.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/shCoreEclipse.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/jquery-ui.min.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/jquery.ui.plupload.css" media="screen" />
+
+    <script type="text/javascript" src="<%=basePath%>source/js/plupload/shCore.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="<%=basePath%>source/js/plupload/shBrushjScript.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery-ui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="<%=basePath%>source/js/plupload/plupload.full.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery.ui.plupload.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="<%=basePath%>source/js/plupload/zh_CN.js" charset="UTF-8"></script>
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
+    <![endif]-->
+    <link href="<%=basePath%>source/js/plupload/css/Breeserif.css" rel="stylesheet" type="text/css">
+    <!--[if IE]>
+    <link href="<%=basePath%>source/js/plupload/css/opensans.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-300.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-400.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-600.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-700.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-300s.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-400s.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-600s.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/Breeserif-400.css" rel="stylesheet" type="text/css">
+    <![endif]-->
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="<%=basePath%>source/js/plupload/css/font-awesome-ie7.min.css">
+    <![endif]-->
+    <!--[if lt IE 9]>
+    <script src="<%=basePath%>source/js/plupload/html5shiv.js"></script>
+    <![endif]-->
+    <%--///////////////////--%>
+
 <script type="text/javascript">
-	$(document).ready(function(){	 	
-	 	
+	$(document).ready(function(){	
+		$("#datepicker").datepicker(); 
+		$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
+	 	 var len=32;//32长度
+            var radix=16;//16进制
+            var chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+            var uuid=[],i;
+            radix=radix||chars.length;
+            if(len){
+                for(i=0;i<len;i++){
+                    uuid[i]=chars[0|Math.random()*radix];
+                }
+            }else{
+                var r;
+                uuid[8]=uuid[13]=uuid[18]=uuid[23]='-';
+                uuid[14]='4';
+                for(i=0;i<36;i++){
+                    if(!uuid[i]){
+                        r=0|Math.random()*16;
+                        uuid[i]=chars[(i==19)?(r&0x3)|0x8:r];
+                    }
+                }
+            }
+            var v_uuid = uuid.join('');
+            $("#hid_uuid").val(v_uuid);
+            $("#uploader").plupload({
+                // General settings
+                runtimes : 'html5,flash,silverlight,html4',
+                url : "<%=basePath%>client/center/upLoadFileToStorage.do?uuid="+v_uuid,
+                // Maximum file size
+                max_file_size : '2999mb',
+                // Rename files by clicking on their titles
+                rename: true,
+                // Sort files
+                sortable: true,
+                // Enable ability to drag'n'drop files onto the widget (currently only HTML5 supports that)
+                dragdrop: true,
+                // Views to activate
+                max_retries: 0,
+                views: {
+                    list: true,
+                    thumbs: false, // Show thumbs
+                    active: 'list'
+                },
+                // Flash settings
+                flash_swf_url : '/plupload/js/Moxie.swf',
+                // Silverlight settings
+                silverlight_xap_url : '/plupload/js/Moxie.xap'
+            });
+            var uploader = $('#uploader').plupload('getUploader');
+            //绑定进度条
+            uploader.bind('UploadProgress',function(uploader,file){
+                //每个事件监听函数都会传入一些很有用的参数，
+                //我们可以利用这些参数提供的信息来做比如更新UI，提示上传进度等操作
+                var percentMsg = "正在上传文件，可能会花费一点时间，已上传:" + uploader.total.percent + "%";
+                $("#loadingText").html("<div style='width: 100%;min-height: 150px;'>"+percentMsg+"</div>");
+            });
+            //绑定文件添加
+            uploader.bind('FilesAdded',function(uploader,files){
+                if(null != files && files.length>0){
+                    var cur_files = uploader.files;
+                    var tmp_files = cur_files;
+                    if(null != cur_files && cur_files.length>0){
+                        for(var i=0;i<cur_files.length;i++){
+                            var count = 0;
+                            for(var j=0;j<tmp_files.length;j++){
+                                if(cur_files[i].name == tmp_files[j].name){
+                                    count++;
+                                }
+                            }
+                            if(count > 1){
+                                uploader.removeFile(cur_files[i]);
+                                i--;
+                            }
+                        }
+                    }
+                }
+            });
+            //绑定文件是否全部上传完成
+            uploader.bind('UploadComplete',function(uploader,files){
+                if(null != files && files.length>0){
+                    hideLoading();
+                    BootstrapDialog.show({
+                        title: "操作提示",
+                        message: "文件上传成功"+uploader.total.uploaded+"个,失败:"+uploader.total.failed+"个",
+                        buttons: [{
+                            label: '确定', action: function () {
+                                window.location.href = "<%=basePath%>client/center/fileSynchronization.do";
+                            }
+                        }]
+                    });
+                }
+            });
+            $("#uploader_browse").removeAttr("style");
+            $("#uploader_browse").attr("style","z-index: 1;font-size: 12px;font-weight: normal;");
 	 });
 	
 	//新增/编辑项目
@@ -37,7 +169,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			return false;
 		}
 		if ($('#itemInfoForm').form('validate')) {			
-			$(obj).attr("onclick", "");				 
+			$(obj).attr("onclick", "");	
+			showProcess(true, '温馨提示', '正在提交数据...');			 
 			$('#itemInfoForm').form('submit',{				 
 		  		success:function(data){ 
 					showProcess(false);
@@ -81,66 +214,74 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
 				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="yw-cm-table font16" id="taskTable">
+					<table class="font16" id="taskTable">
 						<tr>
-							<td width="12%" align="right">项目名称：</td>
-							<td><input id="" class="easyui-validatebox"
-								name="name" type="text" doc="taskInfo" value=""
-								required="true" validType="baseValue"
-								style="width:254px;height:28px;" /> <input type="hidden"
-								id="resourceId" name="id" value="" /> <span
-								style="color:red">*</span></td>
-							<td width="12%"></td>
+							<td width="8%" align="right">项目名称：</td>
+							<td colspan="3"><input id="" 
+								name="name" type="text" doc="taskInfo" value=""  style="width:60%;height:28px;" />  
+								<span style="color:red">*</span> 
+                            	<input type="hidden" id="hid_uuid" name="uuid" />
+							</td> 
 						</tr>
 						<tr>
-							<td width="12%" align="right">项目分类：</td>
-							<td><select id="supervisionTypeId" name="supervisionTypeId" class="easyui-combobox"
-								style="width:254px;height:28px;">
+							<td align="right">项目分类：</td>
+							<td colspan="3">
+								<select id="supervisionTypeId" name="supervisionTypeId" style="width:254px;height:28px;">
 									<option value="-1">请选择项目分类</option>									
 									<c:forEach var="position" items="${meatListByKey}">
 										<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
 									</c:forEach>
-							</select> <span style="color:red">*</span></td>
-							<td width="8%"></td>
-						</tr>
-						<tr>							
-							<td width="12%" align="right">立项时间：</td>
-							<td align="left" required="true">								
-								<input id="" name="pTime" class="easyui-datebox" data-options="sharedCalendar:'#cc'" style="width:254px;height:28px;" />
-								<span style="color:red">*</span>
-								<div id="cc" class="easyui-calendar" style="width:254px;height:28px;"></div>
+								</select> 
+								<span style="color:red">*</span> 
+							 立项时间：   <input type="text" id="datepicker" style="width:254px;height:22px;">
 							</td>								
 						</tr>
 						<tr>
-							<td width="12%" align="right">工作要求、方案：</td>
-							<td>
-								<input class="easyui-validatebox" name="content" type="text" value=""
-								 required="true" validType="baseValue" style="width:254px;height:28px;" />
-								<span style="color:red">*</span>
-							</td>
-							<td width="8%"></td>
-						</tr>				
-					</table>
-					<table style="font-size: 16px;">
+							<td align="right" height="100px;">工作要求、方案：</td>
+							<td colspan="3"> 
+								<textarea rows="6" cols="5" style="width:60%;" name="content" ></textarea>
+								
+							</td> 
+						</tr>	
 						<tr>
-							<td align="left" style="padding-left: 63px;">选择单位：</td>
-							<td>
-								<c:forEach var="item" items="${OrgList }">
-									<tr><td style="font-weight: 900;">${item.name }</td></tr>
-									<tr style="width: 100%;">
-										<td>
-											<c:forEach var="org" items="${item.itemList }">
-												<label style="float:left;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
-											</c:forEach>
-										</td>
-									</tr>
-								</c:forEach>
-							</td>
-						</tr>
+							<td align="right" height="100px;">上传附件：</td>
+							<td colspan="3">
+								 <div id="themeswitcher" class="pull-right"> </div>
+					                <script>
+					                    $(function() {
+					                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
+					                    });
+					                </script>
+					                <div id="uploader">
+					                </div>
+							 </td>	
+						</tr>	
+						
+						<tr>
+							<td align="right" height="100px;">选择单位：</td>
+							<td colspan="3"> 
+								<table style="font-size: 16px;"> 
+									<c:forEach var="item" items="${OrgList }">
+										<tr><td style="font-weight: 900;">${item.name }</td></tr>
+										<tr style="width: 100%;">
+											<td>
+												<div style="width:60%;">
+													<c:forEach var="org" items="${item.itemList }">
+														<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
+													</c:forEach>
+												</div>
+											</td>
+										</tr>
+									</c:forEach> 
+								</table>
+							 </td>	
+						</tr>	
+						
 					</table>
 				</div>
 			</form>
 		</div> 
+	
 	<div class="cl"></div>
 </div>
 <div class="cl"></div>

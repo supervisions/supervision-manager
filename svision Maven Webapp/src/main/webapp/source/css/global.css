@@ -57,10 +57,12 @@ p {
 }
 /* ============框架============== */
 #main{width:100%;height:auto;margin:0 auto;}
-#header{width:100%;height:105px;margin:0 auto;background-color:#00A2CA;font-size:16px;min-width: 1150px;}
+#header{width:100%;height:90px;margin:0 auto;background-color:#00A2CA;font-size:16px;min-width: 1150px;}
 #adminheader{width:100%;height:95px;margin:0 auto;background-color:#00A2CA;font-size:16px;}
 #content{width:100%;height:auto;margin:0 auto; min-width: 1150px;}
-#footer{width:100%;height:29px;background-color:#00A2CA;min-width: 1150px;}
+#footer{width:100%;height:29px;background-color:#00A2CA;min-width: 1150px;    text-align: center;
+    line-height: 29px; 
+    color: white;} 
 #treeList{width:100%;height:100%;}
 .footer-info{float:left;width:100%;height:28px;line-height:28px;color:#fff;font-size:12px;text-align:center;margin:0;margin-top:1px;padding:0;}
 .con-left{float:left;width:110px;height:100%;background-color:#3A464E;border-top:0px;}

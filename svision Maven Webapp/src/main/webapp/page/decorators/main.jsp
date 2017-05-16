@@ -13,13 +13,7 @@ String  url  =  uri.substring(uri.lastIndexOf("/")+1);
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link type="text/css" href="${pageContext.request.contextPath}/source/css/base.css" rel="stylesheet"/>
 	<link type="text/css" href="${pageContext.request.contextPath}/source/css/global.css" rel="stylesheet"/>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css">
 	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/jquery-1.11.2.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/easyUI/jquery.easyui.min.js"></script>
-	<script src="${pageContext.request.contextPath}/source/js/easyUI/easyui-lang-zh_CN.js"></script>
-	<script src="${pageContext.request.contextPath}/source/js/common/validate.js"></script>
-	<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script>
 <!-- 导入页面引用的特殊js和css文件 -->
 <sitemesh:write property='head' />
 <script type="text/javascript">

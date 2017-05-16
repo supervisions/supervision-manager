@@ -31,7 +31,11 @@ public class Item extends Page {
     
     private Date entTime;
     
-   
+    
+    /**
+     * 定义字段供前台使用
+     */
+    private String uuid;
 
 	public Integer getStatus() {
 		return status;
@@ -168,5 +172,13 @@ public class Item extends Page {
 
 	public void setShowDate(String showDate) {
 		this.showDate = showDate;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 }
