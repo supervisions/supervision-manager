@@ -1,6 +1,7 @@
 package com.rmbank.supervision.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,9 +80,10 @@ public class ItemServiceimpl implements ItemService {
 			for (Integer integer : itemId) {				
 				itemProcess.setUuid(item.getUuid());
 				itemProcess.setItemId(integer);
+				//itemProcess.setDefined();
 				itemProcess.setContent(content);
 				itemProcess.setContentTypeId(0);
-				itemProcess.setPreparerTime(item.getPreparerTime());
+				itemProcess.setPreparerTime(new Date());
 				itemProcess.setPreparerId(item.getPreparerId());
 				itemProcess.setPreparerOrgId(item.getPreparerOrgId());
 				itemProcessMapper.insertSelective(itemProcess);

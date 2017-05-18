@@ -135,10 +135,10 @@ function edit(id){
 				<table class="yw-cm-table yw-center yw-bg-hover" id="deviceList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>
-						<th width="10%" >项目名称</th>
-						<th width="10%" >项目分类</th>
-						<th width="10%" >立项时间</th>  
-											
+						<th width="15%" >项目名称</th>
+						<th width="5%" >项目分类</th>
+						<th width="5%" >立项时间</th>  
+						<th width="10%" >立项单位（部门）</th>					
 						<th width="10%" >完成单位（部门）</th>
 						
 						<th width="10%" >操作</th> 
@@ -149,7 +149,7 @@ function edit(id){
 							<td><a style="color: blue;" onclick="edit(${item.id})">${item.name}</a></td>
 							<td>${item.sType}</td>
 							<td>${item.showDate}</td>
-							
+							<td>${item.preparerOrg}</td>
 							<td>${item.orgName}</td>
 							<td>
 								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>

@@ -87,6 +87,10 @@ public class BranchAction extends SystemAction {
 		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_PROJECT_KEY);
 		request.setAttribute("meatListByKey", meatListByKey);
 		
+		User loginUser = this.getLoginUser();
+		loginUser.getId();
+		
+		
 		//获取项目列表
 		List<Item> itemList=itemService.getItemList(item);
 		
@@ -171,7 +175,7 @@ public class BranchAction extends SystemAction {
     	User u = this.getLoginUser();
     	item.setPreparerId(u.getId()); //制单人的ID
     	item.setSupervisionUserId(0); //
-    	//获取当前用户所属的机构ID
+    	//获取当前用户所属的机构id，当做制单部门的ID
     	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
     	item.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
     	//新建一个json对象 并赋初值
@@ -191,8 +195,7 @@ public class BranchAction extends SystemAction {
 			//根据name去数据库匹配，如编辑，则可以直接保存；如新增，则需匹配该项目是否重复
 			List<Item> lc = itemService.getExistItem(im);
 			if (lc.size() == 0) {  
-				State = itemService.saveOrUpdateItem(item,OrgIds,content);
-				
+				State = itemService.saveOrUpdateItem(item,OrgIds,content);				
 				if(State){
 					js.setCode(new Integer(0));
 					js.setMessage("保存项目信息成功!");
