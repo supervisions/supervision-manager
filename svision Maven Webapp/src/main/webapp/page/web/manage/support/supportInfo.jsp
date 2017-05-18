@@ -167,7 +167,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
         $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
-	        url: "manage/branch/jsonSaveOrUpdateItem.do",
+	        url: "manage/support/jsonSaveOrUpdateItem.do",
 	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 	        async: true, //发送异步请求	  
 	        dataType:"json", //响应数据类型      
@@ -187,7 +187,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/branch/branchList.do'"></i><span>项目列表</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/support/supportList.do'"></i><span>项目列表</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
@@ -204,7 +204,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			</div>
 		</div>
 			<form id="itemInfoForm" name="itemInfoForm"
-				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
+				action="<%=basePath%>manage/support/jsonSaveOrUpdateItem.do"
 				method="post">
 				<div id="tab1" class="yw-tab">
 					<table class="font16" id="taskTable">

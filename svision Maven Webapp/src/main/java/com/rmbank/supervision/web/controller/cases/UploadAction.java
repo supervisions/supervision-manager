@@ -29,7 +29,11 @@ import com.rmbank.supervision.service.ItemProcessFileService;
 import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
-
+/**
+ * 文件上传的Action
+ * @author DELL
+ *
+ */
 @Controller
 @Scope("prototype")
 @RequestMapping("/system/upload")
