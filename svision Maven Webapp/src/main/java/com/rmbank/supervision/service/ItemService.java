@@ -29,4 +29,6 @@ public interface ItemService {
 	boolean deleteItemById(Integer id);
 
 	List<Item> getItemListByType(Item item);
+
+	List<Item> getItemListBylgOrg(Item item);
 }

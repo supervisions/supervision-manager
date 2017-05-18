@@ -24,4 +24,6 @@ public interface ItemMapper {
 	int getItemCount(Item item);
 
 	List<Item> getItemListByType(Item item);
+
+	List<Item> getItemListBylgOrg(Item item);
 }

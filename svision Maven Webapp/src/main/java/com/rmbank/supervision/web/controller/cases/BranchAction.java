@@ -58,8 +58,7 @@ public class BranchAction extends SystemAction {
 	@Resource
 	private UserService userService;
 	
-	
-	
+
 	/**
 	 * 分行立项列表
 	 * @param request
@@ -83,23 +82,30 @@ public class BranchAction extends SystemAction {
 		int totalCount = 0;
 		totalCount=itemService.getItemCount(item);
 		item.setTotalCount(totalCount);
-		//获取项目分类的集合		
+		//获取项目分类的集合,用于搜索条件		
 		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_PROJECT_KEY);
 		request.setAttribute("meatListByKey", meatListByKey);
 		
+		//当前登录用户所属的机构
 		User loginUser = this.getLoginUser();
-		loginUser.getId();
-		
-		
-		//获取项目列表
-		List<Item> itemList=itemService.getItemList(item);
-		
+		List<Organ> userOrgByUserId = userService.getUserOrgByUserId(loginUser.getId());
+		Integer logUserOrg = userOrgByUserId.get(0).getId(); //当前登录用户所属的机构ID
+		Organ organ = userOrgByUserId.get(0);
+		//获取项目列表,根据不同的机构类型加载不同的项目
+		List<Item> itemList =null;
+		if(organ.getOrgtype()==Constants.ORG_TYPE_1){
+			itemList=itemService.getItemList(item);
+		}else{
+			item.setSupervisionOrgId(logUserOrg);
+			itemList=itemService.getItemListBylgOrg(item);
+		}
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		for (Item it : itemList) {
 			Date preparerTime = it.getPreparerTime();
 			String format = formatter.format(preparerTime);
 			it.setShowDate(format);
 		}
+		request.setAttribute("logUserOrg", logUserOrg);
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item);
 		return "web/manage/branch/branchList";
@@ -169,6 +175,7 @@ public class BranchAction extends SystemAction {
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     	Date date = sdf.parse(pTime);    	
     	item.setPreparerTime(date); //制单时间
+    	item.setItemType(Constants.STATIC_ITEM_TYPE_MANAGE); //项目类型
     	item.setPid(0); //主任务节点的ID
     	item.setStageIndex(new Byte("0")); //工作阶段排序   	
     	//获取当前登录用户

@@ -110,7 +110,7 @@ function edit(id){
 						<select name="supervisionTypeId" class="easyui-combobox" style="width:129px;height:32px;">									
 							<option value="" selected="selected">请选择项目类别</option>
 							<c:forEach var="position" items="${meatListByKey}">
-								<option value="${position.id}">${position.name}</option>
+								<option value="${position.id}" <c:if test="${Item.supervisionTypeId == position.id}">selected="selected"</c:if>>${position.name}</option>
 							</c:forEach>
 						</select>
 						<select name="used" class="easyui-combobox" style="width:99px;height:32px;">									

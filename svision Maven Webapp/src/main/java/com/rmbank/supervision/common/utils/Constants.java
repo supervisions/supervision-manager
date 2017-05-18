@@ -81,4 +81,22 @@ public class Constants
 
   public static final Integer STATIC_ITEM_TYPE_MANAGE = 1; 
   public static final Integer STATIC_ITEM_TYPE_SVISION = 0;
+  
+  
+  public static final Integer ORG_TYPE_1= 46; 
+  public static final Integer ORG_TYPE_2= 47; 
+  public static final Integer ORG_TYPE_3= 48; 
+  public static final Integer ORG_TYPE_4= 49; 
+  
+  
+  public static final Integer CONTENT_TYPE_ID_1= 31; 
+  public static final Integer CONTENT_TYPE_ID_2= 32; 
+  public static final Integer CONTENT_TYPE_ID_3= 33; 
+  public static final Integer CONTENT_TYPE_ID_4= 34; 
+  public static final Integer CONTENT_TYPE_ID_5= 35; 
+  public static final Integer CONTENT_TYPE_ID_6= 36; 
+  public static final Integer CONTENT_TYPE_ID_7= 37; 
+  
+  
+  
 }

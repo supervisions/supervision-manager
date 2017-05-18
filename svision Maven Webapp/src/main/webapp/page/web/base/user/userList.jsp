@@ -237,7 +237,7 @@ function goToUserInfo(id){
 					</div>
 					<div class="fr">
 						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox"
-							   style="width: 120px;" placeholder="搜索关键字：名称" value="${User.searchName}" />
+							   style="width: 180px;" placeholder="搜索关键字：名称、账号" value="${User.searchName}" />
 						<span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
 						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='userInfo.do?id=0';">新建</span>
 					</div>
@@ -284,10 +284,10 @@ function goToUserInfo(id){
 						
 						<td>
 							<c:if test="${item.used == 1}">
-								<a style="color:blue" onclick="updateUser(${item.id},0,'${item.name}');">禁用</a>
+								<a style="color:blue" onclick="updateUser(${item.id},${item.used},'${item.name}');">禁用</a>
 							</c:if> 
 							<c:if test="${item.used == 0}">
-								<a style="color:blue" onclick="updateUser(${item.id},1,'${item.name}');">启用</a>
+								<a style="color:blue" onclick="updateUser(${item.id},${item.used},'${item.name}');">启用</a>
 							</c:if>
 							<a style="color:blue" onclick="deleteUser(${item.id},'${item.name}');">删除</a>							
 							<a style="color:blue" onclick="window.location.href='userInfo.do?id=${item.id}';">编辑</a>

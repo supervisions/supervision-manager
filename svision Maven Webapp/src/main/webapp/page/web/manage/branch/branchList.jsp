@@ -113,7 +113,7 @@ function toOperate(id){
 						<select name="supervisionTypeId" class="easyui-combobox" style="width:129px;height:32px;">									
 							<option value="" selected="selected">请选择项目类别</option>
 							<c:forEach var="position" items="${meatListByKey}">
-								<option value="${position.id}">${position.name}</option>
+								<option value="${position.id}" <c:if test="${Item.supervisionTypeId == position.id}">selected="selected"</c:if>>${position.name}</option>
 							</c:forEach>
 						</select> 
 						<select name="used" class="easyui-combobox" style="width:99px;height:32px;">									
@@ -155,9 +155,15 @@ function toOperate(id){
 							<td>${item.preparerOrg}</td>
 							<td>${item.orgName}</td>
 							<td>
-								<a style="color: blue;" onclick="toOperate(${item.id})">操作</a>
-								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+								<c:if test="${logUserOrg == item.preparerOrgId}">
+									
+								</c:if>							
 								
+								<c:if test="${logUserOrg != item.supervisionOrgId}">
+									
+								</c:if>	
+								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+								<a style="color: blue;" onclick="toOperate(${item.id})">操作</a>
 							</td>							
 						</tr>
 					</c:forEach>

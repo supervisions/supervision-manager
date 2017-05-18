@@ -161,6 +161,7 @@ public class SupportAction extends SystemAction {
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     	Date date = sdf.parse(pTime);    	
     	item.setPreparerTime(date); //制单时间
+    	item.setItemType(Constants.STATIC_ITEM_TYPE_MANAGE); //项目类型
     	item.setPid(0); //主任务节点的ID
     	item.setStageIndex(new Byte("0")); //工作阶段排序   	
     	//获取当前登录用户

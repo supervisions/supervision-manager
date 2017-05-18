@@ -29,7 +29,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 	
 	 });
 	
-	//新增/编辑项目
+	/* //新增/编辑项目
 	function saveItem(obj){	 	
 		var typeId=$("input[name='supervisionTypeId']").val();
 		var orgIds=$("input[type='checkbox']:checked").length;
@@ -60,7 +60,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		  		}
 			});
 		}
-	}
+	} */
 </script>
  </head> 
  <body>
@@ -76,9 +76,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			<span class="yw-bi-now">基本信息</span>
 				
 			</div>
-			<div class="fr">
-				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
-				
+			<div class="fr">				
 				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItem(this);">保存</span>
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
@@ -100,10 +98,10 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td width="15%" align="right">立项时间：</td>
 							<td align="left">${Showitem.showDate}</td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<td width="15%" align="right">项目属性：</td>
 							<td align="left"></td>
-						</tr>
+						</tr> -->
 						<tr>
 							<td width="15%" align="right">工作要求、方案：</td>
 							<td align="left"></td>
@@ -129,7 +127,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td align="left"></td>
 						</tr>
 						<tr>
-							<td width="15%" align="right">上报跟踪监察整改报告：</td>
+							<td width="15%" align="right">上报跟踪监察整改情况：</td>
 							<td align="left"></td>
 						</tr>
 						<tr>
