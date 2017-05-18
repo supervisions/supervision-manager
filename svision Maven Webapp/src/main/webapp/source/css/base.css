@@ -1743,18 +1743,19 @@
 
 .font16 td {
 	font-size: 16px;
+	    line-height: 40px;
 }
 
 .yw-search-panel {
 	width: 100%;
-	height: 60px;
+	height: 60px; 
 	line-height: 60px;
 	border-bottom: 1px solid #E2E2E2;
 }
 
 .yw-radio {
 	float: left;
-	width: auto;
+	width: auto; 
 	height: 34px;
 }
 
