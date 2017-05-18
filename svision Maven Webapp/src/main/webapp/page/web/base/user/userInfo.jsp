@@ -37,14 +37,14 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 	$("#orgParentTree").combotree({
 			 	 url: 'system/organ/jsonLoadOrganTreeList.do',  
   				 required: false, //是否必须
-  				 multiple:true,  //是否支持多选  				 
+  				 //multiple:true,  //是否支持多选  				 
   				 editable:false, //是否支持用户自定义输入	
   				 cascadeCheck:false,  				 		 
   				 onSelect:function(record){ // 	当节点被选中时触发。
 				 	 	$("#areaId").val(record.id); 
   				 },
   				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。
-  				 	$("#orgParentTree").combotree('tree').tree('options').url = 'area/jsonLoadAreaTreeList.do?pid='+ node.id;
+  				 	$("#orgParentTree").combotree('tree').tree('options').url = 'system/organ/jsonLoadOrganTreeList.do?pid='+ node.id;
   				 },
   				 onLoadSuccess:function(){ //当数据加载成功时触发。
   				 	//根据user所对应的机构选中复选框
@@ -141,7 +141,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td>
 								<input id="userAccount" name="account" type="text"
 								doc="taskInfo" value="${User.account}" required="true"
-								class="easyui-validatebox" validType="baseValue"
+								class="easyui-validatebox" validType="safepass"
 								style="width:254px;height:28px;" />
 								<span style="color:red">*</span>
 							</td>
@@ -185,7 +185,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					
 					<tr>
 						<td width="8%" align="right">职务名称</td>
-						<td><select name="postId" multiple="multiple" class="easyui-combobox"
+						<td><select name="postId" class="easyui-combobox"
 							style="width:254px;height:28px;" editable="false">								
 								<c:forEach var="position" items="${meatListByKey}">
 									<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>

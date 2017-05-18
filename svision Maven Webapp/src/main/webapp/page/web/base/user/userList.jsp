@@ -1,4 +1,4 @@
-、<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String path = request.getContextPath();
@@ -10,13 +10,13 @@
 <head>
 <meta charset="utf-8"> 
 <title>组织机构管理</title> 
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" />
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css"> 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/easyUI/jquery.easyui.min.js"></script>
 	<script src="${pageContext.request.contextPath}/source/js/easyUI/easyui-lang-zh_CN.js"></script>
 	<script src="${pageContext.request.contextPath}/source/js/common/validate.js"></script>
 	<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" />
 	<script src="${pageContext.request.contextPath}/source/js/pager/jquery.pager.js"></script>
 	<link href="${pageContext.request.contextPath}/source/js/pager/Pager.css" rel="stylesheet" />
 	<link rel="shortcut icon" href="<%=basePath%>source/images/favicon.ico" type="image/x-icon" />
@@ -27,18 +27,20 @@ $(document).ready(function(){
 	
 	//加载机构树
  	$("#treeList").tree({	 		
-	 	 url: '<%=basePath%>system/organ/jsonLoadOrganTreeList.do?id=${userOrgIds}', 			 	 
+	 	 url: '<%=basePath%>system/organ/jsonLoadOrganTreeList.do?', 			 	 
 	 	 onClick:function(node){//单击事件		 	 	
 	 		orgId = node.id;
 	 		//机构ID查询用户
 	 		getUserListByOrgId(orgId);
  		},
-		 onLoadSuccess:function(){		 	
+ 		onBeforeExpand:function(node){   				 
+			$('#treeList').tree('options').url = '<%=basePath%>system/organ/jsonLoadOrganTreeList.do?pid='+ node.id;
+		},
+		onLoadSuccess:function(){		 	
 		    var cyId = $.trim($("#hid_companyId").val());
 		 	if(cyId.length>0){
 		 		var node = $("#treeList").tree("find",cyId); 
-			$('#treeList').tree("select", node.target);
-		 		
+				$('#treeList').tree("select", node.target);		 		
 		 	} 
 		 }	
 	});
@@ -299,4 +301,4 @@ function goToUserInfo(id){
 		</div>
 	</div>
 </body>
-</html>
+</html> 

@@ -245,12 +245,12 @@ public class UserAction extends SystemAction  {
 				//创建用于新增时根据用户账号去查询用户是否存在的user对象
 				User u = new User();
 				u.setId(user.getId());
+				u.setName(user.getName());
 				u.setAccount(user.getAccount());
 				
 				//如为编辑，则给新建user对象赋传来的设备id值
 				if (user.getId() > 0) {
-					u.setId(user.getId());
-					
+					u.setId(user.getId());					
 					State = userService.saveOrUpdateUser(user,roleIds,orgIds,postId);
 					if(State){
 						js.setCode(new Integer(0));
@@ -272,7 +272,7 @@ public class UserAction extends SystemAction  {
 						return js;
 					}
 				} else {
-					js.setMessage("该账号已存在!");
+					js.setMessage("该用户已存在!");
 					return js;
 				} 
 			}catch(Exception ex){

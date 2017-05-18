@@ -7,111 +7,297 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-  <head>
-    <base href="<%=basePath%>">
-    
-    <title>效能监察</title>
-    
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css"> 
-	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/easyUI/jquery.easyui.min.js"></script>
-	<script src="${pageContext.request.contextPath}/source/js/easyUI/easyui-lang-zh_CN.js"></script>
-	<script src="${pageContext.request.contextPath}/source/js/common/validate.js"></script>
-	<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<meta name="viewport"
-	content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" /> 
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-	<script type="text/javascript">
-		$(document).ready(function(){
-			
-		});
-		  
-		
-		
-	</script>
-  </head>
+<head>
+   <base href="<%=basePath%>">
   
-  <body>
-    <div class="con-right" id="conRight">
-		<div class="fl yw-lump">
-			<div class="yw-lump-title">
-				<i  id="i_back"  class="yw-icon icon-back" onclick="javascript:history.back();"></i>
-				<span>项目列表</span> 			
+   <title>角色管理</title>
+   
+<meta name="viewport"
+content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" /> 
+<!--
+<link rel="stylesheet" type="text/css" href="styles.css">
+-->
+
+    <%--//////////--%>
+    <%--<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/bootstrap.css" media="screen" />--%> 
+	<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script>
+    <link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/my.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/prettify.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/shCore.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/shCoreEclipse.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/jquery-ui.min.css" media="screen" />
+    <link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/plupload/css/jquery.ui.plupload.css" media="screen" />
+
+    <script type="text/javascript" src="<%=basePath%>source/js/plupload/shCore.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="<%=basePath%>source/js/plupload/shBrushjScript.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery-ui.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="<%=basePath%>source/js/plupload/plupload.full.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery.ui.plupload.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="<%=basePath%>source/js/plupload/zh_CN.js" charset="UTF-8"></script>
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
+    <![endif]-->
+    <link href="<%=basePath%>source/js/plupload/css/Breeserif.css" rel="stylesheet" type="text/css">
+    <!--[if IE]>
+    <link href="<%=basePath%>source/js/plupload/css/opensans.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-300.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-400.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-600.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-700.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-300s.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-400s.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/opensans-600s.css" rel="stylesheet" type="text/css">
+    <link href="<%=basePath%>source/js/plupload/css/Breeserif-400.css" rel="stylesheet" type="text/css">
+    <![endif]-->
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="<%=basePath%>source/js/plupload/css/font-awesome-ie7.min.css">
+    <![endif]-->
+    <!--[if lt IE 9]>
+    <script src="<%=basePath%>source/js/plupload/html5shiv.js"></script>
+    <![endif]-->
+    <%--///////////////////--%>
+
+<script type="text/javascript">
+	$(document).ready(function(){	
+		$("#datepicker").datepicker(); 
+		$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
+	 	 var len=32;//32长度
+            var radix=16;//16进制
+            var chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+            var uuid=[],i;
+            radix=radix||chars.length;
+            if(len){
+                for(i=0;i<len;i++){
+                    uuid[i]=chars[0|Math.random()*radix];
+                }
+            }else{
+                var r;
+                uuid[8]=uuid[13]=uuid[18]=uuid[23]='-';
+                uuid[14]='4';
+                for(i=0;i<36;i++){
+                    if(!uuid[i]){
+                        r=0|Math.random()*16;
+                        uuid[i]=chars[(i==19)?(r&0x3)|0x8:r];
+                    }
+                }
+            }
+            var v_uuid = uuid.join('');
+            $("#hid_uuid").val(v_uuid);
+            $("#uploader").plupload({
+                // General settings
+                runtimes : 'html5,flash,silverlight,html4',
+                url : "<%=basePath%>client/center/upLoadFileToStorage.do?uuid="+v_uuid,
+                // Maximum file size
+                max_file_size : '2999mb',
+                // Rename files by clicking on their titles
+                rename: true,
+                // Sort files
+                sortable: true,
+                // Enable ability to drag'n'drop files onto the widget (currently only HTML5 supports that)
+                dragdrop: true,
+                // Views to activate
+                max_retries: 0,
+                views: {
+                    list: true,
+                    thumbs: false, // Show thumbs
+                    active: 'list'
+                },
+                // Flash settings
+                flash_swf_url : '/plupload/js/Moxie.swf',
+                // Silverlight settings
+                silverlight_xap_url : '/plupload/js/Moxie.xap'
+            });
+            var uploader = $('#uploader').plupload('getUploader');
+            //绑定进度条
+            uploader.bind('UploadProgress',function(uploader,file){
+                //每个事件监听函数都会传入一些很有用的参数，
+                //我们可以利用这些参数提供的信息来做比如更新UI，提示上传进度等操作
+                var percentMsg = "正在上传文件，可能会花费一点时间，已上传:" + uploader.total.percent + "%";
+                $("#loadingText").html("<div style='width: 100%;min-height: 150px;'>"+percentMsg+"</div>");
+            });
+            //绑定文件添加
+            uploader.bind('FilesAdded',function(uploader,files){
+                if(null != files && files.length>0){
+                    var cur_files = uploader.files;
+                    var tmp_files = cur_files;
+                    if(null != cur_files && cur_files.length>0){
+                        for(var i=0;i<cur_files.length;i++){
+                            var count = 0;
+                            for(var j=0;j<tmp_files.length;j++){
+                                if(cur_files[i].name == tmp_files[j].name){
+                                    count++;
+                                }
+                            }
+                            if(count > 1){
+                                uploader.removeFile(cur_files[i]);
+                                i--;
+                            }
+                        }
+                    }
+                }
+            });
+            //绑定文件是否全部上传完成
+            uploader.bind('UploadComplete',function(uploader,files){
+                if(null != files && files.length>0){
+                    hideLoading();
+                    BootstrapDialog.show({
+                        title: "操作提示",
+                        message: "文件上传成功"+uploader.total.uploaded+"个,失败:"+uploader.total.failed+"个",
+                        buttons: [{
+                            label: '确定', action: function () {
+                                window.location.href = "<%=basePath%>client/center/fileSynchronization.do";
+                            }
+                        }]
+                    });
+                }
+            });
+            $("#uploader_browse").removeAttr("style");
+            $("#uploader_browse").attr("style","z-index: 1;font-size: 12px;font-weight: normal;");
+	 });
+	
+	//新增/编辑项目
+	function saveItem(obj){	 	
+		/* var typeId=$("input[name='supervisionTypeId']").val();
+		var orgIds=$("input[type='checkbox']:checked").length;
+		if(typeId==-1){	
+			$.messager.alert("温馨提示！","请选择项目分类!",'error');
+			return false;
+		}
+		if(orgIds==0){
+			$.messager.alert("温馨提示！","请选择完成单位!",'error');
+			return false;
+		} */
+		if ($('#itemInfoForm').form('validate')) {			
+			$(obj).attr("onclick", "");	
+			//showProcess(true, '温馨提示', '正在提交数据...');			 
+			$('#itemInfoForm').form('submit',{				 
+		  		success:function(data){ 
+					showProcess(false);
+		  			data = $.parseJSON(data);				  			
+		  			if(data.code==0){	 					
+		  				$.messager.alert('保存信息',data.message,'info',function(){
+		  					window.location.href="manage/branch/branchList.do";
+	        			});
+		  			}else{
+						$.messager.alert('错误信息',data.message,'error',function(){
+	        			});
+						$(obj).attr("onclick", "saveItem(this);"); 
+		  			}
+		  		}
+			});
+		}
+	}
+</script>
+ </head> 
+ <body>
+<div class="con-right" id="conRight">
+	<div class="fl yw-lump">
+		<div class="yw-lump-title"> 												
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>vision/efficiency/efficiencyList.do'"></i><span>项目列表</span>
+		</div>
+	</div>
+	<div class="fl yw-lump mt10">
+		<div class="yw-bi-rows">
+			<div class="yw-bi-tabs mt5" id="ywTabs">
+			<span class="yw-bi-now">基本信息</span>
+				
+			</div>
+			<div class="fr">
+				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
+				
+				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItem(this);">保存</span>
+				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div>
-
-		<div class="fl yw-lump mt10">
-			<div class="yw-bi-rows">
-				<div class="yw-bi-tabs mt5" id="ywTabs">
-					<span class="yw-bi-now">基本信息</span>
+			<form id="itemInfoForm" name="itemInfoForm"
+				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
+				method="post">
+				<div id="tab1" class="yw-tab">
+					<table class="font16" id="taskTable">
+						<tr>
+							<td width="8%" align="right">监察项目：</td>
+							<td colspan="3"><input id="" 
+								name="name" type="text" doc="taskInfo" value=""  style="width:60%;height:28px;" />  
+								<span style="color:red">*</span> 
+                            	<input type="hidden" id="hid_uuid" name="uuid" />
+							</td> 
+						</tr>						
+						<tr>
+							<td align="right" height="100px;">监察内容：</td>
+							<td colspan="3"> 
+								<textarea rows="6" cols="5" style="width:60%;" name="content" ></textarea>								
+							</td> 
+						</tr>	
+						<tr>
+							<td align="right" height="100px;">上传附件：</td>
+							<td colspan="3">
+								 <div id="themeswitcher" class="pull-right"> </div>
+					                <script>
+					                    $(function() {
+					                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
+					                    });
+					                </script>
+					                <div id="uploader">
+					                </div>
+							 </td>	
+						</tr>	
+						<tr>
+							<td align="right" height="50px">是否分节点监察：</td>
+							<td colspan="3">
+								<select id="supervisionTypeId" name="supervisionTypeId" style="width:289px;height:28px;">
+									<option value="-1">请选择是否分节点监察</option>								
+									<option value="0">否</option>
+									<option value="1">是</option>
+									
+								</select> 
+								<span style="color:red">*</span>
+							    规定完成时间：<input type="text" name="pTime" value="" id="datepicker" style="width:258px;height:22px;">
+							 	<span style="color:red">*</span> 
+							</td>								
+						</tr>
+						<tr>
+							<td align="right" height="100px;">被监察对象：</td>
+							<td colspan="3"> 
+								<table style="font-size: 16px;"> 
+									<c:forEach var="item" items="${OrgList }">
+										<tr><td style="font-weight: 900;">${item.name }</td></tr>
+										<tr style="width: 100%;">
+											<td>
+												<div style="width:60%;">
+													<c:forEach var="org" items="${item.itemList }">
+														<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
+													</c:forEach>
+												</div>
+											</td>
+										</tr>
+									</c:forEach> 
+								</table>
+							 </td>	
+						</tr>	
+						<tr>
+							<td align="right" height="100px;">责任领导：</td>
+							<td colspan="3"> 
+								<table style="font-size: 16px;"> 									
+									<tr>
+										<td>
+										<div style="width:60%;">
+											<c:forEach var="item" items="${byLgUser }">
+												<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="user" value="${item.id }"/>${item.name }</label>
+											</c:forEach>
+										</div>										
+										</td>										
+									</tr>								
+								</table>
+							 </td>	
+						</tr>	
+					</table>
 				</div>
-				<div class="fr">
-					<span class="yw-btn bg-red mr26" id="saveBtn" onclick="">保存</span> 
-					<span class="yw-btn bg-green mr26"  onclick="$('#i_back').click();">返回</span>
-				</div>
-			</div>
-			<div>
-	<form id="devicePointForm" name="devicePointForm" action="device/jsonSaveOrUpdatePoint.do" method="post">
-		<div id="tab1" class="yw-tab">
-			<table class="yw-cm-table font16">
-				<tr>	
-					<td align="right" width="12%">监察项目：</td>
-					<td  align="left" ><input  name="name" type="text" value="" class="easyui-validatebox" required="true" style="width:354px;height:28px;" />
-					<span style="color:red">*</span>
-					</td>
-					
-				</tr>
-				
-				<tr>	
-					<td align="right">监察内容：</td>
-					<td  align="left" ><input  name="content" type="text" value=""  class="easyui-validatebox"  style="width:354px;height:28px;" />
-					<span style="color:red">*</span>
-					</td>
-				</tr>
-				<tr>	
-					<td align="right">规定完成时间：</td>
-					<td  align="left" ><input  name="EndTime" type="text" value="" class="easyui-datebox" data-options="sharedCalendar:'#sj'"style="width:354px;height:32px;" />
-					<span style="color:red">*</span>
-					<div id="sj" class="easyui-calendar"></div>
-					</td> 
-			    </tr>
-				<tr>
-					<td align="right">是否分节点监察：</td>
-					<td  align="left" >
-					<select name="isStept" class="easyui-validatebox" required="true" style="width:354px;height:32px;">
-						<option value="0">否</option>
-						<option value="1">是</option>
-					</select>
-					<span style="color:red">*</span>
-					</td> 
-			    </tr>
-				<tr>	
-					<td align="right">被监察对象:</td>
-					<td  align="left" ><input  name="" type="text" value="" class="easyui-validatebox" required="true" style="width:354px;height:28px;" />
-					<span style="color:red">*</span> 
-					</td> 
-				</tr>
-				<tr>	
-					<td align="right">责任领导:</td>
-					<td  align="left" ><input  name="" type="text" value="" class="easyui-validatebox" required="true" style="width:354px;height:28px;" />
-					<span style="color:red">*</span>
-					</td>
-			    </tr>
-				
-			</table> 
-		</div>  
-	</form>
-	</div>
-    </div>
-       <div class="cl"></div>
-	</div>
-	<div class="cl"></div> 
-  </body>
-</html>
+			</form>
+		</div> 
+	
+	<div class="cl"></div>
+</div>
+<div class="cl"></div>
+</div>
+</body>
+</html>  

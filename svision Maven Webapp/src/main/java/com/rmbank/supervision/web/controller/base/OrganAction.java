@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Organ;
+import com.rmbank.supervision.service.ConfigService;
 import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
@@ -31,6 +33,8 @@ public class OrganAction extends SystemAction {
 
 	@Resource
 	private OrganService organService;
+	@Resource
+	private ConfigService configService;
 
 	/**
 	 * 获取机构列表
@@ -139,6 +143,11 @@ public class OrganAction extends SystemAction {
 			}
 			req.setAttribute("Organ", organ);
 		}
+		
+		//获取机构类型
+		List<Meta> OrgType = configService.getMeatListByKey(Constants.META_ORGTYPE_KEY);
+		req.setAttribute("OrgType", OrgType);
+		
 		return "web/base/organ/organInfo";
 	}
 
@@ -290,30 +299,33 @@ public class OrganAction extends SystemAction {
 		
 		List<Organ> list = new ArrayList<Organ>();
 		if(userOrgIds!=null){
-			list = organService.getOrganByOrgIds(userOrgIds);
+			if(pid != null){				
+				list = organService.getOrganByPId(organ);	
+			}else {
+				list = organService.getOrganByOrgIds(userOrgIds);
+			}			
 		}else{
 			list = organService.getOrganByPId(organ);	
 		}
 		// 加载子节点，方式一，无子节点则无展开按钮
 		for (Organ a : list) {
 			a.setText(a.getName());
-			Organ org = new Organ();
+			/*Organ org = new Organ();
 			org.setPid(a.getId());
 			List<Organ> list1 = new ArrayList<Organ>();
 			list1 = organService.getOrganByPId(org);
 			if (list1.size() > 0) {
 				list1 = setChildren(list1);
 			}
-			a.setChildren(list1);
-			a.setState("open");
+			a.setChildren(list1);*/
+			if(a.getChildrenCount()>0){
+				a.setState("closed");
+			}else{
+				a.setState("open");
+			}
+			
 		}
-		// 加载子节点，方式二，无子节点仍有展开按钮，加载速度快
-		// if(list.size() > 0){
-		// for(Organ a:list){
-		// a.setText(a.getName());
-		// a.setState("closed");
-		// }
-		// }
+		
 		return list;// json.toString();
 	}
 

@@ -46,17 +46,14 @@
 				 	 	$("#orgPid").val(record.id); 
   				 },
   				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。  				  
-  				 	$("#orgParentTree").combotree('tree').tree('options').url = 'area/jsonLoadAreaTreeList.do?pid='+ node.id;
+  				 	$("#orgParentTree").combotree('tree').tree('options').url = 'system/organ/jsonLoadOrganTreeList.do?pid='+ node.id;
   				 },
-  				 onLoadSuccess:function(){ //当数据加载成功时触发。
-  				 	
+  				 onLoadSuccess:function(){ //当数据加载成功时触发。  				 	
   				 	//根据所对应的机构选中复选框
   				 	$("#orgParentTree").combotree('setValues', orgpid);
-  				 	var orgId = $("#orgId").val();  
-  				 	
+  				 	var orgId = $("#orgId").val();  				 	
   				 	//判断是新增还是编辑	 	
-  				 	if(orgId>0){  				 	
-  				 		
+  				 	if(orgId>0){ 				 		
   				 		//var orgName = $("#orgName").val();
   				 		//$("#orgParentTree").combotree("setText",orgName);  				 		
   				 	}else{
@@ -150,7 +147,20 @@
 								
 								<span style="color:red">*</span>
 							</td>
-						</tr>								
+						</tr>
+						<tr>							
+							<td align="right" width="8%">机构类型:</td>
+							<td>							
+								<select name="orgtype" class="easyui-combobox" style="width:254px;height:28px;">
+									<option value="-1">=请选择机构类型=</option>
+									<c:forEach var="item" items="${OrgType }">
+										<option value="${item.id }" <c:if test="${item.id == Organ.orgtype}">selected="selected"</c:if>>${item.name }</option>
+									</c:forEach>
+									
+								</select>								
+								<span style="color:red">*</span>
+							</td>
+						</tr>									
 						<tr>
 							<td align="right" width="20%">是否监察部门：</td>
 							<td>

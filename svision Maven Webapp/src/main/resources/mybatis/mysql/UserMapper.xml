@@ -172,13 +172,13 @@
   </select>
   <select id="getExistUser" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.User" >
     select <include refid="Base_Column_List" />			
-	from t_user t
-	where 1=1 
-	<if test="id != null and id >0 ">
-		and t.id = #{id,jdbcType=INTEGER} 
-	</if>
+	from t_user 
+	where 1=1	
+	<if test="name != null">
+		and name = #{name,jdbcType=VARCHAR} 
+	</if> 
 	<if test="account != null">
-		and t.account = #{account,jdbcType=VARCHAR} 
+		or account = #{account,jdbcType=VARCHAR} 
 	</if> 
   </select>
   <delete id="deleteUserById" parameterType="java.lang.Integer">
@@ -191,7 +191,7 @@
   </update>
   
   
- <!--  <select id="getUserListByOrgId" parameterType="com.rmbank.supervision.model.User" resultMap="BaseResultMap">
+ <select id="getUserListByLgUser" parameterType="com.rmbank.supervision.model.User" resultMap="BaseResultMap">
   	SELECT u.*,(SELECT GROUP_CONCAT( org.name SEPARATOR "," ) FROM t_org org
 	LEFT JOIN t_user_org uo ON org.`id` = uo.`org_id` WHERE uo.`user_id` = u.id) AS orgName ,
 	(SELECT GROUP_CONCAT( role.name SEPARATOR "," ) FROM t_role role
@@ -200,14 +200,8 @@
 	  SELECT uo1.user_id FROM `t_user_org` AS uo1 WHERE uo1.org_id IN
 	  (SELECT uo.org_id FROM `t_user_org` AS uo WHERE uo.user_id =#{id,jdbcType=INTEGER})
 	)
-	<if test="searchName != null and searchName != ''">
-	 and (
-			u.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
-			or u.account like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
-     	)
-	</if>
-	order by u.id DESC 
-  </select> -->
+	
+  </select>
   <select id="getUserCountByOrgId" resultType="java.lang.Integer" parameterType="com.rmbank.supervision.model.User">
   	select count(*)	FROM t_user AS u WHERE u.id IN(
 	  SELECT uo1.user_id FROM `t_user_org` AS uo1 WHERE uo1.org_id IN

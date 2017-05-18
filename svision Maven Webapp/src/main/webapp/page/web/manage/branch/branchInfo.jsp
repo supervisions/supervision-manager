@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
    <base href="<%=basePath%>">
   
-   <title>角色管理</title>
+   <title>综合管理</title>
    
 <meta name="viewport"
 content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" /> 
@@ -58,10 +58,10 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <%--///////////////////--%>
 
 <script type="text/javascript">
-	$(document).ready(function(){	
+	$(document).ready(function(){	 
 		$("#datepicker").datepicker(); 
 		$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
-	 	 var len=32;//32长度
+	 	 	var len=32;//32长度
             var radix=16;//16进制
             var chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
             var uuid=[],i;
@@ -83,10 +83,11 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             }
             var v_uuid = uuid.join('');
             $("#hid_uuid").val(v_uuid);
+            
             $("#uploader").plupload({
                 // General settings
                 runtimes : 'html5,flash,silverlight,html4',
-                url : "<%=basePath%>client/center/upLoadFileToStorage.do?uuid="+v_uuid,
+                url : "<%=basePath%>system/upload/jsonUploadFile.do?uuid="+v_uuid,
                 // Maximum file size
                 max_file_size : '2999mb',
                 // Rename files by clicking on their titles
@@ -113,7 +114,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
                 //每个事件监听函数都会传入一些很有用的参数，
                 //我们可以利用这些参数提供的信息来做比如更新UI，提示上传进度等操作
                 var percentMsg = "正在上传文件，可能会花费一点时间，已上传:" + uploader.total.percent + "%";
-                $("#loadingText").html("<div style='width: 100%;min-height: 150px;'>"+percentMsg+"</div>");
+                
             });
             //绑定文件添加
             uploader.bind('FilesAdded',function(uploader,files){
@@ -138,17 +139,23 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             });
             //绑定文件是否全部上传完成
             uploader.bind('UploadComplete',function(uploader,files){
-                if(null != files && files.length>0){
-                    hideLoading();
-                    BootstrapDialog.show({
-                        title: "操作提示",
-                        message: "文件上传成功"+uploader.total.uploaded+"个,失败:"+uploader.total.failed+"个",
-                        buttons: [{
-                            label: '确定', action: function () {
-                                window.location.href = "<%=basePath%>client/center/fileSynchronization.do";
-                            }
-                        }]
-                    });
+                if(null != files && files.length>0){ 
+                	$("#dialog").dialog({
+					    bgiframe: true,
+					    resizable: false,
+					    message: "文件上传成功"+uploader.total.uploaded+"个,失败:"+uploader.total.failed+"个",
+					    height:140,
+					    modal: true,
+					    overlay: {
+					        backgroundColor: '#000',
+					        opacity: 0.5
+					    },
+					    buttons: {
+					        '确定': function() {					        	
+					            window.location.href="<%=basePath%>manage/branch/branchList.do";
+					        }
+					    }
+					}); 
                 }
             });
             $("#uploader_browse").removeAttr("style");
@@ -156,37 +163,23 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 });
 	
 	//新增/编辑项目
-	function saveItem(obj){	 	
-		var typeId=$("input[name='supervisionTypeId']").val();
-		var orgIds=$("input[type='checkbox']:checked").length;
-
-		if(typeId==-1){	
-			$.messager.alert("温馨提示！","请选择项目分类!",'error');
-			return false;
-		}
-		if(orgIds==0){
-			$.messager.alert("温馨提示！","请选择完成单位!",'error');
-			return false;
-		}
-		if ($('#itemInfoForm').form('validate')) {			
-			$(obj).attr("onclick", "");	
-			showProcess(true, '温馨提示', '正在提交数据...');			 
-			$('#itemInfoForm').form('submit',{				 
-		  		success:function(data){ 
-					showProcess(false);
-		  			data = $.parseJSON(data);				  			
-		  			if(data.code==0){	 					
-		  				$.messager.alert('保存信息',data.message,'info',function(){
-		  					window.location.href="manage/branch/branchList.do";
-	        			});
-		  			}else{
-						$.messager.alert('错误信息',data.message,'error',function(){
-	        			});
-						$(obj).attr("onclick", "saveItem(this);"); 
-		  			}
-		  		}
-			});
-		}
+	function saveItem(obj){	
+        $.ajax({
+	        cache: true, //是否缓存当前页面
+	        type: "POST", //请求类型
+	        url: "manage/branch/jsonSaveOrUpdateItem.do",
+	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+	        async: true, //发送异步请求	  
+	        dataType:"json", //响应数据类型      
+	        success: function(data) {
+	        	if(data.code==0){ 
+	        		$("#uploader_start").click(); //上传文件
+	        	}else{
+	        		alert(data.message);	        	
+	        	}	
+	            
+	        }
+   		});
 	}
 </script>
  </head> 
@@ -217,8 +210,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<table class="font16" id="taskTable">
 						<tr>
 							<td width="8%" align="right">项目名称：</td>
-							<td colspan="3"><input id="" 
-								name="name" type="text" doc="taskInfo" value=""  style="width:60%;height:28px;" />  
+							<td colspan="3">
+								<input name="name" type="text" value="" style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
                             	<input type="hidden" id="hid_uuid" name="uuid" />
 							</td> 
@@ -233,14 +226,14 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									</c:forEach>
 								</select> 
 								<span style="color:red">*</span> 
-							 立项时间：   <input type="text" id="datepicker" style="width:254px;height:22px;">
+							 立项时间：   <input type="text" name="pTime" value="" id="datepicker" style="width:254px;height:22px;">
+							 <span style="color:red">*</span> 
 							</td>								
 						</tr>
 						<tr>
 							<td align="right" height="100px;">工作要求、方案：</td>
 							<td colspan="3"> 
-								<textarea rows="6" cols="5" style="width:60%;" name="content" ></textarea>
-								
+								<textarea rows="6" cols="5" style="width:60%;" name="content" ></textarea>								
 							</td> 
 						</tr>	
 						<tr>
@@ -286,5 +279,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 </div>
 <div class="cl"></div>
 </div>
+<div id="dialog"></div>
 </body>
 </html>  

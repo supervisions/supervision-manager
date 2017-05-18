@@ -20,7 +20,7 @@ public interface ItemService {
 
 	List<Item> getExistItem(Item im);
 
-	boolean saveOrUpdateItem(Item item, Integer[] orgIds);
+	boolean saveOrUpdateItem(Item item, Integer[] orgIds, String content);
 
 	List<Item> getItemList(Item item);
 

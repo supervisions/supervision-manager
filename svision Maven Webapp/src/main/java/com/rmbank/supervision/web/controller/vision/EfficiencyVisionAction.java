@@ -21,8 +21,10 @@ import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.model.Item;
 import com.rmbank.supervision.model.Organ;
+import com.rmbank.supervision.model.OrganVM;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ItemService;
+import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
@@ -40,7 +42,8 @@ public class EfficiencyVisionAction extends SystemAction {
 	private ItemService itemService;
 	@Resource
 	private UserService userService;
-	
+	@Resource
+	private OrganService organService;
 		
 	/**
      * 效能监察模块页面跳转
@@ -102,8 +105,37 @@ public class EfficiencyVisionAction extends SystemAction {
 	@RequiresPermissions("vision/efficiency/efficiencyInfo.do")
 	public String efficiencyInfo(
 			@RequestParam(value = "id", required = false) Integer id,
-			HttpServletRequest req, HttpServletResponse res) {
+			HttpServletRequest request, HttpServletResponse response) {
     	
+    	//获取机构
+		Organ organ=new Organ();
+		List<Organ> organList = organService.getOrganList(organ);
+		
+    	List<OrganVM> list=new ArrayList<OrganVM>();
+		OrganVM frvm = null;
+		for(Organ rc : organList){
+			if(rc.getPid()==0 && rc.getSupervision()==0){
+				frvm = new OrganVM();
+				List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
+				frvm.setId(rc.getId());
+				frvm.setName(rc.getName());
+				for(Organ rc1 : organList){
+					if(rc1.getPid() == rc.getId() && rc1.getSupervision()==0){ 
+						itemList.add(rc1);
+					}
+				}
+				frvm.setItemList(itemList);
+				list.add(frvm);
+			}
+		}
+		
+		//获取当前登录用户所属机构下的所有用户
+		User lgUser = this.getLoginUser();
+		List<User> byLgUser = userService.getUserListByLgUser(lgUser);
+		
+		request.setAttribute("byLgUser", byLgUser);
+		request.setAttribute("OrgList", list);
+	
 		
 		return "web/vision/efficiencyInfo";
 	}
@@ -139,7 +171,7 @@ public class EfficiencyVisionAction extends SystemAction {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}			
+		}	
 		return js;
 	}
 }

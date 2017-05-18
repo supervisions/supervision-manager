@@ -330,36 +330,24 @@ public class ConfigAction extends SystemAction {
 
 		List<Meta> list = new ArrayList<Meta>();
 		list = configService.getConfigListByPid(meta);
-		// for(Organ a:list){
-		// a.setName(a.getName());
-		// if(a.getChildrenCount() > 0){
-		// a.setState("closed");
-		// }else{
-		// a.setChildren(new ArrayList<Organ>());
-		// a.setState("open");
-		// }
-		// }
+	
 		// 加载子节点，方式一，无子节点则无展开按钮
 		for (Meta a : list) {
 			a.setText(a.getName());
-			Meta m = new Meta();
-			m.setPid(a.getId());
-			List<Meta> list1 = new ArrayList<Meta>();
-			list1 = configService.getConfigListByPid(m);
-			if (list1.size() > 0) {
-				list1 = setChildren(list1);
-
-			}
-			a.setChildren(list1);
-			a.setState("open");
+//			Meta m = new Meta();
+//			m.setPid(a.getId());
+//			List<Meta> list1 = new ArrayList<Meta>();
+//			list1 = configService.getConfigListByPid(m);
+//			if (list1.size() > 0) {
+//				list1 = setChildren(list1);
+//			}
+//			a.setChildren(list1);
+			if(a.getChildrenCount()>0){
+				a.setState("closed");
+			}else{
+				a.setState("open");
+			}			
 		}
-		// 加载子节点，方式二，无子节点仍有展开按钮，加载速度快
-		// if(list.size() > 0){
-		// for(Organ a:list){
-		// a.setText(a.getName());
-		// a.setState("closed");
-		// }
-		// }
 		return list;// json.toString();
 	}
 

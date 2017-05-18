@@ -74,6 +74,7 @@ public class Constants
   
   public static final String META_POSITION_KEY = "POSITION";
   public static final String META_PROJECT_KEY = "PROJECT";
+  public static final String META_ORGTYPE_KEY = "ORGTYPE";
 
 
   public static final Integer STATIC_MODULE_ID = 99999;

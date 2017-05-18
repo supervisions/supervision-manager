@@ -117,9 +117,18 @@ public class SupportAction extends SystemAction {
 						List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
 						frvm.setId(rc.getId());
 						frvm.setName(rc.getName());
+						String path = frvm.getId()+".";
 						for(Organ rc1 : organList){
-							if(rc1.getPid() == rc.getId()){ 
+							int pl=frvm.getId().toString().length();
+							String path2 = rc1.getPath();
+							String substring =null;					
+							if(path2.length()>pl){
+								substring= path2.substring(0, pl+1);						
+							}		
+							if(rc1.getPid() == rc.getId() && rc1.getOrgtype()!=46 && rc1.getOrgtype()!=47){ 
 								itemList.add(rc1);
+							}else if(rc1.getOrgtype()!=46 && rc1.getOrgtype()!=47 && path.equals(substring)){
+								itemList.add(rc1);								
 							}
 						}
 						frvm.setItemList(itemList);

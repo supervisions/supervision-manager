@@ -30,7 +30,7 @@
     delete from t_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.rmbank.supervision.model.Item">
+  <insert id="insert" parameterType="com.rmbank.supervision.model.Item" useGeneratedKeys="true" keyProperty="id">
     insert into t_item (id, supervision_type_id, pid, 
       stage_index, name, supervision_org_id, 
       supervision_user_id, preparer_org_id, preparer_id, 
@@ -208,8 +208,9 @@
   	select name from t_item  where name=#{name,jdbcType=VARCHAR} 
   </select>  
   <select id="getItemList" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.Item">
-  	SELECT i.* ,o.name AS orgName,m.name AS sType FROM t_item AS i
+  	SELECT i.* ,o.name AS orgName,o1.name AS preparerOrg,m.name AS sType FROM t_item AS i
 	LEFT JOIN `t_org` AS o ON o.`id`=i.`supervision_org_id`
+	LEFT JOIN t_org AS o1 ON o1.id =i.preparer_org_id
 	LEFT JOIN `t_meta` AS m ON m.`id`=i.`supervision_type_id`
 	where 1=1
 	<if test="searchName != null and searchName != ''">

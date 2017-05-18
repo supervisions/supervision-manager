@@ -161,4 +161,7 @@
       uuid = #{uuid,jdbcType=VARCHAR}, 
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getItemProcessIdByUuid" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select id from t_item_process where uuid= #{uuid,jdbcType=VARCHAR}
+  </select>
 </mapper>
