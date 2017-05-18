@@ -35,9 +35,12 @@
 		 	$("#treeList").tree({	 		
 			 	 url: 'jsonLoadMetaTreeList.do?rootId='+0, 			 	 
 			 	 onClick:function(node){//单击事件	
+			 	 		
   				 		pid = node.id; 
   				 		//根据pid查询下级配置
-  				 		getMetaListByPid(pid);	 				 	
+  				 		if(node.childrenCount>0){
+  				 			getMetaListByPid(pid);	 
+  				 		}				 	
    				 },
    				 onBeforeExpand:function(node){    //节点展开前触发，返回 false 则取消展开动作。
  				 	 	$('#treeList').tree('options').url ='jsonLoadMetaTreeList.do?pid='+ node.id;
@@ -147,11 +150,15 @@ function getMetaListByPid(pid){
 };
 function fillMetaList(lst){
 	var html = "<tbody>";
-	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>配置状态</span></th><th>配置名称</th><th>关键字</th><th>操作</th></tr>";
+	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>配置状态</span></th><th>配置名称</th><th>描述</th><th>操作</th></tr>";
 	for(var i = 0; i<lst.length;i++){
 		html += "<tr>";
 		html += "<td  style='display:none'>"+lst[i].id+"</td><td onclick=goToMetaInfo(\'"+lst[i].id+"\') align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td onclick=goToMetaInfo(\'"+lst[i].id+"\') align='left' >"+lst[i].name+"</td>";
-		html += "<td onclick=goToMetaInfo(\'"+lst[i].id+"\')>"+lst[i].key+"</td>";
+		html += "<td onclick=goToMetaInfo(\'"+lst[i].id+"\')>";
+		if(lst[i].description != null || lst[i].description!=undefined  ){
+			html += lst[i].description;
+		}
+		html += "</td>";
 		html += "<td align='left'>"+"<a href='javascript:void(0);' onclick=goToMetaInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a>&nbsp;<a href='javascript:void(0);' class='stateBut' onclick=metaState(\'"+lst[i].id+"\',\'"+lst[i].used+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >启用</a>&nbsp;<a href='javascript:void(0);' onclick=deleteConfig(\'"+lst[i].id+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >删除</a></td>";
 		html += "</tr>";
 	}
@@ -270,7 +277,7 @@ function goToMetaInfo(metaId){
 						<th width="4%" style="display:none">&nbsp;</th>						
 						<th><span style='margin-left:40px'>配置状态</span></th>
 						<th>配置名称</th>						
-						<th>关键字</th>
+						<th>描述</th>
 						<th>操作</th>
 					</tr>
 					<c:forEach var="item" items="${configList}">
@@ -280,7 +287,7 @@ function goToMetaInfo(metaId){
 							<c:if test="${item.used == 1 }"><span style='margin-left:40px'>启用</span></c:if>						
 						</td>
 						<td>${item.name}</td>
-						<td>${item.key}</td>							
+						<td>${item.description}</td>							
 						<td>
 							<a style="color:blue" onclick="window.location.href='configInfo.do?id=${item.id}';">编辑</a>
 							<a style="color:blue" onclick="deleteConfig(${item.id},'${item.name}');">删除</a>
