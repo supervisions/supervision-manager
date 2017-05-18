@@ -147,7 +147,20 @@
 								
 								<span style="color:red">*</span>
 							</td>
-						</tr>								
+						</tr>
+						<tr>							
+							<td align="right" width="8%">机构类型:</td>
+							<td>							
+								<select name="orgtype" class="easyui-combobox" style="width:254px;height:28px;">
+									<option value="-1">=请选择机构类型=</option>
+									<c:forEach var="item" items="${OrgType }">
+										<option value="${item.id }" <c:if test="${item.id == Organ.orgtype}">selected="selected"</c:if>>${item.name }</option>
+									</c:forEach>
+									
+								</select>								
+								<span style="color:red">*</span>
+							</td>
+						</tr>									
 						<tr>
 							<td align="right" width="20%">是否监察部门：</td>
 							<td>

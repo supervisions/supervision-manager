@@ -109,8 +109,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td width="15%" align="right">该项目是否全部完成：</td>
 							<td align="left">
-								<label><input type="radio" name="" value="1">是</label>
-								<label><input type="radio" name="" value="0">否</label>
+								<label><input type="radio" name="status" value="1">是</label>
+								<label><input type="radio" name="status" value="0">否</label>
 							</td>
 						</tr>
 			

@@ -34,6 +34,7 @@ import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ConfigService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
+import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 /**
  * 分行立项的Action
@@ -54,6 +55,10 @@ public class BranchAction extends SystemAction {
 	private OrganService organService;
 	@Resource
 	private ItemService itemService;
+	@Resource
+	private UserService userService;
+	
+	
 	
 	/**
 	 * 分行立项列表
@@ -70,8 +75,7 @@ public class BranchAction extends SystemAction {
 			String searchName = new String(item.getSearchName().getBytes(
 					"iso8859-1"), "utf-8");
 			item.setSearchName(searchName);
-		}
-		
+		}		
 		if (item.getPageNo() == null){
 			item.setPageNo(1);
 		}		
@@ -91,7 +95,6 @@ public class BranchAction extends SystemAction {
 			Date preparerTime = it.getPreparerTime();
 			String format = formatter.format(preparerTime);
 			it.setShowDate(format);
-			
 		}
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item);
@@ -114,18 +117,26 @@ public class BranchAction extends SystemAction {
 		//获取机构
 		Organ organ=new Organ();
 		List<Organ> organList = organService.getOrganList(organ);
-		//request.setAttribute("OrgList", organList);
 		
+		//封装到前台遍历机构集合
 		List<OrganVM> list=new ArrayList<OrganVM>();
 		OrganVM frvm = null;
+		
 		for(Organ rc : organList){
 			if(rc.getPid()==0){
-				frvm = new OrganVM();
+				frvm = new OrganVM(); 
 				List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
 				frvm.setId(rc.getId());
 				frvm.setName(rc.getName());
+				String path = frvm.getId()+".";
 				for(Organ rc1 : organList){
-					if(rc1.getPid() == rc.getId()){ 
+					int pl=frvm.getId().toString().length();
+					String path2 = rc1.getPath();
+					String substring =null;					
+					if(path2.length()>pl){
+						substring= path2.substring(0, pl+1);						
+					}					
+					if(rc1.getPid() == rc.getId() || path.equals(substring)){ 
 						itemList.add(rc1);
 					}
 				}
@@ -146,21 +157,23 @@ public class BranchAction extends SystemAction {
     @RequestMapping(value = "/jsonSaveOrUpdateItem.do", method=RequestMethod.POST)
     @RequiresPermissions("manage/branch/jsonSaveOrUpdateItem.do")
     public JsonResult<Item> jsonSaveOrUpdateItem(Item item,
-    		@RequestParam(value = "pTime", required = false) String pTime,
+    		@RequestParam(value = "pTime", required = false) String pTime,//用于接收前台传过来的String类型的时间
     		@RequestParam(value = "content", required = false) String content,
     		@RequestParam(value = "OrgId", required = false) Integer[] OrgIds,    		
     		HttpServletRequest request, HttpServletResponse response) throws ParseException{
-    	
+    	//将前台传过来的String类型的时间转换为Date类型
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    	Date date = sdf.parse(pTime);
-    	item.setPreparerTime(date);
-    	item.setPid(0);
-    	item.setStageIndex(new Byte("0"));
-    	item.setPreparerOrgId(0);
+    	Date date = sdf.parse(pTime);    	
+    	item.setPreparerTime(date); //制单时间
+    	item.setPid(0); //主任务节点的ID
+    	item.setStageIndex(new Byte("0")); //工作阶段排序   	
     	//获取当前登录用户
     	User u = this.getLoginUser();
-    	item.setPreparerId(u.getId());
-    	item.setSupervisionUserId(0);
+    	item.setPreparerId(u.getId()); //制单人的ID
+    	item.setSupervisionUserId(0); //
+    	//获取当前用户所属的机构ID
+    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+    	item.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
     	//新建一个json对象 并赋初值
 		JsonResult<Item> js = new JsonResult<Item>();
 		js.setCode(new Integer(1));
@@ -178,10 +191,8 @@ public class BranchAction extends SystemAction {
 			//根据name去数据库匹配，如编辑，则可以直接保存；如新增，则需匹配该项目是否重复
 			List<Item> lc = itemService.getExistItem(im);
 			if (lc.size() == 0) {  
-				State = itemService.saveOrUpdateItem(item,OrgIds);
-				//新增项目成功后返回的itemId 
-//				Integer itemId =item.getId();
-//				System.out.println(itemId);
+				State = itemService.saveOrUpdateItem(item,OrgIds,content);
+				
 				if(State){
 					js.setCode(new Integer(0));
 					js.setMessage("保存项目信息成功!");

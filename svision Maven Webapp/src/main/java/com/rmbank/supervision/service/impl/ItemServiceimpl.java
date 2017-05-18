@@ -1,19 +1,24 @@
 package com.rmbank.supervision.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.rmbank.supervision.dao.ItemMapper;
+import com.rmbank.supervision.dao.ItemProcessMapper;
 import com.rmbank.supervision.model.Item;
+import com.rmbank.supervision.model.ItemProcess;
 import com.rmbank.supervision.service.ItemService;
 @Service(value="itemService")
 public class ItemServiceimpl implements ItemService {
 	@Resource 
 	private ItemMapper itemMapper;
-	
+	@Resource
+	private ItemProcessMapper itemProcessMapper;
 	
 	@Override
 	public int deleteByPrimaryKey(Integer id) {
@@ -58,13 +63,30 @@ public class ItemServiceimpl implements ItemService {
 	}
 
 	@Override
-	public boolean saveOrUpdateItem(Item item, Integer[] orgIds) {
+	public boolean saveOrUpdateItem(Item item, Integer[] orgIds,String content) {
 		boolean isSuccess = false;
-		try{		               
-			for (Integer i : orgIds) {
+		try{	
+			//新增项目成功后返回的itemId的集合 
+			List<Integer> itemId=new ArrayList<Integer>();
+			
+			for (Integer i : orgIds) {				
 				item.setSupervisionOrgId(i);
 				itemMapper.insert(item); 
-			}				
+				itemId.add(item.getId());
+				item.setId(0);
+			}
+			ItemProcess itemProcess=new ItemProcess();
+			for (Integer integer : itemId) {				
+				itemProcess.setUuid(item.getUuid());
+				itemProcess.setItemId(integer);
+				itemProcess.setContent(content);
+				itemProcess.setContentTypeId(0);
+				itemProcess.setPreparerTime(item.getPreparerTime());
+				itemProcess.setPreparerId(item.getPreparerId());
+				itemProcess.setPreparerOrgId(item.getPreparerOrgId());
+				itemProcessMapper.insertSelective(itemProcess);
+			}
+			
 			isSuccess = true;
          
 		}catch(Exception ex){

@@ -304,6 +304,15 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return organMapper.getUserOrgByUserId(id);
 	}
+
+	/**
+	 * 获取当前登录用户的所属机构下的所有用户
+	 */
+	@Override
+	public List<User> getUserListByLgUser(User lgUser) {
+		// TODO Auto-generated method stub
+		return userMapper.getUserListByLgUser(lgUser);
+	}
 	
 	
 }

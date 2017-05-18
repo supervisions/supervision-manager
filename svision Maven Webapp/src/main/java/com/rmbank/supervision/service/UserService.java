@@ -46,5 +46,6 @@ public interface UserService {
 
 	List<Organ> getUserOrgByUserId(Integer id);
 
+	List<User> getUserListByLgUser(User lgUser);
 
 }

@@ -65,4 +65,11 @@ public interface UserMapper {
 	List<User> getUserByOrgids(List<Integer> userOrgIds);
 
 	List<User> getUserListByOrgId(Integer orgId);
+	
+	/**
+	 * 获取当前登录用户的所属机构下的所有用户
+	 * @param userOrgIds
+	 * @return
+	 */
+	List<User> getUserListByLgUser(User lgUser);
 }

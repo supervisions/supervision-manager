@@ -152,7 +152,7 @@ function toOperate(id){
 							<td><a style="color: blue;" onclick="edit(${item.id})">${item.name}</a></td>
 							<td>${item.sType}</td>
 							<td>${item.showDate}</td> 
-							<td>${item.orgName}</td>
+							<td>${item.preparerOrg}</td>
 							<td>${item.orgName}</td>
 							<td>
 								<a style="color: blue;" onclick="toOperate(${item.id})">操作</a>

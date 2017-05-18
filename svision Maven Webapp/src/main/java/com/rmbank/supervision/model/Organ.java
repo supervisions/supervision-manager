@@ -23,6 +23,8 @@ public class Organ extends Page{
     
     private Integer supervision;
     
+    private Integer orgtype;
+    
     //Org表的pid对应的org表的name
     private String parentName;
     
@@ -145,5 +147,13 @@ public class Organ extends Page{
 
 	public void setParentName(String parentName) {
 		this.parentName = parentName;
+	}
+
+	public Integer getOrgtype() {
+		return orgtype;
+	}
+
+	public void setOrgtype(Integer orgtype) {
+		this.orgtype = orgtype;
 	}
 }

@@ -1,11 +1,11 @@
-package com.rmbank.supervision.dao;
+package com.rmbank.supervision.service;
 
 import java.util.List;
 
 import com.rmbank.supervision.model.ItemProcess;
-@MyBatisRepository
-public interface ItemProcessMapper {
-    int deleteByPrimaryKey(Integer id);
+
+public interface ItemProcessService {
+	 int deleteByPrimaryKey(Integer id);
 
     int insert(ItemProcess record);
 

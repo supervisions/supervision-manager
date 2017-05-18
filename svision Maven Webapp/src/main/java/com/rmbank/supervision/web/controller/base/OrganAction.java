@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Organ;
+import com.rmbank.supervision.service.ConfigService;
 import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
@@ -31,6 +33,8 @@ public class OrganAction extends SystemAction {
 
 	@Resource
 	private OrganService organService;
+	@Resource
+	private ConfigService configService;
 
 	/**
 	 * 获取机构列表
@@ -139,6 +143,11 @@ public class OrganAction extends SystemAction {
 			}
 			req.setAttribute("Organ", organ);
 		}
+		
+		//获取机构类型
+		List<Meta> OrgType = configService.getMeatListByKey(Constants.META_ORGTYPE_KEY);
+		req.setAttribute("OrgType", OrgType);
+		
 		return "web/base/organ/organInfo";
 	}
 

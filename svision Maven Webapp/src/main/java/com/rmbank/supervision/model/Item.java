@@ -30,7 +30,8 @@ public class Item extends Page {
     private Integer isStept;
     
     private Date entTime;
-    
+    //制单部门
+    private String preparerOrg;
     
     /**
      * 定义字段供前台使用
@@ -180,5 +181,13 @@ public class Item extends Page {
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
+	}
+
+	public String getPreparerOrg() {
+		return preparerOrg;
+	}
+
+	public void setPreparerOrg(String preparerOrg) {
+		this.preparerOrg = preparerOrg;
 	}
 }
