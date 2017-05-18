@@ -186,7 +186,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<tr>
 						<td width="8%" align="right">职务名称</td>
 						<td><select name="postId" class="easyui-combobox"
-							style="width:254px;height:28px;" editable="false">								
+							style="width:254px;height:28px;" editable="false">		
+							<option value="">=请选择职务=</option>						
 								<c:forEach var="position" items="${meatListByKey}">
 									<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
 								</c:forEach>
@@ -207,11 +208,11 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					</tr>
 					<tr>
 						<td align="right">用户状态</td>
-						<td><c:if test="${User.used == 1 }">
+						<td><c:if test="${User.used == 1 || User.used == null }">
 								<label><input type="radio" name="used" value="1"
 									checked="checked" />启用</label>
 								<label><input type="radio" name="used" value="0" />禁用</label>
-							</c:if> <c:if test="${User.used == 0 || User.used == null}">
+							</c:if> <c:if test="${User.used == 0}">
 								<label><input type="radio" name="used" value="1" />启用</label>
 								<label><input type="radio" name="used" value="0"
 									checked="checked" />禁用</label>

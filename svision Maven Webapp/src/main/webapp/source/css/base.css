@@ -1740,11 +1740,7 @@
 .font16 {
 	font-size: 16px;
 }
-
-.font16 td {
-	font-size: 16px;
-	    line-height: 40px;
-}
+ 
 
 .yw-search-panel {
 	width: 100%;

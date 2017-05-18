@@ -3,6 +3,7 @@
 <mapper namespace="com.rmbank.supervision.dao.ItemMapper" >
   <resultMap id="BaseResultMap" type="com.rmbank.supervision.model.Item" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="item_type" property="itemType" jdbcType="INTEGER" />
     <result column="supervision_type_id" property="supervisionTypeId" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="stage_index" property="stageIndex" jdbcType="TINYINT" />
@@ -17,7 +18,7 @@
     <result column="end_time" property="entTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, supervision_type_id, pid, stage_index, name, supervision_org_id, supervision_user_id, 
+    id, item_type,supervision_type_id, pid, stage_index, name, supervision_org_id, supervision_user_id, 
     preparer_org_id, preparer_id, preparer_time,end_time,is_stept,status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -31,11 +32,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.rmbank.supervision.model.Item" useGeneratedKeys="true" keyProperty="id">
-    insert into t_item (id, supervision_type_id, pid, 
+    insert into t_item (id,item_type, supervision_type_id, pid, 
       stage_index, name, supervision_org_id, 
       supervision_user_id, preparer_org_id, preparer_id, 
       preparer_time,end_time,is_stept,status)
-    values (#{id,jdbcType=INTEGER}, #{supervisionTypeId,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{itemType,jdbcType=INTEGER}, #{supervisionTypeId,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, 
       #{stageIndex,jdbcType=TINYINT}, #{name,jdbcType=VARCHAR}, #{supervisionOrgId,jdbcType=INTEGER}, 
       #{supervisionUserId,jdbcType=INTEGER}, #{preparerOrgId,jdbcType=INTEGER}, #{preparerId,jdbcType=INTEGER}, 
       #{preparerTime,jdbcType=TIMESTAMP},#{entTime,jdbcType=TIMESTAMP}, #{isStept,jdbcType=INTEGER}, #{status,jdbcType=INTEGER})
@@ -46,6 +47,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="itemType != null">
+      	item_type,
       </if>
       <if test="supervisionTypeId != null" >
         supervision_type_id,
@@ -87,6 +91,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
+      </if>
+      <if test="itemType != null">
+      	#{itemType,jdbcType=INTEGER},
       </if>
       <if test="supervisionTypeId != null" >
         #{supervisionTypeId,jdbcType=INTEGER},
@@ -132,6 +139,9 @@
       <if test="supervisionTypeId != null" >
         supervision_type_id = #{supervisionTypeId,jdbcType=INTEGER},
       </if>
+      <if test="itemType != null">
+      	item_type = #{itemType,jdbcType=INTEGER},
+      </if>
       <if test="pid != null" >
         pid = #{pid,jdbcType=INTEGER},
       </if>
@@ -171,6 +181,7 @@
   <update id="updateByPrimaryKey" parameterType="com.rmbank.supervision.model.Item" >
     update t_item
     set supervision_type_id = #{supervisionTypeId,jdbcType=INTEGER},
+      item_type = #{itemType,jdbcType=INTEGER},
       pid = #{pid,jdbcType=INTEGER},
       stage_index = #{stageIndex,jdbcType=TINYINT},
       name = #{name,jdbcType=VARCHAR},

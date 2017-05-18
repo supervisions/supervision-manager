@@ -78,4 +78,7 @@ public class Constants
 
 
   public static final Integer STATIC_MODULE_ID = 99999;
+
+  public static final Integer STATIC_ITEM_TYPE_MANAGE = 1; 
+  public static final Integer STATIC_ITEM_TYPE_SVISION = 0;
 }

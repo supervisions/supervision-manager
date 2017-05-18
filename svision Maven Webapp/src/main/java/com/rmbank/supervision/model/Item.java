@@ -8,6 +8,8 @@ import com.rmbank.supervision.common.utils.Page;
 
 public class Item extends Page {
     private Integer id;
+    
+    private Integer itemType;
 
     private Integer supervisionTypeId;
 
@@ -189,5 +191,13 @@ public class Item extends Page {
 
 	public void setPreparerOrg(String preparerOrg) {
 		this.preparerOrg = preparerOrg;
+	}
+
+	public Integer getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(Integer itemType) {
+		this.itemType = itemType;
 	}
 }

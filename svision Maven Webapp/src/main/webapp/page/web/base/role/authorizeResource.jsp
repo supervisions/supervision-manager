@@ -75,7 +75,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			</div>
 		</div>
 			<form id="userInfoForm" name="userInfoForm" action="<%=basePath%>system/role/jsonSaveOrUpdateRoleResource.do" method="post">
-				<div id="tab1" class="yw-tab">
+				<div id="tab1" class="yw-tab" style="padding:15px;">
 				<span style="font-size: 20px">当前角色:</span><input class="easyui-validatebox" readonly="readonly" value="${resourceConfig.name }"style="width:228px;height:20px; padding-left: 12px; background-color: #ccc;"/>		
 				<table class="yw-cm-table font16" id="taskTable">
 					<input type="hidden" name="roleId" value="${resourceConfig.id }">
@@ -86,7 +86,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<tr>	
 						<td>					
 							<c:forEach var="rse" items="${item.itemList }">
-								<label style="float: left;"><input type="checkbox"  name="resourceId" value="${rse.id }" <c:forEach var="roleResource" items="${roleResourceList }"><c:if test="${roleResource.resourceId ==rse.id  }">checked="checked"</c:if></c:forEach>>${rse.name }</label>
+								<label style="float: left;padding-right:15px;"><input type="checkbox"  name="resourceId" value="${rse.id }" <c:forEach var="roleResource" items="${roleResourceList }"><c:if test="${roleResource.resourceId ==rse.id  }">checked="checked"</c:if></c:forEach>>${rse.name }</label>
 							</c:forEach>
 						</td>
 					</tr> 	
