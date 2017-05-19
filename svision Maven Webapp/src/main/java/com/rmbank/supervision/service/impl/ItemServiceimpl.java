@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.dao.ItemMapper;
 import com.rmbank.supervision.dao.ItemProcessMapper;
 import com.rmbank.supervision.model.Item;
@@ -82,7 +83,7 @@ public class ItemServiceimpl implements ItemService {
 				itemProcess.setItemId(integer);
 				//itemProcess.setDefined();
 				itemProcess.setContent(content);
-				itemProcess.setContentTypeId(0);
+				itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_1);
 				itemProcess.setPreparerTime(new Date());
 				itemProcess.setPreparerId(item.getPreparerId());
 				itemProcess.setPreparerOrgId(item.getPreparerOrgId());
@@ -126,6 +127,24 @@ public class ItemServiceimpl implements ItemService {
 	public List<Item> getItemListByType(Item item) {
 		// TODO Auto-generated method stub
 		return itemMapper.getItemListByType(item);
+	}
+
+	@Override
+	public List<Item> getItemListByLgOrg(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListByLgOrg(item);
+	}
+
+	@Override
+	public List<Item> getItemListByOrgType(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListByOrgType(item);
+	}
+
+	@Override
+	public List<Item> getItemListByOrgTypeAndLogOrg(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListByOrgTypeAndLogOrg(item);
 	}
 
 }

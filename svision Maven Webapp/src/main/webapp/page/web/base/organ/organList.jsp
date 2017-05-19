@@ -152,43 +152,7 @@ function pagesearch(){
 		organForm.submit();
 	} 
 }
-function OperatOrgan(organId,operate){
-	showProcess(true, '温馨提示', '正在操作，请等待...');
-	$.ajax({
-		url : "jsonOperateOrgan.do?organId="+organId+"&status="+operate,
-		type : "post",
-		dataType:"json",
-		success : function(data) {
-			showProcess(false);
-			if(data.code == 0){
-				$.messager.show({
-					title:'操作信息',
-					msg:'服务器响应操作，请稍后。。。',
-					showType:'fade',
-					width:300,
-					modal:true,
-					height:150,
-					timeout:4000,
-					style:{
-						right:'',
-						bottom:''
-					}
-				});
-				setTimeout(function () {
-					$.messager.alert('操作信息', data.message, 'info',function() {
-						var pageNo = $.trim($("#pageNumber").val());
-						if(pageNo.length == 0 ||pageNo==""){
-							pageNo = 1;
-						}
-						window.location.href="organList.do?pageNo="+pageNo;
-					});
-				}, 5000);
-			}else{
-				$.messager.alert('操作信息', data.message, 'error');
-			}
-		}
-	});
-}
+
 function goToOrganInfo(organId){
 	window.location.href="organInfo.do?id="+organId;
 }
@@ -230,7 +194,7 @@ function goToOrganInfo(organId){
 				</div>
 				<div class="yw-organ-tree-list" style="height: 639px;">
 					<!-- 加载机构树 -->
-					<ul  id="treeList"></ul>
+					<ul id="treeList"></ul>
 				</div>
 			</div>
 			<div class="yw-lump wid-atuo ml260s mt10">

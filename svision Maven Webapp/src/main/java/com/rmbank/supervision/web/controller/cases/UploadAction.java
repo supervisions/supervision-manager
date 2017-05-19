@@ -55,7 +55,8 @@ public class UploadAction extends SystemAction {
             HttpServletRequest request,HttpServletResponse response,HttpSession session) {
 		//获取文件上传的路径
 		String path = session.getServletContext().getRealPath("/source/uploadfile/"+uuid);
-		System.out.println(path);
+		//保存到数据库的路径
+		String sqlPath="source/uploadfile/"+uuid+"/";
 		//获得原始文件名称
 		String fileName = file.getOriginalFilename();
 		//获取文件的扩展名
@@ -88,7 +89,7 @@ public class UploadAction extends SystemAction {
         	
         	ItemProcessFile ipf=new ItemProcessFile();
         	ipf.setFileName(fileName);
-        	ipf.setFilePath(path);
+        	ipf.setFilePath(sqlPath);
         	ipf.setFileExt(extName);
         	ipf.setPreparerId(loginUser.getId());
         	Date date = new Date();

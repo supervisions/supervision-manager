@@ -76,15 +76,14 @@ public class UserAction extends SystemAction  {
 			int totalCount =  0;
 			//分页集合
 			List<User> userList = new ArrayList<User>();
-			
 			//获取当前登录用户
 	    	User lgUser = this.getLoginUser();
+	    	
 	    	//判断当前登录账号是不是超级管理员
 			if(lgUser.getAccount().equals(Constants.USER_SUPER_ADMIN_ACCOUNT)){
 				try{
 					//t_user取满足要求的参数数据
-					userList =  userService.getUserList(user);
-					
+					userList =  userService.getUserList(user);					
 					//t_user取满足要求的记录总数
 					totalCount = userService.getUserCount(user);
 				}catch(Exception ex){ 
@@ -94,14 +93,13 @@ public class UserAction extends SystemAction  {
 				try{
 					lgUser.setSearchName(user.getSearchName());
 					//t_user取满足要求的参数数据
-					/*userList =  userService.getUserListByOrgId(lgUser);
-					
+					/*userList = userService.getUserListByOrgId(lgUser);					
 					//t_user取满足要求的记录总数
 					totalCount = userService.getUserCountByOrgId(lgUser);*/
 					
-					//根据用户ID查询用户所属的机构id
+					//获取当前登录用户所属的机构ID
 					List<Integer> userOrgIds=userService.getUserOrgIdsByUserId(lgUser.getId());
-					//将用户所属的机构存入到session中
+					//将用户所属的机构id存入到session中
 					HttpSession session = request.getSession();
 					session.setAttribute("userOrgIds", userOrgIds);
 					

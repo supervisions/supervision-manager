@@ -31,7 +31,14 @@ public class Item extends Page {
     
     private Integer isStept;
     
+    //自定义字段供sql查询使用，机构类型A
+    private Integer orgTypeA;
+    //自定义字段供sql查询使用，机构类型B
+    private Integer orgTypeB;
+    
     private Date entTime;
+    
+    
     //制单部门
     private String preparerOrg;
     
@@ -199,5 +206,21 @@ public class Item extends Page {
 
 	public void setItemType(Integer itemType) {
 		this.itemType = itemType;
+	}
+
+	public Integer getOrgTypeA() {
+		return orgTypeA;
+	}
+
+	public void setOrgTypeA(Integer orgTypeA) {
+		this.orgTypeA = orgTypeA;
+	}
+
+	public Integer getOrgTypeB() {
+		return orgTypeB;
+	}
+
+	public void setOrgTypeB(Integer orgTypeB) {
+		this.orgTypeB = orgTypeB;
 	}
 }
