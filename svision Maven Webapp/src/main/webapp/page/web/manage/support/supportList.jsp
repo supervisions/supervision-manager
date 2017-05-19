@@ -84,6 +84,15 @@ function deleteItem(id,name){
 function edit(id){
 	window.location.href="manage/branch/showItem.do?id="+id;
 }
+function showDialogModel(name){
+	$.messager.confirm("操作确认","是否量化该项目："+name+"?",function(r){  
+	    if (r){   
+	    	window.location.href='<%=basePath %>manage/support/supportFile.do?is';
+    	}else{
+    		window.location.href='<%=basePath %>manage/support/supportFile.do';
+    	}
+	}); 
+}
 </script>
   </head>
   
@@ -96,7 +105,7 @@ function edit(id){
 		</div>			
 		<div class="fl yw-lump mt10">
 			<form id="DeviceForm" name="DeviceForm"
-				action="manage/support/supportList.do" method="get">
+				action="<%=basePath %>manage/support/supportList.do" method="get">
 				<div class="pd10">
 					<div class="fl">
 						<span class="ml26">输入关键字查找</span>						
@@ -152,7 +161,7 @@ function edit(id){
 							<td>${item.preparerOrg}</td>
 							<td>${item.orgName}</td>
 							<td>
-								<a style="color: blue;">上传资料</a>
+								<a style="color: blue;" onclick="showDialogModel();">上传资料</a>
 								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> 
 							</td>							
 						</tr>
