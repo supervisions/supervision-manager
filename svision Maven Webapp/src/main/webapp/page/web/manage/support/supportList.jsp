@@ -84,12 +84,13 @@ function deleteItem(id,name){
 function edit(id){
 	window.location.href="manage/branch/showItem.do?id="+id;
 }
-function showDialogModel(name){
-	$.messager.confirm("操作确认","是否量化该项目："+name+"?",function(r){  
+function showDialogModel(id,name){
+	$.messager.confirm("操作确认","是否量化项目："+name+"?",function(r){  
 	    if (r){   
-	    	window.location.href='<%=basePath %>manage/support/supportFile.do?is';
+	    	var itemId = encodeURI(encodeURI(id));
+	    	window.location.href='<%=basePath %>manage/support/supportFile.do?id='+itemId+'&isValue=1';
     	}else{
-    		window.location.href='<%=basePath %>manage/support/supportFile.do';
+    		window.location.href='<%=basePath %>manage/support/supportFile.do?id='+itemId+'&isValue=1';
     	}
 	}); 
 }
@@ -161,7 +162,7 @@ function showDialogModel(name){
 							<td>${item.preparerOrg}</td>
 							<td>${item.orgName}</td>
 							<td>
-								<a style="color: blue;" onclick="showDialogModel();">上传资料</a>
+								<a style="color: blue;" onclick="showDialogModel(${item.id},'${item.name}');">上传资料</a>
 								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> 
 							</td>							
 						</tr>

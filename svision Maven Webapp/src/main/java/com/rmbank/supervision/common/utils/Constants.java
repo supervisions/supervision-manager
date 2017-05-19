@@ -97,6 +97,7 @@ public class Constants
   public static final Integer CONTENT_TYPE_ID_6= 36; 
   public static final Integer CONTENT_TYPE_ID_7= 37; 
   
-  
+  public static final Integer IS_VALUE = 1;
+  public static final Integer NOT_VALUE = 0;
   
 }

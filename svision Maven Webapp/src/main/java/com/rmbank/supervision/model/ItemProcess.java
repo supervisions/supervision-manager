@@ -1,6 +1,7 @@
 package com.rmbank.supervision.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class ItemProcess {
     private Integer id;
@@ -24,6 +25,13 @@ public class ItemProcess {
     private Integer preparerId;
 
     private Date preparerTime;
+    
+    /**
+     * 定义是否量化字段， 只用作前台使用；
+     */
+    private Integer isValue;
+    
+    private List<ItemProcessFile> fileList;
 
     public Integer getId() {
         return id;
@@ -111,5 +119,21 @@ public class ItemProcess {
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
+	}
+
+	public Integer getIsValue() {
+		return isValue;
+	}
+
+	public void setIsValue(Integer isValue) {
+		this.isValue = isValue;
+	}
+
+	public List<ItemProcessFile> getFileList() {
+		return fileList;
+	}
+
+	public void setFileList(List<ItemProcessFile> fileList) {
+		this.fileList = fileList;
 	}
 }

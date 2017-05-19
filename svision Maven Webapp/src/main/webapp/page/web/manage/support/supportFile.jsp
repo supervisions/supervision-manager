@@ -242,7 +242,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</table>
 							</td>		
 						</tr>
-						<c:if test=""> 
+						<c:if test="${IsValue} == 1"> 
 							<tr>
 								<td align="right" height="100px;">选择量化模型：</td>
 								<td colspan="3"> 
@@ -255,7 +255,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								 </td>	
 							</tr>
 						</c:if>	
-						<c:if test=""> 
+						<c:if test="${IsValue} == 0"> 
 							<tr style="display:none">
 								<td><input type="text" name="" value="" /></td> 
 							</tr>
