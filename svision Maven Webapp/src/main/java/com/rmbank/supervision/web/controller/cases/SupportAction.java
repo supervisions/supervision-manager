@@ -147,15 +147,15 @@ public class SupportAction extends SystemAction {
 				frvm.setId(rc.getId());
 				frvm.setName(rc.getName());
 				itemList.add(rc);
-				String path =rc.getPath()+"."+rc.getId()+".";
+				String path =rc.getPath()+"."+rc.getId()+".";//当前登录机构的子机构的path都以此开头
 				String substring=null;
 				for(Organ rc1 : organList){
 					if(rc1.getPath().length()>path.length()){
 						substring=rc1.getPath().substring(0, path.length());
 					}
-					if(rc1.getPid() == rc.getId() && rc1.getOrgtype()==Constants.ORG_TYPE_3 && rc1.getOrgtype()==Constants.ORG_TYPE_4){						
+					if(rc1.getPid() == rc.getId()){//添加子级节点						
 						itemList.add(rc1);
-					}else if(rc1.getOrgtype() == Constants.ORG_TYPE_3 && rc1.getOrgtype()==Constants.ORG_TYPE_4 && path.equals(substring)){
+					}else if(path.equals(substring)){//添加孙子级节点	
 						itemList.add(rc1);								
 					}
 				}

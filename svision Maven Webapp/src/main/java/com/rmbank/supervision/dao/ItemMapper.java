@@ -41,5 +41,17 @@ public interface ItemMapper {
 	 */
 	List<Item> getItemListByOrgTypeAndLogOrg(Item item);
 
+	/**
+	 * 分行立项分行完成
+	 * @param item
+	 * @return
+	 */
 	List<Item> getItemListByFHLXFHWC(Item item);
+
+	/**
+	 * 分行立项中支完成
+	 * @param item
+	 * @return
+	 */
+	List<Item> getItemListByFHLXZZWC(Item item);
 }
