@@ -25,5 +25,9 @@ public interface ItemMapper {
 
 	List<Item> getItemListByType(Item item);
 
-	List<Item> getItemListBylgOrg(Item item);
+	List<Item> getItemListByLgOrg(Item item);
+
+	List<Item> getItemListByOrgType(Item item);
+
+	List<Item> getItemListByOrgTypeAndLogOrg(Item item);
 }

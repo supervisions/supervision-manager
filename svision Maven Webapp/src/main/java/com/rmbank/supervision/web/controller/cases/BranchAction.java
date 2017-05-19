@@ -69,6 +69,7 @@ public class BranchAction extends SystemAction {
 	@RequestMapping("/branchList.do")
 	@RequiresPermissions("manage/branch/branchList.do")
 	public String branchList(Item item,
+			@RequestParam(value="type", required=false) Integer type, 
 			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
 		if (item.getSearchName() != null && item.getSearchName() != "") {
 			String searchName = new String(item.getSearchName().getBytes(
@@ -77,7 +78,11 @@ public class BranchAction extends SystemAction {
 		}		
 		if (item.getPageNo() == null){
 			item.setPageNo(1);
-		}		
+		}
+		//默认加载分行立项分行完成
+		if(type==null || type==0){
+			type=1;
+		}
 		item.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 		int totalCount = 0;
 		totalCount=itemService.getItemCount(item);
@@ -93,11 +98,14 @@ public class BranchAction extends SystemAction {
 		Organ organ = userOrgByUserId.get(0);
 		//获取项目列表,根据不同的机构类型加载不同的项目
 		List<Item> itemList =null;
-		if(organ.getOrgtype()==Constants.ORG_TYPE_1){
+		if(organ.getOrgtype()==Constants.ORG_TYPE_1 || Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
+			//成都分行监察室加载所有的项目
 			itemList=itemService.getItemList(item);
 		}else{
+			//其他类型机构加载自己的立项和自己需要完成的立项
 			item.setSupervisionOrgId(logUserOrg);
-			itemList=itemService.getItemListBylgOrg(item);
+			item.setPreparerOrgId(logUserOrg);
+			itemList=itemService.getItemListByLgOrg(item);
 		}
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		for (Item it : itemList) {

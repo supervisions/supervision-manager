@@ -96,7 +96,7 @@ function edit(id){
 		</div>			
 		<div class="fl yw-lump mt10">
 			<form id="DeviceForm" name="DeviceForm"
-				action="manage/branch/branchList.do" method="get">
+				action="manage/support/supportList.do" method="get">
 				<div class="pd10">
 					<div class="fl">
 						<span class="ml26">输入关键字查找</span>						

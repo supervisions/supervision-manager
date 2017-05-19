@@ -71,8 +71,7 @@ public class SupportAction extends SystemAction {
 			String searchName = new String(item.getSearchName().getBytes(
 					"iso8859-1"), "utf-8");
 			item.setSearchName(searchName);
-		}
-		
+		}		
 		if (item.getPageNo() == null){
 			item.setPageNo(1);
 		}		
@@ -83,9 +82,28 @@ public class SupportAction extends SystemAction {
 		//获取项目分类的集合		
 		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_PROJECT_KEY);
 		request.setAttribute("meatListByKey", meatListByKey);
-		
-		//获取项目列表
-		List<Item> itemList=itemService.getItemList(item);
+
+		//当前登录用户所属的机构
+		User loginUser = this.getLoginUser();
+		List<Organ> userOrgByUserId = userService.getUserOrgByUserId(loginUser.getId());
+		Integer logUserOrg = userOrgByUserId.get(0).getId(); //当前登录用户所属的机构ID
+		Organ organ = userOrgByUserId.get(0);
+		//获取项目列表,根据不同的机构类型加载不同的项目
+		List<Item> itemList =null;
+		if(Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
+			//成都分行监察室加载所有的项目
+			//itemList=itemService.getItemList(item);
+			item.setOrgTypeA(Constants.ORG_TYPE_3);
+			item.setOrgTypeB(Constants.ORG_TYPE_4);
+			itemList=itemService.getItemListByOrgType(item);
+		}else{
+			//中支机构只加载中支立的项目
+			item.setOrgTypeA(Constants.ORG_TYPE_3);
+			item.setOrgTypeB(Constants.ORG_TYPE_4);
+			item.setSupervisionOrgId(logUserOrg);
+			item.setPreparerOrgId(logUserOrg);
+			itemList=itemService.getItemListByOrgTypeAndLogOrg(item);
+		}
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		for (Item it : itemList) {

@@ -130,9 +130,21 @@ public class ItemServiceimpl implements ItemService {
 	}
 
 	@Override
-	public List<Item> getItemListBylgOrg(Item item) {
+	public List<Item> getItemListByLgOrg(Item item) {
 		// TODO Auto-generated method stub
-		return itemMapper.getItemListBylgOrg(item);
+		return itemMapper.getItemListByLgOrg(item);
+	}
+
+	@Override
+	public List<Item> getItemListByOrgType(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListByOrgType(item);
+	}
+
+	@Override
+	public List<Item> getItemListByOrgTypeAndLogOrg(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListByOrgTypeAndLogOrg(item);
 	}
 
 }

@@ -194,7 +194,7 @@ function goToOrganInfo(organId){
 				</div>
 				<div class="yw-organ-tree-list" style="height: 639px;">
 					<!-- 加载机构树 -->
-					<ul  id="treeList"></ul>
+					<ul id="treeList"></ul>
 				</div>
 			</div>
 			<div class="yw-lump wid-atuo ml260s mt10">
