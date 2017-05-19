@@ -27,7 +27,19 @@ public interface ItemMapper {
 
 	List<Item> getItemListByLgOrg(Item item);
 
+	/**
+	 * 查询所有中支立项中支完成的项目
+	 * @param item
+	 * @return
+	 */
 	List<Item> getItemListByOrgType(Item item);
 
+	/**
+	 * 查询当前登录中支立的项目
+	 * @param item
+	 * @return
+	 */
 	List<Item> getItemListByOrgTypeAndLogOrg(Item item);
+
+	List<Item> getItemListByFHLXFHWC(Item item);
 }

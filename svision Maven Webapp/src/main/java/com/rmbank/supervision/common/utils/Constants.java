@@ -83,10 +83,10 @@ public class Constants
   public static final Integer STATIC_ITEM_TYPE_SVISION = 0;
   
   //机构类型
-  public static final Integer ORG_TYPE_1= 46; 
-  public static final Integer ORG_TYPE_2= 47; 
-  public static final Integer ORG_TYPE_3= 48; 
-  public static final Integer ORG_TYPE_4= 49; 
+  public static final Integer ORG_TYPE_1= 46; //分行监察室
+  public static final Integer ORG_TYPE_2= 47; //分行机关
+  public static final Integer ORG_TYPE_3= 48; //中支单位
+  public static final Integer ORG_TYPE_4= 49; //县支行
   
   //项目进行流程
   public static final Integer CONTENT_TYPE_ID_1= 31; 

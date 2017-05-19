@@ -102,7 +102,7 @@ function getItemByItemType(type){
 						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox"
 							   style="width: 120px;" placeholder="搜索关键字：名称" value="${Organ.searchName}" />
 						<span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
-						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='organInfo.do?id=0'">新建</span>
+						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='branchInfo.do?id=0'">新建项目</span>
 					</div>
 					<div class="cl"></div>
 				</div>
