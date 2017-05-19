@@ -152,8 +152,8 @@ function edit(id){
 							<td>${item.preparerOrg}</td>
 							<td>${item.orgName}</td>
 							<td>
-								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
-								<%-- <a style="color: blue;" onclick="edit(${item.id})">查看</a> --%>
+								<a style="color: blue;">上传资料</a>
+								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> 
 							</td>							
 						</tr>
 					</c:forEach>

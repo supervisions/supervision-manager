@@ -107,7 +107,7 @@ public class SupportAction extends SystemAction {
 	 */
 	@RequestMapping("/supportInfo.do")
 	@RequiresPermissions("manage/support/supportInfo.do")
-	public String exit(HttpServletRequest request, HttpServletResponse response){
+	public String supportInfo(HttpServletRequest request, HttpServletResponse response){
 		//获取项目分类的集合		
 		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_PROJECT_KEY);
 		request.setAttribute("meatListByKey", meatListByKey);
