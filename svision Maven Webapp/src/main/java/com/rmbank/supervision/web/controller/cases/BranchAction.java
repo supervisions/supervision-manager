@@ -98,14 +98,22 @@ public class BranchAction extends SystemAction {
 		Organ organ = userOrgByUserId.get(0);
 		//获取项目列表,根据不同的机构类型加载不同的项目
 		List<Item> itemList =null;
-		if(organ.getOrgtype()==Constants.ORG_TYPE_1 || Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
-			//成都分行监察室加载所有的项目
-			itemList=itemService.getItemList(item);
-		}else{
-			//其他类型机构加载自己的立项和自己需要完成的立项
-			item.setSupervisionOrgId(logUserOrg);
-			item.setPreparerOrgId(logUserOrg);
-			itemList=itemService.getItemListByLgOrg(item);
+//		if(organ.getOrgtype()==Constants.ORG_TYPE_1 || Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
+//			//成都分行监察室加载所有的项目
+//			itemList=itemService.getItemList(item);
+//		}
+		if(type==1){
+			//分行立项分行完成
+			item.setSupervisionOrgId(logUserOrg); //完成机构
+			item.setPreparerOrgId(logUserOrg);    //立项机构
+			item.setOrgTypeA(Constants.ORG_TYPE_1);
+			item.setOrgTypeB(Constants.ORG_TYPE_2);
+			item.setOrgTypeC(Constants.ORG_TYPE_3);
+			item.setOrgTypeD(Constants.ORG_TYPE_4);
+			itemList=itemService.getItemListByFHLXFHWC(item);
+		}
+		if(type==2){
+			//分行立项中支完成
 		}
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		for (Item it : itemList) {
@@ -127,43 +135,65 @@ public class BranchAction extends SystemAction {
 	 */
 	@RequestMapping("/branchInfo.do")
 	@RequiresPermissions("manage/branch/branchInfo.do")
-	public String exitItem(HttpServletRequest request, HttpServletResponse response){
+	public String exitItem(
+			@RequestParam(value="type" ,required=false) Integer type,
+			HttpServletRequest request, HttpServletResponse response){
 		//获取项目分类的集合		
 		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_PROJECT_KEY);
 		request.setAttribute("meatListByKey", meatListByKey);
 		
-		//获取机构
+		//获取所有机构
 		Organ organ=new Organ();
 		List<Organ> organList = organService.getOrganList(organ);
 		
 		//封装到前台遍历机构集合
 		List<OrganVM> list=new ArrayList<OrganVM>();
 		OrganVM frvm = null;
-		
-		for(Organ rc : organList){
-			if(rc.getPid()==0){
-				frvm = new OrganVM(); 
-				List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
-				frvm.setId(rc.getId());
-				frvm.setName(rc.getName());
-				String path = frvm.getId()+".";
-				for(Organ rc1 : organList){
-					int pl=frvm.getId().toString().length();
-					String path2 = rc1.getPath();
-					String substring =null;					
-					if(path2.length()>pl){
-						substring= path2.substring(0, pl+1);						
-					}					
-					if(rc1.getPid() == rc.getId() || path.equals(substring)){ 
-						itemList.add(rc1);
+		type=1;
+		//分行立项分行完成，只加载分行机关
+		if(type==1){
+			for(Organ rc : organList){
+				if(rc.getId()==21){//父节点是分行机关的时候创建返回到前台对象
+					frvm = new OrganVM(); 
+					List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
+					frvm.setId(rc.getId());
+					frvm.setName(rc.getName());					
+					for(Organ rc1 : organList){									
+						if(rc1.getPid() == rc.getId()){ 
+							itemList.add(rc1);
+						}
 					}
+					frvm.setItemList(itemList);
+					list.add(frvm);
 				}
-				frvm.setItemList(itemList);
-				list.add(frvm);
+			}
+			
+		}else if(type==2){
+			//分行立项中支完成，只加载分行营管部机构， 中支机构，县支行（此处县支行包括营管部及中支下属所有县支行）；
+			for(Organ rc : organList){
+				if(rc.getPid()==0 && rc.getId()!=21 && rc.getId()!=19 ){
+					frvm = new OrganVM(); 
+					List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
+					frvm.setId(rc.getId());
+					frvm.setName(rc.getName());
+					String path = frvm.getId()+"."; //该父节点下所有孙子节点的path都以此开头
+					for(Organ rc1 : organList){						
+						String path2 = rc1.getPath(); //当前节点的path
+						String substring =null;					
+						if(path2.length()>path.length()){
+							substring= path2.substring(0, path.length());						
+						}					
+						if(rc1.getPid() == rc.getId() || path.equals(substring)){ 
+							itemList.add(rc1);
+						}
+					}
+					frvm.setItemList(itemList);
+					list.add(frvm);
+				}
 			}
 		}
-		request.setAttribute("OrgList", list);
-	
+		
+		request.setAttribute("OrgList", list);	
 		return "web/manage/branch/branchInfo";
 	}
 	

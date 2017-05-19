@@ -135,16 +135,32 @@ public class ItemServiceimpl implements ItemService {
 		return itemMapper.getItemListByLgOrg(item);
 	}
 
+	/**
+	 * 查询所有中支立项中支完成的项目
+	 * @param item
+	 * @return
+	 */
 	@Override
 	public List<Item> getItemListByOrgType(Item item) {
 		// TODO Auto-generated method stub
 		return itemMapper.getItemListByOrgType(item);
 	}
 
+	/**
+	 * 查询当前登录中支立的项目
+	 * @param item
+	 * @return
+	 */
 	@Override
 	public List<Item> getItemListByOrgTypeAndLogOrg(Item item) {
 		// TODO Auto-generated method stub
 		return itemMapper.getItemListByOrgTypeAndLogOrg(item);
+	}
+
+	@Override
+	public List<Item> getItemListByFHLXFHWC(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListByFHLXFHWC(item);
 	}
 
 }

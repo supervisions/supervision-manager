@@ -35,6 +35,10 @@ public class Item extends Page {
     private Integer orgTypeA;
     //自定义字段供sql查询使用，机构类型B
     private Integer orgTypeB;
+    //自定义字段供sql查询使用，机构类型C
+    private Integer orgTypeC;
+    //自定义字段供sql查询使用，机构类型D
+    private Integer orgTypeD;
     
     private Date entTime;
     
@@ -222,5 +226,21 @@ public class Item extends Page {
 
 	public void setOrgTypeB(Integer orgTypeB) {
 		this.orgTypeB = orgTypeB;
+	}
+
+	public Integer getOrgTypeC() {
+		return orgTypeC;
+	}
+
+	public void setOrgTypeC(Integer orgTypeC) {
+		this.orgTypeC = orgTypeC;
+	}
+
+	public Integer getOrgTypeD() {
+		return orgTypeD;
+	}
+
+	public void setOrgTypeD(Integer orgTypeD) {
+		this.orgTypeD = orgTypeD;
 	}
 }

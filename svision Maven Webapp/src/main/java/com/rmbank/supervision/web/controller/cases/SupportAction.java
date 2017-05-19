@@ -10,6 +10,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.context.annotation.Scope;
@@ -90,21 +91,20 @@ public class SupportAction extends SystemAction {
 		Organ organ = userOrgByUserId.get(0);
 		//获取项目列表,根据不同的机构类型加载不同的项目
 		List<Item> itemList =null;
-		if(Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
-			//成都分行监察室加载所有的项目
+		if(organ.getOrgtype()==Constants.ORG_TYPE_1 ||Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
+			//成都分行监察室和超级管理员加载所有的中支立项项目
 			//itemList=itemService.getItemList(item);
 			item.setOrgTypeA(Constants.ORG_TYPE_3);
 			item.setOrgTypeB(Constants.ORG_TYPE_4);
 			itemList=itemService.getItemListByOrgType(item);
 		}else{
-			//中支机构只加载中支立的项目
+			//当前登录机构只加载当前登录中支立的项目和子机构完成的项目
 			item.setOrgTypeA(Constants.ORG_TYPE_3);
 			item.setOrgTypeB(Constants.ORG_TYPE_4);
 			item.setSupervisionOrgId(logUserOrg);
 			item.setPreparerOrgId(logUserOrg);
 			itemList=itemService.getItemListByOrgTypeAndLogOrg(item);
-		}
-		
+		}		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		for (Item it : itemList) {
 			Date preparerTime = it.getPreparerTime();
@@ -133,26 +133,29 @@ public class SupportAction extends SystemAction {
 		//获取机构
 		Organ organ=new Organ();
 		List<Organ> organList = organService.getOrganList(organ);
-				
+		
+		//获取当前用户的机构
+		User lgUser=this.getLoginUser();
+		List<Integer> userOrgIds=userService.getUserOrgIdsByUserId(lgUser.getId());
+		Integer userOrgID = userOrgIds.get(0);		
 		List<OrganVM> list=new ArrayList<OrganVM>();
 		OrganVM frvm = null;
 		for(Organ rc : organList){
-			if(rc.getPid()==0){
+			if(rc.getId()==userOrgID){
 				frvm = new OrganVM();
 				List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
 				frvm.setId(rc.getId());
 				frvm.setName(rc.getName());
-				String path = frvm.getId()+".";
+				itemList.add(rc);
+				String path =rc.getPath()+"."+rc.getId()+".";
+				String substring=null;
 				for(Organ rc1 : organList){
-					int pl=frvm.getId().toString().length();
-					String path2 = rc1.getPath();
-					String substring =null;					
-					if(path2.length()>pl){
-						substring= path2.substring(0, pl+1);						
-					}		
-					if(rc1.getPid() == rc.getId() && rc1.getOrgtype()!=46 && rc1.getOrgtype()!=47){ 
+					if(rc1.getPath().length()>path.length()){
+						substring=rc1.getPath().substring(0, path.length());
+					}
+					if(rc1.getPid() == rc.getId() && rc1.getOrgtype()==Constants.ORG_TYPE_3 && rc1.getOrgtype()==Constants.ORG_TYPE_4){						
 						itemList.add(rc1);
-					}else if(rc1.getOrgtype()!=46 && rc1.getOrgtype()!=47 && path.equals(substring)){
+					}else if(rc1.getOrgtype() == Constants.ORG_TYPE_3 && rc1.getOrgtype()==Constants.ORG_TYPE_4 && path.equals(substring)){
 						itemList.add(rc1);								
 					}
 				}
