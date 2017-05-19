@@ -163,6 +163,54 @@ public class SupportAction extends SystemAction {
 		request.setAttribute("OrgList", list);
 		return "web/manage/support/supportInfo";
 	}
+
+	/**
+	 * 跳转到新增项目
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/supportFile.do")
+	@RequiresPermissions("manage/support/supportFile.do")
+	public String supportFile(HttpServletRequest request, HttpServletResponse response){
+		//获取项目分类的集合		
+		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_PROJECT_KEY);
+		request.setAttribute("meatListByKey", meatListByKey);
+		
+		//获取机构
+		Organ organ=new Organ();
+		List<Organ> organList = organService.getOrganList(organ);
+				
+		List<OrganVM> list=new ArrayList<OrganVM>();
+		OrganVM frvm = null;
+		for(Organ rc : organList){
+			if(rc.getPid()==0){
+				frvm = new OrganVM();
+				List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
+				frvm.setId(rc.getId());
+				frvm.setName(rc.getName());
+				String path = frvm.getId()+".";
+				for(Organ rc1 : organList){
+					int pl=frvm.getId().toString().length();
+					String path2 = rc1.getPath();
+					String substring =null;					
+					if(path2.length()>pl){
+						substring= path2.substring(0, pl+1);						
+					}		
+					if(rc1.getPid() == rc.getId() && rc1.getOrgtype()!=46 && rc1.getOrgtype()!=47){ 
+						itemList.add(rc1);
+					}else if(rc1.getOrgtype()!=46 && rc1.getOrgtype()!=47 && path.equals(substring)){
+						itemList.add(rc1);								
+					}
+				}
+				frvm.setItemList(itemList);
+				list.add(frvm);
+			}
+		}
+		request.setAttribute("OrgList", list);
+		return "web/manage/support/supportFile";
+	}
+	
 	/** 
 	 * 新增,编辑项目
 	 * @throws ParseException 

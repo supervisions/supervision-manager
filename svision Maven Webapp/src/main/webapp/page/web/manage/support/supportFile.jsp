@@ -187,13 +187,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/support/supportList.do'"></i><span>项目列表</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/support/supportList.do'"></i><span>中支立项中支完成</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
 		<div class="yw-bi-rows">
 			<div class="yw-bi-tabs mt5" id="ywTabs">
-			<span class="yw-bi-now">基本信息</span>
+			<span class="yw-bi-now">上传资料</span>
 				
 			</div>
 			<div class="fr">
@@ -211,34 +211,57 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td width="8%" align="right">项目名称：</td>
 							<td colspan="3">
-								<input name="name" type="text" value="" style="width:60%;height:28px;" />  
+								<input  type="text" value="" style="width:60%;height:28px;" readonly="readonly" />  
 								<span style="color:red">*</span> 
+								<input type="hidden" value="" name="id" />
+								<input type="hidden" value=""  name="lastId" />
                             	<input type="hidden" id="hid_uuid" name="uuid" />
+                            	<input type="hidden" name="itemId" />
 							</td> 
 						</tr>
 						<tr>
 							<td align="right">项目分类：</td>
 							<td colspan="3">
-								<select id="supervisionTypeId" name="supervisionTypeId" style="width:254px;height:28px;">
-									<option value="-1">请选择项目分类</option>									
-									<c:forEach var="position" items="${meatListByKey}">
-										<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
-									</c:forEach>
-								</select> 
-								<span style="color:red">*</span> 
-							 立项时间：   <input type="text" name="pTime" value="" id="datepicker" style="width:254px;height:22px;">
-							 <span style="color:red">*</span> 
+								<input type="text" value="" style="width:254px;height:28px;" readonly="readonly" />   
+							            立项时间：   <input type="text" value="" style="width:254px;height:22px;"  readonly="readonly" > 
 							</td>								
 						</tr>
-						
 						<tr>
-							<td align="right" height="100px;">立项审批表、方案备注 ：</td>
+							<td align="right">立项审批表、方案：</td>
+							<td colspan="3">
+								 <textarea rows="3" cols="5" style="width:60%;" readonly="readonly" ></textarea>		
+							</td>		
+						</tr> 
+						<tr>
+							<td align="right">附件列表：</td>
 							<td colspan="3"> 
-								 <textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>			
-							 </td>	
-						</tr>	
+								<table style="width:100%;height:100%;">
+									<c:forEach var="item" items="">
+										<tr style="height:25px"><td></td></tr>
+									</c:forEach> 
+								</table>
+							</td>		
+						</tr>
+						<c:if test=""> 
+							<tr>
+								<td align="right" height="100px;">选择量化模型：</td>
+								<td colspan="3"> 
+									<select id="supervisionTypeId" name="supervisionTypeId" style="width:254px;height:28px;">
+										<option value="-1">请选择量化模型</option>									
+										<%-- <c:forEach var="position" items="${meatListByKey}">
+											<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
+										</c:forEach> --%>
+									</select> 	
+								 </td>	
+							</tr>
+						</c:if>	
+						<c:if test=""> 
+							<tr style="display:none">
+								<td><input type="text" name="" value="" /></td> 
+							</tr>
+						</c:if>	 
 						<tr>
-							<td align="right" height="100px;">上传附件：</td>
+							<td align="right" height="100px;">监察报告、整改建议书、整改报告、监察决定书：</td>
 							<td colspan="3">
 								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>
@@ -249,30 +272,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					                <div id="uploader">
 					                </div>
 							 </td>	
-						</tr>	
-						
-						<tr>
-							<td align="right" height="100px;">选择单位：</td>
-							<td colspan="3"> 
-								<table style="font-size: 16px;"> 
-									<c:forEach var="item" items="${OrgList }">
-										<tr><td style="font-weight: 900;">${item.name }</td></tr>
-										<tr style="width: 100%;">
-											<td>
-												<div style="width:60%;">
-													<c:forEach var="org" items="${item.itemList }">
-														<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
-													</c:forEach>
-												</div>
-											</td>
-										</tr>
-									</c:forEach> 
-								</table>
-							 </td>	
 						</tr>
-						
-							
-						
+						<tr>
+							<td align="right" height="100px;">跟踪监察结论：</td>
+							<td colspan="3"> 
+								 <textarea rows="6" cols="5" style="width:60%;" name="content" ></textarea>			
+							 </td>	
+						</tr>	
 					</table>
 				</div>
 			</form>

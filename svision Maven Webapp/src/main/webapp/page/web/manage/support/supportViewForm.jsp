@@ -232,9 +232,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</tr>
 						
 						<tr>
-							<td align="right" height="100px;">立项审批表、方案备注 ：</td>
+							<td align="right" height="100px;">立项审批表、方案备注说明：</td>
 							<td colspan="3"> 
-								 <textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>			
+								 <textarea rows="6" cols="5" style="width:60%;" name="content" ></textarea>			
 							 </td>	
 						</tr>	
 						<tr>
