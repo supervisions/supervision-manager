@@ -1,3 +1,4 @@
+ 
 package com.rmbank.supervision.web.controller.cases;
 
 import java.io.UnsupportedEncodingException;
@@ -101,7 +102,7 @@ public class BranchAction extends SystemAction {
 //		if(organ.getOrgtype()==Constants.ORG_TYPE_1 || Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
 //			//成都分行监察室加载所有的项目
 //			itemList=itemService.getItemList(item);
-//		}
+//		}		
 		if(type==1){
 			//分行立项分行完成
 			item.setSupervisionOrgId(logUserOrg); //完成机构
@@ -114,6 +115,13 @@ public class BranchAction extends SystemAction {
 		}
 		if(type==2){
 			//分行立项中支完成
+			item.setSupervisionOrgId(logUserOrg); //完成机构
+			item.setPreparerOrgId(logUserOrg);    //立项机构
+			item.setOrgTypeA(Constants.ORG_TYPE_1);
+			item.setOrgTypeB(Constants.ORG_TYPE_2);
+			item.setOrgTypeC(Constants.ORG_TYPE_3);
+			item.setOrgTypeD(Constants.ORG_TYPE_4);
+			itemList=itemService.getItemListByFHLXZZWC(item);
 		}
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		for (Item it : itemList) {
@@ -149,7 +157,7 @@ public class BranchAction extends SystemAction {
 		//封装到前台遍历机构集合
 		List<OrganVM> list=new ArrayList<OrganVM>();
 		OrganVM frvm = null;
-		type=1;
+		type=2;
 		//分行立项分行完成，只加载分行机关
 		if(type==1){
 			for(Organ rc : organList){

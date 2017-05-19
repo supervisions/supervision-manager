@@ -1,3 +1,4 @@
+ 
 package com.rmbank.supervision.service.impl;
 
 import java.util.ArrayList;
@@ -157,10 +158,22 @@ public class ItemServiceimpl implements ItemService {
 		return itemMapper.getItemListByOrgTypeAndLogOrg(item);
 	}
 
+	/**
+	 * 分行立项分行完成
+	 */
 	@Override
 	public List<Item> getItemListByFHLXFHWC(Item item) {
 		// TODO Auto-generated method stub
 		return itemMapper.getItemListByFHLXFHWC(item);
 	}
 
-}
+	/**
+	 * 分行立项中支完成
+	 */
+	@Override
+	public List<Item> getItemListByFHLXZZWC(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListByFHLXZZWC(item);
+	}
+
+}  
