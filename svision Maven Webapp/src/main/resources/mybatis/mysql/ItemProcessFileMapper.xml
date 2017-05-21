@@ -126,4 +126,13 @@
       preparer_time = #{preparerTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="getFileListByItemId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_item_process_file
+    where item_process_Id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  
 </mapper>

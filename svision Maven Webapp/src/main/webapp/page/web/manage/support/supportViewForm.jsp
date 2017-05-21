@@ -198,8 +198,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			</div>
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
-				
-				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItem(this);">保存</span>
+				 
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div>
@@ -207,15 +206,15 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				action="<%=basePath%>manage/support/jsonSaveOrUpdateItem.do"
 				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="font16" id="taskTable">
+					<table class="font16 taskTable"   >
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
 								<input name="name" type="text" value="" style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
                             	<input type="hidden" id="hid_uuid" name="uuid" />
 							</td> 
-						</tr>
+						</tr> 
 						<tr>
 							<td align="right">项目分类：</td>
 							<td colspan="3">
@@ -232,7 +231,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</tr>
 						
 						<tr>
-							<td align="right" height="100px;">立项审批表、方案备注说明：</td>
+							<td align="right" height="100px;">立项审批表、方案：</td>
 							<td colspan="3"> 
 								 <textarea rows="6" cols="5" style="width:60%;" name="content" ></textarea>			
 							 </td>	

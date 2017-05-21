@@ -181,6 +181,11 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	        }
    		});
 	}
+	function downLoadFile(path,name){
+		var filePath = encodeURI(encodeURI(path));
+		var fileName = encodeURI(encodeURI(name));
+		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
+	}
 </script>
  </head> 
  <body>
@@ -207,46 +212,46 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				action="<%=basePath%>manage/support/jsonSaveOrUpdateItem.do"
 				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="font16" id="taskTable">
+					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
-								<input  type="text" value="" style="width:60%;height:28px;" readonly="readonly" />  
+								<input  type="text" value="${Item.name }" style="width:60%;height:28px;" readonly="readonly" />  
 								<span style="color:red">*</span> 
-								<input type="hidden" value="" name="id" />
-								<input type="hidden" value=""  name="lastId" />
+								<input type="hidden" value="0" name="id" />
+								<input type="hidden" value="${ItemProcess.id }"  name="lastId" />
                             	<input type="hidden" id="hid_uuid" name="uuid" />
-                            	<input type="hidden" name="itemId" />
+                            	<input type="hidden" name="itemId" value="${Item.id }" />
 							</td> 
 						</tr>
 						<tr>
 							<td align="right">项目分类：</td>
 							<td colspan="3">
-								<input type="text" value="" style="width:254px;height:28px;" readonly="readonly" />   
-							            立项时间：   <input type="text" value="" style="width:254px;height:22px;"  readonly="readonly" > 
+								<input type="text" value="${Item.sType}" style="width:254px;height:28px;" readonly="readonly" />   
+							            立项时间：   <input type="text" value="${Item.preparerTime}" style="width:254px;height:22px;"  readonly="readonly" > 
 							</td>								
 						</tr>
 						<tr>
 							<td align="right">立项审批表、方案：</td>
 							<td colspan="3">
-								 <textarea rows="3" cols="5" style="width:60%;" readonly="readonly" ></textarea>		
+								 <textarea rows="6" cols="5" style="width:60%;" readonly="readonly" >${ItemProcess.content }</textarea>		
 							</td>		
 						</tr> 
 						<tr>
 							<td align="right">附件列表：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;">
-									<c:forEach var="item" items="">
-										<tr style="height:25px"><td></td></tr>
+									<c:forEach var="fileItem" items="${FileList }">
+										<tr style="height:25px"><td style="border:0px;"><a onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;">${fileItem.fileName}</a></td></tr>
 									</c:forEach> 
 								</table>
 							</td>		
 						</tr>
-						<c:if test="${IsValue} == 1"> 
+						<c:if test="${IsValue == 1}"> 
 							<tr>
-								<td align="right" height="100px;">选择量化模型：</td>
+								<td align="right" height="33px;" >选择量化模型：</td>
 								<td colspan="3"> 
-									<select id="supervisionTypeId" name="supervisionTypeId" style="width:254px;height:28px;">
+									<select id="supervisionTypeId" name="supervisionTypeId"  style="width:254px;height:30px;" >
 										<option value="-1">请选择量化模型</option>									
 										<%-- <c:forEach var="position" items="${meatListByKey}">
 											<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
@@ -255,13 +260,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								 </td>	
 							</tr>
 						</c:if>	
-						<c:if test="${IsValue} == 0"> 
+						<c:if test="${IsValue == 0}"> 
 							<tr style="display:none">
 								<td><input type="text" name="" value="" /></td> 
 							</tr>
 						</c:if>	 
 						<tr>
-							<td align="right" height="100px;">监察报告、整改建议书、整改报告、监察决定书：</td>
+							<td align="right" height="100%;">监察报告、整改建议书、整改报告、监察决定书：</td>
 							<td colspan="3">
 								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>

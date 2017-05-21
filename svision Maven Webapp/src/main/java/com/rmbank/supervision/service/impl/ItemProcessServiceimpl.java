@@ -58,4 +58,10 @@ public class ItemProcessServiceimpl implements ItemProcessService{
 		return itemProcessMapper.getItemProcessIdByUuid(uuid);
 	}
 
+	@Override
+	public List<ItemProcess> getItemProcessItemId(Integer id) {
+		// TODO Auto-generated method stub
+		return itemProcessMapper.getItemProcessItemId(id);
+	}
+
 }

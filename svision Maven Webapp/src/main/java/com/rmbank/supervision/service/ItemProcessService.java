@@ -18,4 +18,6 @@ public interface ItemProcessService {
     int updateByPrimaryKey(ItemProcess record);
 
 	List<Integer> getItemProcessIdByUuid(String uuid);
+
+	List<ItemProcess> getItemProcessItemId(Integer id);
 }

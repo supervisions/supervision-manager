@@ -31,6 +31,8 @@ public class Item extends Page {
     
     private Integer isStept;
     
+    private Integer isValue;
+    
     //自定义字段供sql查询使用，机构类型A
     private Integer orgTypeA;
     //自定义字段供sql查询使用，机构类型B
@@ -39,9 +41,11 @@ public class Item extends Page {
     private Integer orgTypeC;
     //自定义字段供sql查询使用，机构类型D
     private Integer orgTypeD;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date endTime;
     
-    private Date entTime;
-    
+    private String endTimes;
     
     //制单部门
     private String preparerOrg;
@@ -67,17 +71,20 @@ public class Item extends Page {
 		this.isStept = isStept;
 	}
 
-	public Date getEntTime() {
-		return entTime;
+	public Date getEndTime() {
+		return endTime;
 	}
 
-	public void setEntTime(Date entTime) {
-		this.entTime = entTime;
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
 	}
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date preparerTime;
 
+	
+
+    private String preparerTimes;
     
     private String orgName;
     
@@ -242,5 +249,29 @@ public class Item extends Page {
 
 	public void setOrgTypeD(Integer orgTypeD) {
 		this.orgTypeD = orgTypeD;
+	}
+
+	public String getEndTimes() {
+		return endTimes;
+	}
+
+	public void setEndTimes(String endTimes) {
+		this.endTimes = endTimes;
+	}
+
+	public String getPreparerTimes() {
+		return preparerTimes;
+	}
+
+	public void setPreparerTimes(String preparerTimes) {
+		this.preparerTimes = preparerTimes;
+	}
+
+	public Integer getIsValue() {
+		return isValue;
+	}
+
+	public void setIsValue(Integer isValue) {
+		this.isValue = isValue;
 	}
 }

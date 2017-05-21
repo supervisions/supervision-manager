@@ -3749,3 +3749,9 @@
 .displaynone{
 	display: none;
 }
+.taskTable{
+	border: 1px solid #f0f3f4;
+}
+.taskTable td{
+	border: 1px solid #f0f3f4;
+}

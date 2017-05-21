@@ -22,12 +22,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.model.GradeScheme;
 import com.rmbank.supervision.model.Item;
+import com.rmbank.supervision.model.ItemProcess;
+import com.rmbank.supervision.model.ItemProcessFile;
 import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.OrganVM;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ConfigService;
+import com.rmbank.supervision.service.GradeSchemeService;
+import com.rmbank.supervision.service.ItemProcessFileService;
+import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.UserService;
@@ -53,9 +59,15 @@ public class SupportAction extends SystemAction {
 	@Resource
 	private ItemService itemService;
 	@Resource
+	private ItemProcessService itemProcessService;
+	@Resource
+	private ItemProcessFileService itemProcessFileService;
+	@Resource
 	private UserService userService;
 	
-	
+
+	@Resource
+	private GradeSchemeService gradeSchemeService;
 	
 	/**
 	 * 中支立项列表
@@ -166,6 +178,50 @@ public class SupportAction extends SystemAction {
 		request.setAttribute("OrgList", list);
 		return "web/manage/support/supportInfo";
 	}
+	
+
+	/**
+	 * 跳转到继续上传资料
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/supportFile.do")
+	@RequiresPermissions("manage/support/supportFile.do")
+	public String supportFile(Item item,
+			HttpServletRequest request, HttpServletResponse response){
+
+		int isValue = item.getIsValue();
+		item = itemService.selectByPrimaryKey(item.getId());
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+		ItemProcess itemProcess = new ItemProcess();
+		if(itemProcessList.size()>0){
+			itemProcess = itemProcessList.get(0);
+		}
+		
+		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+		if(itemProcess.getId() != null){
+			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
+		}
+		//获取当前用户
+		User lgUser=this.getLoginUser(); 
+		 
+		if(itemProcess.getIsValue()==Constants.IS_VALUE){
+			List<GradeScheme> gradeList =  gradeSchemeService.getGradeSchemeList(new GradeScheme());
+			request.setAttribute("GradeList", gradeList);
+		} 
+		
+		request.setAttribute("User", lgUser);
+		request.setAttribute("IsValue", isValue);
+		request.setAttribute("ItemProcess", itemProcess);
+		request.setAttribute("Item", item);
+		request.setAttribute("FileList", fileList);
+		return "web/manage/support/supportFile";
+	}
+	
+	
+	
+	
 	/** 
 	 * 新增,编辑项目
 	 * @throws ParseException 
