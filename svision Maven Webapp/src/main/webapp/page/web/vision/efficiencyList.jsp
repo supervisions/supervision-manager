@@ -57,11 +57,11 @@ function pagesearch(){
 		taskForm.submit();
 	}
 }
-function deleteRole(id,name){
-	$.messager.confirm("删除确认","确认删除角色："+name+"?",function(r){  
+function deleteItem(id,name){
+	$.messager.confirm("删除确认","确认删除项目："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsondeleteRoleById.do?id="+id,
+				url : "jsondeleteItemById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -211,7 +211,7 @@ function setProject(id){
 						</td>
 						<td></td>
 						<td></td>
-						<td></td>
+						<td><a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a></td>
 					</tr>
 				</c:forEach>
 			</table>

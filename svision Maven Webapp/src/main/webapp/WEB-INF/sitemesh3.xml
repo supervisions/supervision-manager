@@ -22,6 +22,7 @@
      <mapping path="**/manage/branch/json**" exclue="true" />
      <mapping path="**/manage/support/json**" exclue="true" />
      <mapping path="**/vision/efficiency/json**" exclue="true" />
+      <mapping path="**/vision/incorrupt/json**" exclue="true" />
      
 </sitemesh>
     

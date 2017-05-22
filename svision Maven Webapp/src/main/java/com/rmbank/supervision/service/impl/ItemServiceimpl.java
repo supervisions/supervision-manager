@@ -74,7 +74,7 @@ public class ItemServiceimpl implements ItemService {
 			
 			for (Integer i : orgIds) {				
 				item.setSupervisionOrgId(i);
-				itemMapper.insert(item); 
+				itemMapper.insertSelective(item); 
 				itemId.add(item.getId());
 				item.setId(0);
 			}

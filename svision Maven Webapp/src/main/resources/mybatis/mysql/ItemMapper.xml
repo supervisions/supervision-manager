@@ -15,7 +15,7 @@
     <result column="preparer_time" property="preparerTime" jdbcType="TIMESTAMP" />
     <result column="is_stept" property="isStept" jdbcType="INTEGER" />    
     <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="end_time" property="entTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, item_type,supervision_type_id, pid, stage_index, name, supervision_org_id, supervision_user_id, 
@@ -39,7 +39,7 @@
     values (#{id,jdbcType=INTEGER}, #{itemType,jdbcType=INTEGER}, #{supervisionTypeId,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, 
       #{stageIndex,jdbcType=TINYINT}, #{name,jdbcType=VARCHAR}, #{supervisionOrgId,jdbcType=INTEGER}, 
       #{supervisionUserId,jdbcType=INTEGER}, #{preparerOrgId,jdbcType=INTEGER}, #{preparerId,jdbcType=INTEGER}, 
-      #{preparerTime,jdbcType=TIMESTAMP},#{entTime,jdbcType=TIMESTAMP}, #{isStept,jdbcType=INTEGER}, #{status,jdbcType=INTEGER})
+      #{preparerTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP}, #{isStept,jdbcType=INTEGER}, #{status,jdbcType=INTEGER})
      
   </insert>
   <insert id="insertSelective" parameterType="com.rmbank.supervision.model.Item" >
@@ -84,8 +84,8 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="entTime != null" >
-        ent_time,
+      <if test="endTime != null" >
+        end_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -128,8 +128,8 @@
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="entTime != null" >
-        #{entTime,jdbcType=TIMESTAMP},
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -166,8 +166,8 @@
       <if test="preparerTime != null" >
         preparer_time = #{preparerTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="entTime != null" >
-        end_time = #{entTime,jdbcType=TIMESTAMP},
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="isStept != null" >
         is_stept = #{isStept,jdbcType=INTEGER},
@@ -190,7 +190,7 @@
       preparer_org_id = #{preparerOrgId,jdbcType=INTEGER},
       preparer_id = #{preparerId,jdbcType=INTEGER},
       preparer_time = #{preparerTime,jdbcType=TIMESTAMP},
-      end_time = #{entTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
       is_stept = #{isStept,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER}    
     where id = #{id,jdbcType=INTEGER}
@@ -217,6 +217,7 @@
   </sql>
   <select id="getExistItem" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.Item">
   	select name from t_item  where name=#{name,jdbcType=VARCHAR} 
+  	and item_type=#{itemType,jdbcType=INTEGER}
   </select>  
   <select id="getItemList" resultMap="BaseResultMap" parameterType="com.rmbank.supervision.model.Item">
   	SELECT i.* ,o.name AS orgName,o1.name AS preparerOrg,m.name AS sType FROM t_item AS i
@@ -255,6 +256,7 @@
   	SELECT i.*,o.name as orgName FROM t_item AS i
 	LEFT JOIN t_org AS o ON o.id=i.`supervision_org_id`
 	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
+	and i.item_type=#{itemType,jdbcType=INTEGER}
 	<if test="searchName != null and searchName != ''">
 		and (i.name like
 		CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')

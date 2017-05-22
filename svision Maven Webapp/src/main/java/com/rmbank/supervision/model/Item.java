@@ -40,7 +40,7 @@ public class Item extends Page {
     //自定义字段供sql查询使用，机构类型D
     private Integer orgTypeD;
     
-    private Date entTime;
+    private Date endTime;
     
     
     //制单部门
@@ -67,12 +67,12 @@ public class Item extends Page {
 		this.isStept = isStept;
 	}
 
-	public Date getEntTime() {
-		return entTime;
+	public Date setEndTime() {
+		return endTime;
 	}
 
-	public void setEntTime(Date entTime) {
-		this.entTime = entTime;
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
 	}
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

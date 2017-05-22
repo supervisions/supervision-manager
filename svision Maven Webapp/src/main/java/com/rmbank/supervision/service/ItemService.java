@@ -29,6 +29,11 @@ public interface ItemService {
 
 	boolean deleteItemById(Integer id);
 
+	/**
+	 * 实时监察类型的项目
+	 * @param item
+	 * @return
+	 */
 	List<Item> getItemListByType(Item item);
 
 	List<Item> getItemListByLgOrg(Item item);

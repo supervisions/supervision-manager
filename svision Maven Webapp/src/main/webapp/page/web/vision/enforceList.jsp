@@ -112,7 +112,8 @@ function authorizeResource(id,name){
 					</div>
 
 					<div class="fr">
-						<span class="yw-btn bg-green cur" onclick="window.location.href='roleInfo.do?id=0';">新增项目</span>
+						<span class="yw-btn bg-green cur" onclick="window.location.href='roleInfo.do?id=0';">单项执法</span>
+						<span class="yw-btn bg-green cur" onclick="window.location.href='roleInfo.do?id=0';">综合执法</span>
 					</div>
 					<div class="cl"></div>				
                     	<input type="hidden" id="pageNumber" name="pageNo" value="${Role.pageNo}" />

@@ -2,7 +2,10 @@ package com.rmbank.supervision.web.controller.vision;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -46,7 +49,7 @@ public class EfficiencyVisionAction extends SystemAction {
 	private OrganService organService;
 		
 	/**
-     * 效能监察模块页面跳转
+     * 效能监察列表展示
      *
      * @param request
      * @param response
@@ -80,6 +83,7 @@ public class EfficiencyVisionAction extends SystemAction {
 		try {			
 			// 取满足要求的参数数据
 			item.setSupervisionTypeId(2);
+			item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION);
 			itemList = itemService.getItemListByType(item);
 			// 取满足要求的记录总数
 			totalCount = itemService.getItemCount(item);
@@ -140,7 +144,69 @@ public class EfficiencyVisionAction extends SystemAction {
 		return "web/vision/efficiencyInfo";
 	}
     
-    
+    /** 
+   	 * 新增,编辑项目
+   	 * @throws ParseException 
+   	 */
+   @ResponseBody
+   @RequestMapping(value = "/jsonSaveOrUpdateItem.do", method=RequestMethod.POST)
+   @RequiresPermissions("vision/efficiency/jsonSaveOrUpdateItem.do")
+   public JsonResult<Item> jsonSaveOrUpdateItem(Item item,
+   		@RequestParam(value = "end_time", required = false) String end_time,//用于接收前台传过来的String类型的时间
+   		@RequestParam(value = "content", required = false) String content,
+   		@RequestParam(value = "OrgId", required = false) Integer[] OrgIds,    		
+   		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+   	//将前台传过来的String类型的时间转换为Date类型
+   	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+   	Date date = sdf.parse(end_time);    	
+   	item.setEndTime(date); //完成时间
+   	item.setPreparerTime(new Date());
+   	item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //项目类型
+   	item.setSupervisionTypeId(2);
+   	item.setPid(0); //主任务节点的ID
+   	item.setStageIndex(new Byte("0")); //工作阶段排序   	
+   	//获取当前登录用户
+   	User u = this.getLoginUser();
+   	item.setPreparerId(u.getId()); //制单人的ID
+   	item.setSupervisionUserId(0); //
+   	//获取当前用户所属的机构id，当做制单部门的ID
+   	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+   	item.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+   	//新建一个json对象 并赋初值
+	JsonResult<Item> js = new JsonResult<Item>();
+	js.setCode(new Integer(1));
+	js.setMessage("保存项目信息失败!");
+	
+	boolean State =  false;
+	try {
+		//如为新增，则给id置0
+		if (item.getId() == null || item.getId() == 0) {
+			item.setId(0);					
+		} 		
+		//创建用于新增时根据项目名称去查询项目是否存在的对象
+		Item im = new Item();
+		im.setName(item.getName());
+		//根据name去数据库匹配，如编辑，则可以直接保存；如新增，则需匹配该项目是否重复
+		List<Item> lc = itemService.getExistItem(im);
+		if (lc.size() == 0) {  
+			State = itemService.saveOrUpdateItem(item,OrgIds,content);				
+			if(State){
+				js.setCode(new Integer(0));
+				js.setMessage("保存项目信息成功!");
+				return js;
+			}else{
+				return js;
+			}
+		} else {
+			js.setMessage("该项目已存在!");
+			return js;
+		} 
+	}catch(Exception ex){
+		ex.printStackTrace();
+	}
+	return js;
+   }
+
     /**
      * 修改立项状态
      */
@@ -173,5 +239,40 @@ public class EfficiencyVisionAction extends SystemAction {
 			e.printStackTrace();
 		}	
 		return js;
+	}
+    
+    /**
+     * 删除项目
+     * @param id
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+	@RequestMapping(value = "/jsondeleteItemById.do", method = RequestMethod.POST)
+	@RequiresPermissions("vision/efficiency/jsondeleteItemById.do")
+	public JsonResult<Item> jsondeleteItemById(
+			@RequestParam(value = "id", required = false) Integer id,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		// 新建一个json对象 并赋初值
+		JsonResult<Item> js = new JsonResult<Item>();
+		js.setCode(new Integer(1));
+		js.setMessage("删除失败!");
+		boolean state =false;
+		try {				
+			state= itemService.deleteItemById(id);
+			if(state){
+				js.setCode(new Integer(0));
+				js.setMessage("删除成功!");
+				return js;
+			}else{
+				return js;
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return js;
+
 	}
 }
