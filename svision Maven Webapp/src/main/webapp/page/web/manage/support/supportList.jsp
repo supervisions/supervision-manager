@@ -91,7 +91,7 @@ function showDialogModel(id,name){
 	    if (r){   
 	    	window.location.href='<%=basePath %>manage/support/supportFile.do?id='+itemId+'&isValue=1';
     	}else{
-    		window.location.href='<%=basePath %>manage/support/supportFile.do?id='+itemId+'&isValue=1';
+    		window.location.href='<%=basePath %>manage/support/supportFile.do?id='+itemId+'&isValue=0';
     	}
 	}); 
 }
@@ -157,14 +157,24 @@ function showDialogModel(id,name){
 					<c:forEach var="item" items="${itemList}">
 						<tr>
 							<td align="center" style="display:none">${item.id}</td>
-							<td><a style="color: blue;" onclick="edit(${item.id})">${item.name}</a></td>
+							<td><a style="color: blue;" onclick="window.location.href='<%=basePath %>manage/support/supportView.do?id=${item.id}'">${item.name}</a></td>
 							<td>${item.sType}</td>
 							<td>${item.showDate}</td>
 							<td>${item.preparerOrg}</td>
 							<td>${item.orgName}</td>
 							<td>
-								<a style="color: blue;" onclick="showDialogModel(${item.id},'${item.name}');">上传资料</a>
-								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> 
+								<c:if test="${item.status == 4 }">
+								【已完结】
+								</c:if>
+								<c:if test="${item.status != 4 }">
+									<c:if test="${UserOrgId == item.preparerId }">
+										<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> 
+									</c:if>
+									<c:if test="${UserOrgId == item.supervisionOrgId }">
+										<a style="color: blue;" onclick="showDialogModel(${item.id},'${item.name}');">上传资料</a>
+									</c:if> 
+								</c:if>
+								
 							</td>							
 						</tr>
 					</c:forEach>

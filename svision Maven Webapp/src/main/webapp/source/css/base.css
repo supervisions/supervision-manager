@@ -155,6 +155,10 @@
 .ml260s {
 	margin-left: 20%;
 }
+
+.ml10ps {
+	margin-left: 10%;
+}
 .mr4 {
 	margin-right: 4px;
 }
@@ -259,6 +263,9 @@
 }
 .mlwid250 {
 	width: 20% !important;
+}
+.mlwid10per {
+	width: 10% !important;
 }
 .wid258 {
 	width: 258px !important;
@@ -961,7 +968,7 @@
 .yw-left-menu-now span {
 	border-left: 2px solid #272E32;
 	border-top: 1px solid #2B3339;
-	background-color: #30393F;
+	background-color: #c31d1d;
 }
 
 .icon-todayjob {
@@ -3751,7 +3758,30 @@
 }
 .taskTable{
 	border: 1px solid #f0f3f4;
+	    width: 100%;
 }
 .taskTable td{
 	border: 1px solid #f0f3f4;
+	min-height:35px;
+    height: 35px;
+}
+.branchPart{
+	height:50px;
+	line-height:50px;
+	text-align: center;
+}
+.branchPart:hover{
+	height:50px;
+	line-height:50px;
+	text-align: center;
+	background-color: #aeaeae; 
+	cursor: pointer;
+}
+.branchPart-active{
+	height:50px;
+	line-height:50px;
+	text-align: center;
+	color:white;
+	background-color: #3A464E;
+	cursor: pointer;
 }

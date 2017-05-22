@@ -214,6 +214,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<input name="name" type="text" value="" style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
                             	<input type="hidden" id="hid_uuid" name="uuid" />
+                            	<input type="hidden"  name="defined" value="1" />
+                            	<input type="hidden" name="contentTypeId" value="${ContentTypeId }" />
 							</td> 
 						</tr>
 						<tr>
@@ -261,7 +263,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 											<td>
 												<div style="width:60%;">
 													<c:forEach var="org" items="${item.itemList }">
-														<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
+														<label style="float:left;padding-right:10px;padding-top:5px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
 													</c:forEach>
 												</div>
 											</td>

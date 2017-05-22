@@ -79,7 +79,7 @@ public class Item extends Page {
 		this.endTime = endTime;
 	}
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date preparerTime;
 
 	

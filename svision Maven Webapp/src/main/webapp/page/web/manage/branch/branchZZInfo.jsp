@@ -58,7 +58,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <%--///////////////////--%>
 
 <script type="text/javascript">
-	$(document).ready(function(){	  
+	$(document).ready(function(){	 
+		$("#datepicker").datepicker(); 
+		$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
 	 	 	var len=32;//32长度
             var radix=16;//16进制
             var chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
@@ -150,7 +152,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					    },
 					    buttons: {
 					        '确定': function() {					        	
-					            window.location.href = "<%=basePath%>manage/support/supportList.do";
+					            window.location.href="<%=basePath%>manage/branch/branchList.do";
 					        }
 					    }
 					}); 
@@ -165,7 +167,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
         $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
-	        url: "<%=basePath%>manage/support/jsonSaveOrUpdateFileItem.do",
+	        url: "manage/branch/jsonSaveOrUpdateItem.do",
 	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 	        async: true, //发送异步请求	  
 	        dataType:"json", //响应数据类型      
@@ -179,24 +181,19 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	        }
    		});
 	}
-	function downLoadFile(path,name){
-		var filePath = encodeURI(encodeURI(path));
-		var fileName = encodeURI(encodeURI(name));
-		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
-	}
 </script>
  </head> 
  <body>
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/support/supportList.do'"></i><span>中支立项中支完成</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/branch/branchList.do'"></i><span>项目列表</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
 		<div class="yw-bi-rows">
 			<div class="yw-bi-tabs mt5" id="ywTabs">
-			<span class="yw-bi-now">上传资料</span>
+			<span class="yw-bi-now">基本信息</span>
 				
 			</div>
 			<div class="fr">
@@ -206,69 +203,41 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div>
-			<form id="itemInfoForm" name="itemInfoForm" >
+			<form id="itemInfoForm" name="itemInfoForm"
+				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
+				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
+					<table class="font16 taskTable" >
 						<tr>
-							<td width="15%" align="right">项目名称：</td>
+							<td width="8%" align="right">项目名称：</td>
 							<td colspan="3">
-								 <label>${Item.name } </label> 
-								<input type="hidden" value="0" name="id" />
+								<input name="name" type="text" value="" style="width:60%;height:28px;" />  
+								<span style="color:red">*</span> 
                             	<input type="hidden" id="hid_uuid" name="uuid" />
-                            	<input type="hidden" name="itemId" value="${Item.id }" />  
-                            	<input type="hidden" name="contentTypeId" value="${ContentTypeId }" />
 							</td> 
 						</tr>
 						<tr>
 							<td align="right">项目分类：</td>
 							<td colspan="3">
-							 <label>${Item.sType } </label>   
+								<select id="supervisionTypeId" name="supervisionTypeId" style="width:254px;height:28px;">
+									<option value="-1">请选择项目分类</option>									
+									<c:forEach var="position" items="${meatListByKey}">
+										<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
+									</c:forEach>
+								</select> 
+								<span style="color:red">*</span> 
+							 立项时间：   <input type="text" name="pTime" value="" id="datepicker" style="width:254px;height:22px;">
+							 <span style="color:red">*</span> 
 							</td>								
 						</tr>
 						<tr>
-							<td align="right">立项时间：</td>
-							<td colspan="3">
-							 <label>${Item.preparerTimes } </label>   
-							</td>								
-						</tr>
-						<tr>
-							<td align="right" style="height:100px;">立项审批表、方案：</td>
-							<td colspan="3">
-							 <label>${ItemProcess.content } </label>  
-							</td>		
-						</tr> 
-						<tr>
-							<td align="right"style="height:80px;">附件列表：</td>
+							<td align="right" height="100px;">工作要求、方案：</td>
 							<td colspan="3"> 
-								<table style="width:100%;height:100%;min-height:80px;">
-									<c:forEach var="fileItem" items="${FileList }">
-										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-									</c:forEach> 
-									<tr><td style="border:0px;"></td><tr>
-								</table>
-							</td>		
-						</tr>
-						<c:if test="${IsValue == 1}"> 
-							<tr>
-								<td align="right" style="height:70px;" >选择量化模型：</td>
-								<td colspan="3"> 
-								<input type="hidden" name="valueTypeValue" id="hid_valueTypeValue" />
-									<select id="valueTypeId" name="valueTypeId"  style="width:254px;height:35px;" >
-										<option value="-1">请选择量化模型</option>									
-										<%-- <c:forEach var="position" items="${meatListByKey}">
-											<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
-										</c:forEach> --%>
-									</select> 	
-								 </td>	
-							</tr>
-						</c:if>	
-						<c:if test="${IsValue == 0}"> 
-							<tr style="display:none">
-								<td><input type="text" name="" value="" /></td> 
-							</tr>
-						</c:if>	 
+								<textarea rows="6" cols="5" style="width:60%;" name="content" ></textarea>								
+							</td> 
+						</tr>	
 						<tr>
-							<td align="right" style="height:160px;">监察报告、整改建议书、整改报告、监察决定书：</td>
+							<td align="right" height="100px;">上传附件：</td>
 							<td colspan="3">
 								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>
@@ -279,13 +248,28 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					                <div id="uploader">
 					                </div>
 							 </td>	
-						</tr>
+						</tr>	
+						
 						<tr>
-							<td align="right" style="height:120px;">跟踪监察结论：</td>
+							<td align="right" height="100px;">选择单位：</td>
 							<td colspan="3"> 
-								 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
+								<table style="font-size: 16px;"> 
+									<c:forEach var="item" items="${OrgList }">
+										<tr><td style="font-weight: 900;">${item.name }</td></tr>
+										<tr style="width: 100%;">
+											<td>
+												<div style="width:60%;">
+													<c:forEach var="org" items="${item.itemList }">
+														<label style="float:left;padding-right:10px;padding-top:5px;min-width:200px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
+													</c:forEach>
+												</div>
+											</td>
+										</tr>
+									</c:forEach> 
+								</table>
 							 </td>	
 						</tr>	
+						
 					</table>
 				</div>
 			</form>

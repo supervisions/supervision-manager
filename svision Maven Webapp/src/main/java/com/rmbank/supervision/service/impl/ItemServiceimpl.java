@@ -70,20 +70,24 @@ public class ItemServiceimpl implements ItemService {
 		boolean isSuccess = false;
 		try{	
 			//新增项目成功后返回的itemId的集合 
-			List<Integer> itemId=new ArrayList<Integer>();
+			List<Integer> itemId=new ArrayList<Integer>(); 
 			
 			for (Integer i : orgIds) {				
 				item.setSupervisionOrgId(i);
 				itemMapper.insert(item); 
 				itemId.add(item.getId());
-				item.setId(0);
+				item.setStatus(0);
+				item.setId(Constants.ITEM_STATUS_NEW);
 			}
-			ItemProcess itemProcess=new ItemProcess();
-			for (Integer integer : itemId) {				
+			ItemProcess itemProcess=new ItemProcess();	
+			int i = 0;
+			for (Integer integer : itemId) {
 				itemProcess.setUuid(item.getUuid());
 				itemProcess.setItemId(integer);
 				//itemProcess.setDefined();
 				itemProcess.setContent(content);
+				itemProcess.setOrgId(orgIds[i]);
+				i ++;
 				itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_1);
 				itemProcess.setPreparerTime(new Date());
 				itemProcess.setPreparerId(item.getPreparerId());

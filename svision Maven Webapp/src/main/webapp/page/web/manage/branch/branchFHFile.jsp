@@ -159,13 +159,14 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             $("#uploader_browse").removeAttr("style");
             $("#uploader_browse").attr("style","z-index: 1;font-size: 12px;font-weight: normal;");
 	 });
-	
+	 
 	//新增/编辑项目
+	var tuuid =  encodeURI(encodeURI("分行"));
 	function saveItem(obj){	
         $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
-	        url: "<%=basePath%>manage/support/jsonSaveOrUpdateFileItem.do",
+	        url: "<%=basePath%>manage/branch/jsonSaveOrUpdateFileItem.do?s="+tuuid,
 	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 	        async: true, //发送异步请求	  
 	        dataType:"json", //响应数据类型      
@@ -190,7 +191,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/support/supportList.do'"></i><span>中支立项中支完成</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/branch/supportList.do'"></i><span>分行立项分行完成</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
@@ -247,26 +248,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<tr><td style="border:0px;"></td><tr>
 								</table>
 							</td>		
-						</tr>
-						<c:if test="${IsValue == 1}"> 
-							<tr>
-								<td align="right" style="height:70px;" >选择量化模型：</td>
-								<td colspan="3"> 
-								<input type="hidden" name="valueTypeValue" id="hid_valueTypeValue" />
-									<select id="valueTypeId" name="valueTypeId"  style="width:254px;height:35px;" >
-										<option value="-1">请选择量化模型</option>									
-										<%-- <c:forEach var="position" items="${meatListByKey}">
-											<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
-										</c:forEach> --%>
-									</select> 	
-								 </td>	
-							</tr>
-						</c:if>	
-						<c:if test="${IsValue == 0}"> 
-							<tr style="display:none">
-								<td><input type="text" name="" value="" /></td> 
-							</tr>
-						</c:if>	 
+						</tr> 
 						<tr>
 							<td align="right" style="height:160px;">监察报告、整改建议书、整改报告、监察决定书：</td>
 							<td colspan="3">

@@ -2,6 +2,7 @@
 package com.rmbank.supervision.web.controller.cases;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,8 +25,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.StringUtil;
 import com.rmbank.supervision.model.FunctionResourceVM;
+import com.rmbank.supervision.model.GradeScheme;
 import com.rmbank.supervision.model.Item;
+import com.rmbank.supervision.model.ItemProcess;
+import com.rmbank.supervision.model.ItemProcessFile;
 import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.OrganVM;
@@ -33,6 +38,8 @@ import com.rmbank.supervision.model.ResourceConfig;
 import com.rmbank.supervision.model.Role;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ConfigService;
+import com.rmbank.supervision.service.ItemProcessFileService;
+import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.UserService;
@@ -57,20 +64,23 @@ public class BranchAction extends SystemAction {
 	@Resource
 	private ItemService itemService;
 	@Resource
+	private ItemProcessService itemProcessService;
+	@Resource
+	private ItemProcessFileService itemProcessFileService;
+	@Resource
 	private UserService userService;
 	
 
 	/**
-	 * 分行立项列表
+	 * 分行立项分行完成列表
 	 * @param request
 	 * @param response
 	 * @return
 	 * @throws UnsupportedEncodingException 
 	 */
-	@RequestMapping("/branchList.do")
-	@RequiresPermissions("manage/branch/branchList.do")
-	public String branchList(Item item,
-			@RequestParam(value="type", required=false) Integer type, 
+	@RequestMapping("/branchFHList.do")
+	@RequiresPermissions("manage/branch/branchFHList.do")
+	public String branchFHList(Item item, 
 			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
 		if (item.getSearchName() != null && item.getSearchName() != "") {
 			String searchName = new String(item.getSearchName().getBytes(
@@ -79,11 +89,7 @@ public class BranchAction extends SystemAction {
 		}		
 		if (item.getPageNo() == null){
 			item.setPageNo(1);
-		}
-		//默认加载分行立项分行完成
-		if(type==null || type==0){
-			type=1;
-		}
+		} 
 		item.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 		int totalCount = 0;
 		totalCount=itemService.getItemCount(item);
@@ -98,31 +104,17 @@ public class BranchAction extends SystemAction {
 		Integer logUserOrg = userOrgByUserId.get(0).getId(); //当前登录用户所属的机构ID
 		Organ organ = userOrgByUserId.get(0);
 		//获取项目列表,根据不同的机构类型加载不同的项目
-		List<Item> itemList =null;
-//		if(organ.getOrgtype()==Constants.ORG_TYPE_1 || Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
-//			//成都分行监察室加载所有的项目
-//			itemList=itemService.getItemList(item);
-//		}		
-		if(type==1){
-			//分行立项分行完成
-			item.setSupervisionOrgId(logUserOrg); //完成机构
-			item.setPreparerOrgId(logUserOrg);    //立项机构
-			item.setOrgTypeA(Constants.ORG_TYPE_1);
-			item.setOrgTypeB(Constants.ORG_TYPE_2);
-			item.setOrgTypeC(Constants.ORG_TYPE_3);
-			item.setOrgTypeD(Constants.ORG_TYPE_4);
-			itemList=itemService.getItemListByFHLXFHWC(item);
-		}
-		if(type==2){
-			//分行立项中支完成
-			item.setSupervisionOrgId(logUserOrg); //完成机构
-			item.setPreparerOrgId(logUserOrg);    //立项机构
-			item.setOrgTypeA(Constants.ORG_TYPE_1);
-			item.setOrgTypeB(Constants.ORG_TYPE_2);
-			item.setOrgTypeC(Constants.ORG_TYPE_3);
-			item.setOrgTypeD(Constants.ORG_TYPE_4);
-			itemList=itemService.getItemListByFHLXZZWC(item);
-		}
+		List<Item> itemList =null; 
+	 
+		//分行立项分行完成
+		item.setSupervisionOrgId(logUserOrg); //完成机构
+		item.setPreparerOrgId(logUserOrg);    //立项机构
+		item.setOrgTypeA(Constants.ORG_TYPE_1);
+		item.setOrgTypeB(Constants.ORG_TYPE_2);
+		item.setOrgTypeC(Constants.ORG_TYPE_3);
+		item.setOrgTypeD(Constants.ORG_TYPE_4);
+		itemList=itemService.getItemListByFHLXFHWC(item); 
+		 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		for (Item it : itemList) {
 			Date preparerTime = it.getPreparerTime();
@@ -131,21 +123,77 @@ public class BranchAction extends SystemAction {
 		}
 		request.setAttribute("logUserOrg", logUserOrg);
 		request.setAttribute("itemList", itemList);
-		request.setAttribute("Item", item);
-		return "web/manage/branch/branchList";
+		request.setAttribute("Item", item); 
+		return "web/manage/branch/branchFHList";
 	}
-	
+
+	/**
+	 * 分行立项列表
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 */
+	@RequestMapping("/branchZZList.do")
+	@RequiresPermissions("manage/branch/branchZZList.do")
+	public String branchZZList(Item item, 
+			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
+		if (item.getSearchName() != null && item.getSearchName() != "") {
+			String searchName = new String(item.getSearchName().getBytes(
+					"iso8859-1"), "utf-8");
+			item.setSearchName(searchName);
+		}		
+		if (item.getPageNo() == null){
+			item.setPageNo(1);
+		} 
+		item.setPageSize(Constants.DEFAULT_PAGE_SIZE);
+		int totalCount = 0;
+		totalCount=itemService.getItemCount(item);
+		item.setTotalCount(totalCount);
+		//获取项目分类的集合,用于搜索条件		
+		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_PROJECT_KEY);
+		request.setAttribute("meatListByKey", meatListByKey);
+		
+		//当前登录用户所属的机构
+		User loginUser = this.getLoginUser();
+		List<Organ> userOrgByUserId = userService.getUserOrgByUserId(loginUser.getId());
+		Integer logUserOrg = userOrgByUserId.get(0).getId(); //当前登录用户所属的机构ID
+		Organ organ = userOrgByUserId.get(0);
+		//获取项目列表,根据不同的机构类型加载不同的项目
+		List<Item> itemList =null; 
+		 
+		//分行立项中支完成
+		item.setSupervisionOrgId(logUserOrg); //完成机构
+		item.setPreparerOrgId(logUserOrg);    //立项机构
+		item.setOrgTypeA(Constants.ORG_TYPE_1);
+		item.setOrgTypeB(Constants.ORG_TYPE_2);
+		item.setOrgTypeC(Constants.ORG_TYPE_3);
+		item.setOrgTypeD(Constants.ORG_TYPE_4);
+		itemList=itemService.getItemListByFHLXZZWC(item); 
+		
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		for (Item it : itemList) {
+			Date preparerTime = it.getPreparerTime();
+			String format = formatter.format(preparerTime);
+			it.setShowDate(format);
+		}
+		request.setAttribute("logUserOrg", logUserOrg);
+		request.setAttribute("itemList", itemList);
+		request.setAttribute("Item", item); 
+		return "web/manage/branch/branchZZList";
+	}
 	/**
 	 * 跳转到新增项目
 	 * @param request
 	 * @param response
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
-	@RequestMapping("/branchInfo.do")
-	@RequiresPermissions("manage/branch/branchInfo.do")
-	public String exitItem(
-			@RequestParam(value="type" ,required=false) Integer type,
-			HttpServletRequest request, HttpServletResponse response){
+	@RequestMapping("/branchFHInfo.do")
+	@RequiresPermissions("manage/branch/branchFHInfo.do")
+	public String branchFHInfo( 
+			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
 		//获取项目分类的集合		
 		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_PROJECT_KEY);
 		request.setAttribute("meatListByKey", meatListByKey);
@@ -157,26 +205,50 @@ public class BranchAction extends SystemAction {
 		//封装到前台遍历机构集合
 		List<OrganVM> list=new ArrayList<OrganVM>();
 		OrganVM frvm = null;
-		type=2;
-		//分行立项分行完成，只加载分行机关
-		if(type==1){
-			for(Organ rc : organList){
-				if(rc.getId()==21){//父节点是分行机关的时候创建返回到前台对象
-					frvm = new OrganVM(); 
-					List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
-					frvm.setId(rc.getId());
-					frvm.setName(rc.getName());					
-					for(Organ rc1 : organList){									
-						if(rc1.getPid() == rc.getId()){ 
-							itemList.add(rc1);
-						}
+		  
+		for(Organ rc : organList){
+			if(rc.getId()==21){//父节点是分行机关的时候创建返回到前台对象
+				frvm = new OrganVM(); 
+				List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
+				frvm.setId(rc.getId());
+				frvm.setName(rc.getName());					
+				for(Organ rc1 : organList){									
+					if(rc1.getPid() == rc.getId()){ 
+						itemList.add(rc1);
 					}
-					frvm.setItemList(itemList);
-					list.add(frvm);
 				}
+				frvm.setItemList(itemList);
+				list.add(frvm);
 			}
-			
-		}else if(type==2){
+		}
+			  
+		request.setAttribute("OrgList", list);	
+		return "web/manage/branch/branchFHInfo";
+	}
+	
+	/**
+	 * 跳转到新增项目
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 */
+	@RequestMapping("/branchZZInfo.do")
+	@RequiresPermissions("manage/branch/branchZZInfo.do")
+	public String branchZZInfo( 
+			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
+		//获取项目分类的集合		
+		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_PROJECT_KEY);
+		request.setAttribute("meatListByKey", meatListByKey);
+		
+		//获取所有机构
+		Organ organ=new Organ();
+		List<Organ> organList = organService.getOrganList(organ);
+		
+		//封装到前台遍历机构集合
+		List<OrganVM> list=new ArrayList<OrganVM>();
+		OrganVM frvm = null;
+		 
 			//分行立项中支完成，只加载分行营管部机构， 中支机构，县支行（此处县支行包括营管部及中支下属所有县支行）；
 			for(Organ rc : organList){
 				if(rc.getPid()==0 && rc.getId()!=21 && rc.getId()!=19 ){
@@ -198,12 +270,164 @@ public class BranchAction extends SystemAction {
 					frvm.setItemList(itemList);
 					list.add(frvm);
 				}
+			} 
+		
+		request.setAttribute("OrgList", list);	
+		return "web/manage/branch/branchZZInfo";
+	}
+	/**
+	 * 跳转到分行上传资料
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/branchFHFile.do")
+	@RequiresPermissions("manage/branch/branchFHFile.do")
+	public String branchFHFile(Item item,
+			HttpServletRequest request, HttpServletResponse response){
+ 
+		item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+		ItemProcess itemProcess = new ItemProcess();
+		if(itemProcessList.size()>0){
+			itemProcess = itemProcessList.get(0); 
+		}
+		
+		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+		if(itemProcess.getId() != null){
+			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
+		}
+		//获取当前用户
+		User lgUser=this.getLoginUser(); 
+		   
+		request.setAttribute("User", lgUser); 
+		request.setAttribute("ItemProcess", itemProcess);
+		request.setAttribute("Item", item);
+		request.setAttribute("FileList", fileList);
+		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		return "web/manage/branch/branchFHFile";
+	}
+	/**
+	 * 跳转到中支上传资料
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/branchZZFile.do")
+	@RequiresPermissions("manage/branch/branchZZFile.do")
+	public String branchZZFile(Item item,
+			HttpServletRequest request, HttpServletResponse response){
+ 
+		item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+		ItemProcess itemProcess = new ItemProcess();
+		if(itemProcessList.size()>0){
+			itemProcess = itemProcessList.get(0); 
+		}
+		
+		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+		if(itemProcess.getId() != null){
+			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
+		}
+		//获取当前用户
+		User lgUser=this.getLoginUser(); 
+		   
+		request.setAttribute("User", lgUser); 
+		request.setAttribute("ItemProcess", itemProcess);
+		request.setAttribute("Item", item);
+		request.setAttribute("FileList", fileList);
+		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		return "web/manage/branch/branchZZFile";
+	}
+	
+	/**
+	 * 跳转到分行查看
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/branchFHView.do")
+	@RequiresPermissions("manage/branch/branchFHView.do")
+	public String branchFHView(Item item,
+			HttpServletRequest request, HttpServletResponse response){
+ 
+		item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+		ItemProcess itemProcess = new ItemProcess();
+		if(itemProcessList.size()>0){
+			itemProcess = itemProcessList.get(0); 
+		}
+		
+		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+		if(itemProcess.getId() != null){
+			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
+		}
+		//获取当前用户
+		User lgUser=this.getLoginUser(); 
+		   
+		request.setAttribute("User", lgUser); 
+		request.setAttribute("ItemProcess", itemProcess);
+		request.setAttribute("Item", item);
+		request.setAttribute("FileList", fileList);
+		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		return "web/manage/branch/branchFHViewForm";
+	}
+	/**
+	 * 跳转到中支查看
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/branchZZView.do")
+	@RequiresPermissions("manage/branch/branchZZView.do")
+	public String branchZZView(Item item,
+			HttpServletRequest request, HttpServletResponse response){
+ 
+		item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+		
+		ItemProcess fitemProcess = new ItemProcess();
+		ItemProcess sitemProcess = new ItemProcess();
+		if(itemProcessList.size()>0){
+			fitemProcess = itemProcessList.get(0);
+			if(itemProcessList.size() ==2){
+				sitemProcess = itemProcessList.get(1);
 			}
 		}
 		
-		request.setAttribute("OrgList", list);	
-		return "web/manage/branch/branchInfo";
+		List<ItemProcessFile> ffileList = new ArrayList<ItemProcessFile>();
+		List<ItemProcessFile> sfileList = new ArrayList<ItemProcessFile>();
+		if(fitemProcess.getId() != null){
+			ffileList = itemProcessFileService.getFileListByItemId(fitemProcess.getId());
+			fitemProcess.setFileList(ffileList);
+		}
+		if(sitemProcess.getId() != null){
+			sfileList = itemProcessFileService.getFileListByItemId(sitemProcess.getId());
+			sitemProcess.setFileList(sfileList);
+		}
+		//获取当前用户
+		User lgUser=this.getLoginUser();  
+		
+		request.setAttribute("User", lgUser); 
+		request.setAttribute("FItemProcess", fitemProcess);
+		request.setAttribute("SItemProcess", sitemProcess);
+		request.setAttribute("Item", item);   
+		return "web/manage/branch/branchZZViewForm";
 	}
+	
+	
 	
 	 /** 
 	 * 新增,编辑项目
@@ -265,34 +489,52 @@ public class BranchAction extends SystemAction {
 		}
 		return js;
     }
-    
-    /**
-     * 查看项目
-     * @param request
-     * @param response
-     * @return
-     */
-    @RequestMapping("/showItem.do")
-	@RequiresPermissions("manage/branch/showItem.do")
-	public String showItem(
-			@RequestParam(value="id", required=false) Integer id,
-			HttpServletRequest request, HttpServletResponse response){
-    	//根据项目id回显项目
-    	Item showitem=null;
-    	try {
-    		showitem= itemService.selectByPrimaryKey(id);
-		} catch (Exception e) {
-			e.printStackTrace();
+     
+     
+	/** 
+	 * 新增,编辑项目
+	 * @throws ParseException 
+	 * @throws UnsupportedEncodingException 
+	 */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveOrUpdateFileItem.do", method=RequestMethod.POST)
+    @RequiresPermissions("manage/support/jsonSaveOrUpdateFileItem.do")
+    public JsonResult<ItemProcess> jsonSaveOrUpdateFileItem(
+            @RequestParam(value = "s", required = true) String uuid,ItemProcess itemProcess, 
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException, UnsupportedEncodingException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+		uuid = URLDecoder.decode(uuid,"utf-8");
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+			itemProcessService.insert(itemProcess);
+			
+			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			if(item != null){
+				item.setEndTime(new Date());
+				item.setStatus(Constants.ITEM_STATUS_OVER);
+				itemService.updateByPrimaryKeySelective(item);
+			}
+			
+			
+			js.setCode(0);
+			js.setMessage("上传资料成功，完整分行立项中支完成项目"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
 		}
-    	
-    	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    	showitem.setShowDate(formatter.format(showitem.getPreparerTime()));
-    	request.setAttribute("Showitem", showitem);
-    	return "web/manage/branch/showItem"; 
+		return js;
     }
-    
-    
-    
     /**
      * 删除项目
      * @param id
@@ -326,20 +568,5 @@ public class BranchAction extends SystemAction {
 		}		
 		return js;
 
-	}
-    /**
-     * 跳转到操作页面
-     * @param id
-     * @param request
-     * @param response
-     * @return
-     */
-    @RequestMapping("/toOperate.do")
-    @RequiresPermissions("manage/branch/toOperate.do")
-    public String toOperate(
-    		@RequestParam(value = "id", required = false) Integer id,
-			HttpServletRequest request, HttpServletResponse response){
-    		
-    	return "web/manage/branch/operate";
-    }
+	} 
 }
