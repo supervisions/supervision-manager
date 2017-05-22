@@ -3,6 +3,8 @@ package com.rmbank.supervision.model;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class ItemProcess {
     private Integer id;
     
@@ -24,12 +26,24 @@ public class ItemProcess {
 
     private Integer preparerId;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date preparerTime;
+    
+    private String preparerTimes;
     
     /**
      * 定义是否量化字段， 只用作前台使用；
      */
     private Integer isValue;
+    
+    /**
+     * 量化选择模型
+     */
+    private Integer valueTypeId;
+    /**
+     * 量化分值
+     */
+    private Integer valueTypeValue; 
     
     private List<ItemProcessFile> fileList;
 
@@ -135,5 +149,29 @@ public class ItemProcess {
 
 	public void setFileList(List<ItemProcessFile> fileList) {
 		this.fileList = fileList;
+	}
+
+	public String getPreparerTimes() {
+		return preparerTimes;
+	}
+
+	public void setPreparerTimes(String preparerTimes) {
+		this.preparerTimes = preparerTimes;
+	}
+
+	public Integer getValueTypeValue() {
+		return valueTypeValue;
+	}
+
+	public void setValueTypeValue(Integer valueTypeValue) {
+		this.valueTypeValue = valueTypeValue;
+	}
+
+	public Integer getValueTypeId() {
+		return valueTypeId;
+	}
+
+	public void setValueTypeId(Integer valueTypeId) {
+		this.valueTypeId = valueTypeId;
 	}
 }

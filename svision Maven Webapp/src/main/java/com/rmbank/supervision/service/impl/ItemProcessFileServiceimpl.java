@@ -70,4 +70,10 @@ public class ItemProcessFileServiceimpl implements ItemProcessFileService {
 		return isSuccess;
 	}
 
+	@Override
+	public List<ItemProcessFile> getFileListByItemId(Integer id) {
+		// TODO Auto-generated method stub
+		return itemProcessFileMapper.getFileListByItemId(id);
+	}
+
 }

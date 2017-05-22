@@ -18,4 +18,6 @@ public interface ItemProcessFileService {
     int updateByPrimaryKey(ItemProcessFile record);
 
 	boolean insertSelective(ItemProcessFile ipf, List<Integer> ipid);
+
+	List<ItemProcessFile> getFileListByItemId(Integer id);
 }

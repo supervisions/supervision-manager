@@ -207,13 +207,15 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				action="<%=basePath%>manage/support/jsonSaveOrUpdateItem.do"
 				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="font16" id="taskTable">
+					<table class="font16 taskTable" >
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
 								<input name="name" type="text" value="" style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
                             	<input type="hidden" id="hid_uuid" name="uuid" />
+                            	<input type="hidden"  name="defined" value="1" />
+                            	<input type="hidden" name="contentTypeId" value="${ContentTypeId }" />
 							</td> 
 						</tr>
 						<tr>
@@ -232,7 +234,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</tr>
 						
 						<tr>
-							<td align="right" height="100px;">立项审批表、方案备注 ：</td>
+							<td align="right" height="100px;">立项审批表、方案 ：</td>
 							<td colspan="3"> 
 								 <textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>			
 							 </td>	
@@ -261,7 +263,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 											<td>
 												<div style="width:60%;">
 													<c:forEach var="org" items="${item.itemList }">
-														<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
+														<label style="float:left;padding-right:10px;padding-top:5px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
 													</c:forEach>
 												</div>
 											</td>

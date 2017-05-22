@@ -22,12 +22,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.model.GradeScheme;
 import com.rmbank.supervision.model.Item;
+import com.rmbank.supervision.model.ItemProcess;
+import com.rmbank.supervision.model.ItemProcessFile;
 import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.OrganVM;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ConfigService;
+import com.rmbank.supervision.service.GradeSchemeService;
+import com.rmbank.supervision.service.ItemProcessFileService;
+import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.UserService;
@@ -53,9 +59,15 @@ public class SupportAction extends SystemAction {
 	@Resource
 	private ItemService itemService;
 	@Resource
+	private ItemProcessService itemProcessService;
+	@Resource
+	private ItemProcessFileService itemProcessFileService;
+	@Resource
 	private UserService userService;
 	
-	
+
+	@Resource
+	private GradeSchemeService gradeSchemeService;
 	
 	/**
 	 * 中支立项列表
@@ -109,11 +121,11 @@ public class SupportAction extends SystemAction {
 		for (Item it : itemList) {
 			Date preparerTime = it.getPreparerTime();
 			String format = formatter.format(preparerTime);
-			it.setShowDate(format);
-			
+			it.setShowDate(format); 
 		}
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item);
+		request.setAttribute("UserOrgId", logUserOrg);
 		return "web/manage/support/supportList";
 	}
 	
@@ -164,8 +176,104 @@ public class SupportAction extends SystemAction {
 			}
 		}
 		request.setAttribute("OrgList", list);
+		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ);
 		return "web/manage/support/supportInfo";
 	}
+	
+
+	/**
+	 * 跳转到继续上传资料
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/supportFile.do")
+	@RequiresPermissions("manage/support/supportFile.do")
+	public String supportFile(Item item,
+			HttpServletRequest request, HttpServletResponse response){
+
+		int isValue = item.getIsValue(); 
+		item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+		ItemProcess itemProcess = new ItemProcess();
+		if(itemProcessList.size()>0){
+			itemProcess = itemProcessList.get(0); 
+		}
+		
+		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+		if(itemProcess.getId() != null){
+			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
+		}
+		//获取当前用户
+		User lgUser=this.getLoginUser(); 
+		 
+		if(itemProcess.getIsValue()==Constants.IS_VALUE){
+			List<GradeScheme> gradeList =  gradeSchemeService.getGradeSchemeList(new GradeScheme());
+			request.setAttribute("GradeList", gradeList);
+		} 
+		
+		request.setAttribute("User", lgUser);
+		request.setAttribute("IsValue", isValue);
+		request.setAttribute("ItemProcess", itemProcess);
+		request.setAttribute("Item", item);
+		request.setAttribute("FileList", fileList);
+		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		return "web/manage/support/supportFile";
+	}
+	
+	
+	
+	/**
+	 * 跳转到表单查看模块
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/supportView.do")
+	@RequiresPermissions("manage/support/supportView.do")
+	public String supportView(Item item,
+			HttpServletRequest request, HttpServletResponse response){
+ 
+		item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+		
+		ItemProcess fitemProcess = new ItemProcess();
+		ItemProcess sitemProcess = new ItemProcess();
+		if(itemProcessList.size()>0){
+			fitemProcess = itemProcessList.get(0);
+			if(itemProcessList.size() ==2){
+				sitemProcess = itemProcessList.get(1);
+			}
+		}
+		
+		List<ItemProcessFile> ffileList = new ArrayList<ItemProcessFile>();
+		List<ItemProcessFile> sfileList = new ArrayList<ItemProcessFile>();
+		if(fitemProcess.getId() != null){
+			ffileList = itemProcessFileService.getFileListByItemId(fitemProcess.getId());
+			fitemProcess.setFileList(ffileList);
+		}
+		if(sitemProcess.getId() != null){
+			sfileList = itemProcessFileService.getFileListByItemId(sitemProcess.getId());
+			sitemProcess.setFileList(sfileList);
+		}
+		//获取当前用户
+		User lgUser=this.getLoginUser();  
+		
+		request.setAttribute("User", lgUser); 
+		request.setAttribute("FItemProcess", fitemProcess);
+		request.setAttribute("SItemProcess", sitemProcess);
+		request.setAttribute("Item", item); 
+		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		return "web/manage/support/supportViewForm";
+	}
+	
+	
 	/** 
 	 * 新增,编辑项目
 	 * @throws ParseException 
@@ -226,4 +334,48 @@ public class SupportAction extends SystemAction {
 		}
 		return js;
     }
+    
+
+	/** 
+	 * 新增,编辑项目
+	 * @throws ParseException 
+	 */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveOrUpdateFileItem.do", method=RequestMethod.POST)
+    @RequiresPermissions("manage/support/jsonSaveOrUpdateFileItem.do")
+    public JsonResult<ItemProcess> jsonSaveOrUpdateFileItem(ItemProcess itemProcess, 
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+			itemProcessService.insert(itemProcess);
+			
+			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			if(item != null){
+				item.setEndTime(new Date());
+				item.setStatus(Constants.ITEM_STATUS_OVER);
+				itemService.updateByPrimaryKeySelective(item);
+			}
+			
+			
+			js.setCode(0);
+			js.setMessage("上传资料成功，完整中支立项项目"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+    
 } 

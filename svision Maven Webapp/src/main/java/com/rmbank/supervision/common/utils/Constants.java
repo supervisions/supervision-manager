@@ -50,27 +50,11 @@ public class Constants
   public static final Integer USER_DELETED = 1;
 
   public static final Integer ROLE_TYPE_CUSTOMER = 0;
-  public static final Integer ROLE_TYPE_ADMIN = 1;
-
-  public static final Integer IO_PORT = 0;
-  public static final Integer VIDEO_PORT = 1;
-  public static final Integer AUDIO_PORT = 2;
-
-  public static final Integer SERVER_DISABLE = 0;
-  public static final Integer SERVER_ENABLE= 1;
-  public static final Integer SERVER_NOT_CONNECTED = 2;
-
-  public static final String SERVER_TYPE_GPU = "GPU";
-  public static final String SERVER_TYPE_JANUS= "GATEWAY";
-  public static final String SERVER_TYPE_GSHARE= "GSHARE";
-
-  public static final String APP_STATUS_CLOSED="CLOSED";
-  public static final String APP_STATUS_NOT_ALLOW="NOTALLOW";
-  public static final String APP_STATUS_OPENED="OPENED";
-
-  public static final Integer SERVER_INSTANCE_DELETE = 0;
-  public static final Integer SERVER_INSTANCE_ENABLE = 1;
-  public static final Integer SERVER_INSTANCE_WAIT = 2;
+  public static final Integer ROLE_TYPE_ADMIN = 1; 
+  
+  public static final String ITEM_TYPE_FH_NAME = "分行"; 
+  public static final String ITEM_TYPE_ZZ_NAME = "中支";
+  
   
   public static final String META_POSITION_KEY = "POSITION";
   public static final String META_PROJECT_KEY = "PROJECT";
@@ -89,16 +73,31 @@ public class Constants
   public static final Integer ORG_TYPE_3= 48; //中支单位
   public static final Integer ORG_TYPE_4= 49; //县支行
   
-  //项目进行流程
+  //分行立项，分行完成项目进行流程
   public static final Integer CONTENT_TYPE_ID_1= 31; 
   public static final Integer CONTENT_TYPE_ID_2= 32; 
   public static final Integer CONTENT_TYPE_ID_3= 33; 
   public static final Integer CONTENT_TYPE_ID_4= 34; 
-  public static final Integer CONTENT_TYPE_ID_5= 35; 
-  public static final Integer CONTENT_TYPE_ID_6= 36; 
-  public static final Integer CONTENT_TYPE_ID_7= 37; 
+  public static final Integer CONTENT_TYPE_ID_5= 35;  
+  
+
+  //分行立项，中支完成项目进行流程
+  public static final Integer CONTENT_TYPE_ID_FHZZ= 54;  
+
+  //中支立项，中支完成项目进行流程
+  public static final Integer CONTENT_TYPE_ID_ZZZZ= 51; 
+  public static final Integer CONTENT_TYPE_ID_ZZZZ_OVER= 52;  
   
   public static final Integer IS_VALUE = 1;
   public static final Integer NOT_VALUE = 0;
+  
+  
+  
+  public static final Integer ITEM_STATUS_NEW =0; 
+  public static final Integer ITEM_STATUS_NORMAL =1; 
+  public static final Integer ITEM_STATUS_REBACK =2; 
+  public static final Integer ITEM_STATUS_OVERLINE =3;
+  public static final Integer ITEM_STATUS_OVER =4;
+  
   
 }

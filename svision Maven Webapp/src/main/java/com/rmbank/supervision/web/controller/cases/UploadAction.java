@@ -1,6 +1,8 @@
 package com.rmbank.supervision.web.controller.cases;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +27,7 @@ import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.StringUtil;
 import com.rmbank.supervision.service.ItemProcessFileService;
 import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.UserService;
@@ -65,7 +68,7 @@ public class UploadAction extends SystemAction {
 		//判断文件夹是否存在，如果文件夹不存在则创建    
 		if(!uploadpath.exists()  && !uploadpath.isDirectory()){	       
 		    System.out.println("目录不存在");  
-		    uploadpath.mkdir();    
+		    uploadpath.mkdirs();    
 		}else{    
 		    System.out.println("目录存在");  
 		}  
@@ -144,5 +147,46 @@ public class UploadAction extends SystemAction {
             js.setMessage(e.getMessage());
         }*/
         return js;
+    }
+	
+	
+	
+
+    /**
+     * 下载视频文件
+     * @param request
+     * @param response
+     * @param id
+     */
+    @ResponseBody
+    @RequestMapping(value = "/downLoadFile.do")
+    public void downLoadFile(
+            @RequestParam(value = "filePath", required = true) String filePath,
+            @RequestParam(value = "fileName", required = true) String fileName,
+            HttpServletRequest request,HttpServletResponse response,HttpSession session) { 
+        try { 
+        	if(!StringUtil.isEmpty(filePath) && !StringUtil.isEmpty(fileName)){
+        		filePath = URLDecoder.decode(filePath,"utf-8");
+        		fileName = URLDecoder.decode(fileName,"utf-8");
+        	}
+        	String path = session.getServletContext().getRealPath("")+"/"+filePath+fileName;
+        	File file = new File(path); 
+            if(file.exists()){ 
+                response.reset();
+                response.setContentType("APPLICATION/OCTET-STREAM; charset=UTF-8");
+                response.setHeader("Content-disposition", "attachment;filename=\""
+                        + new String(file.getName().getBytes("GB2312"), "ISO-8859-1")
+                        + "\"");
+                FileInputStream inStream = new FileInputStream(file);
+                byte[] b = new byte[100];
+                int len;
+                while ((len = inStream.read(b)) > 0) {
+                    response.getOutputStream().write(b, 0, len);
+                }
+                inStream.close();
+            } 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

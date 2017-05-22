@@ -207,7 +207,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
 				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="font16" id="taskTable">
+					<table class="font16 taskTable" >
 						<tr>
 							<td width="8%" align="right">项目名称：</td>
 							<td colspan="3">
@@ -260,7 +260,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 											<td>
 												<div style="width:60%;">
 													<c:forEach var="org" items="${item.itemList }">
-														<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
+														<label style="float:left;padding-right:10px;padding-top:5px;min-width:200px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
 													</c:forEach>
 												</div>
 											</td>

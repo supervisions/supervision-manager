@@ -27,7 +27,8 @@
 			    pagecount:'${Item.pageCount}',                      /* 表示总页数 */
 			    totalCount:'${Item.totalCount}',
 			    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
-			}); 			  
+			});    
+			$("#fz").attr("onclick","window.location.href='<%=basePath%>manage/branch/branchZZList.do'"); 
 		});
 		
 PageClick = function(pageclickednumber) {
@@ -36,7 +37,7 @@ PageClick = function(pageclickednumber) {
 	    pagecount:'${Item.pageCount}',                  /* 表示最大页数pagecount */
 	    buttonClickCallback:PageClick                 /* 表示点击页数时的调用的方法就可实现javascript分页功能 */            
 	});
-	
+	 
 	$("#pageNumber").val(pageclickednumber);          /* 给pageNumber从新赋值 */
 	/* 执行Action */
 	pagesearch();
@@ -55,7 +56,7 @@ function deleteItem(id,name){
 	$.messager.confirm("删除确认","确认删除项目："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "manage/branch/jsondeleteItemById.do?id="+id,
+				url : "<%=basePath%>manage/branch/jsondeleteItemById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -70,16 +71,7 @@ function deleteItem(id,name){
 			});
 	    }  
 	}); 
-}
-function edit(id){
-	window.location.href="manage/branch/showItem.do?id="+id;
-}
-function toOperate(id){
-	window.location.href="manage/branch/toOperate.do?id="+id;
-}
-function getItemByItemType(type){
-	window.location.href="branchList.do?type="+type
-}
+} 
 </script>
 </head>
 
@@ -87,7 +79,7 @@ function getItemByItemType(type){
 
 	<div class="con-right" id="conRight">
 		<div class="fl yw-lump">
-			<div class="yw-lump-title">
+			<div class="yw-lump-title"> 
 				<i class="yw-icon icon-partner"></i><span>项目列表</span><input type="hidden" value="${Organ.id}" id="hid_organId" />
 			</div>
 		</div>
@@ -100,9 +92,9 @@ function getItemByItemType(type){
 					</div>
 					<div class="fr">
 						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox"
-							   style="width: 120px;" placeholder="搜索关键字：名称" value="${Organ.searchName}" />
+							   style="width: 120px;" placeholder="搜索关键字：名称" value="${Organ.searchName}" /> 
 						<span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
-						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='branchInfo.do?id=0'">新建项目</span>
+						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHInfo.do'">新建项目</span>
 					</div>
 					<div class="cl"></div>
 				</div>
@@ -112,23 +104,23 @@ function getItemByItemType(type){
 			</form>
 		</div>
 		<div class="fl">
-			<div class="fl yw-lump mlwid250 mt10">
+			<div class="fl yw-lump mlwid10per mt10">
 				<div class="yw-cm-title">
 					<span class="ml26">项目属性</span>
-				</div>
+				</div> 
 				<div class="yw-organ-tree-list" style="height: 639px;">
 					<!-- 加载机构树 -->
-					<div onclick="getItemByItemType(1)" style="background-color: #1B8CF2; width: 80%;height: 30px;">
-						<span>分行立项分行完成</span>
-					</div><br>
-					<div onclick="getItemByItemType(2)" style="background-color: #1B8CF2; width: 80%;height: 30px;">
-						<span>分行立项中支完成</span>
+					<div id="ff" class="branchPart-active">
+						<span>分行完成</span>
+					</div> 
+					<div id="fz"  class="branchPart" >
+						<span>中支完成</span>
 					</div>
 				</div>
 			</div>
-			<div class="yw-lump wid-atuo ml260s mt10">
+			<div class="yw-lump wid-atuo ml10ps mt10">
 				<div class="yw-cm-title">
-					<span class="ml26">全部机构</span>
+					<span class="ml26">项目列表</span>
 				</div>
 				<table class="yw-cm-table yw-center yw-bg-hover" id="deviceList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
@@ -145,21 +137,26 @@ function getItemByItemType(type){
 					<c:forEach var="item" items="${itemList}">
 						<tr>
 							<td align="center" style="display:none">${item.id}</td>
-							<td><a style="color: blue;" onclick="edit(${item.id})">${item.name}</a></td>
+							<td><a style="color: blue;" >${item.name}</a></td>
 							<td>${item.sType}</td>
 							<td>${item.showDate}</td> 
 							<td>${item.preparerOrg}</td>
 							<td>${item.orgName}</td>
 							<td>
 								<c:if test="${logUserOrg == item.preparerOrgId}">
-									
+									<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
 								</c:if>							
 								
-								<c:if test="${logUserOrg != item.supervisionOrgId}">
-									
-								</c:if>	
-								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
-								<a style="color: blue;" onclick="toOperate(${item.id})">操作</a>
+								<%-- <c:if test="${logUserOrg != item.supervisionOrgId}"> 
+									<c:if test="${Type == 2 }">
+										<c:if test="item.status == 4">
+											 【已完结】 
+										</c:if>
+										<c:if test="item.status != 4"> --%>
+											<a style="color: blue;"  >上传资料</a>
+										<%-- </c:if>
+									</c:if>									
+								</c:if>	 --%>
 							</td>							
 						</tr>
 					</c:forEach>
