@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
    <base href="<%=basePath%>">
   
-   <title>效能监察</title>
+   <title>廉政监察</title>
    
 <meta name="viewport"
 content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" /> 
@@ -152,7 +152,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					    },
 					    buttons: {
 					        '确定': function() {					        	
-					            window.location.href = "<%=basePath%>vision/efficiency/efficiencyList.do";
+					            window.location.href="<%=basePath%>vision/enforce/enforceList.do";
 					        }
 					    }
 					}); 
@@ -167,7 +167,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
         $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
-	        url: "vision/efficiency/jsonSaveOrUpdateItem.do",
+	        url: "vision/enforce/jsonSaveOrUpdateItem.do",
 	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 	        async: true, //发送异步请求	  
 	        dataType:"json", //响应数据类型      
@@ -209,7 +209,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16" id="taskTable">
 						<tr>
-							<td width="8%" align="right">监察项目：</td>
+							<td width="8%" align="right">项目名称：</td>
 							<td colspan="3"><input id="" 
 								name="name" type="text" doc="taskInfo" value=""  style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
@@ -236,13 +236,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 </td>	
 						</tr>	
 						<tr>
-							<td align="right" height="50px">是否分节点监察：</td>
+							<td align="right" height="50px">执法类型：</td>
 							<td colspan="3">
-								<select id="supervisionTypeId" name="isstept" style="width:289px;height:28px;">
-									<option value="-1">请选择是否分节点监察</option>								
-									<option value="0">否</option>
-									<option value="1">是</option>
-									
+								<select id="" name="superItemType" style="width:289px;height:28px;">
+									<option value="-1">==请选择执法类型==</option>	
+									<c:forEach var="item" items="${meatListByKey }">
+										<option value="${item.id }">${item.name }</option>
+									</c:forEach>																
 								</select> 
 								<span style="color:red">*</span>
 							    规定完成时间：<input type="text" name="end_time" value="" id="datepicker" style="width:258px;height:22px;">
@@ -268,22 +268,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</table>
 							 </td>	
 						</tr>	
-						<tr>
-							<td align="right" height="100px;">责任领导：</td>
-							<td colspan="3"> 
-								<table style="font-size: 16px;"> 									
-									<tr>
-										<td>
-										<div style="width:60%;">
-											<c:forEach var="item" items="${byLgUser }">
-												<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="user" value="${item.id }"/>${item.name }</label>
-											</c:forEach>
-										</div>										
-										</td>										
-									</tr>								
-								</table>
-							 </td>	
-						</tr>	
+						
 					</table>
 				</div>
 			</form>

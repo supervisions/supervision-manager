@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +53,8 @@ public class UploadAction extends SystemAction {
 	
 	@ResponseBody
     @RequestMapping(value = "/jsonUploadFile.do", method = RequestMethod.POST,produces={ "text/html;charset=UTF-8"} )
-    public JsonResult<File> jsonSaveOrUpdateVideoItem(
+	 @RequiresPermissions("system/upload/jsonUploadFile.do")
+	public JsonResult<File> jsonSaveOrUpdateVideoItem(
             @RequestParam(value = "uuid", required = true) String uuid,
             @RequestParam(value = "file", required = true) CommonsMultipartFile file,
             HttpServletRequest request,HttpServletResponse response,HttpSession session) {

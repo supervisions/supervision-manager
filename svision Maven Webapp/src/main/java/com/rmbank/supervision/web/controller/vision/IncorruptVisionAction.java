@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.model.Item;
+import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.OrganVM;
 import com.rmbank.supervision.model.User;
+import com.rmbank.supervision.service.ConfigService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.UserService;
@@ -45,6 +47,9 @@ public class IncorruptVisionAction extends SystemAction {
 	private UserService userService;
 	@Resource
 	private OrganService organService;
+	@Resource
+	private ConfigService configService;
+	
 	
 	/**
 	 * 廉政监察列表
@@ -77,13 +82,25 @@ public class IncorruptVisionAction extends SystemAction {
 		
 		// 分页集合
 		List<Item> itemList = new ArrayList<Item>();
-		try {			
-			// 取满足要求的参数数据
-			item.setSupervisionTypeId(3);
-			item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION);
-			itemList = itemService.getItemListByType(item);
-			// 取满足要求的记录总数
-			totalCount = itemService.getItemCount(item);
+		try {
+			//成都分行监察室和超级管理员加载所有的项目
+			if(userOrg.getOrgtype()==Constants.ORG_TYPE_1 ||Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
+				// 取满足要求的参数数据
+				item.setSupervisionTypeId(3);
+				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION);
+				itemList = itemService.getItemListByType(item);
+				// 取满足要求的记录总数
+				totalCount = itemService.getItemCountBySSJC(item);
+			}else {//获取当前用户需要完成的项目
+				// 取满足要求的参数数据
+				item.setSupervisionTypeId(3);
+				item.setSupervisionOrgId(userOrg.getId());
+				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION);
+				itemList = itemService.getItemListByTypeAndLogOrg(item);
+				// 取满足要求的记录总数
+				totalCount = itemService.getItemCountByLogOrgSSJC(item);
+			}
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -128,12 +145,13 @@ public class IncorruptVisionAction extends SystemAction {
 				frvm.setItemList(itemList);
 				list.add(frvm);
 			}
-		}
-		
+		}		
 		//获取当前登录用户所属机构下的所有用户
 		User lgUser = this.getLoginUser();
 		List<User> byLgUser = userService.getUserListByLgUser(lgUser);
-		
+		//获取项目类别
+		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_ITEMCATEGORY_KEY);
+		request.setAttribute("meatListByKey", meatListByKey);
 		request.setAttribute("byLgUser", byLgUser);
 		request.setAttribute("OrgList", list);	
 		return "web/vision/incorruptInfo";
@@ -234,6 +252,5 @@ public class IncorruptVisionAction extends SystemAction {
 			e.printStackTrace();
 		}		
 		return js;
-
 	}
 }

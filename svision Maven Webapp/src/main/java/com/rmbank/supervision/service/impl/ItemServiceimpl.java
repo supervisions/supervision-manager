@@ -180,4 +180,36 @@ public class ItemServiceimpl implements ItemService {
 		return itemMapper.getItemListByFHLXZZWC(item);
 	}
 
+	//实时监察模块的分页
+	@Override
+	public int getItemCountBySSJC(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemCountBySSJC(item);
+	}
+
+	//所有中支立项的条数
+	@Override
+	public int getItemCountZZLXALL(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemCountZZLXALL(item);
+	}
+
+	@Override
+	public int getItemCountZZLX(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemCountZZLX(item);
+	}
+
+	@Override
+	public List<Item> getItemListByTypeAndLogOrg(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListByTypeAndLogOrg(item);
+	}
+
+	@Override
+	public int getItemCountByLogOrgSSJC(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemCountByLogOrgSSJC(item);
+	}
+
 }  

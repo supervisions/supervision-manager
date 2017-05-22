@@ -30,7 +30,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			 url: 'manage/casedetail/jsonLoadSchemeDetailTreeList.do',  
   				 required: false,
   				 onSelect:function(node){  	
-  				 	$("#gradeId").val(node.gradeId);		 	 				 	 				 	
+  				 	if(node.path=="" ||node.path==null){  				 			
+  				 		$("#path").val(node.id);  				 			
+			 		}else{
+			 			$("#path").val(node.path+"."+node.id);
+			 		}  	
+  				 	$("#gradeId").val(node.gradeId);
+  				 			 	 				 	 				 	
   				 },
   				 onBeforeExpand:function(node){
   				 	$("#moudleId").combotree('tree').tree('options').url = 'system/function/jsonLoadFunctionTreeList.do?pid='+ node.id;
@@ -126,6 +132,7 @@ function checkGrade(obj){
 						<tr>
 							<td width="8%" align="right">上级指标</td>
 							<td>
+								<input type="hidden" id="path" name="path" value=""/>
 								<input type="hidden" id="pName" value="${SchemeDetail.pName}"/>
 								<input type="hidden" id="gradeId" name="gradeId" value="">
 								<input type="hidden" id="defaultPid" value="${SchemeDetail.pid}">

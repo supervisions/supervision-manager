@@ -149,6 +149,18 @@
      	)
 	</if>
   </select>
+  <select id="getGradeSchemeDetailList" parameterType="com.rmbank.supervision.model.GradeSchemeDetail" resultMap="BaseResultMap">
+  	SELECT gsd.*,gs.name AS schemaName,gsd1.name AS pName 
+	FROM t_grade_scheme_detail AS gsd
+	LEFT JOIN t_grade_scheme AS gs ON gsd.grade_id=gs.id
+	LEFT JOIN t_grade_scheme_detail AS gsd1 ON gsd1.id=gsd.pid
+	<if test="searchName != null and searchName != ''">
+	 	and (
+			gsd.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+     	)
+	</if>
+  </select>
+  
    <select id="getGradeSchemeDetailCount" resultType="java.lang.Integer" parameterType="com.rmbank.supervision.model.GradeSchemeDetail">
   	select count(*)
   	<include refid="sql_query"></include>

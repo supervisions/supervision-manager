@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.model.Item;
+import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.OrganVM;
 import com.rmbank.supervision.model.User;
+import com.rmbank.supervision.service.ConfigService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.UserService;
@@ -35,7 +37,8 @@ import com.rmbank.supervision.web.controller.SystemAction;
  * 效能监察控制器
  * @author DELL
  *
- */
+ */ 
+
 @Scope("prototype")
 @Controller
 @RequestMapping("/vision/efficiency")
@@ -47,6 +50,7 @@ public class EfficiencyVisionAction extends SystemAction {
 	private UserService userService;
 	@Resource
 	private OrganService organService;
+	
 		
 	/**
      * 效能监察列表展示
@@ -80,15 +84,32 @@ public class EfficiencyVisionAction extends SystemAction {
 		
 		// 分页集合
 		List<Item> itemList = new ArrayList<Item>();
-		try {			
-			// 取满足要求的参数数据
-			item.setSupervisionTypeId(2);
-			item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION);
-			itemList = itemService.getItemListByType(item);
-			// 取满足要求的记录总数
-			totalCount = itemService.getItemCount(item);
+		try {
+			//成都分行和超级管理员获取所有项目
+			if(userOrg.getOrgtype()==Constants.ORG_TYPE_1 ||Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
+				
+				item.setSupervisionTypeId(2); //2代表效能监察
+				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //实时监察模块
+				itemList = itemService.getItemListByType(item);			
+				totalCount = itemService.getItemCountBySSJC(item); //实时监察分页
+			}else {
+				//当前登录用户只加载自己完成的项目
+				item.setSupervisionTypeId(2); //2代表效能监察
+				item.setSupervisionOrgId(userOrg.getId());
+				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //实时监察模块
+				itemList = itemService.getItemListByTypeAndLogOrg(item);
+				// 取满足要求的记录总数
+				totalCount = itemService.getItemCountByLogOrgSSJC(item); //实时监察分页
+			}
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		for (Item it : itemList) {
+			Date endTime = it.getEndTime();
+			String format = formatter.format(endTime);
+			it.setShowDate(format);
 		}
 		// 通过request对象传值到前台
 		item.setTotalCount(totalCount);
@@ -113,8 +134,7 @@ public class EfficiencyVisionAction extends SystemAction {
     	
     	//获取机构
 		Organ organ=new Organ();
-		List<Organ> organList = organService.getOrganList(organ);
-		
+		List<Organ> organList = organService.getOrganList(organ);		
     	List<OrganVM> list=new ArrayList<OrganVM>();
 		OrganVM frvm = null;
 		for(Organ rc : organList){
@@ -139,7 +159,7 @@ public class EfficiencyVisionAction extends SystemAction {
 		
 		request.setAttribute("byLgUser", byLgUser);
 		request.setAttribute("OrgList", list);
-	
+		
 		
 		return "web/vision/efficiencyInfo";
 	}

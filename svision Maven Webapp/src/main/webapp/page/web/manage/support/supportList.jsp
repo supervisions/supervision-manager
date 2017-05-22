@@ -85,7 +85,6 @@ function edit(id){
 	window.location.href="manage/branch/showItem.do?id="+id;
 }
 function showDialogModel(id,name){
-
    	var itemId = encodeURI(encodeURI(id));
 	$.messager.confirm("操作确认","是否量化项目："+name+"?",function(r){  
 	    if (r){   
@@ -167,12 +166,13 @@ function showDialogModel(id,name){
 								【已完结】
 								</c:if>
 								<c:if test="${item.status != 4 }">
-									<c:if test="${UserOrgId == item.preparerId }">
-										<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> 
-									</c:if>
+									
 									<c:if test="${UserOrgId == item.supervisionOrgId }">
 										<a style="color: blue;" onclick="showDialogModel(${item.id},'${item.name}');">上传资料</a>
 									</c:if> 
+									<c:if test="${UserOrgId == item.preparerOrgId }">
+										<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> 
+									</c:if>
 								</c:if>
 								
 							</td>							

@@ -16,10 +16,12 @@
     <result column="is_stept" property="isStept" jdbcType="INTEGER" />    
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="super_item_type" property="superItemType" jdbcType="INTEGER" />
+    
   </resultMap>
   <sql id="Base_Column_List" >
     id, item_type,supervision_type_id, pid, stage_index, name, supervision_org_id, supervision_user_id, 
-    preparer_org_id, preparer_id, preparer_time,end_time,is_stept,status
+    preparer_org_id, preparer_id, preparer_time,end_time,is_stept,status,super_item_type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select i.*,m.name AS sType
@@ -35,11 +37,12 @@
     insert into t_item (id,item_type, supervision_type_id, pid, 
       stage_index, name, supervision_org_id, 
       supervision_user_id, preparer_org_id, preparer_id, 
-      preparer_time,end_time,is_stept,status)
+      preparer_time,end_time,is_stept,status,super_item_type)
     values (#{id,jdbcType=INTEGER}, #{itemType,jdbcType=INTEGER}, #{supervisionTypeId,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, 
       #{stageIndex,jdbcType=TINYINT}, #{name,jdbcType=VARCHAR}, #{supervisionOrgId,jdbcType=INTEGER}, 
       #{supervisionUserId,jdbcType=INTEGER}, #{preparerOrgId,jdbcType=INTEGER}, #{preparerId,jdbcType=INTEGER}, 
-      #{preparerTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP}, #{isStept,jdbcType=INTEGER}, #{status,jdbcType=INTEGER})
+      #{preparerTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP}, #{isStept,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+      #{superItemType,jdbcType=INTEGER})
      
   </insert>
   <insert id="insertSelective" parameterType="com.rmbank.supervision.model.Item" >
@@ -87,6 +90,9 @@
       <if test="endTime != null" >
         end_time,
       </if>
+      <if test="superItemType != null" >
+        super_item_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -131,6 +137,9 @@
       <if test="endTime != null" >
         #{endTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="superItemType != null" >
+        #{superItemType,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.rmbank.supervision.model.Item" >
@@ -174,7 +183,10 @@
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER}
-      </if>     
+      </if> 
+      <if test="superItemType != null" >
+        super_item_type = #{superItemType,jdbcType=INTEGER},
+      </if>    
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -251,10 +263,11 @@
   	select count(*)
 	<include refid="sql_query"></include>
   </select>
-  
+  <!-- 获取实时监察类型的项目 -->
   <select id="getItemListByType" parameterType="com.rmbank.supervision.model.Item" resultMap="BaseResultMap">
-  	SELECT i.*,o.name as orgName FROM t_item AS i
+  	SELECT i.*,o.name as orgName,m.name as itemCategory FROM t_item AS i
 	LEFT JOIN t_org AS o ON o.id=i.`supervision_org_id`
+	LEFT JOIN t_meta AS m ON m.id=i.`super_item_type`
 	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
 	and i.item_type=#{itemType,jdbcType=INTEGER}
 	<if test="searchName != null and searchName != ''">
@@ -304,8 +317,7 @@
 	LEFT JOIN t_org AS o1 ON o1.id =i.preparer_org_id
 	LEFT JOIN t_org o2 ON i.`preparer_org_id`=o2.`id`
 	LEFT JOIN `t_meta` AS m ON m.`id`=i.`supervision_type_id`	
-	where o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} <!-- 只需判断立项单位是中支 -->
-	 OR o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} 
+	where 1=1 
 	<if test="searchName != null and searchName != ''">
 		and (i.name like
 		CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
@@ -322,19 +334,53 @@
 	<if test="schEndTime != null and schEndTime != ''">
 		and i.`preparer_time`&lt;=#{schEndTime,jdbcType=VARCHAR}
 	</if>
+	and i.item_type=#{itemType,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} <!-- 只需判断立项单位是中支 -->
+	OR o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} 
 	ORDER BY i.`id` DESC
 	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
         limit #{pageStart}, #{pageSize}
     </if>
   </select>
+  <!-- 获取所有中支立项的记录数 -->
+  <select id="getItemCountZZLXALL" parameterType="com.rmbank.supervision.model.Item" resultType="java.lang.Integer">
+  	select count(*) from t_item as i 
+  	LEFT JOIN t_org o2 ON i.`preparer_org_id`=o2.`id`
+  	where 1=1 
+	<if test="searchName != null and searchName != ''">
+		and (i.name like
+		CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		)
+	</if>
+	<if test="supervisionTypeId !=0 and supervisionTypeId!=null">
+		and (i.supervision_type_id like
+		CONCAT('%',#{supervisionTypeId,jdbcType=INTEGER},'%')
+		)
+	</if> 
+	<if test="schBeginTime != null and schBeginTime != ''">
+		and i.`preparer_time`>=#{schBeginTime,jdbcType=VARCHAR}
+	</if>
+	<if test="schEndTime != null and schEndTime != ''">
+		and i.`preparer_time`&lt;=#{schEndTime,jdbcType=VARCHAR}
+	</if>
+	and i.item_type=#{itemType,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} <!-- 只需判断立项单位是中支 -->
+	 OR o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} 
+  </select>
+  
   <!-- 查询当前登录机构中支立项中支完成的项目 -->
   <select id="getItemListByOrgTypeAndLogOrg" parameterType="com.rmbank.supervision.model.Item" resultMap="BaseResultMap">
-  	SELECT i.* ,o.name AS orgName,o1.name AS preparerOrg,m.name AS sType FROM t_item AS i
+  	SELECT i.*,o.name AS orgName,o1.name AS preparerOrg,m.name AS sType FROM t_item AS i
 	LEFT JOIN `t_org` AS o ON o.`id`=i.`supervision_org_id` <!-- 完成机构 -->
 	LEFT JOIN t_org AS o1 ON o1.id =i.preparer_org_id 
 	LEFT JOIN t_org o2 ON i.`preparer_org_id`=o2.`id` <!-- 立项机构 -->
 	LEFT JOIN `t_meta` AS m ON m.`id`=i.`supervision_type_id`	
-	where  i.preparer_org_id=#{preparerOrgId,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} <!-- 立项机构和登录机构相同 -->
+	where i.preparer_org_id=#{preparerOrgId,jdbcType=INTEGER} and i.supervision_org_id=#{supervisionOrgId,jdbcType=INTEGER}
+	or i.preparer_org_id=#{preparerOrgId,jdbcType=INTEGER} 
+	and
+	i.item_type=#{itemType,jdbcType=INTEGER} and  o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} <!-- 立项机构和登录机构相同 -->
+	OR i.preparer_org_id=#{preparerOrgId,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER}
+	or i.supervision_org_id=#{supervisionOrgId,jdbcType=INTEGER} 
+	and
+	i.item_type=#{itemType,jdbcType=INTEGER} and  o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} <!-- 立项机构和登录机构相同 -->
 	OR i.preparer_org_id=#{preparerOrgId,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER}
 	<if test="searchName != null and searchName != ''">
 		and (i.name like
@@ -357,6 +403,21 @@
         limit #{pageStart}, #{pageSize}
     </if>
   </select>
+  <!-- 获取当前机构中支立项的记录数 -->
+  <select id="getItemCountZZLX" parameterType="com.rmbank.supervision.model.Item" resultType="java.lang.Integer">
+  	select count(*) from t_item as i 
+  	LEFT JOIN t_org o2 ON i.`preparer_org_id`=o2.`id`
+  	where i.preparer_org_id=#{preparerOrgId,jdbcType=INTEGER} and i.supervision_org_id=#{supervisionOrgId,jdbcType=INTEGER}
+	or i.preparer_org_id=#{preparerOrgId,jdbcType=INTEGER} 
+	and
+	i.item_type=#{itemType,jdbcType=INTEGER} and  o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} <!-- 立项机构和登录机构相同 -->
+	OR i.preparer_org_id=#{preparerOrgId,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER}
+	or i.supervision_org_id=#{supervisionOrgId,jdbcType=INTEGER} 
+	and
+	i.item_type=#{itemType,jdbcType=INTEGER} and  o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} <!-- 立项机构和登录机构相同 -->
+	OR i.preparer_org_id=#{preparerOrgId,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER}
+  </select>
+  
   <!-- 分行立项分行完成 -->
   <select id="getItemListByFHLXFHWC" parameterType="com.rmbank.supervision.model.Item" resultMap="BaseResultMap">
   	SELECT i.* ,o.name AS orgName,o1.name AS preparerOrg,m.name AS sType FROM t_item AS i
@@ -364,10 +425,12 @@
 	LEFT JOIN t_org AS o1 ON o1.id =i.preparer_org_id
 	LEFT JOIN t_org o2 ON i.`preparer_org_id`=o2.`id`   <!-- 立项机构 -->
 	LEFT JOIN `t_meta` AS m ON m.`id`=i.`supervision_type_id`	
-	where i.preparer_org_id=#{preparerOrgId,jdbcType=INTEGER}
-	 and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER}
-	 and o.`org_type` =#{orgTypeA,jdbcType=INTEGER}
-	 OR o.`org_type` =#{orgTypeB,jdbcType=INTEGER}
+	where o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} 
+	 or o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER}
+	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER}
+	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} 
+	
+	
 	<if test="searchName != null and searchName != ''">
 		and (i.name like
 		CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
@@ -421,5 +484,47 @@
 	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
         limit #{pageStart}, #{pageSize}
     </if>
+  </select>
+  
+  <!-- 实时监察模块的分页 -->
+  <select id="getItemCountBySSJC" parameterType="com.rmbank.supervision.model.Item" resultType="java.lang.Integer">
+  	select count(*) from t_item as i
+	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
+	and i.item_type=#{itemType,jdbcType=INTEGER}
+	<if test="searchName != null and searchName != ''">
+		and (
+			i.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')			
+     	)
+	</if>
+  </select>
+  <!-- 实时监察模块获取当前登录用户的项目 -->
+  <select id="getItemListByTypeAndLogOrg" parameterType="com.rmbank.supervision.model.Item" resultMap="BaseResultMap">
+  	SELECT i.*,o.name as orgName,m.name as itemCategory FROM t_item AS i
+	LEFT JOIN t_org AS o ON o.id=i.`supervision_org_id`
+	LEFT JOIN t_meta AS m ON m.id=i.`super_item_type`
+	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
+	and i.item_type=#{itemType,jdbcType=INTEGER}
+	and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
+	<if test="searchName != null and searchName != ''">
+		and (i.name like
+		CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		)
+	</if>
+    ORDER BY i.`id` DESC
+	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
+        limit #{pageStart}, #{pageSize}
+    </if>
+  </select>
+  <!-- 实时监察模块当前当了用户的记录数 -->
+  <select id="getItemCountByLogOrgSSJC" parameterType="com.rmbank.supervision.model.Item" resultType="java.lang.Integer">
+  	select count(*) from t_item as i
+	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
+	and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
+	and i.item_type=#{itemType,jdbcType=INTEGER}
+	<if test="searchName != null and searchName != ''">
+		and (
+			i.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')			
+     	)
+	</if>
   </select>
 </mapper>

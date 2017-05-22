@@ -45,7 +45,11 @@ public class Item extends Page {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
     
-    
+	private Integer superItemType;
+	
+	//用于页面显示，项目类别
+	private String itemCategory;
+	
     private String endTimes;
     //制单部门
     private String preparerOrg;
@@ -273,5 +277,21 @@ public class Item extends Page {
 
 	public void setIsValue(Integer isValue) {
 		this.isValue = isValue;
+	}
+
+	public Integer getSuperItemType() {
+		return superItemType;
+	}
+
+	public void setSuperItemType(Integer superItemType) {
+		this.superItemType = superItemType;
+	}
+
+	public String getItemCategory() {
+		return itemCategory;
+	}
+
+	public void setItemCategory(String itemCategory) {
+		this.itemCategory = itemCategory;
 	}
 }

@@ -26,9 +26,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#pager").pager({
-	    pagenumber:'${Role.pageNo}',                         /* 表示初始页数 */
-	    pagecount:'${Role.pageCount}',                      /* 表示总页数 */
-	    totalCount:'${Role.totalCount}',				   /* 表示总记录数 */
+	    pagenumber:'${Item.pageNo}',                         /* 表示初始页数 */
+	    pagecount:'${Item.pageCount}',                      /* 表示总页数 */
+	    totalCount:'${Item.totalCount}',				   /* 表示总记录数 */
 	    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
 	});		
 	$("#seaarchNameTemp").keypress(function(e){
@@ -40,7 +40,7 @@ $(document).ready(function(){
 PageClick = function(pageclickednumber) {
 	$("#pager").pager({
 	    pagenumber:pageclickednumber,                 /* 表示启示页 */
-	    pagecount:'${Role.pageCount}',                  /* 表示最大页数pagecount */
+	    pagecount:'${Item.pageCount}',                  /* 表示最大页数pagecount */
 	    buttonClickCallback:PageClick                 /* 表示点击页数时的调用的方法就可实现javascript分页功能 */            
 	});	
 	$("#pageNumber").val(pageclickednumber);          /* 给pageNumber从新赋值 */
@@ -57,14 +57,14 @@ function pagesearch(){
 		taskForm.submit();
 	}
 }
-function deleteRole(id,name){
-	$.messager.confirm("删除确认","确认删除角色："+name+"?",function(r){  
+function deleteItem(id,name){
+	$.messager.confirm("删除确认","确认删除项目："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsondeleteRoleById.do?id="+id,
+				url : "jsondeleteItemById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
-				success : function(data) { 									
+				success : function(data) {											
 		  			if(data.code == 0){ 
 		  				$.messager.alert('操作信息',data.message,'info',function(){ 
 		  					search();  
@@ -101,7 +101,7 @@ function authorizeResource(id,name){
 				<input id="toAname" type="hidden" name="name" value="">
 			</form>
 			<form id="taskForm" name="taskForm"
-				action="roleList.do" method="get">
+				action="enforceList.do" method="get">
 				<div class=pd10>
 					<div class="fl">  
 						<span>条件查询：</span>
@@ -112,8 +112,8 @@ function authorizeResource(id,name){
 					</div>
 
 					<div class="fr">
-						<span class="yw-btn bg-green cur" onclick="window.location.href='roleInfo.do?id=0';">单项执法</span>
-						<span class="yw-btn bg-green cur" onclick="window.location.href='roleInfo.do?id=0';">综合执法</span>
+						<span class="yw-btn bg-green cur" onclick="window.location.href='enforceInfo.do?id=0';">添加工作事项</span>
+						
 					</div>
 					<div class="cl"></div>				
                     	<input type="hidden" id="pageNumber" name="pageNo" value="${Role.pageNo}" />
@@ -134,15 +134,41 @@ function authorizeResource(id,name){
 					<th>操作1</th>
 					<th>操作2</th>			
 				</tr>
-				<c:forEach var="item" items="${roleList}">
+				<c:forEach var="item" items="${itemList}">
 					<tr> 							
-						<td>${item.name}</td>
-						<td>${item.description}</td>
-						<td><a style="color:blue" onclick="authorizeResource(${item.id},'${item.name}')">资源授权</a></td>
 						<td>
-							<a style="color:blue" onclick="deleteRole(${item.id},'${item.name}');">删除</a>
-							<a style="color:blue" onclick="window.location.href='roleInfo.do?id=${item.id}';">编辑</a>
+							<c:if test="">
+								<span style="color: red;" onclick="setProject(${item.id })">未立项</span>
+							</c:if>
+							<c:if test="">
+								<span>已立项</span>
+							</c:if>
 						</td>
+						<td  style="color:green;">
+							<c:if test="${item.status == 0 }">
+								<span>新</span>
+							</c:if>
+							<c:if test="${item.status == 1 }">
+								<span>正常</span>
+							</c:if>
+							<c:if test="${item.status == 2 }">
+								<span>退回</span>
+							</c:if>
+							<c:if test="${item.status == 3 }">
+								<span>逾期</span>
+							</c:if>
+							<c:if test="${item.status == 4 }">
+								<span>完结</span>
+							</c:if>
+						</td>
+						<%-- <td>${item.name}</td> --%>
+						<td>${item.itemCategory }</td>
+						<td>${item.name}</td>
+						<td><a href="">查看</a></td>						
+						<td></td>
+						<td>${item.orgName}</td>
+						<td><a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a></td>
+						
 						
 					</tr>
 				</c:forEach>

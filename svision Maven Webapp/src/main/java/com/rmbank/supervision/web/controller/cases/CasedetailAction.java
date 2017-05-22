@@ -100,15 +100,13 @@ public class CasedetailAction extends SystemAction {
     public JsonResult<GradeSchemeDetail> jsonLoadOrganListByPid(
             @RequestParam(value = "pid", required = false) Integer pid,
             @RequestParam(value = "gradeId", required = false) Integer gradeId,
-            HttpServletRequest request, HttpServletResponse response) {
-    	
+            HttpServletRequest request, HttpServletResponse response) {    	
         JsonResult<GradeSchemeDetail> js = new JsonResult<GradeSchemeDetail>();
         js.setCode(new Integer(1));
         js.setMessage("获取数据失败!");
         GradeSchemeDetail detail = new GradeSchemeDetail();
         detail.setPid(pid);
-        detail.setGradeId(gradeId);
-        
+        detail.setGradeId(gradeId);        
         if (detail.getPageNo() == null)
         	detail.setPageNo(1);
         detail.setPageSize(Constants.DEFAULT_PAGE_SIZE);
@@ -139,6 +137,39 @@ public class CasedetailAction extends SystemAction {
             ex.printStackTrace();
         }
         return js;
+    	/*JsonResult<GradeSchemeDetail> js = new JsonResult<GradeSchemeDetail>();
+        js.setCode(new Integer(1));
+        js.setMessage("获取数据失败!");
+        GradeSchemeDetail detail = new GradeSchemeDetail();            
+        if (detail.getPageNo() == null)
+        	detail.setPageNo(1);
+        detail.setPageSize(Constants.DEFAULT_PAGE_SIZE);        
+        try{
+            List<GradeSchemeDetail> lc = gradeSchemeDetailService.getGradeSchemeDetailList(detail);
+            int totalCount = gradeSchemeDetailService.getGradeSchemeDetailCount(detail);
+            List<GradeSchemeDetail> deylist=new ArrayList<GradeSchemeDetail>();
+            String thisPath=pid+".";
+            String substring = null;
+            for(GradeSchemeDetail c : lc){
+            	if(c.getPath().length()>=3){
+            		substring = c.getPath().substring(0, thisPath.length());
+            	}
+                if(c.getPid() == pid ){
+                	deylist.add(c);
+                }else if(thisPath.equals(substring)){
+                	deylist.add(c);
+                }
+            }            
+            detail.setTotalCount(totalCount);
+            js.setObj(detail);
+            js.setCode(0);
+            js.setList(deylist);
+            js.setMessage("获取数据成功!");
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return js;*/
     }
     
     /**
@@ -218,11 +249,9 @@ public class CasedetailAction extends SystemAction {
 			// 如为新增，则给id置0
 			if (detail.getId() == null || detail.getId() == 0) {
 				detail.setId(0);
-				detail.setLevel(1);
-				detail.setPath("");
+				detail.setLevel(1);				
 				detail.setLeafed(1);
 			}
-
 			GradeSchemeDetail gsd = new GradeSchemeDetail();
 			gsd.setId(detail.getId());
 			gsd.setName(detail.getName());

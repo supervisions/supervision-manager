@@ -89,8 +89,7 @@ public class SupportAction extends SystemAction {
 			item.setPageNo(1);
 		}		
 		item.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-		int totalCount = 0;
-		totalCount=itemService.getItemCount(item);
+		int totalCount = 0;		
 		item.setTotalCount(totalCount);
 		//获取项目分类的集合		
 		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_PROJECT_KEY);
@@ -106,16 +105,20 @@ public class SupportAction extends SystemAction {
 		if(organ.getOrgtype()==Constants.ORG_TYPE_1 ||Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
 			//成都分行监察室和超级管理员加载所有的中支立项项目
 			//itemList=itemService.getItemList(item);
+			item.setItemType(Constants.STATIC_ITEM_TYPE_MANAGE);
 			item.setOrgTypeA(Constants.ORG_TYPE_3);
 			item.setOrgTypeB(Constants.ORG_TYPE_4);
 			itemList=itemService.getItemListByOrgType(item);
+			totalCount=itemService.getItemCountZZLXALL(item);
 		}else{
 			//当前登录机构只加载当前登录中支立的项目和子机构完成的项目
+			item.setItemType(Constants.STATIC_ITEM_TYPE_MANAGE);
 			item.setOrgTypeA(Constants.ORG_TYPE_3);
 			item.setOrgTypeB(Constants.ORG_TYPE_4);
 			item.setSupervisionOrgId(logUserOrg);
 			item.setPreparerOrgId(logUserOrg);
 			itemList=itemService.getItemListByOrgTypeAndLogOrg(item);
+			totalCount=itemService.getItemCountZZLX(item);
 		}		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		for (Item it : itemList) {
@@ -123,6 +126,7 @@ public class SupportAction extends SystemAction {
 			String format = formatter.format(preparerTime);
 			it.setShowDate(format); 
 		}
+		item.setTotalCount(totalCount);
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item);
 		request.setAttribute("UserOrgId", logUserOrg);

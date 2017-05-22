@@ -217,7 +217,7 @@ public class HomeController extends SystemAction {
                 }else{
                     ((User)res.getResultObject()).setSelectedChildMenu(((FunctionMenu)lf.get(0)).getId().intValue());
                 }
-                setLoginUser(u);
+                setLoginUser(u);  /////
                 json.setCode(Constants.RESULT_SUCCESS);
                 json.setMessage("登录成功!");
             } else {

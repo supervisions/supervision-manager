@@ -64,8 +64,7 @@ function deleteItem(id,name){
 				url : "jsondeleteItemById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
-				success : function(data) { 	
-					alert(data.code);								
+				success : function(data) {											
 		  			if(data.code == 0){ 
 		  				$.messager.alert('操作信息',data.message,'info',function(){ 
 		  					search();  
@@ -102,7 +101,7 @@ function authorizeResource(id,name){
 				<input id="toAname" type="hidden" name="name" value="">
 			</form>
 			<form id="taskForm" name="taskForm"
-				action="roleList.do" method="get">
+				action="incorruptList.do" method="get">
 				<div class=pd10>
 					<div class="fl">  
 						<span>条件查询：</span>
@@ -126,7 +125,7 @@ function authorizeResource(id,name){
 					<th width="4%" style="display:none">&nbsp;</th>
 					<th>立项情况</th>
 					<th>状态</th>	
-					<th>工作事项</th>	
+					<!-- <th>工作事项</th>	 -->
 					<th>查看</th>	
 					<th>项目类别</th>	
 					<th>项目名称</th>	
@@ -161,9 +160,9 @@ function authorizeResource(id,name){
 								<span>完结</span>
 							</c:if>
 						</td>
-						<td>${item.name}</td>
+						<%-- <td>${item.name}</td> --%>
 						<td><a href="">查看</a></td>
-						<td></td>
+						<td>${item.itemCategory }</td>
 						<td>${item.name}</td>
 						<td>${item.orgName}</td>
 						<td><a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a></td>

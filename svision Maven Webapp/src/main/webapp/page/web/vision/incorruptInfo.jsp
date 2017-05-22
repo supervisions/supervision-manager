@@ -238,12 +238,11 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" height="50px">项目类别：</td>
 							<td colspan="3">
-								<select id="" name="" style="width:289px;height:28px;">
-									<option value="-1">请选择项目类别</option>								
-									<option value="0">重大问题决策</option>
-									<option value="1">重要干部任免</option>
-									<option value="2">重大项目投资决策</option>
-									<option value="3">大额资金使用</option>
+								<select id="" name="superItemType" style="width:289px;height:28px;">
+									<option value="-1">==请选择项目类别==</option>	
+									<c:forEach var="item" items="${meatListByKey }">
+										<option value="${item.id }">${item.name }</option>
+									</c:forEach>																
 								</select> 
 								<span style="color:red">*</span>
 							    规定完成时间：<input type="text" name="end_time" value="" id="datepicker" style="width:258px;height:22px;">

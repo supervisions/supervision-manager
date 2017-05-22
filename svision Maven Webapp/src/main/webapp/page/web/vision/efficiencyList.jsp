@@ -209,7 +209,7 @@ function setProject(id){
 								<span>未完结</span>
 							</c:if>
 						</td>
-						<td></td>
+						<td>${item.showDate}</td>
 						<td></td>
 						<td><a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a></td>
 					</tr>

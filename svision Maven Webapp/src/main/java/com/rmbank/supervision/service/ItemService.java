@@ -65,4 +65,31 @@ public interface ItemService {
 	 * @return
 	 */
 	List<Item> getItemListByFHLXZZWC(Item item);
+	
+	//实时监察模块的分页
+	int getItemCountBySSJC(Item item);
+
+	//查询所有中支立项的条数
+	int getItemCountZZLXALL(Item item);
+	
+	/**
+	 * 查询当前登录机构的中支立项记录数
+	 * @param item
+	 * @return
+	 */
+	int getItemCountZZLX(Item item);
+
+	/**
+	 * 获取当前登录用户的项目
+	 * @param item
+	 * @return
+	 */
+	List<Item> getItemListByTypeAndLogOrg(Item item); 
+	
+	/**
+	 * 实时监察模块当前用户的记录数
+	 * @param item
+	 * @return
+	 */
+	int getItemCountByLogOrgSSJC(Item item);
 } 

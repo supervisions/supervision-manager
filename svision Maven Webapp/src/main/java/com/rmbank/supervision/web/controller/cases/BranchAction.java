@@ -128,7 +128,7 @@ public class BranchAction extends SystemAction {
 	}
 
 	/**
-	 * 分行立项列表
+	 * 分行立项中支完成列表
 	 * @param request
 	 * @param response
 	 * @return
