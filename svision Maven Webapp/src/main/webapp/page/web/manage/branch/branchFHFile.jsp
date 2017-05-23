@@ -58,7 +58,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <%--///////////////////--%>
 
 <script type="text/javascript">
-	$(document).ready(function(){	  
+	$(document).ready(function(){	    
 	 	 	var len=32;//32长度
             var radix=16;//16进制
             var chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
@@ -139,21 +139,18 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             uploader.bind('UploadComplete',function(uploader,files){
                 if(null != files && files.length>0){ 
                 	$("#dialog").dialog({
-					    bgiframe: true,
-					    resizable: false,
-					    message: "文件上传成功"+uploader.total.uploaded+"个,失败:"+uploader.total.failed+"个",
-					    height:140,
-					    modal: true,
-					    overlay: {
-					        backgroundColor: '#000',
-					        opacity: 0.5
-					    },
-					    buttons: {
-					        '确定': function() {					        	
-					            window.location.href = "<%=basePath%>manage/support/supportList.do";
-					        }
-					    }
-					}); 
+				      resizable: false,
+				      height:150,
+				      modal: true,
+				      open: function (event, ui) {
+		                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+		              },
+				      buttons: {
+				        "确定": function() {
+				          window.location.href='<%=basePath%>manage/branch/branchFHList.do';
+				        } 
+				      }
+				    });
                 }
             });
             $("#uploader_browse").removeAttr("style");
@@ -166,7 +163,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
         $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
-	        url: "<%=basePath%>manage/branch/jsonSaveOrUpdateFileItem.do?s="+tuuid,
+	        url: "<%=basePath%>manage/branch/jsonSaveOrUpdateFileItem.do?s=1"+tuuid,
 	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 	        async: true, //发送异步请求	  
 	        dataType:"json", //响应数据类型      
@@ -191,7 +188,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/branch/supportList.do'"></i><span>分行立项分行完成</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/branch/branchFHList.do'"></i><span>分行立项分行完成</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
@@ -207,17 +204,18 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div>
+		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
 			<form id="itemInfoForm" name="itemInfoForm" >
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<tr>
-							<td width="15%" align="right">项目名称：</td>
+							<td width="8%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label> 
 								<input type="hidden" value="0" name="id" />
                             	<input type="hidden" id="hid_uuid" name="uuid" />
                             	<input type="hidden" name="itemId" value="${Item.id }" />  
-                            	<input type="hidden" name="contentTypeId" value="${ContentTypeId }" />
+                            	<input type="hidden" name="contentTypeId" value="${tag }" />
 							</td> 
 						</tr>
 						<tr>
@@ -233,7 +231,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">立项审批表、方案：</td>
+							<td align="right" style="height:100px;">工作要求、方案：</td>
 							<td colspan="3">
 							 <label>${ItemProcess.content } </label>  
 							</td>		
@@ -242,41 +240,119 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td align="right"style="height:80px;">附件列表：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
-									<c:forEach var="fileItem" items="${FileList }">
+									<c:forEach var="fileItem" items="${ItemProcess.fileList }">
 										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 									</c:forEach> 
 									<tr><td style="border:0px;"></td><tr>
 								</table>
 							</td>		
 						</tr> 
-						<tr>
-							<td align="right" style="height:160px;">监察报告、整改建议书、整改报告、监察决定书：</td>
-							<td colspan="3">
-								 <div id="themeswitcher" class="pull-right"> </div>
-					                <script>
-					                    $(function() {
-					                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
-					                    });
-					                </script>
-					                <div id="uploader">
-					                </div>
-							 </td>	
-						</tr>
-						<tr>
-							<td align="right" style="height:120px;">跟踪监察结论：</td>
-							<td colspan="3"> 
-								 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
-							 </td>	
-						</tr>	
+						<c:if test="${tag == 32 && FileItemProcess == null}">
+							<tr>
+								<td align="right" style="height:160px;">上传资料：</td>
+								<td colspan="3">
+									 <div id="themeswitcher" class="pull-right"> </div>
+						                <script>
+						                    $(function() {
+						                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
+						                    });
+						                </script>
+						                <div id="uploader">
+						                </div>
+								 </td>	
+							</tr>
+							<tr>
+								<td align="right" style="height:120px;">上传文件说明：</td>
+								<td colspan="3"> 
+									 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
+								 </td>	
+							</tr>	
+						</c:if>
+						<c:if test="${tag == 32 && FileItemProcess != null}">
+							<tr>
+								<td align="right" style="height:100px;">上传文件说明：</td>
+								<td colspan="3">
+									<label>${FileItemProcess.content } </label> 
+								</td>		
+							</tr> 
+							<tr>
+								<td align="right">附件列表：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${FileItemProcess.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>   
+							<tr>
+								<td align="right" style="height:120px;">监察室意见：</td>
+								<td colspan="3"> 
+									 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
+								 </td>	
+							</tr>	
+							<tr>
+								<td align="right" style="height:120px;">是否完结：</td>
+								<td colspan="3"> 
+									<label><input type="radio" name="isOver" value="1" checked="checked" />完结</label>
+									<label><input type="radio" name="isOver" value="0" />未完结</label> 
+								 </td>	
+							</tr> 
+						</c:if>
+						<c:if test="${tag == 34 }">
+							<tr>
+								<td align="right" style="height:100px;">上传文件说明：</td>
+								<td colspan="3">
+									<label>${FileItemProcess.content } </label> 
+								</td>		
+							</tr> 
+							<tr>
+								<td align="right">附件列表：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${FileItemProcess.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>   
+							<tr>
+								<td align="right" style="height:120px;">监察室意见：</td>
+								<td colspan="3"> 
+									 <textarea rows="5" cols="5" style="width:60%;" >${ChangeItemProcess.content }</textarea>			 
+								 </td>	
+							</tr>	
+							 <tr>
+								<td align="right" style="height:160px;">整改资料：</td>
+								<td colspan="3">
+									 <div id="themeswitcher" class="pull-right"> </div>
+						                <script>
+						                    $(function() {
+						                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
+						                    });
+						                </script>
+						                <div id="uploader">
+						                </div>
+								 </td>	
+							</tr>
+							<tr>
+								<td align="right" style="height:120px;">整改情况：</td>
+								<td colspan="3"> 
+									 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
+								 </td>	
+							</tr>
+						</c:if>
 					</table>
 				</div>
 			</form>
+		</div> 
 		</div> 
 	
 	<div class="cl"></div>
 </div>
 <div class="cl"></div>
 </div>
-<div id="dialog"></div>
 </body>
 </html>  

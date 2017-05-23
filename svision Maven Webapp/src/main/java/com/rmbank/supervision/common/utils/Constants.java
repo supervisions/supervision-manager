@@ -82,6 +82,11 @@ public class Constants
   public static final Integer CONTENT_TYPE_ID_4= 34; 
   public static final Integer CONTENT_TYPE_ID_5= 35;  
   
+  
+  public static final Integer SUPERVISION_TYPE_ID_XL = 2;
+  public static final Integer SUPERVISION_TYPE_ID_LZ = 3;  
+  public static final Integer SUPERVISION_TYPE_ID_ZF = 4;
+  
 
   //分行立项，中支完成项目进行流程
   public static final Integer CONTENT_TYPE_ID_FHZZ= 54;  
@@ -92,7 +97,9 @@ public class Constants
   
   public static final Integer IS_VALUE = 1;
   public static final Integer NOT_VALUE = 0;
-  
+
+  public static final Integer IS_OVER = 1;
+  public static final Integer NOT_OVER = 0;
   
   
   public static final Integer ITEM_STATUS_NEW =0; 
@@ -103,8 +110,6 @@ public class Constants
   
   
   
-  public static final Integer EFFICIENCY_VISION_1=66;
-  
-  
+  public static final Integer EFFICIENCY_VISION_1=66; 
   
 }

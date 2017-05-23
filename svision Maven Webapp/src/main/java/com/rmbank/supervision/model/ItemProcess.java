@@ -25,6 +25,8 @@ public class ItemProcess {
     private Integer preparerOrgId;
 
     private Integer preparerId;
+    
+    
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date preparerTime;
@@ -35,6 +37,12 @@ public class ItemProcess {
      * 定义是否量化字段， 只用作前台使用；
      */
     private Integer isValue;
+    
+
+    /**
+     * 定义是否完结，跟踪字段， 只用作前台使用；
+     */
+    private Integer isOver;
     
     /**
      * 量化选择模型
@@ -173,5 +181,13 @@ public class ItemProcess {
 
 	public void setValueTypeId(Integer valueTypeId) {
 		this.valueTypeId = valueTypeId;
+	}
+
+	public Integer getIsOver() {
+		return isOver;
+	}
+
+	public void setIsOver(Integer isOver) {
+		this.isOver = isOver;
 	}
 }

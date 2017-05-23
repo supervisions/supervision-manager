@@ -68,6 +68,17 @@ public class ItemServiceimpl implements ItemService {
 	@Override
 	public boolean saveOrUpdateItem(Item item, Integer[] orgIds,String content) {
 		boolean isSuccess = false;
+		int contentType = Constants.CONTENT_TYPE_ID_1;
+		if(item.getItemType() == Constants.STATIC_ITEM_TYPE_SVISION)
+		{
+			if(item.getSupervisionTypeId() == Constants.SUPERVISION_TYPE_ID_XL){
+				contentType = 66;
+			}else if(item.getSupervisionTypeId() == Constants.SUPERVISION_TYPE_ID_LZ){
+				contentType = 72;
+			}else if(item.getSupervisionTypeId() == Constants.SUPERVISION_TYPE_ID_ZF){
+				contentType = 79;
+			}
+		}
 		try{	
 			//新增项目成功后返回的itemId的集合 
 			List<Integer> itemId=new ArrayList<Integer>(); 
@@ -88,7 +99,7 @@ public class ItemServiceimpl implements ItemService {
 				itemProcess.setContent(content);
 				itemProcess.setOrgId(orgIds[i]);
 				i ++;
-				itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_1);
+				itemProcess.setContentTypeId(contentType);
 				itemProcess.setPreparerTime(new Date());
 				itemProcess.setPreparerId(item.getPreparerId());
 				itemProcess.setPreparerOrgId(item.getPreparerOrgId());

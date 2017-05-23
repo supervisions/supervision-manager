@@ -33,6 +33,10 @@ public class Item extends Page {
     
     private Integer isValue;
     
+    private Integer tag;
+    
+    private Integer lasgTag;
+    
     //自定义字段供sql查询使用，机构类型A
     private Integer orgTypeA;
     //自定义字段供sql查询使用，机构类型B
@@ -293,5 +297,21 @@ public class Item extends Page {
 
 	public void setItemCategory(String itemCategory) {
 		this.itemCategory = itemCategory;
+	}
+
+	public Integer getTag() {
+		return tag;
+	}
+
+	public void setTag(Integer tag) {
+		this.tag = tag;
+	}
+
+	public Integer getLasgTag() {
+		return lasgTag;
+	}
+
+	public void setLasgTag(Integer lasgTag) {
+		this.lasgTag = lasgTag;
 	}
 }

@@ -71,7 +71,38 @@ function deleteItem(id,name){
 			});
 	    }  
 	}); 
+}
+
+function followItem(id,name){
+	$.messager.confirm("跟踪确认","确认跟踪项目："+name+"?",function(r){  
+		    if (r){   
+				followAction(id,0);
+	    	}else{
+	    		$.messager.confirm("跟踪确认","确认不跟踪项目："+name+"，完成当前项目的监察?",function(r){  
+		    		if (r){   
+			    		followAction(id,1);
+		    		}
+				}); 
+		    		
+	    	}
+	}); 
 } 
+ function followAction(itemId,status){
+	$.ajax({
+		url : "<%=basePath%>manage/branch/jsonfollowItemById.do?id="+itemId+"&isOver="+status,
+		type : "post",  
+    	dataType : "json",								
+		success : function(data) { 									
+  			if(data.code == 0){ 
+  				$.messager.alert('操作信息',data.message,'info',function(){ 
+  					search();  
+      			});
+  			}else{		  			    
+				$.messager.alert('错误信息','删除失败！','error');
+  			}  
+	    } 
+	});
+ }
 </script>
 </head>
 
@@ -137,7 +168,7 @@ function deleteItem(id,name){
 					<c:forEach var="item" items="${itemList}">
 						<tr>
 							<td align="center" style="display:none">${item.id}</td>
-							<td><a style="color: blue;" >${item.name}</a></td>
+							<td><a style="color: blue;" onclick="window.location.href='<%=basePath %>manage/branch/branchFHView.do?id=${item.id}'">${item.name}</a></td>
 							<td>${item.sType}</td>
 							<td>${item.showDate}</td> 
 							<td>${item.preparerOrg}</td>
@@ -153,7 +184,20 @@ function deleteItem(id,name){
 											 【已完结】 
 										</c:if>
 										<c:if test="item.status != 4"> --%>
-											<a style="color: blue;"  >上传资料</a>
+										<c:if test="${item.lasgTag == 31 }">
+											<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >上传资料</a>
+										</c:if>
+										<c:if test="${item.lasgTag == 32 }">
+											<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >监察结论</a>
+										</c:if>
+											
+										<c:if test="${item.lasgTag == 33 }">
+											<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=34'" >录入整改情况</a>
+										</c:if>
+											
+										<c:if test="${item.lasgTag == 34 }">
+											<a style="color: blue;" onclick="followItem(${item.id},'${item.name}')" >跟踪处理</a>
+										</c:if>
 										<%-- </c:if>
 									</c:if>									
 								</c:if>	 --%>

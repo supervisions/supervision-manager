@@ -133,7 +133,14 @@ public class BranchAction extends SystemAction {
 			Date preparerTime = it.getPreparerTime();
 			String format = formatter.format(preparerTime);
 			it.setShowDate(format);
+			List<ItemProcess> itemprocessList = itemProcessService.getItemProcessItemId(it.getId());
+			if(itemprocessList.size()>0){
+				ItemProcess lastItem = itemprocessList.get(itemprocessList.size()-1);
+				it.setLasgTag(lastItem.getContentTypeId());
+			}
 		}
+		
+		
 		request.setAttribute("logUserOrg", logUserOrg);
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item); 
@@ -310,28 +317,37 @@ public class BranchAction extends SystemAction {
 	@RequiresPermissions("manage/branch/branchFHFile.do")
 	public String branchFHFile(Item item,
 			HttpServletRequest request, HttpServletResponse response){
- 
+		int tag = item.getTag();
 		item = itemService.selectByPrimaryKey(item.getId());
 		if(item.getPreparerTime() != null){
 			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
 		}
-		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
-		ItemProcess itemProcess = new ItemProcess();
-		if(itemProcessList.size()>0){
-			itemProcess = itemProcessList.get(0); 
-		}
-		
-		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
-		if(itemProcess.getId() != null){
-			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId());  
+
+		if(itemProcessList.size()>0){ 
+			for(ItemProcess ip : itemProcessList){  
+				List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+				fileList = itemProcessFileService.getFileListByItemId(ip.getId());
+				ip.setFileList(fileList);  
+				if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_1){
+					request.setAttribute("ItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_2){
+					request.setAttribute("FileItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_3){
+					request.setAttribute("ChangeItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_4){
+					request.setAttribute("FollowItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_5){
+					request.setAttribute("OverItemProcess", ip);
+				}
+			}
 		}
 		//获取当前用户
 		User lgUser=this.getLoginUser(); 
 		   
-		request.setAttribute("User", lgUser); 
-		request.setAttribute("ItemProcess", itemProcess);
-		request.setAttribute("Item", item);
-		request.setAttribute("FileList", fileList);
+		request.setAttribute("User", lgUser);  
+		request.setAttribute("tag", tag);
+		request.setAttribute("Item", item); 
 		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
 		return "web/manage/branch/branchFHFile";
 	}
@@ -386,23 +402,31 @@ public class BranchAction extends SystemAction {
 		if(item.getPreparerTime() != null){
 			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
 		}
-		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
-		ItemProcess itemProcess = new ItemProcess();
-		if(itemProcessList.size()>0){
-			itemProcess = itemProcessList.get(0); 
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId());  
+		if(itemProcessList.size()>0){ 
+			for(ItemProcess ip : itemProcessList){  
+				List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+				fileList = itemProcessFileService.getFileListByItemId(ip.getId());
+				ip.setFileList(fileList);  
+				if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_1){
+					request.setAttribute("ItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_2){
+					request.setAttribute("FileItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_3){
+					request.setAttribute("ChangeItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_4){
+					request.setAttribute("FollowItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_5){
+					request.setAttribute("OverItemProcess", ip);
+				}
+			}
 		}
 		
-		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
-		if(itemProcess.getId() != null){
-			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
-		}
 		//获取当前用户
 		User lgUser=this.getLoginUser(); 
 		   
-		request.setAttribute("User", lgUser); 
-		request.setAttribute("ItemProcess", itemProcess);
-		request.setAttribute("Item", item);
-		request.setAttribute("FileList", fileList);
+		request.setAttribute("User", lgUser);  
+		request.setAttribute("Item", item); 
 		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
 		return "web/manage/branch/branchFHViewForm";
 	}
@@ -517,7 +541,7 @@ public class BranchAction extends SystemAction {
      
      
 	/** 
-	 * 新增,编辑项目
+	 * 上传资料
 	 * @throws ParseException 
 	 * @throws UnsupportedEncodingException 
 	 */
@@ -528,7 +552,7 @@ public class BranchAction extends SystemAction {
             @RequestParam(value = "s", required = true) String uuid,ItemProcess itemProcess, 
     		HttpServletRequest request, HttpServletResponse response) throws ParseException, UnsupportedEncodingException{
     	//新建一个json对象 并赋初值
-		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>(); 
 		uuid = URLDecoder.decode(uuid,"utf-8");
     	//获取当前登录用户
     	User u = this.getLoginUser(); 
@@ -542,18 +566,26 @@ public class BranchAction extends SystemAction {
 	    	itemProcess.setPreparerId(u.getId());
 	    	itemProcess.setPreparerTime(new Date());
 			itemProcess.setDefined(false); 
+			if(itemProcess.getIsOver() != null){ 
+				if(itemProcess.getIsOver() == Constants.IS_OVER){
+					itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_5);  
+					Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+					if(item != null){
+						item.setEndTime(new Date());
+						item.setStatus(Constants.ITEM_STATUS_OVER);
+						itemService.updateByPrimaryKeySelective(item);
+					} 
+					js.setMessage("监察过程处理成功，完整分行立项中支完成项目"); 
+				}else{
+					itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_3);
+					js.setMessage("监察过程处理成功，完整分行立项中支完成项目"); 
+				} 
+			}else{ 
+				js.setMessage("监察过程处理成功，完整分行立项中支完成项目"); 
+			} 
+
 			itemProcessService.insert(itemProcess);
-			
-			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-			if(item != null){
-				item.setEndTime(new Date());
-				item.setStatus(Constants.ITEM_STATUS_OVER);
-				itemService.updateByPrimaryKeySelective(item);
-			}
-			
-			
 			js.setCode(0);
-			js.setMessage("上传资料成功，完整分行立项中支完成项目"); 
 		}catch(Exception ex){
 			js.setMessage("保存数据出错!");
 			ex.printStackTrace();
