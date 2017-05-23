@@ -106,7 +106,7 @@ public class EnforcementVisionAction extends SystemAction{
 		item.setTotalCount(totalCount);
 		request.setAttribute("Item", item);
 		request.setAttribute("itemList", itemList);
-		return "web/vision/enforceList";
+		return "web/vision/enforce/enforceList";
 	}
 	
 
@@ -151,7 +151,7 @@ public class EnforcementVisionAction extends SystemAction{
 		request.setAttribute("meatListByKey", meatListByKey);
 		request.setAttribute("byLgUser", byLgUser);
 		request.setAttribute("OrgList", list);	
-		return "web/vision/enforceInfo";
+		return "web/vision/enforce/enforceInfo";
 	}
     /** 
    	 * 新增,编辑项目

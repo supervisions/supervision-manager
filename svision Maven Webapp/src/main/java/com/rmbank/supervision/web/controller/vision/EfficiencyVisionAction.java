@@ -24,11 +24,13 @@ import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.model.Item;
 import com.rmbank.supervision.model.ItemProcess;
+import com.rmbank.supervision.model.ItemProcessFile;
 import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.OrganVM;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ConfigService;
+import com.rmbank.supervision.service.ItemProcessFileService;
 import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
@@ -54,7 +56,9 @@ public class EfficiencyVisionAction extends SystemAction {
 	private OrganService organService;
 	@Resource
 	private ItemProcessService itemProcessService;
-		
+	@Resource
+	private ItemProcessFileService itemProcessFileService;
+	
 	/**
      * 效能监察列表展示
      *
@@ -103,9 +107,7 @@ public class EfficiencyVisionAction extends SystemAction {
 				itemList = itemService.getItemListByTypeAndLogOrg(item);
 				// 取满足要求的记录总数
 				totalCount = itemService.getItemCountByLogOrgSSJC(item); //实时监察分页
-			}
-			
-			
+			}			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -120,7 +122,7 @@ public class EfficiencyVisionAction extends SystemAction {
 		request.setAttribute("Item", item);
 		request.setAttribute("userOrg", userOrg);
 		request.setAttribute("itemList", itemList);
-    	return "web/vision/efficiencyList";
+    	return "web/vision/efficiency/efficiencyList";
     }
     
     /**
@@ -162,7 +164,7 @@ public class EfficiencyVisionAction extends SystemAction {
 		List<User> byLgUser = userService.getUserListByLgUser(lgUser);		
 		request.setAttribute("byLgUser", byLgUser);
 		request.setAttribute("OrgList", list);		
-		return "web/vision/efficiencyInfo";
+		return "web/vision/efficiency/efficiencyInfo";
 	}
     
     /** 
@@ -228,10 +230,11 @@ public class EfficiencyVisionAction extends SystemAction {
 	return js;
    }
    
+   
    /**
     * 被监察对象签收项目
     */
-   @ResponseBody
+    @ResponseBody
 	@RequestMapping(value = "/jsonSignItemById.do", method = RequestMethod.POST)
 	@RequiresPermissions("vision/efficiency/jsonSignItemById.do")
 	public JsonResult<Item> jsonSignItemById(
@@ -242,12 +245,11 @@ public class EfficiencyVisionAction extends SystemAction {
 		JsonResult<Item> js = new JsonResult<Item>();
 		js.setCode(new Integer(1));
 		js.setMessage("签收项目失败!");			
-		try {	
-					
+		try {					
 			boolean state = itemProcessService.insertItemProcessByItemId(itemId);
 			if(state==true){
 				js.setCode(new Integer(0));
-				js.setMessage("签收项目失败成功!");
+				js.setMessage("签收项目成功!");
 				return js;
 			}else {
 				return js;
@@ -323,6 +325,79 @@ public class EfficiencyVisionAction extends SystemAction {
 			e.printStackTrace();
 		}		
 		return js;
-
 	}
+    
+    /**
+     * 跳转到不分节点监察上传资料
+     * @param item
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/efficiencyNoFile.do")
+	@RequiresPermissions("vision/efficiency/efficiencyNoFile.do")
+	public String branchFHFile(@RequestParam(value="id",required=false) Integer id,
+			HttpServletRequest request, HttpServletResponse response){
+ 
+    	Item item = itemService.selectByPrimaryKey(id);
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+		ItemProcess itemProcess = new ItemProcess();
+		if(itemProcessList.size()>0){
+			itemProcess = itemProcessList.get(0); 
+		}
+		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+		if(itemProcess.getId() != null){
+			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
+		}
+		//获取当前用户
+		User lgUser=this.getLoginUser(); 
+		   
+		request.setAttribute("User", lgUser); 
+		request.setAttribute("ItemProcess", itemProcess);
+		request.setAttribute("Item", item);
+		request.setAttribute("FileList", fileList);		
+		return "web/vision/efficiency/efficiencyNoFile";
+	}
+    
+    /**
+     * 不分节点上传资料
+     */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveOrUpdateItemProcess.do", method=RequestMethod.POST)
+    @RequiresPermissions("vision/efficiency/jsonSaveOrUpdateItemProcess.do")
+    public JsonResult<ItemProcess> jsonSaveOrUpdateFileItem(ItemProcess itemProcess, 
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_2);//被监察对象上传资料
+			itemProcessService.insert(itemProcess);			
+			/*Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			if(item != null){
+				//item.setEndTime(new Date());
+				item.setStatus(Constants.ITEM_STATUS_OVER);
+				itemService.updateByPrimaryKeySelective(item);
+			}*/		
+			js.setCode(0);
+			js.setMessage("上传资料成功!"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
 }
