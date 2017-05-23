@@ -48,8 +48,8 @@ function search(){
 }
 
 function pagesearch(){
-	if ($('#DeviceForm').form('validate')) {
-		DeviceForm.submit();
+	if ($('#organForm').form('validate')) {
+		organForm.submit();
 	}  
 }
 function deleteItem(id,name){
@@ -85,7 +85,7 @@ function deleteItem(id,name){
 		</div>
 		<div class="fl yw-lump mt10">
 			<form id="organForm" name="organForm"
-				action="organList.do" method="get">
+				action="branchFHList.do" method="get">
 				<div class="pd10-28">
 					<div class="fl">
 						 <button class="yw-btn bg-blue cur">项目列表</button>  

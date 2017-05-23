@@ -21,6 +21,11 @@ public class User extends Page{
     
     private String roleName;
     
+    private boolean isSupervision; //是否监察部门
+    
+    private boolean isBranch; //是否分行机构
+    
+    
     private boolean rememberMe;
 
     private int selectedMainMemu;
@@ -153,5 +158,21 @@ public class User extends Page{
 
 	public void setOrgName(String orgName) {
 		this.orgName = orgName;
+	}
+
+	public boolean getIsSupervision() {
+		return isSupervision;
+	}
+
+	public void setIsSupervision(boolean isSupervision) {
+		this.isSupervision = isSupervision;
+	}
+
+	public boolean getIsBranch() {
+		return isBranch;
+	}
+
+	public void setIsBranch(boolean isBranch) {
+		this.isBranch = isBranch;
 	}
 }

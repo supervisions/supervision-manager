@@ -89,6 +89,48 @@ public interface ItemMapper {
 	 * @param item
 	 * @return
 	 */
-	List<Item> getItemListByTypeAndLogOrg(Item item); 
+	List<Item> getItemListByTypeAndLogOrg(Item item);
+
+	/**
+	 * 根据登录机构加载分行立项分行完成数据
+	 * @param item
+	 * @return
+	 */
+	List<Item> getItemListByLogOrgFHLXFHWC(Item item);
+
+	/**
+	 * 所有分行立项分行完成的项目
+	 * @param item
+	 * @return
+	 */
+	int getItemCountByFHLXFHWC(Item item);
+
+	/**
+	 * 根据登录机构查询分行立项分行完成的记录
+	 * @param item
+	 * @return
+	 */
+	int getItemCountByLogOrgFHLXFHWC(Item item);
+
+	/**
+	 * 根据登录机构查询分行立项中支完成的记录
+	 * @param item
+	 * @return
+	 */
+	List<Item> getItemListByLogOrgFHLXZZWC(Item item);
+
+	/**
+	 * 获取所有分行立项中支完成的记录数
+	 * @param item
+	 * @return
+	 */
+	int getItemCountByFHLXZZWCALL(Item item);
+
+	/**
+	 * 根据当前登录机构获取分行立项中支完成的记录数
+	 * @param item
+	 * @return
+	 */
+	int getItemCountByLogOrgFHLXZZWC(Item item); 
 	
 }

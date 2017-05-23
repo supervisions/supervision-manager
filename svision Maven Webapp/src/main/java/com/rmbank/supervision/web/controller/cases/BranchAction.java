@@ -92,8 +92,7 @@ public class BranchAction extends SystemAction {
 		} 
 		item.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 		int totalCount = 0;
-		totalCount=itemService.getItemCount(item);
-		item.setTotalCount(totalCount);
+		
 		//获取项目分类的集合,用于搜索条件		
 		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_PROJECT_KEY);
 		request.setAttribute("meatListByKey", meatListByKey);
@@ -104,16 +103,32 @@ public class BranchAction extends SystemAction {
 		Integer logUserOrg = userOrgByUserId.get(0).getId(); //当前登录用户所属的机构ID
 		Organ organ = userOrgByUserId.get(0);
 		//获取项目列表,根据不同的机构类型加载不同的项目
-		List<Item> itemList =null; 
-	 
-		//分行立项分行完成
-		item.setSupervisionOrgId(logUserOrg); //完成机构
-		item.setPreparerOrgId(logUserOrg);    //立项机构
-		item.setOrgTypeA(Constants.ORG_TYPE_1);
-		item.setOrgTypeB(Constants.ORG_TYPE_2);
-		item.setOrgTypeC(Constants.ORG_TYPE_3);
-		item.setOrgTypeD(Constants.ORG_TYPE_4);
-		itemList=itemService.getItemListByFHLXFHWC(item); 
+		List<Item> itemList =null;
+		//成都分行和超级管理员加载所有项目
+		if(organ.getOrgtype()==Constants.ORG_TYPE_1 ||Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
+			//分行立项分行完成
+			item.setSupervisionOrgId(logUserOrg); //完成机构
+			item.setPreparerOrgId(logUserOrg);    //立项机构
+			item.setOrgTypeA(Constants.ORG_TYPE_1);
+			item.setOrgTypeB(Constants.ORG_TYPE_2);
+			item.setOrgTypeC(Constants.ORG_TYPE_3);
+			item.setOrgTypeD(Constants.ORG_TYPE_4);
+			itemList=itemService.getItemListByFHLXFHWC(item); 
+			totalCount=itemService.getItemCountByFHLXFHWC(item);
+			item.setTotalCount(totalCount);
+		}else{
+			//分行立项分行完成
+			item.setSupervisionOrgId(logUserOrg); //完成机构
+			item.setPreparerOrgId(logUserOrg);    //立项机构
+			item.setOrgTypeA(Constants.ORG_TYPE_1);
+			item.setOrgTypeB(Constants.ORG_TYPE_2);
+			item.setOrgTypeC(Constants.ORG_TYPE_3);
+			item.setOrgTypeD(Constants.ORG_TYPE_4);
+			itemList=itemService.getItemListByLogOrgFHLXFHWC(item); 
+			totalCount=itemService.getItemCountByLogOrgFHLXFHWC(item);
+			item.setTotalCount(totalCount);
+		}
+		
 		 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		for (Item it : itemList) {
@@ -148,8 +163,7 @@ public class BranchAction extends SystemAction {
 		} 
 		item.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 		int totalCount = 0;
-		totalCount=itemService.getItemCount(item);
-		item.setTotalCount(totalCount);
+		
 		//获取项目分类的集合,用于搜索条件		
 		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_PROJECT_KEY);
 		request.setAttribute("meatListByKey", meatListByKey);
@@ -161,16 +175,29 @@ public class BranchAction extends SystemAction {
 		Organ organ = userOrgByUserId.get(0);
 		//获取项目列表,根据不同的机构类型加载不同的项目
 		List<Item> itemList =null; 
-		 
-		//分行立项中支完成
-		item.setSupervisionOrgId(logUserOrg); //完成机构
-		item.setPreparerOrgId(logUserOrg);    //立项机构
-		item.setOrgTypeA(Constants.ORG_TYPE_1);
-		item.setOrgTypeB(Constants.ORG_TYPE_2);
-		item.setOrgTypeC(Constants.ORG_TYPE_3);
-		item.setOrgTypeD(Constants.ORG_TYPE_4);
-		itemList=itemService.getItemListByFHLXZZWC(item); 
-		
+		if(organ.getOrgtype()==Constants.ORG_TYPE_1 ||Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
+			//分行立项中支完成
+			item.setSupervisionOrgId(logUserOrg); //完成机构
+			item.setPreparerOrgId(logUserOrg);    //立项机构
+			item.setOrgTypeA(Constants.ORG_TYPE_1);
+			item.setOrgTypeB(Constants.ORG_TYPE_2);
+			item.setOrgTypeC(Constants.ORG_TYPE_3);
+			item.setOrgTypeD(Constants.ORG_TYPE_4);
+			itemList=itemService.getItemListByFHLXZZWC(item);
+			totalCount=itemService.getItemCountByFHLXZZWCALL(item);
+			item.setTotalCount(totalCount);
+		}else{
+			//分行立项中支完成
+			item.setSupervisionOrgId(logUserOrg); //完成机构
+			item.setPreparerOrgId(logUserOrg);    //立项机构
+			item.setOrgTypeA(Constants.ORG_TYPE_1);
+			item.setOrgTypeB(Constants.ORG_TYPE_2);
+			item.setOrgTypeC(Constants.ORG_TYPE_3);
+			item.setOrgTypeD(Constants.ORG_TYPE_4);
+			itemList=itemService.getItemListByLogOrgFHLXZZWC(item);
+			totalCount=itemService.getItemCountByLogOrgFHLXZZWC(item);
+			item.setTotalCount(totalCount);
+		}
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		for (Item it : itemList) {

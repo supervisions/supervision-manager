@@ -8,6 +8,7 @@ import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.ReturnResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.model.FunctionMenu;
+import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.ResourceConfig;
 import com.rmbank.supervision.model.Role;
 import com.rmbank.supervision.model.RoleResource;
@@ -217,6 +218,20 @@ public class HomeController extends SystemAction {
                 }else{
                     ((User)res.getResultObject()).setSelectedChildMenu(((FunctionMenu)lf.get(0)).getId().intValue());
                 }
+                
+                //获取当前登录用户的机构
+                List<Organ> userOrgByUserId = userService.getUserOrgByUserId(u.getId());
+                Organ organ = userOrgByUserId.get(0);
+                if(organ.getSupervision()==1){
+                	u.setIsSupervision(true);
+                }else{
+                	u.setIsSupervision(false);
+                }
+                if(organ.getOrgtype()==Constants.ORG_TYPE_1 || organ.getOrgtype()==Constants.ORG_TYPE_2){
+                	u.setIsBranch(true);                	
+                }else {
+                	u.setIsBranch(false);
+				}
                 setLoginUser(u);  /////
                 json.setCode(Constants.RESULT_SUCCESS);
                 json.setMessage("登录成功!");

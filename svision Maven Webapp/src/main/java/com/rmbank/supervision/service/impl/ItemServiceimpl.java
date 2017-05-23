@@ -212,4 +212,59 @@ public class ItemServiceimpl implements ItemService {
 		return itemMapper.getItemCountByLogOrgSSJC(item);
 	}
 
+	@Override
+	public List<Item> getItemListByLogOrgFHLXFHWC(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListByLogOrgFHLXFHWC(item);
+	}
+
+	@Override
+	public int getItemCountByFHLXFHWC(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemCountByFHLXFHWC(item);
+	}
+
+	/**
+	 * 根据登录机构查询分行立项分行完成的记录
+	 * @param item
+	 * @return
+	 */
+	@Override
+	public int getItemCountByLogOrgFHLXFHWC(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemCountByLogOrgFHLXFHWC(item);
+	}
+	/**
+	 * 根据登录机构查询分行立项中支完成的记录
+	 * @param item
+	 * @return
+	 */
+	@Override
+	public List<Item> getItemListByLogOrgFHLXZZWC(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListByLogOrgFHLXZZWC(item);
+	}
+
+	/**
+	 * 获取所有分行立项中支完成的记录数
+	 * @param item
+	 * @return
+	 */
+	@Override
+	public int getItemCountByFHLXZZWCALL(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemCountByFHLXZZWCALL(item);
+	}
+
+	/**
+	 * 根据当前登录机构获取分行立项中支完成的记录数
+	 * @param item
+	 * @return
+	 */
+	@Override
+	public int getItemCountByLogOrgFHLXZZWC(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemCountByLogOrgFHLXZZWC(item);
+	}
+
 }  
