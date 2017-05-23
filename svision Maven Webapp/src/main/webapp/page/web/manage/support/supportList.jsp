@@ -163,7 +163,7 @@ function showDialogModel(id,name){
 							<td>${item.orgName}</td>
 							<td>
 								<c:if test="${item.status == 4 }">
-								【已完结】
+									【已完结】
 								</c:if>
 								<c:if test="${item.status != 4 }">
 									
@@ -173,8 +173,7 @@ function showDialogModel(id,name){
 									<c:if test="${UserOrgId == item.preparerOrgId }">
 										<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> 
 									</c:if>
-								</c:if>
-								
+								</c:if>								
 							</td>							
 						</tr>
 					</c:forEach>

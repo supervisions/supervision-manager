@@ -119,7 +119,7 @@ public class BranchAction extends SystemAction {
 		}else{
 			//分行立项分行完成
 			item.setSupervisionOrgId(logUserOrg); //完成机构
-			item.setPreparerOrgId(logUserOrg);    //立项机构
+			item.setPreparerOrgId(logUserOrg); //立项机构
 			item.setOrgTypeA(Constants.ORG_TYPE_1);
 			item.setOrgTypeB(Constants.ORG_TYPE_2);
 			item.setOrgTypeC(Constants.ORG_TYPE_3);
@@ -128,8 +128,6 @@ public class BranchAction extends SystemAction {
 			totalCount=itemService.getItemCountByLogOrgFHLXFHWC(item);
 			item.setTotalCount(totalCount);
 		}
-		
-		 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		for (Item it : itemList) {
 			Date preparerTime = it.getPreparerTime();

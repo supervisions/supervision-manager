@@ -102,4 +102,9 @@ public class Constants
   public static final Integer ITEM_STATUS_OVER =4;
   
   
+  
+  public static final Integer EFFICIENCY_VISION_1=66;
+  
+  
+  
 }

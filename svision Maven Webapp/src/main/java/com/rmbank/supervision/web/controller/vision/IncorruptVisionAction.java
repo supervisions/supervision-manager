@@ -71,15 +71,13 @@ public class IncorruptVisionAction extends SystemAction {
 		if (item.getPageNo() == null)
 			item.setPageNo(1);
 		item.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-		int totalCount = 0;
-		
+		int totalCount = 0;		
 		//获取当前登录用户
 		User loginUser = this.getLoginUser();
 		//获取当前用户对应的机构列表
 		List<Organ> userOrgList=userService.getUserOrgByUserId(loginUser.getId());
 		//获取当前用户对应的第一个机构
-		Organ userOrg=userOrgList.get(0);
-		
+		Organ userOrg=userOrgList.get(0);		
 		// 分页集合
 		List<Item> itemList = new ArrayList<Item>();
 		try {
@@ -99,8 +97,7 @@ public class IncorruptVisionAction extends SystemAction {
 				itemList = itemService.getItemListByTypeAndLogOrg(item);
 				// 取满足要求的记录总数
 				totalCount = itemService.getItemCountByLogOrgSSJC(item);
-			}
-			
+			}			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -127,8 +124,7 @@ public class IncorruptVisionAction extends SystemAction {
     	
     	//获取机构
 		Organ organ=new Organ();
-		List<Organ> organList = organService.getOrganList(organ);
-		
+		List<Organ> organList = organService.getOrganList(organ);		
     	List<OrganVM> list=new ArrayList<OrganVM>();
 		OrganVM frvm = null;
 		for(Organ rc : organList){

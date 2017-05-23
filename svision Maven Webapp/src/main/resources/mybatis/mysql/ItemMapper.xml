@@ -45,7 +45,7 @@
       #{superItemType,jdbcType=INTEGER})
      
   </insert>
-  <insert id="insertSelective" parameterType="com.rmbank.supervision.model.Item" >
+  <insert id="insertSelective" parameterType="com.rmbank.supervision.model.Item"  useGeneratedKeys="true" keyProperty="id">
     insert into t_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -556,7 +556,8 @@
   	SELECT i.*,o.name as orgName,m.name as itemCategory FROM t_item AS i
 	LEFT JOIN t_org AS o ON o.id=i.`supervision_org_id`
 	LEFT JOIN t_meta AS m ON m.id=i.`super_item_type`
-	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
+	WHERE 
+	 i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
 	and i.item_type=#{itemType,jdbcType=INTEGER}
 	and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
 	<if test="searchName != null and searchName != ''">
@@ -675,6 +676,7 @@
         limit #{pageStart}, #{pageSize}
     </if>  
   </select>
+  <!-- 根据登录机构获取分行立项中支完成的记录数 -->
   <select id="getItemCountByLogOrgFHLXZZWC"  parameterType="com.rmbank.supervision.model.Item" resultType="java.lang.Integer">
   	select count(*) from t_item as i 
   	LEFT JOIN `t_org` AS o ON o.`id`=i.`supervision_org_id` <!-- 完成机构 -->

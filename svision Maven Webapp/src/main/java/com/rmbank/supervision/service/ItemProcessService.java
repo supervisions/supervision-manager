@@ -20,4 +20,6 @@ public interface ItemProcessService {
 	List<Integer> getItemProcessIdByUuid(String uuid);
 
 	List<ItemProcess> getItemProcessItemId(Integer id);
+
+	boolean insertItemProcessByItemId(Integer itemId);
 }

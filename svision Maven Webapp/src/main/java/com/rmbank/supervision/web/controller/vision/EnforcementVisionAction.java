@@ -74,8 +74,7 @@ public class EnforcementVisionAction extends SystemAction{
 		item.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 		int totalCount = 0;
 		// 分页集合
-		List<Item> itemList = new ArrayList<Item>();
-		
+		List<Item> itemList = new ArrayList<Item>();		
 		//获取当前登录用户
 		User loginUser = this.getLoginUser();
 		//获取当前用户对应的机构列表
@@ -105,9 +104,7 @@ public class EnforcementVisionAction extends SystemAction{
 		}
 		// 通过request对象传值到前台
 		item.setTotalCount(totalCount);
-
 		request.setAttribute("Item", item);
-
 		request.setAttribute("itemList", itemList);
 		return "web/vision/enforceList";
 	}

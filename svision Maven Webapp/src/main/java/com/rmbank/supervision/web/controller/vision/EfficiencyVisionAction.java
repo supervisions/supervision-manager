@@ -23,11 +23,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.model.Item;
+import com.rmbank.supervision.model.ItemProcess;
 import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.OrganVM;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ConfigService;
+import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.UserService;
@@ -50,7 +52,8 @@ public class EfficiencyVisionAction extends SystemAction {
 	private UserService userService;
 	@Resource
 	private OrganService organService;
-	
+	@Resource
+	private ItemProcessService itemProcessService;
 		
 	/**
      * 效能监察列表展示
@@ -101,6 +104,7 @@ public class EfficiencyVisionAction extends SystemAction {
 				// 取满足要求的记录总数
 				totalCount = itemService.getItemCountByLogOrgSSJC(item); //实时监察分页
 			}
+			
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -155,12 +159,9 @@ public class EfficiencyVisionAction extends SystemAction {
 		
 		//获取当前登录用户所属机构下的所有用户
 		User lgUser = this.getLoginUser();
-		List<User> byLgUser = userService.getUserListByLgUser(lgUser);
-		
+		List<User> byLgUser = userService.getUserListByLgUser(lgUser);		
 		request.setAttribute("byLgUser", byLgUser);
-		request.setAttribute("OrgList", list);
-		
-		
+		request.setAttribute("OrgList", list);		
 		return "web/vision/efficiencyInfo";
 	}
     
@@ -226,7 +227,38 @@ public class EfficiencyVisionAction extends SystemAction {
 	}
 	return js;
    }
-
+   
+   /**
+    * 被监察对象签收项目
+    */
+   @ResponseBody
+	@RequestMapping(value = "/jsonSignItemById.do", method = RequestMethod.POST)
+	@RequiresPermissions("vision/efficiency/jsonSignItemById.do")
+	public JsonResult<Item> jsonSignItemById(
+			@RequestParam(value = "itemId", required = false) Integer itemId,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		// 新建一个json对象 并赋初值
+		JsonResult<Item> js = new JsonResult<Item>();
+		js.setCode(new Integer(1));
+		js.setMessage("签收项目失败!");			
+		try {	
+					
+			boolean state = itemProcessService.insertItemProcessByItemId(itemId);
+			if(state==true){
+				js.setCode(new Integer(0));
+				js.setMessage("签收项目失败成功!");
+				return js;
+			}else {
+				return js;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		return js;
+	}
+   
+   
     /**
      * 修改立项状态
      */
@@ -241,11 +273,9 @@ public class EfficiencyVisionAction extends SystemAction {
 		JsonResult<Item> js = new JsonResult<Item>();
 		js.setCode(new Integer(1));
 		js.setMessage("修改立项状态失败!");			
-		
 		try {		
 			Item item =new Item();
-			item.setId(id);
-			
+			item.setId(id);			
 			item.setStatus(1);
 			int state = itemService.updateByPrimaryKeySelective(item);
 			if(state==1){

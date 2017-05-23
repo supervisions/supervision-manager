@@ -104,6 +104,27 @@ function setProject(id){
 	    }  
 	}); 
 }
+function sign(itemId){
+	$.messager.confirm("签收确认","是否确认签收?",function(r){  
+		    if (r){   
+			$.ajax({
+				url : "jsonSignItemById.do?itemId="+itemId,
+				type : "post",  
+		    	dataType : "json",								
+				success : function(data) { 									
+		  			if(data.code == 0){ 
+		  				$.messager.alert('操作信息',data.message,'info',function(){ 
+		  					search();  
+		      			});
+		  			}else{		  			    
+						$.messager.alert('错误信息','删除失败！','error');
+		  			}  
+			    } 
+			});
+	    }  
+	}); 
+}
+
 </script>
 </head>
 <body>
@@ -128,10 +149,10 @@ function setProject(id){
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
 					</div>
 					<div class="fr">
-						<c:if test="${userOrg.supervision ==1 }">
-							<span class="yw-btn bg-green cur" onclick="window.location.href='efficiencyInfo.do?id=0';">添加工作事项</span>
-							
-						</c:if>
+						<%-- <c:if test="${userOrg.supervision ==1 }">
+							<span class="yw-btn bg-green cur" onclick="window.location.href='efficiencyInfo.do?id=0';">添加工作事项</span>							
+						</c:if> --%>
+						<span class="yw-btn bg-green cur" onclick="window.location.href='efficiencyInfo.do?id=0';">添加工作事项</span>
 						
 					</div>
 					<div class="cl"></div>				
@@ -145,24 +166,26 @@ function setProject(id){
 					<th width="4%" style="display:none">&nbsp;</th>
 					<th width="6%">立项情况</th>
 					<th width="4%">状态</th>	
-					<th>工作事项</th>	
-					<th width="6%">查看</th>	
-					<th>被监察对象</th>	
-					<th>签收情况</th>	
-					<th>部门完成情况</th>	
-					<th>是否完结</th>	
-					<th>规定办理时间</th>	
-					<th>状态提醒</th>
+					<th width="20%">工作事项</th>	
+					<th width="4%">查看</th>	
+					<th width="15%">被监察对象</th>	
+					<th width="6%">签收情况</th>	
+					<th width="8%">部门完成情况</th>	
+					<th width="5%">是否完结</th>	
+					<th width="10%">规定办理时间</th>	
+					<th width="6%">状态提醒</th>
 					<th>操作</th>			
 				</tr>
 				<c:forEach var="item" items="${itemList}">
 					<tr> 							
 						<td>
-							<c:if test="">
+							<c:if test="${item.status == 0 }">
 								<span style="color: red;" onclick="setProject(${item.id })">未立项</span>
 							</c:if>
-							<c:if test="">
-								<span>已立项</span>
+							<c:if test="${item.status != 0 }">
+								
+									<span>已立项</span>
+								
 							</c:if>
 						</td>
 						<td  style="color:green;">
@@ -210,8 +233,23 @@ function setProject(id){
 							</c:if>
 						</td>
 						<td>${item.showDate}</td>
-						<td></td>
-						<td><a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a></td>
+						<td>
+							<c:if test="${item.status == 3 }">
+								<span>逾期</span>
+							</c:if>
+							<c:if test="${item.status != 3 }">
+								<span>正常</span>
+							</c:if>
+						</td>
+						<td>
+							<c:if test="${userOrg.id == item.supervisionOrgId and item.status != 0 }">
+								<a style="color: blue;" onclick="sign(${item.id })">签收</a>
+							</c:if>
+							<c:if test="${item.status == 0 and userOrg.id==item.preparerOrgId}">
+								<span style="color: red;" onclick="setProject(${item.id })">立项</span>
+							</c:if>						
+							<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+						</td>
 					</tr>
 				</c:forEach>
 			</table>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.rmbank.supervision.model.ItemProcess;
 import com.rmbank.supervision.service.ItemProcessService;
+import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.dao.ItemProcessMapper;
 
 @Service("itemProcessService")
@@ -62,6 +63,23 @@ public class ItemProcessServiceimpl implements ItemProcessService{
 	public List<ItemProcess> getItemProcessItemId(Integer id) {
 		// TODO Auto-generated method stub
 		return itemProcessMapper.getItemProcessItemId(id);
+	}
+
+	@Override
+	public boolean insertItemProcessByItemId(Integer itemId) {		
+		// TODO Auto-generated method stub
+		boolean isSuccess = false;
+		try{
+			List<ItemProcess> itemProcessItemId = itemProcessMapper.getItemProcessItemId(itemId);
+			ItemProcess itemProcess = itemProcessItemId.get(0);
+			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_1);
+			itemProcess.setId(0);
+			itemProcessMapper.insertSelective(itemProcess);
+			isSuccess = true;
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return isSuccess;
 	}
 
 }
