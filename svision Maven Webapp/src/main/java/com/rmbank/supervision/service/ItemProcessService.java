@@ -5,7 +5,7 @@ import java.util.List;
 import com.rmbank.supervision.model.ItemProcess;
 
 public interface ItemProcessService {
-	 int deleteByPrimaryKey(Integer id);
+	int deleteByPrimaryKey(Integer id);
 
     int insert(ItemProcess record);
 

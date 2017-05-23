@@ -106,7 +106,7 @@ public class IncorruptVisionAction extends SystemAction {
 		request.setAttribute("Item", item);
 		request.setAttribute("userOrg", userOrg);
 		request.setAttribute("itemList", itemList);
-		return "web/vision/incorruptList";
+		return "web/vision/incorrupt/incorruptList";
 	}
 	
 	/**
@@ -150,7 +150,7 @@ public class IncorruptVisionAction extends SystemAction {
 		request.setAttribute("meatListByKey", meatListByKey);
 		request.setAttribute("byLgUser", byLgUser);
 		request.setAttribute("OrgList", list);	
-		return "web/vision/incorruptInfo";
+		return "web/vision/incorrupt/incorruptInfo";
 	}
 	 /** 
    	 * 新增,编辑项目

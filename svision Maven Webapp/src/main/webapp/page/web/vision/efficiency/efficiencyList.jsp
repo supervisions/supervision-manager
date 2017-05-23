@@ -124,7 +124,13 @@ function sign(itemId){
 	    }  
 	}); 
 }
-
+function uploadFile(id,isStept){
+	if(isStept==0){
+		window.location.href="<%=basePath%>vision/efficiency/efficiencyNoFile.do?id="+id;
+	}else{
+		window.location.href="";
+	}
+}
 </script>
 </head>
 <body>
@@ -183,9 +189,7 @@ function sign(itemId){
 								<span style="color: red;" onclick="setProject(${item.id })">未立项</span>
 							</c:if>
 							<c:if test="${item.status != 0 }">
-								
-									<span>已立项</span>
-								
+									<span>已立项</span>	
 							</c:if>
 						</td>
 						<td  style="color:green;">
@@ -209,11 +213,11 @@ function sign(itemId){
 						<td><a href="">查看</a></td>
 						<td>${item.orgName}</td>
 						<td>
-							<c:if test="">
+							<c:if test="${item.isSign <= 1}">							
 								<span>未签收</span>
 							</c:if>
-							<c:if test="">
-								<span>已签收</span>
+							<c:if test="${item.isSign > 1}">
+								<span style="color:green;">已签收</span>
 							</c:if>
 						</td>
 						<td>
@@ -242,13 +246,21 @@ function sign(itemId){
 							</c:if>
 						</td>
 						<td>
-							<c:if test="${userOrg.id == item.supervisionOrgId and item.status != 0 }">
+							<c:if test="${userOrg.id == item.supervisionOrgId and item.isSign >1}">
+								<a style="color: blue;" onclick="uploadFile(${item.id},${item.isStept})">上传资料</a>
+							</c:if>
+							<c:if test="${userOrg.id == item.supervisionOrgId and item.status != 0 and item.isSign <= 1}">
 								<a style="color: blue;" onclick="sign(${item.id })">签收</a>
 							</c:if>
 							<c:if test="${item.status == 0 and userOrg.id==item.preparerOrgId}">
 								<span style="color: red;" onclick="setProject(${item.id })">立项</span>
-							</c:if>						
-							<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+							</c:if>	
+							<%-- <c:if test="${userOrg.id == item.supervisionOrgId and item.status !=0}">
+								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+							</c:if>	 --%>
+							<c:if test="${userOrg.id == item.preparerOrgId}">
+								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+							</c:if>					
 						</td>
 					</tr>
 				</c:forEach>

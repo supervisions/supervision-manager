@@ -102,8 +102,15 @@ public class Constants
   public static final Integer ITEM_STATUS_OVER =4;
   
   
+  //效能监察流程
+  public static final Integer EFFICIENCY_VISION_1=66; //签收
+  public static final Integer EFFICIENCY_VISION_2=67; //上传资料
+  public static final Integer EFFICIENCY_VISION_3=68; //整改建议
+  public static final Integer EFFICIENCY_VISION_4=69; //录入整改情况
+  public static final Integer EFFICIENCY_VISION_5=70; //跟踪监察
+  public static final Integer EFFICIENCY_VISION_6=71; //效能监察流程完成
+
   
-  public static final Integer EFFICIENCY_VISION_1=66;
   
   
   

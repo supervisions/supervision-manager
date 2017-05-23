@@ -33,6 +33,8 @@ public class Item extends Page {
     
     private Integer isValue;
     
+    private Integer isSign;
+    
     //自定义字段供sql查询使用，机构类型A
     private Integer orgTypeA;
     //自定义字段供sql查询使用，机构类型B
@@ -293,5 +295,13 @@ public class Item extends Page {
 
 	public void setItemCategory(String itemCategory) {
 		this.itemCategory = itemCategory;
+	}
+
+	public Integer getIsSign() {
+		return isSign;
+	}
+
+	public void setIsSign(Integer isSign) {
+		this.isSign = isSign;
 	}
 }

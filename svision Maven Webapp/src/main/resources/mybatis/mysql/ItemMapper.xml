@@ -265,7 +265,9 @@
   </select>
   <!-- 获取实时监察类型的项目 -->
   <select id="getItemListByType" parameterType="com.rmbank.supervision.model.Item" resultMap="BaseResultMap">
-  	SELECT i.*,o.name as orgName,m.name as itemCategory FROM t_item AS i
+  	SELECT i.*,o.name as orgName,m.name as itemCategory,
+  	(SELECT COUNT(*) FROM t_item_process AS tip WHERE i.id=tip.item_id) AS isSign 
+  	FROM t_item AS i
 	LEFT JOIN t_org AS o ON o.id=i.`supervision_org_id`
 	LEFT JOIN t_meta AS m ON m.id=i.`super_item_type`
 	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
@@ -553,7 +555,9 @@
   </select>
   <!-- 实时监察模块获取当前登录用户的项目 -->
   <select id="getItemListByTypeAndLogOrg" parameterType="com.rmbank.supervision.model.Item" resultMap="BaseResultMap">
-  	SELECT i.*,o.name as orgName,m.name as itemCategory FROM t_item AS i
+  	SELECT i.*,o.name as orgName,m.name as itemCategory,
+  	(SELECT COUNT(*) FROM t_item_process AS tip WHERE i.id=tip.item_id) AS isSign
+  	FROM t_item AS i
 	LEFT JOIN t_org AS o ON o.id=i.`supervision_org_id`
 	LEFT JOIN t_meta AS m ON m.id=i.`super_item_type`
 	WHERE 
@@ -570,7 +574,7 @@
         limit #{pageStart}, #{pageSize}
     </if>
   </select>
-  <!-- 实时监察模块当前当了用户的记录数 -->
+  <!-- 实时监察模块当前登录用户的记录数 -->
   <select id="getItemCountByLogOrgSSJC" parameterType="com.rmbank.supervision.model.Item" resultType="java.lang.Integer">
   	select count(*) from t_item as i
 	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
