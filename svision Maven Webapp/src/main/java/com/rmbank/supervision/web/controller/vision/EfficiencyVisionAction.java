@@ -116,6 +116,11 @@ public class EfficiencyVisionAction extends SystemAction {
 			Date endTime = it.getEndTime();
 			String format = formatter.format(endTime);
 			it.setShowDate(format);
+			List<ItemProcess> itemprocessList = itemProcessService.getItemProcessItemId(it.getId());
+			if(itemprocessList.size()>0){
+				ItemProcess lastItem = itemprocessList.get(itemprocessList.size()-1);
+				it.setLasgTag(lastItem.getContentTypeId());
+			}
 		}
 		// 通过request对象传值到前台
 		item.setTotalCount(totalCount);
@@ -245,7 +250,11 @@ public class EfficiencyVisionAction extends SystemAction {
 		JsonResult<Item> js = new JsonResult<Item>();
 		js.setCode(new Integer(1));
 		js.setMessage("签收项目失败!");			
-		try {					
+		try {
+			Item item=new Item();
+			item.setId(itemId);
+			item.setLasgTag(Constants.EFFICIENCY_VISION_1);//进行到签收状态
+
 			boolean state = itemProcessService.insertItemProcessByItemId(itemId);
 			if(state==true){
 				js.setCode(new Integer(0));
@@ -342,12 +351,14 @@ public class EfficiencyVisionAction extends SystemAction {
     	Item item = itemService.selectByPrimaryKey(id);
 		if(item.getPreparerTime() != null){
 			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
-		}
+		}		
+		
 		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
 		ItemProcess itemProcess = new ItemProcess();
 		if(itemProcessList.size()>0){
 			itemProcess = itemProcessList.get(0); 
 		}
+		
 		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
 		if(itemProcess.getId() != null){
 			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
@@ -386,12 +397,10 @@ public class EfficiencyVisionAction extends SystemAction {
 			itemProcess.setDefined(false); 
 			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_2);//被监察对象上传资料
 			itemProcessService.insert(itemProcess);			
-			/*Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-			if(item != null){
-				//item.setEndTime(new Date());
-				item.setStatus(Constants.ITEM_STATUS_OVER);
-				itemService.updateByPrimaryKeySelective(item);
-			}*/		
+			
+			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			item.setLasgTag(Constants.EFFICIENCY_VISION_2);
+			
 			js.setCode(0);
 			js.setMessage("上传资料成功!"); 
 		}catch(Exception ex){
@@ -399,5 +408,184 @@ public class EfficiencyVisionAction extends SystemAction {
 			ex.printStackTrace();
 		}
 		return js;
+    }
+    
+    /**
+     * 跳转到监察室给出监察意见
+     */
+    @RequestMapping(value = "/toOpinion.do")
+    @RequiresPermissions("vision/efficiency/toOpinion.do")
+    public String toOpinion(Item item, 
+            HttpServletRequest request, HttpServletResponse response){
+    	Item it = itemService.selectByPrimaryKey(item.getId());
+    	if(it.getPreparerTime() != null){
+    		it.setPreparerTimes(Constants.DATE_FORMAT.format(it.getPreparerTime()));
+		}
+    	request.setAttribute("Item", it);
+    	return "web/vision/efficiency/opinion";
+    }
+    
+    /**
+     * 跳转到整改页面
+     * @param item
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/resetItem.do")
+    @RequiresPermissions("vision/efficiency/resetItem.do")
+    public String resetItem(Item item, 
+        HttpServletRequest request, HttpServletResponse response){
+    	
+     	request.setAttribute("Item", item);
+     	return "web/vision/efficiency/resetView";
+    }
+    
+    /**
+     * 被监察对象整改
+     */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveResetItem.do", method=RequestMethod.POST)
+    @RequiresPermissions("vision/efficiency/jsonSaveResetItem")
+    public JsonResult<ItemProcess> jsonSaveResetItem(ItemProcess itemProcess, 
+    		@RequestParam(value="status",required = false) Integer status,
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+			if(status!=null){
+				if(status==null ||status!=4){//监察对象给出监察意见
+					itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_666);				
+					Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+					item.setLasgTag(Constants.EFFICIENCY_VISION_4);
+				}else{
+					itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_6);//流程完结
+					Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+					item.setEndTime(new Date());
+					item.setStatus(Constants.ITEM_STATUS_OVER);
+					itemService.updateByPrimaryKeySelective(item);
+				}
+			}
+			if(status==null){//被监察对象整改操作
+				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_666);				
+				Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+				item.setLasgTag(Constants.EFFICIENCY_VISION_4);
+			}
+			itemProcessService.insert(itemProcess);	
+			
+			js.setCode(0);
+			js.setMessage("上传资料成功!"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+    
+    /**
+     * 给出监察建议
+     * @param itemProcess
+     * @param status
+     * @param request
+     * @param response
+     * @return
+     * @throws ParseException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveOpinion", method=RequestMethod.POST)
+    @RequiresPermissions("vision/efficiency/jsonSaveOpinion.do")
+    public JsonResult<ItemProcess> jsonSaveOpinion(ItemProcess itemProcess, 
+    		@RequestParam(value="status",required = false) Integer status,
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存信息失败!");
+		try {   
+			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			if(status == 4){
+				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_3);//监察意见
+				item.setEndTime(new Date());
+				item.setStatus(Constants.ITEM_STATUS_OVER);
+				itemService.updateByPrimaryKeySelective(item);
+			}else if(status == 0){			
+				item.setLasgTag(Constants.EFFICIENCY_VISION_4);
+				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_4);//整改
+			}
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+			
+			itemProcessService.insert(itemProcess);			
+			
+			js.setCode(0);
+			js.setMessage("保存信息成功!"); 
+		}catch(Exception ex){
+			js.setMessage("保存信息失败!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+    
+    
+   /**
+    * 查看项目
+    * @param item
+    * @param request
+    * @param response
+    * @return
+    */
+    @RequestMapping(value = "/showItem.do")
+    @RequiresPermissions("vision/efficiency/showItem.do")
+    public String showItem(Item item, 
+            HttpServletRequest request, HttpServletResponse response){
+    	item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId());  
+		if(itemProcessList.size()>0){ 
+			for(ItemProcess ip : itemProcessList){  
+				List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+				fileList = itemProcessFileService.getFileListByItemId(ip.getId());
+				ip.setFileList(fileList);  
+				if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_0){
+					request.setAttribute("ItemProcess", ip); //监察内容
+				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_2){
+					request.setAttribute("FileItemProcess", ip); //已经上传资料
+				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_4){
+					request.setAttribute("XYZGProcess", ip); //监察意见，需要整改
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_4){
+					request.setAttribute("FollowItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_5){
+					request.setAttribute("OverItemProcess", ip);
+				}
+			}
+		}
+		
+		//获取当前用户
+		User lgUser=this.getLoginUser(); 
+		
+		request.setAttribute("User", lgUser);  
+		request.setAttribute("Item", item); 
+		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+    	return "web/vision/efficiency/showItem";
     }
 }

@@ -125,11 +125,21 @@ function sign(itemId){
 	}); 
 }
 function uploadFile(id,isStept){
-	if(isStept==0){
+window.location.href="<%=basePath%>vision/efficiency/efficiencyNoFile.do?id="+id;
+	<%-- if(isStept==0){
 		window.location.href="<%=basePath%>vision/efficiency/efficiencyNoFile.do?id="+id;
 	}else{
 		window.location.href="";
-	}
+	} --%>
+}
+function toOpinion(id,tag){
+	window.location.href="<%=basePath%>vision/efficiency/toOpinion.do?id="+id+"&tag="+tag;
+}
+function showItem(id){
+	window.location.href="<%=basePath%>vision/efficiency/showItem.do?id="+id;
+}
+function resetItem(id,lasgTag){
+	window.location.href="<%=basePath%>vision/efficiency/resetItem.do?id="+id+"&lasgTag="+lasgTag;
 }
 </script>
 </head>
@@ -210,7 +220,7 @@ function uploadFile(id,isStept){
 							</c:if>
 						</td>
 						<td>${item.name}</td>
-						<td><a href="">查看</a></td>
+						<td><a style="color:blue;" onclick="showItem(${item.id })">查看</a></td>
 						<td>${item.orgName}</td>
 						<td>
 							<c:if test="${item.isSign <= 1}">							
@@ -241,12 +251,15 @@ function uploadFile(id,isStept){
 							<c:if test="${item.status == 3 }">
 								<span>逾期</span>
 							</c:if>
-							<c:if test="${item.status != 3 }">
+							<c:if test="${item.status != 3 && item.status !=4 }">
 								<span>正常</span>
 							</c:if>
+							<c:if test="${item.status ==4  }">
+								<span>完结</span>
+							</c:if>
 						</td>
-						<td>
-							<c:if test="${userOrg.id == item.supervisionOrgId and item.isSign >1}">
+						<td><%-- <sapn>${item.lasgTag}</sapn> --%>
+							<c:if test="${userOrg.id == item.supervisionOrgId && item.isSign >1 && item.lasgTag == 66}">
 								<a style="color: blue;" onclick="uploadFile(${item.id},${item.isStept})">上传资料</a>
 							</c:if>
 							<c:if test="${userOrg.id == item.supervisionOrgId and item.status != 0 and item.isSign <= 1}">
@@ -255,6 +268,15 @@ function uploadFile(id,isStept){
 							<c:if test="${item.status == 0 and userOrg.id==item.preparerOrgId}">
 								<span style="color: red;" onclick="setProject(${item.id })">立项</span>
 							</c:if>	
+							<c:if test="${item.lasgTag == 67 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="toOpinion(${item.id},67)">监察意见</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 69 && userOrg.id == item.supervisionOrgId || item.lasgTag == 666 && userOrg.id == item.supervisionOrgId}">
+								<a style="color: blue;" onclick="resetItem(${item.id},-1)">整改操作</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 666 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="resetItem(${item.id},${item.lasgTag})">整改意见</a>
+							</c:if>
 							<%-- <c:if test="${userOrg.id == item.supervisionOrgId and item.status !=0}">
 								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
 							</c:if>	 --%>

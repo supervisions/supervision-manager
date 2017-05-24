@@ -23,11 +23,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.model.Item;
+import com.rmbank.supervision.model.ItemProcess;
+import com.rmbank.supervision.model.ItemProcessFile;
 import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.OrganVM;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ConfigService;
+import com.rmbank.supervision.service.ItemProcessFileService;
+import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.UserService;
@@ -49,7 +53,10 @@ public class IncorruptVisionAction extends SystemAction {
 	private OrganService organService;
 	@Resource
 	private ConfigService configService;
-	
+	@Resource
+	private ItemProcessService itemProcessService;
+	@Resource
+	private ItemProcessFileService itemProcessFileService;
 	
 	/**
 	 * 廉政监察列表
@@ -101,6 +108,15 @@ public class IncorruptVisionAction extends SystemAction {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
+		for (Item it : itemList) {
+			List<ItemProcess> itemprocessList = itemProcessService.getItemProcessItemId(it.getId());
+			if(itemprocessList.size()>0){
+				ItemProcess lastItem = itemprocessList.get(itemprocessList.size()-1);
+				it.setLasgTag(lastItem.getContentTypeId());
+			}
+		}
+		
 		// 通过request对象传值到前台
 		item.setTotalCount(totalCount);
 		request.setAttribute("Item", item);
@@ -214,7 +230,38 @@ public class IncorruptVisionAction extends SystemAction {
 	}
 	return js;
    }
-	
+   
+   /**
+    * 修改立项状态
+    */
+   @ResponseBody
+	@RequestMapping(value = "/jsonsetProjectById.do", method = RequestMethod.POST)
+	@RequiresPermissions("vision/incorrupt/jsonsetProjectById.do")
+	public JsonResult<Item> jsonsetProjectById(
+			@RequestParam(value = "id", required = false) Integer id,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		// 新建一个json对象 并赋初值
+		JsonResult<Item> js = new JsonResult<Item>();
+		js.setCode(new Integer(1));
+		js.setMessage("修改立项状态失败!");			
+		try {		
+			Item item =new Item();
+			item.setId(id);			
+			item.setStatus(1);
+			int state = itemService.updateByPrimaryKeySelective(item);
+			if(state==1){
+				js.setCode(new Integer(0));
+				js.setMessage("修改立项状态成功!");
+				return js;
+			}else {
+				return js;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		return js;
+	}
 	
 	/**
      * 删除项目
@@ -249,4 +296,419 @@ public class IncorruptVisionAction extends SystemAction {
 		}		
 		return js;
 	}
+    
+    
+    /**
+     * 跳转到被监察对象录入方案
+     * @param id
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/toSaveScheme.do")
+   	@RequiresPermissions("vision/incorrupt/toSaveScheme.do")
+   	public String toSaveScheme(@RequestParam(value="id",required=false) Integer id,
+   			HttpServletRequest request, HttpServletResponse response){
+    
+       	Item item = itemService.selectByPrimaryKey(id);
+   		if(item.getPreparerTime() != null){
+   			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+   		}		
+   		
+   		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+   		ItemProcess itemProcess = new ItemProcess();
+   		if(itemProcessList.size()>0){
+   			itemProcess = itemProcessList.get(0); 
+   		}
+   		
+   		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+   		if(itemProcess.getId() != null){
+   			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
+   		}
+   		//获取当前用户
+   		User lgUser=this.getLoginUser(); 
+   		   
+   		request.setAttribute("User", lgUser); 
+   		request.setAttribute("ItemProcess", itemProcess);
+   		request.setAttribute("Item", item);
+   		request.setAttribute("FileList", fileList);		
+   		return "web/vision/incorrupt/itemScheme";
+   	}
+    
+    
+    /**
+     * 跳转到监察室录入监察意见
+     * @param id
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/toOpinion.do")
+   	@RequiresPermissions("vision/incorrupt/toOpinion.do")
+   	public String toOpinion(@RequestParam(value="id",required=false) Integer id,
+   			@RequestParam(value="lasgTag",required=false) Integer lasgTag,
+   			HttpServletRequest request, HttpServletResponse response){
+    
+       	Item item = itemService.selectByPrimaryKey(id);
+   		if(item.getPreparerTime() != null){
+   			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+   			item.setLasgTag(lasgTag);
+   		}		
+   		
+   		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+   		ItemProcess itemProcess = new ItemProcess();
+   		if(itemProcessList.size()>0){
+   			itemProcess = itemProcessList.get(0); 
+   		}
+   		
+   		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+   		if(itemProcess.getId() != null){
+   			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
+   		}
+   		//获取当前用户
+   		User lgUser=this.getLoginUser(); 
+   		   
+   		request.setAttribute("User", lgUser); 
+   		request.setAttribute("ItemProcess", itemProcess);
+   		request.setAttribute("Item", item);
+   		request.setAttribute("FileList", fileList);		
+   		return "web/vision/incorrupt/opinion";
+   	}
+    
+    /**
+     * 跳转到被监察对象录入会议决策
+     * @param id
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/toSaveDecision.do")
+   	@RequiresPermissions("vision/incorrupt/toSaveDecision.do")
+   	public String toSaveDecision(@RequestParam(value="id",required=false) Integer id,
+   			HttpServletRequest request, HttpServletResponse response){
+    
+       	Item item = itemService.selectByPrimaryKey(id);
+   		if(item.getPreparerTime() != null){
+   			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+   		}		
+   		
+   		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+   		ItemProcess itemProcess = new ItemProcess();
+   		if(itemProcessList.size()>0){
+   			itemProcess = itemProcessList.get(0); 
+   		}
+   		
+   		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+   		if(itemProcess.getId() != null){
+   			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
+   		}
+   		//获取当前用户
+   		User lgUser=this.getLoginUser(); 
+   		   
+   		request.setAttribute("User", lgUser); 
+   		request.setAttribute("ItemProcess", itemProcess);
+   		request.setAttribute("Item", item);
+   		request.setAttribute("FileList", fileList);		
+   		return "web/vision/incorrupt/decision";
+   	}
+    
+    /**
+     * 跳转到被监察对象录入执行情况
+     * @param id
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/toExecution.do")
+   	@RequiresPermissions("vision/incorrupt/toExecution.do")
+   	public String toExecution(@RequestParam(value="id",required=false) Integer id,
+   			HttpServletRequest request, HttpServletResponse response){
+    
+       	Item item = itemService.selectByPrimaryKey(id);
+   		if(item.getPreparerTime() != null){
+   			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+   		}		
+   		
+   		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+   		ItemProcess itemProcess = new ItemProcess();
+   		if(itemProcessList.size()>0){
+   			itemProcess = itemProcessList.get(0); 
+   		}
+   		
+   		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+   		if(itemProcess.getId() != null){
+   			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
+   		}
+   		//获取当前用户
+   		User lgUser=this.getLoginUser(); 
+   		   
+   		request.setAttribute("User", lgUser); 
+   		request.setAttribute("ItemProcess", itemProcess);
+   		request.setAttribute("Item", item);
+   		request.setAttribute("FileList", fileList);		
+   		return "web/vision/incorrupt/execution";
+   	}
+    
+    /**
+     * 跳转到监察室监察执行情况
+     * @param id
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/toJCExecution.do")
+   	@RequiresPermissions("vision/incorrupt/toJCExecution.do")
+   	public String toJCExecution(@RequestParam(value="id",required=false) Integer id,
+   			HttpServletRequest request, HttpServletResponse response){
+    
+       	Item item = itemService.selectByPrimaryKey(id);
+   		if(item.getPreparerTime() != null){
+   			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+   		}		
+   		
+   		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+   		ItemProcess itemProcess = new ItemProcess();
+   		if(itemProcessList.size()>0){
+   			itemProcess = itemProcessList.get(0); 
+   		}
+   		
+   		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+   		if(itemProcess.getId() != null){
+   			fileList = itemProcessFileService.getFileListByItemId(itemProcess.getId());
+   		}
+   		//获取当前用户
+   		User lgUser=this.getLoginUser(); 
+   		   
+   		request.setAttribute("User", lgUser); 
+   		request.setAttribute("ItemProcess", itemProcess);
+   		request.setAttribute("Item", item);
+   		request.setAttribute("FileList", fileList);		
+   		return "web/vision/incorrupt/JCexecution";
+   	}
+    
+    /**
+     * 被监察对象录入方案
+     * @param itemProcess
+     * @param request
+     * @param response
+     * @return
+     * @throws ParseException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveItemScheme.do", method=RequestMethod.POST)
+    @RequiresPermissions("vision/incorrupt/jsonSaveItemScheme.do")
+    public JsonResult<ItemProcess> jsonSaveOrUpdateFileItem(ItemProcess itemProcess, 
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+			itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_1);//被监察对象录入项目方案
+			itemProcessService.insert(itemProcess);			
+			
+			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			item.setLasgTag(Constants.INCORRUPT_VISION_1);
+			
+			js.setCode(0);
+			js.setMessage("录入方案成功!"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+    
+    /**
+     * 提出监察意见
+     * @param itemProcess
+     * @param request
+     * @param response
+     * @return
+     * @throws ParseException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/jsonsaveOpinion.do", method=RequestMethod.POST)
+    @RequiresPermissions("vision/incorrupt/jsonsaveOpinion.do")
+    public JsonResult<ItemProcess> jsonsaveOpinion(ItemProcess itemProcess, 
+    		@RequestParam(value="status", required =false) Integer status,
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false);
+			if(status==4){
+				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_3);//监察室提出监察意见
+			}else if(status==6){
+				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_4);//被监察对象录入执行情况
+			}
+			itemProcessService.insert(itemProcess);			
+			
+			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			item.setLasgTag(Constants.INCORRUPT_VISION_3);
+			
+			js.setCode(0);
+			js.setMessage("保存信息成功!"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+    
+    /**
+     * 被监察对象录入会议监察内容
+     * @param itemProcess
+     * @param request
+     * @param response
+     * @return
+     * @throws ParseException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/jsonsaveDecision.do", method=RequestMethod.POST)
+    @RequiresPermissions("vision/incorrupt/jsonsaveDecision.do")
+    public JsonResult<ItemProcess> jsonsaveDecision(ItemProcess itemProcess, 
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+			itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_33);//监察室提出监察意见
+			itemProcessService.insert(itemProcess);			
+			
+			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			item.setLasgTag(Constants.INCORRUPT_VISION_33);
+			
+			js.setCode(0);
+			js.setMessage("保存信息成功!"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+    
+    
+    /**
+     * 被监察对象录入执行情况
+     * @param itemProcess
+     * @param request
+     * @param response
+     * @return
+     * @throws ParseException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveExecution.do", method=RequestMethod.POST)
+    @RequiresPermissions("vision/incorrupt/jsonSaveExecution.do")
+    public JsonResult<ItemProcess> jsonSaveExecution(ItemProcess itemProcess, 
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+			itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_5);//监察室监察执行情况
+			itemProcessService.insert(itemProcess);			
+			
+			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			item.setLasgTag(Constants.INCORRUPT_VISION_5);
+			js.setCode(0);
+			js.setMessage("保存信息成功!"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+    
+    
+    /**
+     * 监察对象监察执行情况
+     * @param itemProcess
+     * @param request
+     * @param response
+     * @return
+     * @throws ParseException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveJCExecution.do", method=RequestMethod.POST)
+    @RequiresPermissions("vision/incorrupt/jsonSaveJCExecution.do")
+    public JsonResult<ItemProcess> jsonSaveJCExecution(ItemProcess itemProcess, 
+    		@RequestParam(value="status", required =false) Integer status,
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+			if(status==4){
+				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_8); //流程完结
+				Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+				item.setEndTime(new Date());
+				item.setStatus(Constants.ITEM_STATUS_OVER);
+				itemService.updateByPrimaryKeySelective(item);
+			}else if(status==0){
+				
+			}
+			
+			itemProcessService.insert(itemProcess);			
+			
+			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			item.setLasgTag(Constants.INCORRUPT_VISION_8);
+			js.setCode(0);
+			js.setMessage("保存信息成功!"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+    
 }

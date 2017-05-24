@@ -217,6 +217,40 @@ public class EnforcementVisionAction extends SystemAction{
    }
    
    /**
+    * 修改立项状态
+    */
+   @ResponseBody
+	@RequestMapping(value = "/jsonsetProjectById.do", method = RequestMethod.POST)
+	@RequiresPermissions("vision/enforce/jsonsetProjectById.do")
+	public JsonResult<Item> jsonsetProjectById(
+			@RequestParam(value = "id", required = false) Integer id,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		// 新建一个json对象 并赋初值
+		JsonResult<Item> js = new JsonResult<Item>();
+		js.setCode(new Integer(1));
+		js.setMessage("修改立项状态失败!");			
+		try {		
+			Item item =new Item();
+			item.setId(id);			
+			item.setStatus(1);
+			int state = itemService.updateByPrimaryKeySelective(item);
+			if(state==1){
+				js.setCode(new Integer(0));
+				js.setMessage("修改立项状态成功!");
+				return js;
+			}else {
+				return js;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		return js;
+	}
+   
+   
+   
+   /**
     * 删除项目
     * @param id
     * @param request
