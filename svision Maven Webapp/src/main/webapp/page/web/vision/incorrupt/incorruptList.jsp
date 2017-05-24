@@ -84,7 +84,42 @@ function authorizeResource(id,name){
 	
 	//window.location.href="toAuthorizationResource.do?id="+id+"&name="+name;
 }
+function setProject(id){
+	$.messager.confirm("立项确认","是否确认立项?",function(r){  
+		    if (r){   
+			$.ajax({
+				url : "jsonsetProjectById.do?id="+id,
+				type : "post",  
+		    	dataType : "json",								
+				success : function(data) { 									
+		  			if(data.code == 0){ 
+		  				$.messager.alert('操作信息',data.message,'info',function(){ 
+		  					search();  
+		      			});
+		  			}else{		  			    
+						$.messager.alert('错误信息','删除失败！','error');
+		  			}  
+			    } 
+			});
+	    }  
+	}); 
+}
 
+function toSaveScheme(id){
+	window.location.href="<%=basePath%>vision/incorrupt/toSaveScheme.do?id="+id;
+}
+function toOpinion(id,lasgTag){
+	window.location.href="<%=basePath%>vision/incorrupt/toOpinion.do?id="+id+"&lasgTag="+lasgTag;
+}
+function toSaveDecision(id){
+	window.location.href="<%=basePath%>vision/incorrupt/toSaveDecision.do?id="+id;
+}
+function toExecution(id){
+	window.location.href="<%=basePath%>vision/incorrupt/toExecution.do?id="+id;
+}
+function toJCExecution(id){
+	window.location.href="<%=basePath%>vision/incorrupt/toJCExecution.do?id="+id;
+}
 </script>
 </head>
 <body>
@@ -136,11 +171,14 @@ function authorizeResource(id,name){
 				<c:forEach var="item" items="${itemList}">
 					<tr> 							
 						<td>
-							<c:if test="">
+							<c:if test="${item.status == 0 && userOrg.id==item.preparerOrgId}">
 								<span style="color: red;" onclick="setProject(${item.id })">未立项</span>
 							</c:if>
-							<c:if test="">
-								<span>已立项</span>
+							<%-- <c:if test="${item.status == 0 && userOrg.id==item.supervisionOrgId}">
+								<span style="color: red;" >未立项</span>
+							</c:if> --%>
+							<c:if test="${item.status != 0 }">
+									<span>已立项</span>	
 							</c:if>
 						</td>
 						<td  style="color:green;">
@@ -162,10 +200,36 @@ function authorizeResource(id,name){
 						</td>
 						<%-- <td>${item.name}</td> --%>
 						<td><a href="">查看</a></td>
-						<td>${item.itemCategory }</td>
+						<td>${item.itemCategory}</td>
 						<td>${item.name}</td>
 						<td>${item.orgName}</td>
-						<td><a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a></td>
+						<td><sapn>${item.lasgTag}</sapn>							
+							<c:if test="${item.status == 0 and userOrg.id==item.preparerOrgId}">
+								<span style="color: red;" onclick="setProject(${item.id })">立项</span>
+							</c:if>
+							<c:if test="${item.status != 0 and userOrg.id==item.supervisionOrgId and item.lasgTag==-1}">
+								<span style="color: blue;" onclick="toSaveScheme(${item.id })">项目方案</span>
+							</c:if>
+							<c:if test="${item.lasgTag == 72 and userOrg.id==item.preparerOrgId}">
+								<span style="color: blue;" onclick="toOpinion(${item.id },72)">监察意见</span>
+							</c:if>
+							<c:if test="${item.lasgTag == 74 and userOrg.id==item.supervisionOrgId}">
+								<span style="color: blue;" onclick="toSaveDecision(${item.id })">会议决策内容</span>
+							</c:if>
+							<c:if test="${item.lasgTag == 75 && userOrg.id==item.supervisionOrgId}">
+								<a style="color: blue;" onclick="toExecution(${item.id})">执行情况</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 76 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="toJCExecution(${item.id})">监察执行情况</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 777 and userOrg.id==item.preparerOrgId}">
+								<span style="color: blue;" onclick="toOpinion(${item.id },777)">监察意见</span>
+							</c:if>
+							<c:if test="${userOrg.id == item.preparerOrgId}">
+								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+							</c:if>	
+						</td>
+							
 						
 					</tr>
 				</c:forEach>

@@ -139,18 +139,15 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             uploader.bind('UploadComplete',function(uploader,files){
                 if(null != files && files.length>0){ 
                 	$("#dialog").dialog({
-					    bgiframe: true,
-					    resizable: false,
-					    message: "文件上传成功"+uploader.total.uploaded+"个,失败:"+uploader.total.failed+"个",
-					    height:140,
-					    modal: true,
-					    overlay: {
-					        backgroundColor: '#000',
-					        opacity: 0.5
-					    },
+				        resizable: false,
+				        height:150,
+				        modal: true,
+				        open: function (event, ui) {
+		                   $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+		                },
 					    buttons: {
-					        '确定': function() {					        	
-					            window.location.href = "<%=basePath%>vision/efficiency/efficiencyList.do";
+					        "确定": function() {					        	
+					            window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
 					        }
 					    }
 					}); 
@@ -244,7 +241,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr> 
 						<tr>
-							<td align="right" style="height:160px;">资料附件：</td>
+							<td align="right" style="height:160px;">上传资料：</td>
 							<td colspan="3">
 								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>
@@ -257,7 +254,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 </td>	
 						</tr>
 						<tr>
-							<td align="right" style="height:120px;">资料内容：</td>
+							<td align="right" style="height:120px;">资料说明：</td>
 							<td colspan="3"> 
 								 <textarea rows="5" cols="5" style="width:60%;" name="content"></textarea>			 
 							 </td>	
@@ -266,10 +263,10 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td align="right" >是否完结：</td>
 							<td colspan="3">
 								<label>
-									<input type="radio" name="status" value="" checked="checked">否
+									<input type="radio" name="status" value="" >否
 								</label> 
 								<label>
-									<input type="radio" name="status" value="4">否
+									<input type="radio" name="status" value="4" checked="checked">是
 								</label> 
 								
 							</td>	

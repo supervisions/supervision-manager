@@ -141,18 +141,15 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             uploader.bind('UploadComplete',function(uploader,files){
                 if(null != files && files.length>0){ 
                 	$("#dialog").dialog({
-					    bgiframe: true,
-					    resizable: false,
-					    message: "文件上传成功"+uploader.total.uploaded+"个,失败:"+uploader.total.failed+"个",
-					    height:140,
-					    modal: true,
-					    overlay: {
-					        backgroundColor: '#000',
-					        opacity: 0.5
-					    },
+				        resizable: false,
+				        height:150,
+				        modal: true,
+				        open: function (event, ui) {
+		                   $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+		                },
 					    buttons: {
-					        '确定': function() {					        	
-					            window.location.href="<%=basePath%>vision/enforce/enforceList.do";
+					        "确定": function() {					        	
+					            window.location.href= '<%=basePath%>vision/enforce/enforceList.do';
 					        }
 					    }
 					}); 

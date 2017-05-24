@@ -110,12 +110,27 @@ public class Constants
   
   
   //效能监察流程
+  public static final Integer EFFICIENCY_VISION_0=-1; //新增项目时的初始状态
   public static final Integer EFFICIENCY_VISION_1=66; //签收
   public static final Integer EFFICIENCY_VISION_2=67; //上传资料
-  public static final Integer EFFICIENCY_VISION_3=68; //整改建议
+  public static final Integer EFFICIENCY_VISION_3=68; //整改建议和整改建议
   public static final Integer EFFICIENCY_VISION_4=69; //录入整改情况
+  public static final Integer EFFICIENCY_VISION_666=666; //整改建议
   public static final Integer EFFICIENCY_VISION_5=70; //跟踪监察
   public static final Integer EFFICIENCY_VISION_6=71; //效能监察流程完成
- 
   
+  
+  //廉政监察流程
+  public static final Integer INCORRUPT_VISION_0=-1; //新增项目时的初始状态
+  public static final Integer INCORRUPT_VISION_1=72; //被监察对象录入项目方案
+  public static final Integer INCORRUPT_VISION_2=73; //被监察对象录入决策内容
+  public static final Integer INCORRUPT_VISION_3=74; //监察室提出监察意见
+  
+  public static final Integer INCORRUPT_VISION_33=777; //录入会议决策后给出监察意见
+  public static final Integer INCORRUPT_VISION_4=75; //被监察对象录入执行情况
+  public static final Integer INCORRUPT_VISION_5=76; //监察室监察执行情况
+  public static final Integer INCORRUPT_VISION_6=77; //被监察对象提请重新决策
+  public static final Integer INCORRUPT_VISION_7=78; //监察室给出监察结论 													
+  public static final Integer INCORRUPT_VISION_8=84; //廉政监察完成
+  													 
 }

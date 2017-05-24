@@ -99,7 +99,12 @@ public class ItemServiceimpl implements ItemService {
 				itemProcess.setContent(content);
 				itemProcess.setOrgId(orgIds[i]);
 				i ++;
-				itemProcess.setContentTypeId(contentType);
+				if(item.getItemType()==Constants.STATIC_ITEM_TYPE_MANAGE){
+					itemProcess.setContentTypeId(contentType);
+				}else {
+					itemProcess.setContentTypeId(-1);
+				}
+				
 				itemProcess.setPreparerTime(new Date());
 				itemProcess.setPreparerId(item.getPreparerId());
 				itemProcess.setPreparerOrgId(item.getPreparerOrgId());
