@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -417,8 +418,22 @@ public class BranchAction extends SystemAction {
 				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_4){
 					request.setAttribute("FollowItemProcess", ip);
 				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_5){
-					request.setAttribute("OverItemProcess", ip);
-				}
+					if(request.getAttribute("OverItemProcess") != null){
+						if(fileList.size() == 0){
+							ip.setFileList(null);
+						}
+						request.setAttribute("OtherProcess", ip);
+					}else{
+						if(fileList.size() == 0){
+							ip.setFileList(null);
+						}
+						request.setAttribute("OverItemProcess", ip);
+					}
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_6){
+					request.setAttribute("FollowChangeProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_7){
+					request.setAttribute("OverProcess", ip);
+				} 
 			}
 		}
 		
@@ -476,6 +491,52 @@ public class BranchAction extends SystemAction {
 		return "web/manage/branch/branchZZViewForm";
 	}
 	
+	/**
+	 * 跳转到被监察对象上报跟踪肩擦整改情况
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/branchFollowForm.do")
+	@RequiresPermissions("manage/branch/branchFollowForm.do")
+	public String branchFollowForm(Item item,
+			HttpServletRequest request, HttpServletResponse response){
+		int tag  = item.getTag();
+		item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId());  
+		if(itemProcessList.size()>0){ 
+			for(ItemProcess ip : itemProcessList){  
+				List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+				fileList = itemProcessFileService.getFileListByItemId(ip.getId());
+				ip.setFileList(fileList);  
+				if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_1){
+					request.setAttribute("ItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_2){
+					request.setAttribute("FileItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_3){
+					request.setAttribute("ChangeItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_4){
+					request.setAttribute("FollowItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_5){
+					request.setAttribute("OverItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_6){
+					request.setAttribute("FollowChangeProcess", ip);
+				} 
+			}
+		}
+		
+		//获取当前用户
+		User lgUser=this.getLoginUser(); 
+		   
+		request.setAttribute("User", lgUser);  
+		request.setAttribute("Item", item); 
+		request.setAttribute("tag", tag); 
+		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		return "web/manage/branch/branchFollowForm";
+	}
 	
 	
 	 /** 
@@ -567,8 +628,12 @@ public class BranchAction extends SystemAction {
 	    	itemProcess.setPreparerTime(new Date());
 			itemProcess.setDefined(false); 
 			if(itemProcess.getIsOver() != null){ 
-				if(itemProcess.getIsOver() == Constants.IS_OVER){
-					itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_5);  
+				if(itemProcess.getIsOver() == Constants.IS_OVER){ 
+					if(itemProcess.getTag() != null){
+						itemProcess.setContentTypeId(itemProcess.getTag());
+					}else{
+						itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_5);
+					}
 					Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
 					if(item != null){
 						item.setEndTime(new Date());
@@ -626,4 +691,58 @@ public class BranchAction extends SystemAction {
 		return js;
 
 	} 
+	
+	 /**
+     * 跟踪项目
+     * @param item
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+	@RequestMapping(value = "/jsonfollowItemById.do", method = RequestMethod.POST)
+	@RequiresPermissions("manage/branch/jsonfollowItemById.do")
+	public JsonResult<Item> jsonfollowItemById( 
+			Item item,
+			HttpServletRequest request, HttpServletResponse response) { 
+		// 新建一个json对象 并赋初值
+		JsonResult<Item> js = new JsonResult<Item>();
+		js.setCode(new Integer(1));
+		js.setMessage("操作失败!"); 
+		try {				
+			Integer isFollow = item.getIsFollow();
+			item = itemService.selectByPrimaryKey(item.getId());
+			if(isFollow>0){
+				if(item != null){
+					item.setEndTime(new Date());
+					item.setStatus(Constants.ITEM_STATUS_OVER);
+					itemService.updateByPrimaryKeySelective(item);
+				} 
+			}else{
+				User u = this.getLoginUser();
+		    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+				List<ItemProcess> itemprocessList = itemProcessService.getItemProcessItemId(item.getId());
+				if(itemprocessList.size()>0){
+					ItemProcess it = itemprocessList.get(itemprocessList.size()-1);
+			    	it.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+			    	it.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+			    	it.setPreparerId(u.getId());
+			    	it.setPreparerTime(new Date());
+			    	it.setContent("");
+			    	it.setDefined(false); 
+			    	UUID uid = UUID.randomUUID();
+			    	String uuid = uid.toString();
+			    	it.setUuid(uuid);
+			    	it.setContentTypeId(Constants.CONTENT_TYPE_ID_6); 
+			    	it.setId(0);
+			    	itemProcessService.insert(it);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return js;
+
+	}
+	
 }

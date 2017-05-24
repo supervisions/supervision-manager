@@ -81,6 +81,8 @@ public class Constants
   public static final Integer CONTENT_TYPE_ID_3= 33; 
   public static final Integer CONTENT_TYPE_ID_4= 34; 
   public static final Integer CONTENT_TYPE_ID_5= 35;  
+  public static final Integer CONTENT_TYPE_ID_6= 91;   
+  public static final Integer CONTENT_TYPE_ID_7= 93;  
   
   
   public static final Integer SUPERVISION_TYPE_ID_XL = 2;

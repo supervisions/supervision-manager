@@ -38,7 +38,9 @@ public class ItemProcess {
      */
     private Integer isValue;
     
-
+    private Integer tag;
+    
+    
     /**
      * 定义是否完结，跟踪字段， 只用作前台使用；
      */
@@ -189,5 +191,13 @@ public class ItemProcess {
 
 	public void setIsOver(Integer isOver) {
 		this.isOver = isOver;
+	}
+
+	public Integer getTag() {
+		return tag;
+	}
+
+	public void setTag(Integer tag) {
+		this.tag = tag;
 	}
 }

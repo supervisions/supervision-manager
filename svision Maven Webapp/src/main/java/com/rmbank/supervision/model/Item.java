@@ -39,6 +39,8 @@ public class Item extends Page {
     
     private Integer isSign; 
     
+    private Integer isFollow;
+    
     //自定义字段供sql查询使用，机构类型A
     private Integer orgTypeA;
     //自定义字段供sql查询使用，机构类型B
@@ -322,5 +324,13 @@ public class Item extends Page {
 
 	public void setIsSign(Integer isSign) {
 		this.isSign = isSign; 
+	}
+
+	public Integer getIsFollow() {
+		return isFollow;
+	}
+
+	public void setIsFollow(Integer isFollow) {
+		this.isFollow = isFollow;
 	}
 }

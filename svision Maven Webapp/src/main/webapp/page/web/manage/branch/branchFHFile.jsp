@@ -163,7 +163,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
         $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
-	        url: "<%=basePath%>manage/branch/jsonSaveOrUpdateFileItem.do?s=1"+tuuid,
+	        url: "<%=basePath%>manage/branch/jsonSaveOrUpdateFileItem.do?s="+tuuid,
 	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 	        async: true, //发送异步请求	  
 	        dataType:"json", //响应数据类型      
@@ -320,8 +320,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</tr>   
 							<tr>
 								<td align="right" style="height:120px;">监察室意见：</td>
-								<td colspan="3"> 
-									 <textarea rows="5" cols="5" style="width:60%;" >${ChangeItemProcess.content }</textarea>			 
+								<td colspan="3">  
+									 <laben>${ChangeItemProcess.content }</laben>			 
 								 </td>	
 							</tr>	
 							 <tr>
