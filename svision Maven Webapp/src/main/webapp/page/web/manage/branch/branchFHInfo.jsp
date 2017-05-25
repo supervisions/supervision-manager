@@ -228,10 +228,10 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" height="100px;">工作要求、方案：</td>
+							<td align="right" height="40px;">工作要求、方案：</td>
 							<td colspan="3"> 
-								<textarea rows="6" cols="5" style="width:60%;" name="content" ></textarea>								
-							</td> 
+								<textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>								
+							</td>  
 						</tr>	
 						<tr>
 							<td align="right" height="100px;">上传附件：</td>
