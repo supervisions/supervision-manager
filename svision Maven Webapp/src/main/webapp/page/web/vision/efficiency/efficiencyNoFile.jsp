@@ -233,7 +233,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td align="right"style="height:80px;">附件列表：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
-									<c:forEach var="fileItem" items="${FileList }">
+									<c:forEach var="fileItem" items="${ItemProcess.fileList }">
 										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 									</c:forEach> 
 									<tr><td style="border:0px;"></td><tr>
@@ -267,8 +267,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</label> 
 								<label>
 									<input type="radio" name="status" value="4" checked="checked">是
-								</label> 
-								
+								</label> 								
 							</td>	
 						</tr>	
 					</table>

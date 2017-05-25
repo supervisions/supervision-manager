@@ -182,7 +182,7 @@
         is_stept = #{isStept,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
-        status = #{status,jdbcType=INTEGER}
+        status = #{status,jdbcType=INTEGER},
       </if> 
       <if test="superItemType != null" >
         super_item_type = #{superItemType,jdbcType=INTEGER},
@@ -204,7 +204,8 @@
       preparer_time = #{preparerTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},
       is_stept = #{isStept,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER}    
+      status = #{status,jdbcType=INTEGER},
+      super_item_type=#{superItemType,jdbcType=INTEGER}    
     where id = #{id,jdbcType=INTEGER}
   </update>
   <sql id="sql_query">
@@ -443,11 +444,11 @@
 	</if>
 	<if test="schEndTime != null and schEndTime != ''">
 		and i.`preparer_time`&lt;=#{schEndTime,jdbcType=VARCHAR}
-	</if>and
-	o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} 
-	or o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER}
-	or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER}
-	or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} 
+	</if>
+	and	o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
+	or o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
+	or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
+	or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
 	ORDER BY i.`id` DESC
 	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
         limit #{pageStart}, #{pageSize}
@@ -473,10 +474,11 @@
 	</if>
 	<if test="schEndTime != null and schEndTime != ''">
 		and i.`preparer_time`&lt;=#{schEndTime,jdbcType=VARCHAR}
-	</if>and o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} 
-	 or o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER}
-	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER}
-	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} 
+	</if>
+	 and o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
+	 or o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
+	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
+	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
   </select>
   
   
@@ -503,7 +505,7 @@
 	</if>
 	<if test="schEndTime != null and schEndTime != ''">
 		and i.`preparer_time`&lt;=#{schEndTime,jdbcType=VARCHAR}
-	</if>
+	</if>and i.item_type=#{itemType,jdbcType=INTEGER}
 	 and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o.`org_type` =#{orgTypeC,jdbcType=INTEGER}
 	 OR  o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o.`org_type` =#{orgTypeD,jdbcType=INTEGER}
 	 OR  o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o.`org_type` =#{orgTypeC,jdbcType=INTEGER}
@@ -535,7 +537,7 @@
 	</if>
 	<if test="schEndTime != null and schEndTime != ''">
 		and i.`preparer_time`&lt;=#{schEndTime,jdbcType=VARCHAR}
-	</if>
+	</if>and i.item_type=#{itemType,jdbcType=INTEGER}
 	 and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o.`org_type` =#{orgTypeC,jdbcType=INTEGER}
 	 OR  o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o.`org_type` =#{orgTypeD,jdbcType=INTEGER} 
 	 OR  o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o.`org_type` =#{orgTypeC,jdbcType=INTEGER}
@@ -611,10 +613,10 @@
 	<if test="schEndTime != null and schEndTime != ''">
 		and i.`preparer_time`&lt;=#{schEndTime,jdbcType=VARCHAR}
 	</if>	 
-	 and o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER} 
-	 or o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
-	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
-	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
+	 and o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER} 
+	 or o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
+	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
+	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
 	ORDER BY i.`id` DESC
 	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
         limit #{pageStart}, #{pageSize}
@@ -641,11 +643,11 @@
 	</if>
 	<if test="schEndTime != null and schEndTime != ''">
 		and i.`preparer_time`&lt;=#{schEndTime,jdbcType=VARCHAR}
-	</if>	 
-	 and o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER} 
-	 or o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
-	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
-	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
+	</if>and i.item_type=#{itemType,jdbcType=INTEGER}	 
+	 and o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER} 
+	 or o.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
+	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
+	 or o.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER} and i.item_type=#{itemType,jdbcType=INTEGER}
   </select>
   <!-- 根据登录机构查询分行立项中支完成的项目 -->
   <select id="getItemListByLogOrgFHLXZZWC"  parameterType="com.rmbank.supervision.model.Item" resultMap="BaseResultMap">
@@ -670,7 +672,7 @@
 	</if>
 	<if test="schEndTime != null and schEndTime != ''">
 		and i.`preparer_time`&lt;=#{schEndTime,jdbcType=VARCHAR}
-	</if>	 
+	</if>and i.item_type=#{itemType,jdbcType=INTEGER}	 
 	 and o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o.`org_type` =#{orgTypeC,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER} 
 	 or o2.`org_type` =#{orgTypeA,jdbcType=INTEGER} and o.`org_type` =#{orgTypeD,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
 	 or o2.`org_type` =#{orgTypeB,jdbcType=INTEGER} and o.`org_type` =#{orgTypeC,jdbcType=INTEGER} and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}

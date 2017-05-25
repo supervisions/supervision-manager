@@ -529,7 +529,7 @@ public class IncorruptVisionAction extends SystemAction {
     }
     
     /**
-     * 提出监察意见
+     * 提出监察意见，并选择合规或不合规
      * @param itemProcess
      * @param request
      * @param response
@@ -556,15 +556,21 @@ public class IncorruptVisionAction extends SystemAction {
 	    	itemProcess.setPreparerId(u.getId());
 	    	itemProcess.setPreparerTime(new Date());
 			itemProcess.setDefined(false);
-			if(status==4){
-				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_3);//监察室提出监察意见
+			if(status==null){
+				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_44); //录入问责资料
+			}else if(status==4){
+				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_2);//项目合规，进入被监察对象录入会议决策内容
+			}else if(status==0){
+				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_00); //监察室给出监察项目方案意见，但是方案不合规，进入重新录入方案流程
+			}else if(status==5){
+				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_6); //监察室给出监察意见，但是有异议，进入被监察对象提请党委参考监察意见
 			}else if(status==6){
-				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_4);//被监察对象录入执行情况
+				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_4); //监察室给出监察意见，并且无异议，进入被监察对象录入执行情况
 			}
 			itemProcessService.insert(itemProcess);			
 			
-			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-			item.setLasgTag(Constants.INCORRUPT_VISION_3);
+//			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+//			item.setLasgTag(Constants.INCORRUPT_VISION_3);
 			
 			js.setCode(0);
 			js.setMessage("保存信息成功!"); 
@@ -602,11 +608,11 @@ public class IncorruptVisionAction extends SystemAction {
 	    	itemProcess.setPreparerId(u.getId());
 	    	itemProcess.setPreparerTime(new Date());
 			itemProcess.setDefined(false); 
-			itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_33);//监察室提出监察意见
+			itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_33);//被监察对象录入会议决策后监察室提出监察意见
 			itemProcessService.insert(itemProcess);			
 			
-			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-			item.setLasgTag(Constants.INCORRUPT_VISION_33);
+//			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+//			item.setLasgTag(Constants.INCORRUPT_VISION_33);
 			
 			js.setCode(0);
 			js.setMessage("保存信息成功!"); 
@@ -648,8 +654,8 @@ public class IncorruptVisionAction extends SystemAction {
 			itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_5);//监察室监察执行情况
 			itemProcessService.insert(itemProcess);			
 			
-			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-			item.setLasgTag(Constants.INCORRUPT_VISION_5);
+//			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+//			item.setLasgTag(Constants.INCORRUPT_VISION_5);
 			js.setCode(0);
 			js.setMessage("保存信息成功!"); 
 		}catch(Exception ex){
@@ -661,7 +667,7 @@ public class IncorruptVisionAction extends SystemAction {
     
     
     /**
-     * 监察对象监察执行情况
+     * 监察室监察执行情况
      * @param itemProcess
      * @param request
      * @param response
@@ -673,6 +679,7 @@ public class IncorruptVisionAction extends SystemAction {
     @RequiresPermissions("vision/incorrupt/jsonSaveJCExecution.do")
     public JsonResult<ItemProcess> jsonSaveJCExecution(ItemProcess itemProcess, 
     		@RequestParam(value="status", required =false) Integer status,
+    		@RequestParam(value="wenze", required =false) Integer wenze,
     		HttpServletRequest request, HttpServletResponse response) throws ParseException{
     	//新建一个json对象 并赋初值
 		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
@@ -689,19 +696,22 @@ public class IncorruptVisionAction extends SystemAction {
 	    	itemProcess.setPreparerTime(new Date());
 			itemProcess.setDefined(false); 
 			if(status==4){
-				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_8); //流程完结
-				Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-				item.setEndTime(new Date());
-				item.setStatus(Constants.ITEM_STATUS_OVER);
-				itemService.updateByPrimaryKeySelective(item);
+				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_7); //监察执行情况合规，进入监察室给出监察结论
 			}else if(status==0){
+				//项目不合规，判断是否问责
+				if(wenze==0){//不问责
+					itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_4); //被监察对象录入执行情况
+				}else{
+					//问责
+					itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_55); //进入问责流程
+				} 
 				
 			}
 			
 			itemProcessService.insert(itemProcess);			
 			
-			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-			item.setLasgTag(Constants.INCORRUPT_VISION_8);
+//			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+//			item.setLasgTag(Constants.INCORRUPT_VISION_8);
 			js.setCode(0);
 			js.setMessage("保存信息成功!"); 
 		}catch(Exception ex){
@@ -710,5 +720,212 @@ public class IncorruptVisionAction extends SystemAction {
 		}
 		return js;
     }
+    
+    /**
+     * 监察室给出监察结论，完结项目
+     * @param itemProcess
+     * @param status
+     * @param request
+     * @param response
+     * @return
+     * @throws ParseException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveJianChaJieLun.do", method=RequestMethod.POST)
+    @RequiresPermissions("vision/incorrupt/jsonSaveJianChaJieLun.do")
+    public JsonResult<ItemProcess> jsonSaveJianChaJieLun(ItemProcess itemProcess,    		
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+
+			itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_8); //监察室给出监察结论,项目完结
+			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			item.setEndTime(new Date());
+			item.setStatus(Constants.ITEM_STATUS_OVER);
+			itemService.updateByPrimaryKeySelective(item);
+			
+			
+			itemProcessService.insert(itemProcess);			
+			
+//			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+//			item.setLasgTag(Constants.INCORRUPT_VISION_8);
+			js.setCode(0);
+			js.setMessage("保存信息成功!"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+    
+    
+    
+    /**
+     * 廉政监察所有流程
+     * @param item
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/incorruptFile.do")
+	@RequiresPermissions("vision/incorrupt/incorruptFile.do")
+	public String branchFHFile(Item item,
+			HttpServletRequest request, HttpServletResponse response){
+		int tag = item.getTag();
+		item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId());  
+		
+		if(itemProcessList.size()>0){ 
+			for(ItemProcess ip : itemProcessList){  
+				List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+				fileList = itemProcessFileService.getFileListByItemId(ip.getId());
+				ip.setFileList(fileList);  
+				if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_0){
+					request.setAttribute("ItemProcess", ip); //新建状态
+				}else if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_1){
+					request.setAttribute("ItemProcess2", ip); //被监察对象录入项目方案
+				}else if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_2){
+					request.setAttribute("ItemProcess3", ip); //监察室给出监察意见，并且项目合规
+				}else if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_4){					
+					request.setAttribute("ItemProcess4", ip); //监察室给出监察意见，并且无异议
+				}else if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_5){
+ 					request.setAttribute("ItemProcess5", ip); //被监察对象已经录入执行情况
+ 				}else if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_7){
+ 					request.setAttribute("ItemProcess7", ip); //监察室已经录入监察执行情况，并且合规
+ 				}else if(ip.getContentTypeId() ==666){
+					request.setAttribute("ItemProcess5", ip); //录入整改意见
+				}else if(ip.getContentTypeId() ==777){
+					request.setAttribute("ItemProcess6", ip); //被监察对象录入会议决策内容
+				}else if(ip.getContentTypeId() ==778){
+ 					request.setAttribute("ItemProcess10", ip); //需要问责，问责前一节点的监察意见
+ 				}else if(ip.getContentTypeId()==779){
+ 					request.setAttribute("ItemProcess11", ip); //问责资料
+ 				}
+			}
+		}
+		//获取当前用户
+		User lgUser=this.getLoginUser(); 
+		   
+		request.setAttribute("User", lgUser);  
+		request.setAttribute("tag", tag);
+		request.setAttribute("Item", item); 
+		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		
+		if(tag == 72 ){			
+			return "web/vision/incorrupt/itemScheme"; //到被监察对象录入方案页面
+		}
+		if(tag == 73 ){			
+			return "web/vision/incorrupt/decision"; //到被监察对象录入会议决策
+		}
+		if(tag == 74 ){			
+			return "web/vision/incorrupt/opinion"; //到监察室提出监察意见
+		}
+		if(tag == 75 ){			
+			return "web/vision/incorrupt/execution"; //到被监察对象录入执行情况
+		}
+		if(tag == 76){
+			return "web/vision/incorrupt/JCexecution"; //到监察室监察执行情况
+		}
+		if(tag == 78){
+			return "web/vision/incorrupt/jianChaJieLun"; //到监察室给出监察结论
+		}
+		if(tag == 777 ){			
+			return "web/vision/incorrupt/advice"; //到监察室对会议决策内容给出意见
+		}
+		if(tag == 778){
+			return "web/vision/incorrupt/wenZe"; //到监察室录入问责资料
+		}
+		return "";
+	}
+    
+    /**
+     * 查看项目
+     * @param item
+     * @param request
+     * @param response
+     * @return
+     */
+     @RequestMapping(value = "/showItem.do")
+     @RequiresPermissions("vision/incorrupt/showItem.do")
+     public String showItem(Item item, 
+             HttpServletRequest request, HttpServletResponse response){
+     	item = itemService.selectByPrimaryKey(item.getId());
+ 		if(item.getPreparerTime() != null){
+ 			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+ 		}
+ 		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId());  
+ 		if(itemProcessList.size()>0){ 
+ 			for(ItemProcess ip : itemProcessList){  
+ 				List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+ 				fileList = itemProcessFileService.getFileListByItemId(ip.getId());
+ 				ip.setFileList(fileList);  
+ 				if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_0){
+ 					request.setAttribute("ItemProcess", ip); //监察内容
+ 				}else if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_1){
+ 					request.setAttribute("ItemProcess2", ip); //已经录入内容
+ 				}if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_00){
+ 					List<ItemProcess> list=new ArrayList<ItemProcess>(); //这里处理了循环不合规的情况
+ 					for (ItemProcess iplt : itemProcessList) {
+						if(iplt.getContentTypeId()==Constants.INCORRUPT_VISION_1){
+							list.add(iplt);
+						}
+					}
+ 					ItemProcess itemProcess = itemProcessList.get(itemProcessList.size()-1); //获取最后一个元素
+ 					if(list.size()<=1 || itemProcess.getContentTypeId()==Constants.INCORRUPT_VISION_00){
+ 						request.setAttribute("ItemProcess0", ip); //已经给出监察意见，方案不合规，回到被监察对象录入方案
+ 					}else {
+ 						request.setAttribute("ItemProcess0", null); //已经重新上传方案，上一次的监察意见不显示
+					} 					
+ 				}else if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_2){
+ 					request.setAttribute("ItemProcess3", ip); //已经给出监察意见，并且方案合规
+ 				}else if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_4){
+ 					request.setAttribute("ItemProcess4", ip); //已经给出监察意见，并且无异议
+ 				}else if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_5){
+ 					request.setAttribute("ItemProcess5", ip); //被监察对象已经录入执行情况
+ 				}else if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_6){
+ 					ItemProcess itemProcess = itemProcessList.get(itemProcessList.size()-1);
+ 					if(itemProcess.getContentTypeId()==Constants.INCORRUPT_VISION_00){
+ 						request.setAttribute("ItemProcess8", ip); //已经给出监察意见，方案不合规，回到被监察对象录入方案
+ 					}else {
+ 						request.setAttribute("ItemProcess8", null); //已经重新上传方案，上一次的监察意见不显示
+					}
+ 					 //有异议，提请党委重新决策
+ 				}else if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_7){
+ 					request.setAttribute("ItemProcess7", ip); //监察室监察已经录入的执行情况，并且合规
+ 				}else if(ip.getContentTypeId() ==777){
+ 					request.setAttribute("ItemProcess6", ip); //被监察对象已经录入会议决策
+ 				}else if(ip.getContentTypeId() ==778){
+ 					request.setAttribute("ItemProcess10", ip); //需要问责，问责前一节点的监察意见
+ 				}else if(ip.getContentTypeId() ==Constants.INCORRUPT_VISION_8){
+ 					request.setAttribute("ItemProcess9", ip); //给出监察结论，项目完结
+ 				}else if(ip.getContentTypeId()==779){
+ 					request.setAttribute("ItemProcess11", ip); //问责资料
+ 				}
+ 			}
+ 		}
+ 		
+ 		//获取当前用户
+ 		User lgUser=this.getLoginUser(); 
+ 		
+ 		request.setAttribute("User", lgUser);  
+ 		request.setAttribute("Item", item); 
+ 		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+     	return "web/vision/incorrupt/showItem";
+     }
     
 }

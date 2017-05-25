@@ -124,8 +124,8 @@ function sign(itemId){
 	    }  
 	}); 
 }
-function uploadFile(id,isStept){
-window.location.href="<%=basePath%>vision/efficiency/efficiencyNoFile.do?id="+id;
+function uploadFile(id,tag){
+	window.location.href="<%=basePath%>vision/efficiency/efficiencyFile.do?id="+id+"&tag="+tag;
 	<%-- if(isStept==0){
 		window.location.href="<%=basePath%>vision/efficiency/efficiencyNoFile.do?id="+id;
 	}else{
@@ -141,6 +141,37 @@ function showItem(id){
 function resetItem(id,lasgTag){
 	window.location.href="<%=basePath%>vision/efficiency/resetItem.do?id="+id+"&lasgTag="+lasgTag;
 }
+function followItem(id,name){
+	$.messager.confirm("问责确认","确认问责项目："+name+"?",function(r){  
+		    if (r){   
+				followAction(id,0); //问责
+	    	}else{
+	    		$.messager.confirm("问责确认","确认不问责项目："+name+"，即完成当前项目的监察?",function(r){  
+		    		if (r){   
+			    		followAction(id,1); //不问责
+		    		}
+				}); 
+		    		
+	    	}
+	}); 
+}
+function followAction(itemId,status){
+	$.ajax({
+		url : "<%=basePath%>vision/efficiency/jsonfollowItemById.do",
+		type : "post",  
+    	dataType : "json",		
+    	data:{"id":itemId,"isFollow":status},						
+		success : function(data) { 									
+  			if(data.code == 0){ 
+  				$.messager.alert('操作信息',data.message,'info',function(){ 
+  					search();  
+      			});
+  			}else{		  			    
+				$.messager.alert('错误信息','删除失败！','error');
+  			}  
+	    } 
+	});
+} 
 </script>
 </head>
 <body>
@@ -259,23 +290,29 @@ function resetItem(id,lasgTag){
 							</c:if>
 						</td>
 						<td><%-- <sapn>${item.lasgTag}</sapn> --%>
-							<c:if test="${userOrg.id == item.supervisionOrgId && item.isSign >1 && item.lasgTag == 66}">
-								<a style="color: blue;" onclick="uploadFile(${item.id},${item.isStept})">上传资料</a>
+							<c:if test="${item.status == 0 and userOrg.id==item.preparerOrgId}">
+								<span style="color: red;" onclick="setProject(${item.id })">立项</span>
 							</c:if>
 							<c:if test="${userOrg.id == item.supervisionOrgId and item.status != 0 and item.isSign <= 1}">
 								<a style="color: blue;" onclick="sign(${item.id })">签收</a>
 							</c:if>
-							<c:if test="${item.status == 0 and userOrg.id==item.preparerOrgId}">
-								<span style="color: red;" onclick="setProject(${item.id })">立项</span>
-							</c:if>	
-							<c:if test="${item.lasgTag == 67 && userOrg.id==item.preparerOrgId}">
-								<a style="color: blue;" onclick="toOpinion(${item.id},67)">监察意见</a>
+							<c:if test="${userOrg.id == item.supervisionOrgId && item.isSign >1 && item.lasgTag == 66}">
+								<a style="color: blue;" onclick="uploadFile(${item.id},67)">上传资料</a>
 							</c:if>
-							<c:if test="${item.lasgTag == 69 && userOrg.id == item.supervisionOrgId || item.lasgTag == 666 && userOrg.id == item.supervisionOrgId}">
-								<a style="color: blue;" onclick="resetItem(${item.id},-1)">整改操作</a>
+							<c:if test="${item.lasgTag == 67 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id},68)">监察意见</a>
+							</c:if>						
+							<c:if test="${item.lasgTag == 69 && userOrg.id == item.supervisionOrgId }">
+								<a style="color: blue;" onclick="uploadFile(${item.id},69)">整改操作</a>
 							</c:if>
 							<c:if test="${item.lasgTag == 666 && userOrg.id==item.preparerOrgId}">
-								<a style="color: blue;" onclick="resetItem(${item.id},${item.lasgTag})">整改意见</a>
+								<a style="color: blue;" onclick="followItem(${item.id},'${item.name}')">问责处理</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 777 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id},777)">录入问责资料</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 778 && userOrg.id==item.supervisionOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id},778)">整改操作</a>
 							</c:if>
 							<%-- <c:if test="${userOrg.id == item.supervisionOrgId and item.status !=0}">
 								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>

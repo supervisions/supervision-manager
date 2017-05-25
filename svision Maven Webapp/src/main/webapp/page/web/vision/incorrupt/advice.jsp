@@ -158,11 +158,11 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 });
 	 
 	//新增/编辑项目
-	function saveItemScheme(obj){	
+	function saveOpinion(obj){	
         $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
-	        url: "<%=basePath%>vision/incorrupt/jsonSaveItemScheme.do?",
+	        url: "<%=basePath%>vision/incorrupt/jsonsaveOpinion.do",
 	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 	        async: true, //发送异步请求	  
 	        dataType:"json", //响应数据类型      
@@ -198,7 +198,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
-				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItemScheme(this);">保存</span>
+				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveOpinion(this);">保存</span>
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div>
@@ -206,7 +206,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
 				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="font16 taskTable" >
+					<table class="font16 taskTable" >						
 						<tr>
 							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
@@ -251,9 +251,51 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<tr><td style="border:0px;"></td><tr>
 								</table>
 							</td>		
+						</tr>
+						<tr>
+							<td align="right" style="height:100px;">方案内容：</td>
+							<td colspan="3">
+								<label>${ItemProcess2.content } </label> 									
+							</td>		
 						</tr> 
 						<tr>
-							<td align="right" width="8%" align="right" height="100px;">方案内容：</td>
+							<td align="right" >方案附件：</td>
+							<td colspan="3"> 
+								<table style="width:100%;height:100%;min-height:80px;">
+									<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
+										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+									</c:forEach> 
+									<tr><td style="border:0px;"></td><tr>
+								</table>
+							</td>		
+						</tr>
+						<tr>
+							<td align="right" style="height:100px;">监察室意见：</td>
+							<td colspan="3">
+								<label>${ItemProcess3.content } </label> 
+								<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
+										<a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a>
+								</c:forEach> 
+							</td>		
+						</tr>
+								
+						<tr>
+							<td align="right">是否合规：</td>
+							<td colspan="3">
+								<label>合规 </label> 									
+							</td>		
+						</tr>		
+						<tr>
+							<td align="right" style="height:100px;">会议决策：</td>
+							<td colspan="3">
+								<label>${ItemProcess6.content } </label> 
+								<c:forEach var="fileItem" items="${ItemProcess6.fileList }">
+										<a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a>
+								</c:forEach> 
+							</td>		
+						</tr>							
+						<tr>
+							<td align="right" width="8%" align="right" height="100px;">监察意见：</td>
 							<td colspan="3" > 
 								<textarea rows="6" cols="5" style="width:60%;" name="content"></textarea>								
 								<input type="hidden" name ="itemId" value="${Item.id }">
@@ -261,7 +303,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td> 
 						</tr>	
 						<tr>
-							<td align="right" height="129px;">上传附件：</td>
+							<td align="right" height="100px;">上传附件：</td>
 							<td colspan="3">
 								 <div id="themeswitcher" class="pull-right"></div>
 					                <script>
@@ -272,19 +314,18 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					                <div id="uploader">
 					                </div>
 							 </td>	
-						</tr>
-						<!-- <tr>
-							<td align="right" >是否需要整改：</td>
+						</tr>						
+						<tr>
+							<td align="right" >是否有异议：</td>
 							<td colspan="3">
 								<label>
-									<input type="radio" name="status" value="0" >整改
+									<input type="radio" name="status" value="5" >有异议
 								</label> 
 								<label>
-									<input type="radio" name="status" value="4" checked="checked">不整改
+									<input type="radio" name="status" value="6" checked="checked">无异议
 								</label>								
 							</td>	
-						</tr> -->
-						
+						</tr>
 					</table>
 				</div>
 			</form>

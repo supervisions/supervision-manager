@@ -446,7 +446,7 @@ public class EfficiencyVisionAction extends SystemAction {
      */
     @ResponseBody
     @RequestMapping(value = "/jsonSaveResetItem.do", method=RequestMethod.POST)
-    @RequiresPermissions("vision/efficiency/jsonSaveResetItem")
+    @RequiresPermissions("vision/efficiency/jsonSaveResetItem.do")
     public JsonResult<ItemProcess> jsonSaveResetItem(ItemProcess itemProcess, 
     		@RequestParam(value="status",required = false) Integer status,
     		HttpServletRequest request, HttpServletResponse response) throws ParseException{
@@ -518,7 +518,7 @@ public class EfficiencyVisionAction extends SystemAction {
 			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
 			if(status == 4){
 				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_3);//监察意见
-				item.setEndTime(new Date());
+				item.setEndTime(new Date()); //完结
 				item.setStatus(Constants.ITEM_STATUS_OVER);
 				itemService.updateByPrimaryKeySelective(item);
 			}else if(status == 0){			
@@ -569,13 +569,21 @@ public class EfficiencyVisionAction extends SystemAction {
 				if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_0){
 					request.setAttribute("ItemProcess", ip); //监察内容
 				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_2){
-					request.setAttribute("FileItemProcess", ip); //已经上传资料
+					request.setAttribute("ItemProcess2", ip); //已经上传资料
+				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_3){
+					request.setAttribute("ItemProcess3", ip); //监察意见，需要整改
 				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_4){
-					request.setAttribute("XYZGProcess", ip); //监察意见，需要整改
-				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_4){
-					request.setAttribute("FollowItemProcess", ip);
-				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_5){
-					request.setAttribute("OverItemProcess", ip);
+					request.setAttribute("ItemProcess4", ip);
+				}else if(ip.getContentTypeId() ==666){
+					request.setAttribute("ItemProcess5", ip);
+				}else if(ip.getContentTypeId() ==777){
+					request.setAttribute("ItemProcess6", ip); //问责处理
+				}else if(ip.getContentTypeId() ==778){
+					request.setAttribute("ItemProcess7", ip); //再次整改
+				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_6){
+					request.setAttribute("ItemProcess8", ip); //不问责项目完结
+				}else if(ip.getContentTypeId() ==779){
+					request.setAttribute("ItemProcess9", ip); //再次整改后项目完结
 				}
 			}
 		}
@@ -587,5 +595,246 @@ public class EfficiencyVisionAction extends SystemAction {
 		request.setAttribute("Item", item); 
 		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
     	return "web/vision/efficiency/showItem";
+    }
+    
+    /**
+     * 效能监察流程
+     * @param item
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/efficiencyFile.do")
+	@RequiresPermissions("vision/efficiency/efficiencyFile.do")
+	public String branchFHFile(Item item,
+			HttpServletRequest request, HttpServletResponse response){
+		int tag = item.getTag();
+		item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId());  
+
+		if(itemProcessList.size()>0){ 
+			for(ItemProcess ip : itemProcessList){  
+				List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+				fileList = itemProcessFileService.getFileListByItemId(ip.getId());
+				ip.setFileList(fileList);  
+				if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_0){
+					request.setAttribute("ItemProcess", ip); //新建状态
+				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_2){
+					request.setAttribute("ItemProcess2", ip); //上传资料状态
+				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_3){
+					request.setAttribute("ItemProcess3", ip); //给出监察意见
+				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_4){
+					request.setAttribute("ItemProcess4", ip); //录入整改情况
+				}else if(ip.getContentTypeId() ==666){
+					request.setAttribute("ItemProcess5", ip); //录入整改意见
+				}else if(ip.getContentTypeId() ==777){
+					request.setAttribute("ItemProcess6", ip); //问责处理
+				}else if(ip.getContentTypeId() ==778){
+					request.setAttribute("ItemProcess7", ip); //再次整改
+				}else if(ip.getContentTypeId() ==779){
+					request.setAttribute("ItemProcess8", ip); //再次整改后项目完结
+				}
+			}
+		}
+		//获取当前用户
+		User lgUser=this.getLoginUser(); 
+		   
+		request.setAttribute("User", lgUser);  
+		request.setAttribute("tag", tag);
+		request.setAttribute("Item", item); 
+		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		
+		if(tag == 67 ){			
+			return "web/vision/efficiency/efficiencyNoFile";
+		}
+		if(tag == 68 ){			
+			return "web/vision/efficiency/opinion";
+		}
+		if(tag == 69 ){			
+			return "web/vision/efficiency/resetView";
+		}
+		if(tag==777){
+			return "web/vision/efficiency/wenZeView";
+		}
+		if(tag==778){
+			return "web/vision/efficiency/zhengGaiView";
+		}
+		return "";
+	}
+    
+    /**
+     * 问责处理
+     * @param itemProcess
+     * @param id
+     * @param isFollow
+     * @param request
+     * @param response
+     * @return
+     * @throws ParseException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/jsonfollowItemById.do", method=RequestMethod.POST)
+    @RequiresPermissions("vision/efficiency/jsonfollowItemById.do")
+    public JsonResult<ItemProcess> jsonfollowItemById(ItemProcess itemProcess,
+    		@RequestParam(value="id" ,required=false) Integer itemId,
+    		@RequestParam(value="isFollow" ,required=false) Integer isFollow,
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setId(0);
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+			itemProcess.setItemId(itemId);
+			
+			if(isFollow == 1){
+				itemProcess.setContent("不问责项目完结");
+				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_6);//流程完结
+				Item item = itemService.selectByPrimaryKey(itemId);
+				item.setStatus(Constants.ITEM_STATUS_OVER);
+				itemService.updateByPrimaryKeySelective(item);
+				js.setCode(0);
+				js.setMessage("项目监察完结!"); 
+			}else if(isFollow == 0){
+				itemProcess.setContent("问责");
+				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_7);//监察室录入问责资料
+				js.setCode(0);
+				js.setMessage("项目进入问责流程!"); 
+			}			
+			itemProcessService.insert(itemProcess);			
+			
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+    
+    /**
+     * 监察室录入问责资料
+     * @param itemProcess
+     * @param status
+     * @param request
+     * @param response
+     * @return
+     * @throws ParseException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveWenZeItem.do", method=RequestMethod.POST)
+    @RequiresPermissions("vision/efficiency/jsonSaveWenZeItem.do")
+    public JsonResult<ItemProcess> jsonSaveWenZeItem(ItemProcess itemProcess, 
+    		@RequestParam(value="status",required = false) Integer status,
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_8);	
+//			if(status!=null){
+//				if(status==null ||status!=4){//监察对象给出监察意见
+//					itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_666);				
+//					Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+//					item.setLasgTag(Constants.EFFICIENCY_VISION_4);
+//				}else{
+//					itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_6);//流程完结
+//					Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+//					item.setEndTime(new Date());
+//					item.setStatus(Constants.ITEM_STATUS_OVER);
+//					itemService.updateByPrimaryKeySelective(item);
+//				}
+//			}
+//			if(status==null){//被监察对象整改操作
+//				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_666);				
+//				Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+//				item.setLasgTag(Constants.EFFICIENCY_VISION_4);
+//			}
+			itemProcessService.insert(itemProcess);	
+			
+			js.setCode(0);
+			js.setMessage("上传资料成功!"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+    
+    
+    /**
+     * 再次整改
+     */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveZCZGItem.do", method=RequestMethod.POST)
+    @RequiresPermissions("vision/efficiency/jsonSaveZCZGItem.do")
+    public JsonResult<ItemProcess> jsonSaveZCZGItem(ItemProcess itemProcess, 
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+			itemProcess.setDefined(false); 
+			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_9); //再洗录入整改意见后项目完结
+			
+			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			item.setStatus(Constants.ITEM_STATUS_OVER);
+			itemService.updateByPrimaryKeySelective(item);
+//			if(status!=null){
+//				if(status==null ||status!=4){//监察对象给出监察意见
+//					itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_666);				
+//					Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+//					item.setLasgTag(Constants.EFFICIENCY_VISION_4);
+//				}else{
+//					itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_6);//流程完结
+//					Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+//					item.setEndTime(new Date());
+//					item.setStatus(Constants.ITEM_STATUS_OVER);
+//					itemService.updateByPrimaryKeySelective(item);
+//				}
+//			}
+//			if(status==null){//被监察对象整改操作
+//				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_666);				
+//				Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+//				item.setLasgTag(Constants.EFFICIENCY_VISION_4);
+//			}
+			itemProcessService.insert(itemProcess);	
+			
+			js.setCode(0);
+			js.setMessage("上传资料成功!"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
     }
 }

@@ -104,7 +104,9 @@ function setProject(id){
 	    }  
 	}); 
 }
-
+function showItem(id){
+	window.location.href="<%=basePath%>vision/incorrupt/showItem.do?id="+id;
+}
 function toSaveScheme(id){
 	window.location.href="<%=basePath%>vision/incorrupt/toSaveScheme.do?id="+id;
 }
@@ -119,6 +121,10 @@ function toExecution(id){
 }
 function toJCExecution(id){
 	window.location.href="<%=basePath%>vision/incorrupt/toJCExecution.do?id="+id;
+}
+
+function uploadFile(id,tag){
+	window.location.href="<%=basePath%>vision/incorrupt/incorruptFile.do?id="+id+"&tag="+tag;
 }
 </script>
 </head>
@@ -199,7 +205,7 @@ function toJCExecution(id){
 							</c:if>
 						</td>
 						<%-- <td>${item.name}</td> --%>
-						<td><a href="">查看</a></td>
+						<td><a style="color:blue;" onclick="showItem(${item.id })">查看</a></td>
 						<td>${item.itemCategory}</td>
 						<td>${item.name}</td>
 						<td>${item.orgName}</td>
@@ -208,23 +214,41 @@ function toJCExecution(id){
 								<span style="color: red;" onclick="setProject(${item.id })">立项</span>
 							</c:if>
 							<c:if test="${item.status != 0 and userOrg.id==item.supervisionOrgId and item.lasgTag==-1}">
-								<span style="color: blue;" onclick="toSaveScheme(${item.id })">项目方案</span>
+								<span style="color: blue;" onclick="uploadFile(${item.id},72)">项目方案</span>
+							</c:if>
+							<c:if test="${item.lasgTag == 0 and userOrg.id==item.supervisionOrgId}">
+								<span style="color: blue;" onclick="uploadFile(${item.id},72)">项目方案</span><!-- 不合规，重新进行录入方案 -->
 							</c:if>
 							<c:if test="${item.lasgTag == 72 and userOrg.id==item.preparerOrgId}">
-								<span style="color: blue;" onclick="toOpinion(${item.id },72)">监察意见</span>
+								<span style="color: blue;" onclick="uploadFile(${item.id },74)">监察意见</span>
 							</c:if>
-							<c:if test="${item.lasgTag == 74 and userOrg.id==item.supervisionOrgId}">
-								<span style="color: blue;" onclick="toSaveDecision(${item.id })">会议决策内容</span>
-							</c:if>
-							<c:if test="${item.lasgTag == 75 && userOrg.id==item.supervisionOrgId}">
-								<a style="color: blue;" onclick="toExecution(${item.id})">执行情况</a>
-							</c:if>
-							<c:if test="${item.lasgTag == 76 && userOrg.id==item.preparerOrgId}">
-								<a style="color: blue;" onclick="toJCExecution(${item.id})">监察执行情况</a>
+							<c:if test="${item.lasgTag == 73 and userOrg.id==item.supervisionOrgId}">
+								<span style="color: blue;" onclick="uploadFile(${item.id },73)">录入会议决策</span>
 							</c:if>
 							<c:if test="${item.lasgTag == 777 and userOrg.id==item.preparerOrgId}">
-								<span style="color: blue;" onclick="toOpinion(${item.id },777)">监察意见</span>
+								<span style="color: blue;" onclick="uploadFile(${item.id },777)">监察意见</span>
 							</c:if>
+							<c:if test="${item.lasgTag == 77 and userOrg.id==item.supervisionOrgId}">
+								<span style="color: blue;" onclick="uploadFile(${item.id },73)">提请党委参考</span>
+							</c:if>
+							<c:if test="${item.lasgTag == 75 && userOrg.id==item.supervisionOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 75)">执行情况</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 779 && userOrg.id==item.supervisionOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 75)">执行情况</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 76 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 76)">监察执行情况</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 778 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 778)">录入问责资料</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 78 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 78)">监察结论</a>
+							</c:if>
+							<%-- <c:if test="${item.lasgTag == 777 and userOrg.id==item.preparerOrgId}">
+								<span style="color: blue;" onclick="toOpinion(${item.id },777)">监察意见</span>
+							</c:if> --%>
 							<c:if test="${userOrg.id == item.preparerOrgId}">
 								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
 							</c:if>	
