@@ -3760,6 +3760,10 @@
 	border: 1px solid #f0f3f4;
 	    width: 100%;
 }
+.taskTable td label{
+	max-width:60%; 
+	width:50%; 
+}
 .taskTable td{
 	border: 1px solid #f0f3f4;
 	min-height:35px;

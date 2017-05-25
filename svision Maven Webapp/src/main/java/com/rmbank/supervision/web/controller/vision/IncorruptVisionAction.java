@@ -125,6 +125,28 @@ public class IncorruptVisionAction extends SystemAction {
 		return "web/vision/incorrupt/incorruptList";
 	}
 	
+	
+	/**
+	 * 跳转到添加工作事项
+	 * @param id
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/itemInfo.do")
+	@RequiresPermissions("vision/incorrupt/itemInfo.do")
+	public String itemInfo(	HttpServletRequest request, HttpServletResponse response) {
+		//获取当前登录用户
+		User loginUser = this.getLoginUser();
+		//获取当前用户对应的机构列表
+		List<Organ> userOrgList=userService.getUserOrgByUserId(loginUser.getId());
+		//获取当前用户对应的第一个机构
+		Organ userOrg=userOrgList.get(0);	
+		request.setAttribute("userOrg", userOrg);
+		return "web/vision/incorrupt/ItemInfo";
+	}
+	
+	
 	/**
      * 跳转到录入项目
      * @param id
@@ -138,34 +160,21 @@ public class IncorruptVisionAction extends SystemAction {
 			@RequestParam(value = "id", required = false) Integer id,
 			HttpServletRequest request, HttpServletResponse response) {
     	
-    	//获取机构
-		Organ organ=new Organ();
-		List<Organ> organList = organService.getOrganList(organ);		
-    	List<OrganVM> list=new ArrayList<OrganVM>();
-		OrganVM frvm = null;
-		for(Organ rc : organList){
-			if(rc.getPid()==0 && rc.getSupervision()==0){
-				frvm = new OrganVM();
-				List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
-				frvm.setId(rc.getId());
-				frvm.setName(rc.getName());
-				for(Organ rc1 : organList){
-					if(rc1.getPid() == rc.getId() && rc1.getSupervision()==0){ 
-						itemList.add(rc1);
-					}
-				}
-				frvm.setItemList(itemList);
-				list.add(frvm);
-			}
-		}		
+    	
 		//获取当前登录用户所属机构下的所有用户
 		User lgUser = this.getLoginUser();
 		List<User> byLgUser = userService.getUserListByLgUser(lgUser);
+		
+		//获取当前用户对应的机构列表
+		List<Organ> userOrgList=userService.getUserOrgByUserId(lgUser.getId());
+		//获取当前用户对应的第一个机构
+		Organ userOrg=userOrgList.get(0);	
+		request.setAttribute("userOrg", userOrg);
 		//获取项目类别
 		List<Meta> meatListByKey = configService.getMeatListByKey(Constants.META_ITEMCATEGORY_KEY);
 		request.setAttribute("meatListByKey", meatListByKey);
 		request.setAttribute("byLgUser", byLgUser);
-		request.setAttribute("OrgList", list);	
+		request.setAttribute("itemId", id);
 		return "web/vision/incorrupt/incorruptInfo";
 	}
 	 /** 
@@ -181,9 +190,12 @@ public class IncorruptVisionAction extends SystemAction {
    		@RequestParam(value = "OrgId", required = false) Integer[] OrgIds,    		
    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
    	//将前台传过来的String类型的时间转换为Date类型
-   	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-   	Date date = sdf.parse(end_time);    	
-   	item.setEndTime(date); //完成时间
+	if(end_time !=null){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	   	Date date = sdf.parse(end_time);    	
+	   	item.setEndTime(date); //完成时间
+	}
+   
    	item.setPreparerTime(new Date()); //立项时间
    	item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //项目类型
    	item.setSupervisionTypeId(3);
@@ -237,26 +249,31 @@ public class IncorruptVisionAction extends SystemAction {
    @ResponseBody
 	@RequestMapping(value = "/jsonsetProjectById.do", method = RequestMethod.POST)
 	@RequiresPermissions("vision/incorrupt/jsonsetProjectById.do")
-	public JsonResult<Item> jsonsetProjectById(
-			@RequestParam(value = "id", required = false) Integer id,
+	public JsonResult<Item> jsonsetProjectById(Item  item ,
 			HttpServletRequest request, HttpServletResponse response) {
 		
 		// 新建一个json对象 并赋初值
 		JsonResult<Item> js = new JsonResult<Item>();
 		js.setCode(new Integer(1));
-		js.setMessage("修改立项状态失败!");			
-		try {		
-			Item item =new Item();
-			item.setId(id);			
-			item.setStatus(1);
-			int state = itemService.updateByPrimaryKeySelective(item);
-			if(state==1){
-				js.setCode(new Integer(0));
-				js.setMessage("修改立项状态成功!");
-				return js;
-			}else {
-				return js;
-			}
+		js.setMessage("立项失败!");			
+		try {	
+			if(item != null && item.getId()>0){
+				Item temp = itemService.selectByPrimaryKey(item.getId()); 
+				if(temp != null){
+					temp.setStatus(1);
+					temp.setEndTime(Constants.DATE_FORMAT.parse(item.getEndTimes()));
+					itemService.updateByPrimaryKeySelective(temp);
+					List<ItemProcess> itemList = itemProcessService.getItemProcessItemId(item.getId());
+					if(itemList.size()>0){
+						ItemProcess itemProcess = itemList.get(0);
+						itemProcess.setContent(item.getName());
+						itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_0);
+						itemProcessService.updateByPrimaryKeySelective(itemProcess);
+						js.setCode(0);
+						js.setMessage("立项成功，待被监察对象上传项目方案");
+					}
+				} 
+			} 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	

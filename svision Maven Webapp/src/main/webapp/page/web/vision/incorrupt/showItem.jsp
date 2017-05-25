@@ -83,11 +83,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div> 
+		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<!-- 初始状态 -->
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
@@ -105,7 +106,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">监察内容：</td>
+							<td align="right" style="height:40px;">监察内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess.content } </label> 
 							</td>		
@@ -126,7 +127,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 被监察对象录入方案状态 -->						
 						<c:if test="${ItemProcess2 != null }">
 							<tr>
-								<td align="right" style="height:100px;">方案内容：</td>
+								<td align="right" style="height:40px;">方案内容：</td>
 								<td colspan="3">
 									<label>${ItemProcess2.content } </label> 									
 								</td>		
@@ -146,7 +147,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 监察室给出监察意见，但是项目不合规 -->		
 						<c:if test="${ItemProcess0 != null }">
 							<tr>
-								<td align="right" style="height:100px;">监察室意见：</td>
+								<td align="right" style="height:40px;">监察室意见：</td>
 								<td colspan="3">
 									<label>${ItemProcess0.content } </label> 
 									<c:forEach var="fileItem" items="${ItemProcess0.fileList }">
@@ -164,7 +165,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 监察室给出监察意见，并且项目合规 -->						
 						<c:if test="${ItemProcess3 != null }">
 							<tr>
-								<td align="right" style="height:100px;">监察室意见：</td>
+								<td align="right" style="height:40px;">监察室意见：</td>
 								<td colspan="3">
 									<label>${ItemProcess3.content } </label> 
 									<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
@@ -182,7 +183,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 被监察对象录入会议决策 -->
 						<c:if test="${ItemProcess6 != null }">
 							<tr>
-								<td align="right" style="height:100px;">会议决策：</td>
+								<td align="right" style="height:40px;">会议决策：</td>
 								<td colspan="3">
 									<label>${ItemProcess6.content } </label> 
 									<c:forEach var="fileItem" items="${ItemProcess6.fileList }">
@@ -194,7 +195,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 监察室根据会议决策，给出意见，并且无异议 -->
 						<c:if test="${ItemProcess4 != null }">
 							<tr>
-								<td align="right" style="height:100px;">监察室意见：</td>
+								<td align="right" style="height:40px;">监察室意见：</td>
 								<td colspan="3">
 									<label>${ItemProcess4.content } </label> 
 									<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
@@ -212,7 +213,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 有异议提请党委 -->
 						<c:if test="${ItemProcess8 != null }">
 							<tr>
-								<td align="right" style="height:100px;">监察室意见：</td>
+								<td align="right" style="height:40px;">监察室意见：</td>
 								<td colspan="3">
 									<label>${ItemProcess8.content } </label> 
 									<c:forEach var="fileItem" items="${ItemProcess8.fileList }">
@@ -230,7 +231,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 被监察对象录入执行情况-->
 						<c:if test="${ItemProcess5 != null }">
 							<tr>
-								<td align="right" style="height:100px;">执行情况：</td>
+								<td align="right" style="height:40px;">执行情况：</td>
 								<td colspan="3">
 									<label>${ItemProcess5.content } </label> 									
 								</td>		
@@ -250,7 +251,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 监察室监察执行情况，并且监察合规 -->
 						<c:if test="${ItemProcess7 != null }">
 							<tr>
-								<td align="right" style="height:100px;">监察执行情况意见：</td>
+								<td align="right" style="height:40px;">监察执行情况意见：</td>
 								<td colspan="3">
 									<label>${ItemProcess7.content } </label> 									
 								</td>		
@@ -276,7 +277,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 问责 -->
 						<c:if test="${ItemProcess10 != null }">
 							<tr>
-								<td align="right" style="height:100px;">对执行情况的意见：</td>
+								<td align="right" style="height:40px;">对执行情况的意见：</td>
 								<td colspan="3">
 									<label>${ItemProcess10.content } </label> 									
 								</td>		
@@ -296,7 +297,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 监察室录入的问责资料 -->	
 						<c:if test="${ItemProcess11 != null }">
 							<tr>
-								<td align="right" style="height:100px;">问责资料：</td>
+								<td align="right" style="height:40px;">问责资料：</td>
 								<td colspan="3">
 									<label>${ItemProcess11.content } </label> 									
 								</td>		
@@ -317,7 +318,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 监察结论 -->							
 						<c:if test="${ItemProcess9 != null }">
 							<tr>
-								<td align="right" style="height:100px;">监察结论：</td>
+								<td align="right" style="height:40px;">监察结论：</td>
 								<td colspan="3">
 									<label>${ItemProcess9.content } </label> 									
 								</td>		
@@ -328,11 +329,10 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				</div>
 			</form>
 		</div>  
-	
+	</div>
 	<div class="cl"></div>
 </div>
 <div class="cl"></div>
-</div>
-<div id="dialog"></div>
+</div> 
 </body>
 </html>  

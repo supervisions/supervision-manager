@@ -272,32 +272,32 @@ function goToMetaInfo(metaId){
 				<div class="yw-cm-title">
 					<span class="ml26">全部配置</span>
 				</div>
-				<table class="yw-cm-table yw-leftSide yw-bg-hover" id="metaList">
+				<table class="yw-cm-table yw-center yw-bg-hover" id="metaList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>						
-						<th><span style='margin-left:40px'>配置状态</span></th>
+						<!-- <th><span style='margin-left:40px'>配置状态</span></th> -->
 						<th>配置名称</th>						
 						<th>描述</th>
 						<th>操作</th>
 					</tr>
 					<c:forEach var="item" items="${configList}">
 					<tr>
-						<td>
+						<%-- <td>
 							<c:if test="${item.used == 0 }"><span style='margin-left:40px'>禁用</span></c:if>
 							<c:if test="${item.used == 1 }"><span style='margin-left:40px'>启用</span></c:if>						
-						</td>
+						</td> --%>
 						<td>${item.name}</td>
 						<td>${item.description}</td>							
 						<td>
 							<a style="color:blue" onclick="window.location.href='configInfo.do?id=${item.id}';">编辑</a>
 							<a style="color:blue" onclick="deleteConfig(${item.id},'${item.name}');">删除</a>
-							<c:if test="${item.used == 1}">
+							<%-- <c:if test="${item.used == 1}">
 								<a style="color:blue"
 									onclick="metaState(${item.id},${item.used},'${item.name}');">禁用</a>
 							</c:if> <c:if test="${item.used == 0}">
 								<a style="color:blue"
 									onclick="metaState(${item.id},${item.used},'${item.name}');">启用</a>
-							</c:if>							
+							</c:if>		 --%>					
 						</td>
 					</tr>
 					</c:forEach>

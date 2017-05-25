@@ -60,7 +60,102 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	$(document).ready(function(){	 
 		$("#datepicker").datepicker(); 
 		$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
-	 	 	
+	 	 	var len=32;//32长度
+            var radix=16;//16进制
+            var chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+            var uuid=[],i;
+            radix=radix||chars.length;
+            if(len){
+                for(i=0;i<len;i++){
+                    uuid[i]=chars[0|Math.random()*radix];
+                }
+            }else{
+                var r;
+                uuid[8]=uuid[13]=uuid[18]=uuid[23]='-';
+                uuid[14]='4';
+                for(i=0;i<36;i++){
+                    if(!uuid[i]){
+                        r=0|Math.random()*16;
+                        uuid[i]=chars[(i==19)?(r&0x3)|0x8:r];
+                    }
+                }
+            }
+            var v_uuid = uuid.join('');
+            $("#hid_uuid").val(v_uuid);
+            
+            $("#uploader").plupload({
+                // General settings
+                runtimes : 'html5,flash,silverlight,html4',
+                url : "<%=basePath%>system/upload/jsonUploadFile.do?uuid="+v_uuid,
+                // Maximum file size
+                max_file_size : '2999mb',
+                // Rename files by clicking on their titles
+                rename: true,
+                // Sort files
+                sortable: true,
+                // Enable ability to drag'n'drop files onto the widget (currently only HTML5 supports that)
+                dragdrop: true,
+                // Views to activate
+                max_retries: 0,
+                views: {
+                    list: true,
+                    thumbs: false, // Show thumbs
+                    active: 'list'
+                },
+                // Flash settings
+                flash_swf_url : '/plupload/js/Moxie.swf',
+                // Silverlight settings
+                silverlight_xap_url : '/plupload/js/Moxie.xap'
+            });
+            var uploader = $('#uploader').plupload('getUploader');
+            //绑定进度条
+            uploader.bind('UploadProgress',function(uploader,file){
+                //每个事件监听函数都会传入一些很有用的参数，
+                //我们可以利用这些参数提供的信息来做比如更新UI，提示上传进度等操作
+                var percentMsg = "正在上传文件，可能会花费一点时间，已上传:" + uploader.total.percent + "%";
+                
+            });
+            //绑定文件添加
+            uploader.bind('FilesAdded',function(uploader,files){
+                if(null != files && files.length>0){
+                    var cur_files = uploader.files;
+                    var tmp_files = cur_files;
+                    if(null != cur_files && cur_files.length>0){
+                        for(var i=0;i<cur_files.length;i++){
+                            var count = 0;
+                            for(var j=0;j<tmp_files.length;j++){
+                                if(cur_files[i].name == tmp_files[j].name){
+                                    count++;
+                                }
+                            }
+                            if(count > 1){
+                                uploader.removeFile(cur_files[i]);
+                                i--;
+                            }
+                        }
+                    }
+                }
+            });
+            //绑定文件是否全部上传完成
+            uploader.bind('UploadComplete',function(uploader,files){
+                if(null != files && files.length>0){ 
+                	$("#dialog").dialog({
+				        resizable: false,
+				        height:150,
+				        modal: true,
+				        open: function (event, ui) {
+		                   $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+		                },
+					    buttons: {
+					        '确定': function() {					        	
+					            window.location.href="<%=basePath%>vision/incorrupt/incorruptList.do";
+					        }
+					    }
+					}); 
+                }
+            });
+            $("#uploader_browse").removeAttr("style");
+            $("#uploader_browse").attr("style","z-index: 1;font-size: 12px;font-weight: normal;");
 	 });
 	
 	//新增/编辑项目
@@ -68,30 +163,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
         $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
-	        url: "<%=basePath %>vision/incorrupt/jsonsetProjectById.do",
+	        url: "vision/incorrupt/jsonSaveOrUpdateItem.do",
 	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 	        async: true, //发送异步请求	  
 	        dataType:"json", //响应数据类型      
 	        success: function(data) {
 	        	if(data.code==0){ 
-	        		 if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
-	        			$("#uploader_start").click(); //上传文件
-	        		}else{
-	        		$("#dia_title").text($("#hid_dia_title").val());
-        			$("#dialog1").dialog({
-					      resizable: false,
-					      height:150,
-					      modal: true,
-					      open: function (event, ui) {
-			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-			              },
-					      buttons: {
-					        "确定": function() {
-					          window.location.href='<%=basePath%>manage/branch/branchFHList.do';
-					        } 
-					      }
-					    });
-	        		}
+	        		$("#uploader_start").click(); //上传文件
 	        	}else{
 	        		alert(data.message);	        	
 	        	}	
@@ -122,39 +200,40 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			</div>
 		</div>
 		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
-			<form id="itemInfoForm" name="itemInfoForm"  >
+			<form id="itemInfoForm" name="itemInfoForm"
+				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
+				method="post">
 				<div id="tab1" class="yw-tab">
 					<table class="font16" id="taskTable">
 						<tr>
-							<td width="15%" align="right">项目名称：</td>
+							<td width="15%" align="right">工作事项：</td>
 							<td colspan="3"><input id="" 
 								name="name" type="text" doc="taskInfo" value=""  style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
-                            	
-                            	<input type="hidden" name="preparerOrgId" value="${userOrg.id }">
-                            	<input type="hidden" name="id" value="${itemId }">
+                            	<input type="hidden" id="hid_uuid" name="uuid" />
+                            	<input type="hidden" name="OrgId" value="${userOrg.id }">
 							</td> 
-						</tr>							<tr>
-							<td align="right" height="50px">项目类别：</td>
-							<td colspan="3">
-								<select id="" name="superItemType" style="width:289px;height:28px;">
-									<option value="-1">==请选择项目类别==</option>	
-									<c:forEach var="item" items="${meatListByKey }">
-										<option value="${item.id }">${item.name }</option>
-									</c:forEach>																
-								</select> 
-								<span style="color:red">*</span>
-							   
-							</td>								
-						</tr>
+						</tr>						
 						<tr>
-							<td align="right" height="50px">规定完成时间：</td>
+							<td align="right" height="40px;">工作内容：</td>
+							<td colspan="3"> 
+								<textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>								
+							</td> 
+						</tr>	
+						<tr>
+							<td align="right" height="40px;">上传附件：</td>
 							<td colspan="3">
-								
-							  <input type="text" name="endTimes" value="" id="datepicker" style="width:289px;height:22px;">
-							 	<span style="color:red">*</span> 
-							</td>								
-						</tr>
+									<input type="hidden" id="hid_isFileUpload" value="1" /> 
+								 <div id="themeswitcher" class="pull-right"> </div>
+					                <script>
+					                    $(function() {
+					                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
+					                    });
+					                </script>
+					                <div id="uploader">
+					                </div>
+							 </td>	
+						</tr>					
 						
 					</table>
 				</div>

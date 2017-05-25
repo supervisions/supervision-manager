@@ -168,7 +168,24 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	        dataType:"json", //响应数据类型      
 	        success: function(data) {
 	        	if(data.code==0){ 
-	        		$("#uploader_start").click(); //上传文件
+	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
+	        			$("#uploader_start").click(); //上传文件
+	        		}else{
+	        		$("#dia_title").text($("#hid_dia_title").val());
+        			$("#dialog1").dialog({
+					      resizable: false,
+					      height:150,
+					      modal: true,
+					      open: function (event, ui) {
+			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+			              },
+					      buttons: {
+					        "确定": function() {
+					          window.location.href='<%=basePath%>manage/branch/branchFHList.do';
+					        } 
+					      }
+					    });
+	        		}
 	        	}else{
 	        		alert(data.message);	        	
 	        	}	
@@ -212,6 +229,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div>
+		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
 			<form id="itemInfoForm" name="itemInfoForm"
 				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
 				method="post">
@@ -246,7 +264,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">监察内容：</td>
+							<td align="right" style="height:40px;">监察内容：</td>
 							<td colspan="3">
 							 <label>${ItemProcess.content } </label>  
 							</td>		
@@ -263,7 +281,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">方案内容：</td>
+							<td align="right" style="height:40px;">方案内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess2.content } </label> 									
 							</td>		
@@ -280,7 +298,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">监察室意见：</td>
+							<td align="right" style="height:40px;">监察室意见：</td>
 							<td colspan="3">
 								<label>${ItemProcess3.content } </label> 
 								<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
@@ -295,7 +313,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>		
 						<tr>
-							<td align="right" style="height:100px;">会议决策：</td>
+							<td align="right" style="height:40px;">会议决策：</td>
 							<td colspan="3">
 								<label>${ItemProcess6.content } </label> 
 								<c:forEach var="fileItem" items="${ItemProcess6.fileList }">
@@ -304,7 +322,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">监察室意见：</td>
+							<td align="right" style="height:40px;">监察室意见：</td>
 							<td colspan="3">
 								<label>${ItemProcess4.content } </label> 
 								<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
@@ -319,7 +337,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>	
 						<tr>
-							<td align="right" style="height:100px;">执行情况：</td>
+							<td align="right" style="height:40px;">执行情况：</td>
 							<td colspan="3">
 								<label>${ItemProcess5.content } </label> 									
 							</td>		
@@ -337,7 +355,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</tr>
 						
 						<tr>
-							<td align="right" style="height:100px;">监察意见：</td>
+							<td align="right" style="height:40px;">监察意见：</td>
 							<td colspan="3">
 								<label>${ItemProcess10.content } </label> 									
 							</td>		
@@ -355,16 +373,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</tr> --%>
 									
 						<tr>
-							<td align="right" width="8%" align="right" height="100px;">录入问责相关资料：</td>
+							<td align="right" width="15%" align="right" height="40px;">录入问责相关资料：</td>
 							<td colspan="3" > 
-								<textarea rows="6" cols="5" style="width:60%;" name="content"></textarea>								
+								<textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>								
 								<input type="hidden" name ="itemId" value="${Item.id }">
 								<input type="hidden" id="hid_uuid" name="uuid" />
 							</td> 
 						</tr>	
 						<tr>
-							<td align="right" height="100px;">上传附件：</td>
+							<td align="right" height="40px;">上传附件：</td>
 							<td colspan="3">
+									<input type="hidden" id="hid_isFileUpload" value="1" /> 
 								 <div id="themeswitcher" class="pull-right"></div>
 					                <script>
 					                    $(function() {
@@ -380,11 +399,10 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				</div>
 			</form>
 		</div> 
-	
+	</div>
 	<div class="cl"></div>
 </div>
 <div class="cl"></div>
-</div>
-<div id="dialog"></div>
+</div> 
 </body>
 </html>  
