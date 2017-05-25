@@ -169,7 +169,24 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	        dataType:"json", //响应数据类型      
 	        success: function(data) {
 	        	if(data.code==0){ 
-	        		$("#uploader_start").click(); //上传文件
+	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
+	        			$("#uploader_start").click(); //上传文件
+	        		}else{
+	        		$("#dia_title").text($("#hid_dia_title").val());
+        			$("#dialog1").dialog({
+					      resizable: false,
+					      height:150,
+					      modal: true,
+					      open: function (event, ui) {
+			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+			              },
+					      buttons: {
+					        "确定": function() {
+					          window.location.href='<%=basePath%>manage/branch/branchFHList.do';
+					        } 
+					      }
+					    });
+	        		}
 	        	}else{
 	        		alert(data.message);	        	
 	        	}	
@@ -231,7 +248,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">工作要求、方案：</td>
+							<td align="right" style="height:40px;">工作要求、方案：</td>
 							<td colspan="3">
 							 <label>${ItemProcess.content } </label>  
 							</td>		
@@ -251,6 +268,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<tr>
 								<td align="right" style="height:160px;">上传资料：</td>
 								<td colspan="3">
+									<input type="hidden" id="hid_isFileUpload" value="1" />
 									 <div id="themeswitcher" class="pull-right"> </div>
 						                <script>
 						                    $(function() {
@@ -262,15 +280,15 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								 </td>	
 							</tr>
 							<tr>
-								<td align="right" style="height:120px;">上传文件说明：</td>
+								<td align="right" style="height:40px;">上传文件说明：</td>
 								<td colspan="3"> 
-									 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
+									 <textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>			 
 								 </td>	
 							</tr>	
 						</c:if>
 						<c:if test="${tag == 32 && FileItemProcess != null}">
 							<tr>
-								<td align="right" style="height:100px;">上传文件说明：</td>
+								<td align="right" style="height:40px;">上传文件说明：</td>
 								<td colspan="3">
 									<label>${FileItemProcess.content } </label> 
 								</td>		
@@ -287,13 +305,16 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</td>		
 							</tr>   
 							<tr>
-								<td align="right" style="height:120px;">监察室意见：</td>
+								<td align="right" style="height:40px;">监察室意见：</td>
 								<td colspan="3"> 
-									 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
+								
+									<input type="hidden" id="hid_isFileUpload" value="0" />
+									<input type="hidden" id="hid_dia_title" value="监察室提交意见成功" />
+									 <textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>			 
 								 </td>	
 							</tr>	
 							<tr>
-								<td align="right" style="height:120px;">是否完结：</td>
+								<td align="right" style="height:40px;">是否完结：</td>
 								<td colspan="3"> 
 									<label><input type="radio" name="isOver" value="1" checked="checked" />完结</label>
 									<label><input type="radio" name="isOver" value="0" />未完结</label> 
@@ -302,7 +323,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</c:if>
 						<c:if test="${tag == 34 }">
 							<tr>
-								<td align="right" style="height:100px;">上传文件说明：</td>
+								<td align="right" style="height:40px;">上传文件说明：</td>
 								<td colspan="3">
 									<label>${FileItemProcess.content } </label> 
 								</td>		
@@ -319,7 +340,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</td>		
 							</tr>   
 							<tr>
-								<td align="right" style="height:120px;">监察室意见：</td>
+								<td align="right" style="height:40px;">监察室意见：</td>
 								<td colspan="3">  
 									 <laben>${ChangeItemProcess.content }</laben>			 
 								 </td>	
@@ -327,6 +348,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 <tr>
 								<td align="right" style="height:160px;">整改资料：</td>
 								<td colspan="3">
+									<input type="hidden" id="hid_isFileUpload" value="1" />
 									 <div id="themeswitcher" class="pull-right"> </div>
 						                <script>
 						                    $(function() {
@@ -338,9 +360,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								 </td>	
 							</tr>
 							<tr>
-								<td align="right" style="height:120px;">整改情况：</td>
+								<td align="right" style="height:40px;">整改情况：</td>
 								<td colspan="3"> 
-									 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
+									 <textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>			 
 								 </td>	
 							</tr>
 						</c:if>

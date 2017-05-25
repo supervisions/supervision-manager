@@ -8,3 +8,10 @@
   </p>
 </div>
 </div>
+
+<div class="displaynone">
+<div id="dialog1" title="操作提示">
+	<p id="dia_title"></p>
+  </p>
+</div>
+</div>

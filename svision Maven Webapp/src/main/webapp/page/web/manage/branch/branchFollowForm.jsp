@@ -169,7 +169,24 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	        dataType:"json", //响应数据类型      
 	        success: function(data) {
 	        	if(data.code==0){ 
-	        		$("#uploader_start").click(); //上传文件
+	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
+	        			$("#uploader_start").click(); //上传文件
+	        		}else{
+	        		$("#dia_title").text($("#hid_dia_title").val());
+        			$("#dialog1").dialog({
+					      resizable: false,
+					      height:150,
+					      modal: true,
+					      open: function (event, ui) {
+			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+			              },
+					      buttons: {
+					        "确定": function() {
+					          window.location.href='<%=basePath%>manage/branch/branchFHList.do';
+					        } 
+					      }
+					    });
+	        		}
 	        	}else{
 	        		alert(data.message);	        	
 	        	}	
@@ -231,7 +248,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">工作要求、方案：</td>
+							<td align="right" style="height:40px;">工作要求、方案：</td>
 							<td colspan="3">
 							 <label>${ItemProcess.content } </label>  
 							</td>		
@@ -250,7 +267,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						 
 						<c:if test="${ FileItemProcess != null}">
 							<tr>
-								<td align="right" style="height:100px;">上传文件说明：</td>
+								<td align="right" style="height:40px;">上传文件说明：</td>
 								<td colspan="3">
 									<label>${FileItemProcess.content } </label> 
 								</td>		
@@ -270,7 +287,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						 
 						<c:if test="${ ChangeItemProcess != null}">
 							<tr>
-								<td align="right" style="height:100px;">监察室整改意见：</td>
+								<td align="right" style="height:40px;">监察室整改意见：</td>
 								<td colspan="3">
 									<label>${ChangeItemProcess.content } </label> 
 								</td>		
@@ -279,7 +296,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						<c:if test="${ FollowItemProcess != null}">
 							<tr>
-								<td align="right" style="height:100px;">整改内容：</td>
+								<td align="right" style="height:40px;">整改内容：</td>
 								<td colspan="3">
 									<label>${FollowItemProcess.content } </label> 
 								</td>		
@@ -300,7 +317,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						<c:if test="${ FollowChangeProcess != null}">
 							<tr>
-								<td align="right" style="height:100px;">是否跟踪：</td>
+								<td align="right" style="height:40px;">是否跟踪：</td>
 								<td colspan="3">
 									<label>跟踪 </label> 
 								</td>		
@@ -310,6 +327,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 <tr>
 								<td align="right" style="height:160px;">跟踪整改资料：</td>
 								<td colspan="3">
+									<input type="hidden" id="hid_isFileUpload" value="1" />
 									 <div id="themeswitcher" class="pull-right"> </div>
 						                <script>
 						                    $(function() {
@@ -323,7 +341,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<tr>
 								<td align="right" style="height:120px;">跟踪整改内容：</td>
 								<td colspan="3"> 
-									 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
+									 <textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>			 
 								 </td>	
 							</tr> 
 						</c:if>
@@ -349,7 +367,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<td align="right" style="height:120px;">监察结论：</td>
 								<td colspan="3"> 
 									 <input type="hidden" name="isOver" value="1" />
-									 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
+									<input type="hidden" id="hid_isFileUpload" value="0" />
+									<input type="hidden" id="hid_dia_title" value="提交监察结论成功，项目监察完结" />
+									 <textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>			 
 								 </td>	
 							</tr> 
 						</c:if>

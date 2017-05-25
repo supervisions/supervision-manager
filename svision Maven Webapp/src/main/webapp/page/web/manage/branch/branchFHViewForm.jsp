@@ -105,7 +105,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">工作要求、方案：</td>
+							<td align="right" style="height:40px;">工作要求、方案：</td>
 							<td colspan="3">
 							 <label>${ItemProcess.content } </label>  
 							</td>		
@@ -124,7 +124,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						 
 						<c:if test="${ FileItemProcess != null}">
 							<tr>
-								<td align="right" style="height:100px;">上传文件说明：</td>
+								<td align="right" style="height:40px;">上传文件说明：</td>
 								<td colspan="3">
 									<label>${FileItemProcess.content } </label> 
 								</td>		
@@ -144,7 +144,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						 
 						<c:if test="${ ChangeItemProcess != null}">
 							<tr>
-								<td align="right" style="height:100px;">监察室整改意见：</td>
+								<td align="right" style="height:40px;">监察室整改意见：</td>
 								<td colspan="3">
 									<label>${ChangeItemProcess.content } </label> 
 								</td>		
@@ -153,7 +153,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						<c:if test="${ FollowItemProcess != null}">
 							<tr>
-								<td align="right" style="height:100px;">整改内容：</td>
+								<td align="right" style="height:40px;">整改内容：</td>
 								<td colspan="3">
 									<label>${FollowItemProcess.content } </label> 
 								</td>		
@@ -174,7 +174,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						<c:if test="${ FollowChangeProcess != null}">
 							<tr>
-								<td align="right" style="height:100px;">是否跟踪：</td>
+								<td align="right" style="height:40px;">是否跟踪：</td>
 								<td colspan="3">
 									<label>跟踪 </label> 
 								</td>		
@@ -182,7 +182,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</c:if> 
 						 <c:if test="${OverItemProcess != null && OverItemProcess.fileList != null }">
 							<tr>
-								<td align="right" style="height:120px;">跟踪整改内容：</td>
+								<td align="right" style="height:40px;">跟踪整改内容：</td>
 								<td colspan="3"> 
 										<label>${OverItemProcess.content }</label>	 
 								 </td>	
@@ -201,7 +201,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</c:if>
 						 <c:if test="${OverItemProcess != null && OverItemProcess.fileList == null  }">
 							<tr>
-								<td align="right" style="height:120px;">监察结论：</td>
+								<td align="right" style="height:40px;">监察结论：</td>
 								<td colspan="3"> 
 										<label>${OverItemProcess.content }</label>	 
 								 </td>	
@@ -209,7 +209,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</c:if>
 						 <c:if test="${OtherProcess != null && OtherProcess.fileList == null  }">
 							<tr>
-								<td align="right" style="height:120px;">监察结论：</td>
+								<td align="right" style="height:40px;">监察结论：</td>
 								<td colspan="3"> 
 										<label>${OverItemProcess.content }</label>	 
 								 </td>	
@@ -217,7 +217,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</c:if>
 						<c:if test="${ OverProcess != null}">
 							<tr>
-								<td align="right" style="height:100px;">监察结论：</td>
+								<td align="right" style="height:40px;">监察结论：</td>
 								<td colspan="3">
 									<label>${ OverProcess.content }</label> 
 								</td>		
