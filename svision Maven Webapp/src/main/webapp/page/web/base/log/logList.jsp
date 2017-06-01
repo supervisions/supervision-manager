@@ -35,7 +35,32 @@ $(document).ready(function(){
 		if(e.keyCode == 13){
 			search();
 		}
-	});			
+	});		
+	var s = $.trim($("#hid_moudleId").val());	
+	if(s.length>0){
+		$("#slt_moudleId").combobox("setValue",s);
+	}
+	$("#orgParentTree").combotree({
+	 	 url: '<%=basePath %>loadOrganTreeList.do',  
+				 required: false, //是否必须
+				 //multiple:true,  //是否支持多选  				  
+				 editable:false, //是否支持用户自定义输入	
+				 cascadeCheck:false,  				 		 
+				 onSelect:function(record){ // 	当节点被选中时触发。  
+					 $("#hid_orgId").val(record.id);
+				 },
+				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。
+				 	$("#orgParentTree").combotree('tree').tree('options').url = '<%=basePath %>loadOrganTreeList.do?pid='+ node.id;
+				 },
+				 onLoadSuccess:function(){ //当数据加载成功时触发。 
+				 	var hId = $.trim($("#hid_orgId").val());
+				 	if(hId.length>0){
+				 		$("#orgParentTree").combotree("setValue",hId);
+				 	}else{
+ 				 		$("#orgParentTree").combotree("setText","=请选择机构进行查询=");
+ 				 	}  
+				 }
+			});	
 }); 		 
 PageClick = function(pageclickednumber) {
 	$("#pager").pager({
@@ -70,9 +95,20 @@ function pagesearch(){
 			<form id="logForm" name="logForm"
 				action="<%=basePath %>system/log/logList.do" method="get">
 				<div class=pd10>
-					<div class="fl">  
-						<span>条件查询：</span>
-						<input type="text" id="seaarchNameTemp" validType="SpecialWord" class="easyui-validatebox" placeholder="搜索关键字：内容，名称" value="${SystemLog.searchName}" /> 
+					<div class="fl">   
+						<input type="hidden" value="${SystemLog.moudleId}" id="hid_moudleId" />
+						<span>监察类型：</span>
+						<select id="slt_moudleId" name="moudleId" class="easyui-combobox"  style="width:184px;height:32px;" >
+							<option value="">=选择监察类型进行查询=</option>
+							<option value="1">效能监察</option>
+							<option value="2">廉政监察</option>
+							<option value="3">实时监察</option> 
+						</select>
+						<span>机构选择：</span>
+						<input type="hidden" name="orgId" value="${SystemLog.orgId}" id="hid_orgId" />
+						<input id="orgParentTree"  style="width:184px;height:32px;" class="easyui-combotree" />
+						<span>关键字：</span>
+						<input type="text" id="seaarchNameTemp" validType="SpecialWord"   style="width:180px;height:26px;"  class="easyui-validatebox" placeholder="搜索关键字：内容，名称" value="${SystemLog.searchName}" /> 
 						<input type="hidden" name="searchName" id="hid_serarch" /> 
 						
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
@@ -96,7 +132,20 @@ function pagesearch(){
 					<c:forEach var="item" items="${LogList}">
 						<tr>
 						<td>${item.description}</td>
-						<td>${item.operation}</td>
+						<td>
+							<c:if test="${item.operation ==1}">
+								新增
+							</c:if> 
+							<c:if test="${item.operation ==2}">
+								修改
+							</c:if> 
+							<c:if test="${item.operation ==3}">
+								删除
+							</c:if>  
+							<c:if test="${item.operation ==4}">
+								系统操作
+							</c:if> 
+						</td>
 						<td>${item.operTimes}</td> 
 						<td>${item.orgName}</td> 
 						<td>${item.operName}</td> 

@@ -23,7 +23,7 @@
 <div class="con-left" id="conLeft">
 	<div class="yw-user">
 		<div class="yw-userhead">
-			<img src="${pageContext.request.contextPath}/source/images/userhaed.png" width="80%"/>
+			<img src="${pageContext.request.contextPath}/source/images/userhaed.png" width="40%"/>
 		</div>
 		<p class="yw-usertxt">${sessionScope.userInfo.name}</p>
 	</div>

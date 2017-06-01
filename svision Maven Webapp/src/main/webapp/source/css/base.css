@@ -153,7 +153,7 @@
 }
 
 .ml260s {
-	margin-left: 20%;
+	margin-left: 13%;
 }
 
 .ml10ps {
@@ -262,7 +262,7 @@
 	width: 250px !important;
 }
 .mlwid250 {
-	width: 20% !important;
+	width: 13% !important;
 }
 .mlwid10per {
 	width: 10% !important;
@@ -806,11 +806,11 @@
 
 .yw-userhead {
 	float: left;
-	width: 80%;
+	width: 40%;
 	text-align: center;
-	border-radius: 80%;
+	border-radius: 10%;
 	background-color: #1B8CF2;
-	margin-left:5%;
+	margin-left:30%;
 	margin-top:5%;
 }
 

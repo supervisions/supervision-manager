@@ -96,7 +96,20 @@ function pagesearch(){
 					<c:forEach var="item" items="${LogList}">
 						<tr>
 						<td>${item.description}</td>
-						<td>${item.operation}</td>
+						<td>
+							<c:if test="${item.operation ==1}">
+								新增
+							</c:if> 
+							<c:if test="${item.operation ==2}">
+								修改
+							</c:if> 
+							<c:if test="${item.operation ==3}">
+								删除
+							</c:if>  
+							<c:if test="${item.operation ==4}">
+								系统操作
+							</c:if> 
+						</td>
 						<td>${item.operTimes}</td> 
 						<td>${item.orgName}</td> 
 						<td>${item.operName}</td> 

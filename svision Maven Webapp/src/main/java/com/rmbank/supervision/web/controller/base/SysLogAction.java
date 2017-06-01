@@ -51,8 +51,7 @@ public class SysLogAction {
 		// 设置页面初始值及页面大小
 		if (systemLog.getPageNo() == null)
 			systemLog.setPageNo(1);
-		systemLog.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-		systemLog.setMoudleId(Constants.LOG_TYPE_LZJC);
+		systemLog.setPageSize(Constants.DEFAULT_PAGE_SIZE); 
 		if(StringUtil.isEmpty(systemLog.getSchBeginTime())){
 			systemLog.setSchBeginTime(null);
 		}		
@@ -65,6 +64,9 @@ public class SysLogAction {
 		try {
 			// t_role取满足要求的参数数据
 			logList = logService.getLogList(systemLog);
+			for(SystemLog sl: logList){
+				sl.setOperTimes(Constants.DATE_FORMAT.format(sl.getOperTime()));
+			}
 			// t_role取满足要求的记录总数
 			totalCount = logService.getLogCount(systemLog);
 		} catch (Exception ex) {
@@ -113,6 +115,9 @@ public class SysLogAction {
 		try {
 			// t_role取满足要求的参数数据
 			logList = logService.getLogList(systemLog);
+			for(SystemLog sl: logList){
+				sl.setOperTimes(Constants.DATE_FORMAT.format(sl.getOperTime()));
+			}
 			// t_role取满足要求的记录总数
 			totalCount = logService.getLogCount(systemLog);
 		} catch (Exception ex) {
@@ -162,6 +167,9 @@ public class SysLogAction {
 		try {
 			// t_role取满足要求的参数数据
 			logList = logService.getLogList(systemLog);
+			for(SystemLog sl: logList){
+				sl.setOperTimes(Constants.DATE_FORMAT.format(sl.getOperTime()));
+			}
 			// t_role取满足要求的记录总数
 			totalCount = logService.getLogCount(systemLog);
 		} catch (Exception ex) {
@@ -211,6 +219,9 @@ public class SysLogAction {
 		try {
 			// t_role取满足要求的参数数据
 			logList = logService.getLogList(systemLog);
+			for(SystemLog sl: logList){
+				sl.setOperTimes(Constants.DATE_FORMAT.format(sl.getOperTime()));
+			}
 			// t_role取满足要求的记录总数
 			totalCount = logService.getLogCount(systemLog);
 		} catch (Exception ex) {

@@ -5,12 +5,15 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Service;
+
 import com.rmbank.supervision.common.utils.StringUtil;
 import com.rmbank.supervision.dao.SystemLogMapper;
 import com.rmbank.supervision.model.SystemLog;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.SysLogService;
 
+@Service("logService")
 public class SysLogServiceImpl implements SysLogService {
 
 	@Resource
