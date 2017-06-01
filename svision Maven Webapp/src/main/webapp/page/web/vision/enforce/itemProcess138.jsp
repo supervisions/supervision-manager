@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
    <base href="<%=basePath%>">
   
-   <title>实时监察</title>
+   <title>廉政监察</title>
    
 <meta name="viewport"
 content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" /> 
@@ -58,7 +58,140 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <%--///////////////////--%>
 
 <script type="text/javascript">
+	$(document).ready(function(){	  
+	 	 	var len=32;//32长度
+            var radix=16;//16进制
+            var chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+            var uuid=[],i;
+            radix=radix||chars.length;
+            if(len){
+                for(i=0;i<len;i++){
+                    uuid[i]=chars[0|Math.random()*radix];
+                }
+            }else{
+                var r;
+                uuid[8]=uuid[13]=uuid[18]=uuid[23]='-';
+                uuid[14]='4';
+                for(i=0;i<36;i++){
+                    if(!uuid[i]){
+                        r=0|Math.random()*16;
+                        uuid[i]=chars[(i==19)?(r&0x3)|0x8:r];
+                    }
+                }
+            }
+            var v_uuid = uuid.join('');
+            $("#hid_uuid").val(v_uuid);
+            
+            $("#uploader").plupload({
+                // General settings
+                runtimes : 'html5,flash,silverlight,html4',
+                url : "<%=basePath%>system/upload/jsonUploadFile.do?uuid="+v_uuid,
+                // Maximum file size
+                max_file_size : '2999mb',
+                // Rename files by clicking on their titles
+                rename: true,
+                // Sort files
+                sortable: true,
+                // Enable ability to drag'n'drop files onto the widget (currently only HTML5 supports that)
+                dragdrop: true,
+                // Views to activate
+                max_retries: 0,
+                views: {
+                    list: true,
+                    thumbs: false, // Show thumbs
+                    active: 'list'
+                },
+                // Flash settings
+                flash_swf_url : '/plupload/js/Moxie.swf',
+                // Silverlight settings
+                silverlight_xap_url : '/plupload/js/Moxie.xap'
+            });
+            var uploader = $('#uploader').plupload('getUploader');
+            //绑定进度条
+            uploader.bind('UploadProgress',function(uploader,file){
+                //每个事件监听函数都会传入一些很有用的参数，
+                //我们可以利用这些参数提供的信息来做比如更新UI，提示上传进度等操作
+                var percentMsg = "正在上传文件，可能会花费一点时间，已上传:" + uploader.total.percent + "%";
+                
+            });
+            //绑定文件添加
+            uploader.bind('FilesAdded',function(uploader,files){
+                if(null != files && files.length>0){
+                    var cur_files = uploader.files;
+                    var tmp_files = cur_files;
+                    if(null != cur_files && cur_files.length>0){
+                        for(var i=0;i<cur_files.length;i++){
+                            var count = 0;
+                            for(var j=0;j<tmp_files.length;j++){
+                                if(cur_files[i].name == tmp_files[j].name){
+                                    count++;
+                                }
+                            }
+                            if(count > 1){
+                                uploader.removeFile(cur_files[i]);
+                                i--;
+                            }
+                        }
+                    }
+                }
+            });
+            //绑定文件是否全部上传完成
+            uploader.bind('UploadComplete',function(uploader,files){
+                if(null != files && files.length>0){ 
+                	$("#dialog").dialog({
+				        resizable: false,
+				        height:150,
+				        modal: true,
+				        open: function (event, ui) {
+		                   $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+		                },
+					    buttons: {
+					        "确定": function() {					        	
+					            window.location.href = '<%=basePath%>vision/enforce/enforceList.do';
+					        }
+					    }
+					}); 
+                }
+            });
+            $("#uploader_browse").removeAttr("style");
+            $("#uploader_browse").attr("style","z-index: 1;font-size: 12px;font-weight: normal;");
+	 });
 	 
+	//新增/编辑项目
+	function saveItemScheme(obj){	
+        $.ajax({
+	        cache: true, //是否缓存当前页面
+	        type: "POST", //请求类型
+	        url: "<%=basePath%>vision/enforce/jsonSaveItemProcess.do",
+	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+	        async: true, //发送异步请求	  
+	        dataType:"json", //响应数据类型      
+	        success: function(data) {
+	        	if(data.code==0){ 
+	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
+	        			$("#uploader_start").click(); //上传文件
+	        		}else{
+	        		$("#dia_title").text($("#hid_dia_title").val());
+        			$("#dialog1").dialog({
+					      resizable: false,
+					      height:150,
+					      modal: true,
+					      open: function (event, ui) {
+			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+			              },
+					      buttons: {
+					        "确定": function() {
+					          window.location.href='<%=basePath%>vision/enforce/enforceList.do';
+					        } 
+					      }
+					    });
+	        		}
+	        	}else{
+	        		alert(data.message);	        	
+	        	}	
+	        }
+   		});
+	}
 	function downLoadFile(path,name){
 		var filePath = encodeURI(encodeURI(path));
 		var fileName = encodeURI(encodeURI(name));
@@ -70,23 +203,28 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>vision/enforce/enforceList.do'"></i><span>执法监察列表</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>vision/enforce/enforceList.do'"></i><span>项目列表</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
 		<div class="yw-bi-rows">
 			<div class="yw-bi-tabs mt5" id="ywTabs">
-			<span class="yw-bi-now">项目详情</span>
+			<span class="yw-bi-now">基本信息</span>
 				
 			</div>
-			<div class="fr">  
+			<div class="fr">
+				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
+				
+				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItemScheme(this);">保存</span>
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
-		</div> 
+		</div>
 		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
+			<form id="itemInfoForm" name="itemInfoForm"
+				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
+				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
-						<!-- 初始状态 -->
+					<table class="font16 taskTable" >
 						<tr>
 							<td width="15%" align="right">工作事项：</td>
 							<td colspan="3">
@@ -132,29 +270,24 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td colspan="3">
 							 <label>${Item.orgName } </label>   
 							</td>								
-						</tr>					
-						
-			
-						<!-- 被监察录入执法监察资料状态-->						
-						<c:if test="${ItemProcess2 != null }">
-							<tr>
-								<td align="right" style="height:40px;">执法检查立项资料：</td>
-								<td colspan="3">
-									<label>${ItemProcess2.content } </label> 									
-								</td>		
-							</tr> 
-							<tr>
-								<td align="right" >立项资料附件：</td>
-								<td colspan="3"> 
-									<table style="width:100%;height:100%;min-height:80px;">
-										<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
-											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
-									</table>
-								</td>		
-							</tr>
-						</c:if>
+						</tr>
+						<tr>
+							<td align="right" style="height:40px;">执法检查立项资料：</td>
+							<td colspan="3">
+								<label>${ItemProcess2.content } </label> 									
+							</td>		
+						</tr> 
+						<tr>
+							<td align="right" >立项资料附件：</td>
+							<td colspan="3"> 
+								<table style="width:100%;height:100%;min-height:80px;">
+									<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
+										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+									</c:forEach> 
+									<tr><td style="border:0px;"></td><tr>
+								</table>
+							</td>		
+						</tr>	
 						<!-- 监察室给出监察意见，并且项目合规 -->		
 						<c:if test="${ItemProcess3 != null }">
 							<tr>
@@ -180,37 +313,18 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<label>合规 </label> 									
 								</td>		
 							</tr>							
-						</c:if>			
-						<!-- 监察室给出监察意见，但是项目不合规 -->						
-						<c:if test="${ItemProcess4 != null }">
+						</c:if>
+						<!-- 被监察对象录入监察报告、意见书 -->
+						<c:if test="${ItemProcess5 != null }">
 							<tr>
-								<td align="right" style="height:40px;">监察室意见：</td>
+								<td align="right" style="height:40px;">意见书、监察报告说明：</td>
 								<td colspan="3">
-									<label>${ItemProcess4.content } </label> 									
+									<label>${ItemProcess5.content } </label>
+									
 								</td>		
 							</tr>
-							<%-- <tr>
-								<td align="right" >相关附件：</td>
-								<td colspan="3"> 
-									<table style="width:100%;height:100%;min-height:80px;">
-										<c:forEach var="fileItem" items="${ItemProcess4.fileList }">
-											<tr style="height:20px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
-									</table>
-								</td>		
-							</tr>		 --%>
 							<tr>
-								<td align="right">是否合规：</td>
-								<td colspan="3">
-									<label>不合规 </label> 									
-								</td>		
-							</tr>							
-						</c:if>					
-						<!-- 被监察对象录入监察报告、意见书 -->
-						<c:if test="${ItemProcess5 != null }">							
-							<tr>
-								<td align="right" >现场监察报告、意见书：</td>
+								<td align="right" >意见书、监察报告：</td>
 								<td colspan="3"> 
 									<table style="width:100%;height:100%;min-height:80px;">
 										<c:forEach var="fileItem" items="${ItemProcess5.fileList }">
@@ -219,17 +333,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<tr><td style="border:0px;"></td><tr>
 									</table>
 								</td>		
-							</tr>
-							<tr>
-								<td align="right" style="height:40px;">检查报告、意见书说明：</td>
-								<td colspan="3">
-									<label>${ItemProcess5.content } </label>
-									
-								</td>		
 							</tr>								
-						</c:if>
-						
-						
+						</c:if>	
 						<!-- 监察室录入监察意见书的意见，并且合规 -->
 						<c:if test="${ItemProcess6 != null }">
 							<tr>
@@ -256,72 +361,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</td>		
 							</tr>						
 						</c:if>
-						
-						<!-- 监察室录入监察意见书的意见，但是不合规 -->
-						<c:if test="${ItemProcess7 != null }">
-							<tr>
-								<td align="right" style="height:40px;">监察室意见：</td>
-								<td colspan="3">
-									<label>${ItemProcess7.content } </label> 									
-								</td>		
-							</tr> 
-							<%-- <tr>
-								<td align="right" >相关附件：</td>
-								<td colspan="3"> 
-									<table style="width:100%;height:100%;min-height:80px;">
-										<c:forEach var="fileItem" items="${ItemProcess7.fileList }">
-											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
-									</table>
-								</td>		
-							</tr> --%>
-							<tr>
-								<td align="right">是否合规：</td>
-								<td colspan="3">
-									<label>不合规</label> 									
-								</td>		
-							</tr> 
-						</c:if>	
-						
-						
-						<!-- 被监察对象录入督促整改情况，并且不处罚 -->
-						<c:if test="${ItemProcess8 != null }">
-							<tr>
-								<td align="right" style="height:40px;">督促整改情况：</td>
-								<td colspan="3">
-									<label>${ItemProcess8.content } </label> 									
-								</td>		
-							</tr>
-							<tr>
-								<td align="right" >相关附件：</td>
-								<td colspan="3"> 
-									<table style="width:100%;height:100%;min-height:80px;">
-										<c:forEach var="fileItem" items="${ItemProcess8.fileList }">
-											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
-									</table>
-								</td>		
-							</tr>
-							<tr>
-								<td align="right" style="height:40px;">是否处罚：</td>
-								<td colspan="3">
-									<label>不处罚</label> 									
-								</td>		
-							</tr>						
-						</c:if>	
-						
-						<!-- 监察结论 -->							
-						<c:if test="${ItemProcess9 != null }">
-							<tr>
-								<td align="right" style="height:40px;">监察结论：</td>
-								<td colspan="3">
-									<label>${ItemProcess9.content } </label> 									
-								</td>		
-							</tr> 										
-						</c:if>
-						
 						<!-- 被监察对象录入督促整改情况，但是要处罚 -->
 						<c:if test="${ItemProcess10 != null }">
 							<tr>
@@ -367,7 +406,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<label>${ItemProcess11.content } </label> 									
 								</td>		
 							</tr>												
-						</c:if>	
+						</c:if>			
 						<!-- 监察室监察行政处罚意见告知，并且合规-->
 						<c:if test="${ItemProcess12 != null }">							
 							<tr>
@@ -381,24 +420,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<td colspan="3">
 									<label>合规</label> 									
 								</td>		
-							</tr>												
+							</tr>																			
 						</c:if>	
-						<!-- 监察室监察行政处罚意见告知，但是不合规合规-->
-						<c:if test="${ItemProcess13 != null }">							
-							<tr>
-								<td align="right" style="height:40px;">监察室意见：</td>
-								<td colspan="3">
-									<label>${ItemProcess13.content } </label> 									
-								</td>		
-							</tr>
-							<tr>
-								<td align="right" style="height:40px;">是否合规：</td>
-								<td colspan="3">
-									<label>不合规</label> 									
-								</td>		
-							</tr>												
-						</c:if>	
-						<c:if test="${ItemProcess15 == null && ItemProcess14 !=null}">
+						<c:if test="${ItemProcess15 == null }">
 							<tr>
 								<td align="right" style="height:40px;">是否听证：</td>
 								<td colspan="3">
@@ -415,7 +439,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</td>		
 							</tr>							
 							<tr>
-								<td align="right" >听证相关资料：</td>
+								<td align="right" >听证资料：</td>
 								<td colspan="3"> 
 									<table style="width:100%;height:100%;min-height:80px;">
 										<c:forEach var="fileItem" items="${ItemProcess15.fileList }">
@@ -430,111 +454,47 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<td colspan="3">
 									<label>${ItemProcess15.content } </label> 									
 								</td>		
-							</tr>												
-						</c:if>
-						<!-- 不听证，被监察对象录入行政处罚决定书  -->
-						<c:if test="${ItemProcess14 != null }">												
-							<tr>
-								<td align="right" >行政处罚决定书：</td>
-								<td colspan="3"> 
-									<table style="width:100%;height:100%;min-height:80px;">
-										<c:forEach var="fileItem" items="${ItemProcess14.fileList }">
-											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
-									</table>
-								</td>		
 							</tr>
-							<tr>
-								<td align="right" style="height:40px;">行政处罚决定书说明：</td>
-								<td colspan="3">
-									<label>${ItemProcess14.content } </label> 									
-								</td>		
-							</tr>												
+												
 						</c:if>
-						<!-- 监察室监察行政处罚决定书，并且合规 -->
-						<c:if test="${ItemProcess16 != null }">												
-							<tr>
-								<td align="right" >监察室意见：</td>
-								<td colspan="3"> 
-									<label>${ItemProcess16.content } </label> 		 
-								</td>		
-							</tr>
-							<tr>
-								<td align="right" style="height:40px;">是否合规：</td>
-								<td colspan="3">
-									<label>合规 </label> 									
-								</td>		
-							</tr>												
-						</c:if>
-						
-						<!-- 监察室监察行政处罚决定书，但是不合规 -->
-						<c:if test="${ItemProcess17 != null }">												
-							<tr>
-								<td align="right" >监察室意见：</td>
-								<td colspan="3"> 
-									<label>${ItemProcess17.content } </label> 		 
-								</td>		
-							</tr>
-							<tr>
-								<td align="right" style="height:40px;">是否合规：</td>
-								<td colspan="3">
-									<label>不合规 </label> 									
-								</td>		
-							</tr>												
-						</c:if>
-						<!-- 需要复议，录入复议相关资料 -->
-						<c:if test="${ItemProcess19 != null }">		
-							<tr>
-								<td align="right" >是否复议：</td>
-								<td colspan="3"> 
-									<label>需要复议</label> 		 
-								</td>		
-							</tr>										
-							<tr>
-								<td align="right" >复议相关资料：</td>
-								<td colspan="3"> 
-									<label>${ItemProcess19.content } </label> 		 
-								</td>		
-							</tr>
-							<tr>
-								<td align="right" >复议资料相关附件：</td>
-								<td colspan="3"> 
-									<table style="width:100%;height:100%;min-height:80px;">
-										<c:forEach var="fileItem" items="${ItemProcess19.fileList }">
-											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
-									</table>
-								</td>		
-							</tr>									
-						</c:if>
-						
-						
-						<!-- 监察室监察行政处罚决定书，但是不合规 -->
-						<c:if test="${ItemProcess18 != null }">												
-							<tr>
-								<td align="right" >行政处罚情况：</td>
-								<td colspan="3"> 
-									<label>${ItemProcess18.content } </label> 		 
-								</td>		
-							</tr>
-							<tr>
-								<td align="right" >相关附件：</td>
-								<td colspan="3"> 
-									<table style="width:100%;height:100%;min-height:80px;">
-										<c:forEach var="fileItem" items="${ItemProcess18.fileList }">
-											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
-									</table>
-								</td>		
-							</tr>									
-						</c:if>
+						<tr>
+							<td align="right" height="129px;">行政处罚决定书：</td>
+							<td colspan="3">
+								 <input type="hidden" id="hid_isFileUpload" value="1" /> 
+								 <div id="themeswitcher" class="pull-right"></div>
+					                <script>
+					                    $(function() {
+					                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
+					                    });
+					                </script>
+					                <div id="uploader">
+					                </div>
+							 </td>	
+						</tr>
+						<tr>
+							<td align="right" width="15%" align="right" height="40px;">行政处罚决定书说明：</td>
+							<td colspan="3" > 
+								<textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>								
+								<input type="hidden" name ="itemId" value="${Item.id }">
+								<input type="hidden" id="hid_uuid" name="uuid" />
+								<input type="hidden"  name="tag" value="138"/>								
+							</td> 
+						</tr>	
+						<tr>
+							<td align="right" >经行政处罚委员会批准：</td>
+							<td colspan="3">
+								<label>
+									<input type="radio" name="status" value="0" checked="checked">是
+								</label> 
+								<label>
+									<input type="radio" name="status" value="1" >否
+								</label>								
+							</td>	
+						</tr>						
 					</table>
 				</div>
 			</form>
-		</div>  
+		</div> 
 	</div>
 	<div class="cl"></div>
 </div>

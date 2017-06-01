@@ -216,6 +216,32 @@ function uploadFile(id,tag){
 							<c:if test="${item.lasgTag == 137}">
 								<a style="color: blue;" onclick="uploadFile(${item.id}, 137)">监察行政意见告知书</a>
 							</c:if>
+							<c:if test="${item.lasgTag == 138}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 138)">不听证</a>&nbsp;
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 139)">听证</a>							
+							</c:if>
+							<c:if test="${item.lasgTag == 140}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 140)">监察行政处罚决定书</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 141}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 141)">录入听证相关资料</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 142}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 138)">录入行政处罚决定书</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 144}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 138)">录入行政处罚决定书</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 143}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 143)">不复议</a>&nbsp;
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 147)">复议</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 145}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 135)">监察结论</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 147}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 143)">录入行政处罚情况</a>
+							</c:if>
 						</td>
 						<td>
 							<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>

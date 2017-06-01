@@ -387,7 +387,197 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</td>		
 							</tr>						
 						</c:if>	
-								
+						<!-- 被监察对象录入督促整改情况，但是要处罚 -->
+						<c:if test="${ItemProcess10 != null }">
+							<tr>
+								<td align="right" style="height:40px;">督促整改情况：</td>
+								<td colspan="3">
+									<label>${ItemProcess10.content } </label> 									
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" >相关附件：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess10.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" style="height:40px;">是否处罚：</td>
+								<td colspan="3">
+									<label>进行处罚</label> 									
+								</td>		
+							</tr>						
+						</c:if>	
+						<!-- 被监察对象录入行政处罚意见书 -->
+						<c:if test="${ItemProcess11 != null }">							
+							<tr>
+								<td align="right" >行政处罚意见书：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess11.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" style="height:40px;">行政处罚意见书说明：</td>
+								<td colspan="3">
+									<label>${ItemProcess11.content } </label> 									
+								</td>		
+							</tr>												
+						</c:if>	
+						<!-- 监察室监察行政处罚意见告知，并且合规-->
+						<c:if test="${ItemProcess12 != null }">							
+							<tr>
+								<td align="right" style="height:40px;">监察室意见：</td>
+								<td colspan="3">
+									<label>${ItemProcess12.content } </label> 									
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" style="height:40px;">是否合规：</td>
+								<td colspan="3">
+									<label>合规</label> 									
+								</td>		
+							</tr>												
+						</c:if>	
+						<!-- 监察室监察行政处罚意见告知，但是不合规合规-->
+						<c:if test="${ItemProcess13 != null }">							
+							<tr>
+								<td align="right" style="height:40px;">监察室意见：</td>
+								<td colspan="3">
+									<label>${ItemProcess13.content } </label> 									
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" style="height:40px;">是否合规：</td>
+								<td colspan="3">
+									<label>不合规</label> 									
+								</td>		
+							</tr>												
+						</c:if>	
+						<c:if test="${ItemProcess15 == null && ItemProcess14 !=null}">
+							<tr>
+								<td align="right" style="height:40px;">是否听证：</td>
+								<td colspan="3">
+									<label>不听证</label> 									
+								</td>		
+							</tr>
+						</c:if>
+						<!-- 听证，录入听证相关资料  -->
+						<c:if test="${ItemProcess15 != null }">	
+							<tr>
+								<td align="right" style="height:40px;">是否听证：</td>
+								<td colspan="3">
+									<label>听证</label> 									
+								</td>		
+							</tr>							
+							<tr>
+								<td align="right" >听证资料：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess15.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" style="height:40px;">听证资料说明：</td>
+								<td colspan="3">
+									<label>${ItemProcess15.content } </label> 									
+								</td>		
+							</tr>												
+						</c:if>
+						<!-- 不听证，被监察对象录入行政处罚决定书  -->
+						<c:if test="${ItemProcess14 != null }">												
+							<tr>
+								<td align="right" >行政处罚决定书：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess14.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" style="height:40px;">行政处罚决定书说明：</td>
+								<td colspan="3">
+									<label>${ItemProcess14.content } </label> 									
+								</td>		
+							</tr>												
+						</c:if>
+						<!-- 监察室监察行政处罚决定书，并且合规 -->
+						<c:if test="${ItemProcess16 != null }">												
+							<tr>
+								<td align="right">监察室意见：</td>
+								<td colspan="3"> 
+									<label>${ItemProcess16.content } </label> 		 
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" style="height:40px;">是否合规：</td>
+								<td colspan="3">
+									<label>合规 </label> 									
+								</td>		
+							</tr>												
+						</c:if>						
+						<!-- 需要复议，录入复议相关资料 -->
+						<c:if test="${ItemProcess19 != null }">		
+							<tr>
+								<td align="right" >是否复议：</td>
+								<td colspan="3"> 
+									<label>需要复议</label> 		 
+								</td>		
+							</tr>										
+							<tr>
+								<td align="right">复议相关资料：</td>
+								<td colspan="3"> 
+									<label>${ItemProcess19.content } </label> 		 
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" >复议资料相关附件：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess19.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>									
+						</c:if>						
+						<!-- 被监察对象录入行政处罚情况 -->
+						<c:if test="${ItemProcess18 != null }">												
+							<tr>
+								<td align="right" >行政处罚情况：</td>
+								<td colspan="3"> 
+									<label>${ItemProcess18.content } </label> 		 
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" >相关附件：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess18.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>									
+						</c:if>		
 						<tr>
 							<td align="right" width="15%" align="right" height="40px;">监察结论：</td>
 							<td colspan="3" > 
@@ -396,11 +586,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<input type="hidden" id="hid_uuid" name="uuid" />
 								<input type="hidden"  name="tag" value="135"/>
 								<input type="hidden" id="hid_isFileUpload" value="0" />
-									<input type="hidden" id="hid_dia_title" value="监察室结论提交成功" />
+								<input type="hidden" id="hid_dia_title" value="监察室结论提交成功" />
 							</td> 
-						</tr>	
-						
-							
+						</tr>
 					</table>
 				</div>
 			</form>
