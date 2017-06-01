@@ -3,6 +3,7 @@ package com.rmbank.supervision.web;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.ReturnResult;
@@ -14,14 +15,17 @@ import com.rmbank.supervision.model.Role;
 import com.rmbank.supervision.model.RoleResource;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.FunctionService;
+import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.ResourceService;
 import com.rmbank.supervision.service.RoleResourceService;
 import com.rmbank.supervision.service.RoleService;
 import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,6 +45,9 @@ public class HomeController extends SystemAction {
 
     @Resource(name="functionService")
     private FunctionService functionService;
+
+    @Resource(name="organService")
+    private OrganService organService;
 
     @Resource(name="resourceService")
     private ResourceService resourceService;
@@ -62,6 +69,76 @@ public class HomeController extends SystemAction {
         ModelAndView mav = new ModelAndView("login");
         return mav;
     }
+    
+
+	/**
+	 * 加载机构的树
+	 * 
+	 * @param pid
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/loadOrganTreeList.do")
+	public List<Organ> getOrganList(
+			@RequestParam(value = "pid", required = false) Integer pid,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		Organ organ = new Organ();
+		if (pid != null) {
+			organ.setPid(pid);
+		} else {
+			organ.setPid(0);
+		}
+
+		//获取用户所属的机构
+		HttpSession session = request.getSession();
+		List<Integer> userOrgIds= (List<Integer>) session.getAttribute("userOrgIds");
+		
+		List<Organ> list = new ArrayList<Organ>();
+		if(userOrgIds!=null){
+			if(pid != null){				
+				list = organService.getOrganByPId(organ);	
+			}else {
+				list = organService.getOrganByOrgIds(userOrgIds);
+			}			
+		}else{
+			list = organService.getOrganByPId(organ);	
+		}
+		// 加载子节点，方式一，无子节点则无展开按钮
+		for (Organ a : list) {
+			a.setText(a.getName()); 
+			if(a.getChildrenCount()>0){
+				a.setState("closed");
+			}else{
+				a.setState("open");
+			}
+			
+		}
+		
+		return list;// json.toString();
+	}
+	 /**
+     * 根据机构ID查询用户
+     */
+    @ResponseBody
+	@RequestMapping(value = "/loadUserListByOrgId.do", method = RequestMethod.POST) 
+	public List<User> loadUserListByOrgId(
+			@RequestParam(value = "orgId", required = false) Integer orgId,
+			HttpServletRequest request, HttpServletResponse response) { 
+    	List<User> list = new ArrayList<User>();
+        try{
+        	list = userService.getUserListByOrgId(orgId);	 
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return list;
+	}
+	
+	
+	
     @ResponseBody
     @RequestMapping(value={"/userLogin.do"}, method={org.springframework.web.bind.annotation.RequestMethod.POST})
     public JsonResult<User> userLogin(User user, HttpServletRequest request, HttpServletResponse response) {

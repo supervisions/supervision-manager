@@ -55,6 +55,13 @@ public class Constants
   public static final String ITEM_TYPE_FH_NAME = "分行"; 
   public static final String ITEM_TYPE_ZZ_NAME = "中支";
   
+  public static final Integer LOG_TYPE_XLJC=1;
+  public static final Integer LOG_TYPE_LZJC=2;
+  public static final Integer LOG_TYPE_ZFJC=3;
+  public static final Integer LOG_TYPE_LXGL=4;
+  public static final Integer LOG_TYPE_BASE_DATA=5;
+  public static final Integer LOG_TYPE_SYS=6;
+  
   
   public static final String META_POSITION_KEY = "POSITION";
   public static final String META_PROJECT_KEY = "PROJECT";

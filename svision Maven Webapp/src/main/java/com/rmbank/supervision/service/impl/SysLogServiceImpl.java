@@ -32,15 +32,8 @@ public class SysLogServiceImpl implements SysLogService {
 	
 	@Override
 	public void saveOrUpdateLog(SystemLog log) {
-		// TODO Auto-generated method stub
-		if(StringUtil.isEmpty(log.getDescription())){
-			log.setDescription("无");
-		}
-		if(log.getId()>0){
-			logMapper.updateByPrimaryKeySelective(log);
-		}else{
-			logMapper.insertSelective(log);
-		}
+		// TODO Auto-generated method stub 
+		logMapper.insertSelective(log); 
 	}
 	@Override
 	public void writeLog(int moudleId, String description,int operation,int userId,int orgId,String ip) {

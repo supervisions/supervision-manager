@@ -28,7 +28,32 @@
 	<script src="<%=basePath%>source/js/login/pw.js"></script>
 	<script type="text/javascript">
 		var baseurl = '<%=url%>';
-		$(document).ready(function() {
+		$(document).ready(function() { 
+			//加载机构树
+		 	$("#orgParentTree").combotree({
+				 	 url: '<%=basePath %>loadOrganTreeList.do',  
+	  				 required: false, //是否必须
+	  				 //multiple:true,  //是否支持多选  				  
+	  				 editable:false, //是否支持用户自定义输入	
+	  				 cascadeCheck:false,  				 		 
+	  				 onSelect:function(record){ // 	当节点被选中时触发。 
+	  				 	$('#loginName').combobox({  
+						    url:'<%=basePath %>loadUserListByOrgId.do?orgId='+record.id,
+						    valueField:'account',  
+						    textField:'name',
+						    onLoadSuccess:function(){
+						    	$('#loginName').combobox("setText","=请选择登录用户=")
+						    }  
+						});  
+	  				 },
+	  				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。
+	  				 	$("#orgParentTree").combotree('tree').tree('options').url = '<%=basePath %>loadOrganTreeList.do?pid='+ node.id;
+	  				 },
+	  				 onLoadSuccess:function(){ //当数据加载成功时触发。 
+	   				 	$("#orgParentTree").combotree("setText","=请选择所属机构=");  
+	  				 }
+			});	
+			$('#loginName').combobox("setText","=请选择登录用户=");
 			//针对IE不支持placeholder的处理
 			var p2 = document.getElementById("password").getAttribute("placeholder");
 			if(p2!=""){
@@ -46,7 +71,7 @@
 				}
 			});
 
-			var p1 = document.getElementById("loginName").getAttribute("placeholder");
+			/* var p1 = document.getElementById("loginName").getAttribute("placeholder");
 			$("#loginName").val(p1).focus(function(){
 				if($(this).val()==p1){
 					$(this).val("");
@@ -63,7 +88,7 @@
 				if(e.keyCode == 13){
 					$("#password").focus();
 				}
-			});
+			}); */
 			$("#password").keydown(function(e){
 				$("#login-alert").hide();
 				if(e.keyCode == 13){
@@ -99,7 +124,7 @@
 					success:function(data){
 						var item = eval("(" + data + ")");
 						if(item.code == 200){
-							SetPwdAndChk();
+							/* SetPwdAndChk(); */
 							window.location.href =baseurl+item.gotoUrl;
 							$("#login-alert").html("");
 							$("#login-alert").hide();
@@ -123,17 +148,20 @@
 <div class="box">
 	<div class="logo">
 		<div>
-			<img src="<%=basePath%>source/images/lo_title.jpg"  />
+			<img src="<%=basePath%>source/images/lo_title.jpg"  /> 
 		</div> 
 	</div>
 	<form method="post"  id="loginForm" >
-		<div class="login-panel">
-
-			<div class="fl login-left">
-				<div class="fl login-title">登录</div>
+		<div class="login-panel"> 
+			<div class="fl login-left"> 
+				<div class="fl login-title">登录</div> 
 				<div class="fl panel">
 					<p class="login-rows mt30">
-						<input type="text" name="account" id="loginName" class="login-input login-name easyui-validatebox" placeholder="用户名"  validType="Length[4,22]" data-options="required:true" value="<shiro:principal/>" onblur="GetPwdAndChk();"/>
+						<input id="orgParentTree"  style="width:239px;height:38px;" checkbox="true"  class="easyui-combotree" />
+					</p>
+					<p class="login-rows mt30">
+						<input id="loginName" name="account" class="easyui-combobox"  style="width:239px;height:38px;" />  
+						<%-- <input type="text" name="account" id="loginName" class="login-input login-name easyui-validatebox" placeholder="用户名"  validType="Length[4,22]" data-options="required:true" value="<shiro:principal/>" onblur="GetPwdAndChk();"/> --%>
 					</p>
 					<p class="login-rows mt30">
 						<input type="password" name="pwd" id="password" class="login-input login-pwd easyui-validatebox" placeholder="密码"  validType="Length[4,22]" data-options="required:true"/>

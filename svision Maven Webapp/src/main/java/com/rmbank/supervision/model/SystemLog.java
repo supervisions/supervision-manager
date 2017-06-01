@@ -2,7 +2,9 @@ package com.rmbank.supervision.model;
 
 import java.util.Date;
 
-public class SystemLog {
+import com.rmbank.supervision.common.utils.Page;
+
+public class SystemLog extends Page {
     private Integer id;
 
     private Integer moudleId;

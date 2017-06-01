@@ -5,6 +5,8 @@
      <!-- 指明满足“/exclude.jsp*”的页面，将被排除，不被装饰 -->
      <mapping path="**/source/**" exclue="true" />
      <mapping path="**/index.do**" exclue="true" />
+     <mapping path="**/loadOrganTreeList.do**" exclue="true" />
+     <mapping path="**/loadUserListByOrgId.do**" exclue="true" />
      <mapping path="**/logout.do**" exclue="true" />
      <mapping path="**/login.do**" exclue="true" />
      <mapping path="**/**login.do" exclue="true" />

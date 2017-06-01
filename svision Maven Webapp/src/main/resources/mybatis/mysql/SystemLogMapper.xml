@@ -9,19 +9,21 @@
     <result column="operation" jdbcType="INTEGER" property="operation" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="org_id" jdbcType="INTEGER" property="orgId" />
+    <result column="org_name" jdbcType="INTEGER" property="orgName" />
     <result column="oper_id" jdbcType="INTEGER" property="operId" />
+    <result column="oper_name" jdbcType="INTEGER" property="operName" />
     <result column="oper_time" jdbcType="TIMESTAMP" property="operTime" />
     <result column="ip" jdbcType="VARCHAR" property="ip" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, moudle_id, table_name, row_id, operation, description, org_id, oper_id, oper_time, 
-    ip
+    l.id, l.moudle_id, l.table_name, l.row_id, l.operation, l.description, l.org_id, l.oper_id, l.oper_time, 
+    l.ip
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_log
-    where id = #{id,jdbcType=INTEGER}
+    from t_log l
+    where l.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_log
@@ -150,4 +152,42 @@
       ip = #{ip,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update> 
+  
+  <sql id="sql_query">
+  	from t_log as l
+  	left join t_user u on l.operId = u.id
+  	left join t_org o on l.orgId = o.id
+  	where 1=1 
+  	<if test="moudleId != null and moudleId >0">
+  		and l.moudle_id =  #{moudleId,jdbcType=INTEGER}
+  	</if>
+  	<if test="orgId != null and orgId >0">
+  		and l.org_id =  #{orgId,jdbcType=INTEGER}
+  	</if>
+  	<if test="operation != null and operation >0">
+  		and l.operation =  #{operation,jdbcType=INTEGER}
+  	</if>
+  	 <if test="schBeginTime != null and schEndTime !='' and schBeginTime !='' and schEndTime != null">
+     	and l.oper_time  between #{schBeginTime,jdbcType=DATE}  and #{schEndTime,jdbcType=DATE}  
+     </if>
+	<if test="searchName != null and searchName != ''">
+		and (u.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		  or  o.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+	      or  l.description like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+	      or  l.ip like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%'))
+	</if>
+  </sql>  
+  <select id="getLogList" parameterType="com.rmbank.supervision.model.SystemLog" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" />,u.name as oper_name,u.name as org_name
+  	<include refid="sql_query"/>
+  	order by gs.id DESC 
+	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
+        limit #{pageStart}, #{pageSize}
+    </if>
+  </select>
+  <select id="getLogCount" parameterType="com.rmbank.supervision.model.SystemLog" resultType="java.lang.Integer">
+  	select count(*) 
+  	<include refid="sql_query"/>
+  </select>
+  
 </mapper>
