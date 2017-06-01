@@ -162,7 +162,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
         $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
-	        url: "<%=basePath%>vision/efficiency/jsonSaveResetItem.do?",
+	        url: "<%=basePath%>vision/efficiency/jsonSaveResetItem.do",
 	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 	        async: true, //发送异步请求	  
 	        dataType:"json", //响应数据类型      

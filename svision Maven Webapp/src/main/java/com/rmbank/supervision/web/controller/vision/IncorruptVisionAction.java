@@ -277,15 +277,9 @@ public class IncorruptVisionAction extends SystemAction {
 				if (temp != null) {
 					temp.setSuperItemType(item.getSuperItemType());
 					temp.setStatus(1);
-					if (temp.getEndTimes() != null) {
-						SimpleDateFormat sdf = new SimpleDateFormat(
-								"yyyy-MM-dd");
-						Date date = sdf.parse(temp.getEndTimes());
-						temp.setEndTime(date); // 完成时间
+					if (item.getEndTimes() != null) { 
+						temp.setEndTime(Constants.DATE_FORMAT.parse(item.getEndTimes()+" 00:00:00"));
 					}
-					// Date parse =
-					// Constants.DATE_FORMAT.parse(item.getEndTimes());
-					// temp.setEndTime(Constants.DATE_FORMAT.parse(item.getEndTimes()));
 					itemService.updateByPrimaryKeySelective(temp);
 					List<ItemProcess> itemList = itemProcessService
 							.getItemProcessItemId(item.getId());

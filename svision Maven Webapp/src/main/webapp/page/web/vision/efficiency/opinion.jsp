@@ -168,7 +168,21 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	        dataType:"json", //响应数据类型      
 	        success: function(data) {
 	        	if(data.code==0){ 
-	        		$("#uploader_start").click(); //上传文件
+	        	
+	        	$("#dia_title").text("提交监察意见成功");
+	        		$("#dialog1").dialog({
+				        resizable: false,
+				        height:150,
+				        modal: true,
+				        open: function (event, ui) {
+		                   $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+		                },
+					    buttons: {
+					        "确定": function() {					        	
+					            window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
+					        }
+					    }
+					}); 
 	        	}else{
 	        		alert(data.message);	        	
 	        	}	
@@ -269,20 +283,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<input type="hidden" name ="itemId" value="${Item.id }">
 								<input type="hidden" id="hid_uuid" name="uuid" />
 							</td> 
-						</tr>	
-						<!-- <tr>
-							<td align="right" height="129px;">上传附件：</td>
-							<td colspan="3">
-								 <div id="themeswitcher" class="pull-right"></div>
-					                <script>
-					                    $(function() {
-					                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
-					                    });
-					                </script>
-					                <div id="uploader">
-					                </div>
-							 </td>	
-						</tr> -->
+						</tr>    
 						<tr>
 							<td align="right" >是否需要整改：</td>
 							<td colspan="3">
@@ -303,7 +304,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	<div class="cl"></div>
 </div>
 <div class="cl"></div>
-</div>
-<div id="dialog"></div>
+</div> 
 </body>
-</html>  
+</html>

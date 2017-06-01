@@ -158,7 +158,7 @@ function getItemByItemType(type){
 										</c:if> 
 										<c:if test="${item == null || item.status != 4}"> 
 											<a style="color: blue;" onclick="window.location.href='<%=basePath %>manage/branch/branchZZFile.do?id=${item.id}'">上传资料</a>
-										</c:if>
+										</c:if> 
 									<%-- </c:if>									
 								</c:if>	 --%>
 							</td>							

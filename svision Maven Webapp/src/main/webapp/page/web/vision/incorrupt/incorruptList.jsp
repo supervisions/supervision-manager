@@ -241,7 +241,7 @@ function uploadFile(id,tag){
 								<c:if test="${item.lasgTag == 778 && userOrg.id==item.preparerOrgId}">
 									<a style="color: blue;" onclick="uploadFile(${item.id}, 778)">录入问责资料</a>
 								</c:if> 
-								<c:if test="${userOrg.orgtype==43 }">
+								<c:if test="${userOrg.orgtype==44 && item.status == 0 }">
 									<span style="color: red;" onclick="window.location.href='incorruptInfo.do?id=${item.id }';">立项</span>
 								</c:if>
 								<c:if test="${item.lasgTag == 72 &&  userOrg.orgtype==44}">
