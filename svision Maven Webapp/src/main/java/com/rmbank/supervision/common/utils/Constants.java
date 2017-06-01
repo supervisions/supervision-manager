@@ -161,16 +161,16 @@ public class Constants
   public static final Integer ENFORCE_VISION_6= 135; //被监察对象录入督促整改情况，并且不处罚
   public static final Integer ENFORCE_VISION_7= 136; //被监察对象录入督促整改情况，但是要处罚
   public static final Integer ENFORCE_VISION_8= 137; //被监察对象录入行政处罚意见告知书
-  public static final Integer ENFORCE_VISION_9= 138; //监察室监察行政不处罚意见告知书，并且合规
-  public static final Integer ENFORCE_VISION_10= 140; 
-  public static final Integer ENFORCE_VISION_11= 141;
-  public static final Integer ENFORCE_VISION_12= 142;
-  public static final Integer ENFORCE_VISION_13= 143;
-  public static final Integer ENFORCE_VISION_14= 144;
-  public static final Integer ENFORCE_VISION_15= 145;
+  public static final Integer ENFORCE_VISION_9= 138; //监察室监察行政处罚意见告知书，并且合规
+  public static final Integer ENFORCE_VISION_10= 140; //被监察对象录入行政处罚决定书
+  public static final Integer ENFORCE_VISION_11= 141; //听证，录入听证相关资料
+  public static final Integer ENFORCE_VISION_12= 142; //听证，被监察对象录入行政处罚决定书
+  public static final Integer ENFORCE_VISION_13= 143; //监察室监察行政处罚决定书，并且合规
+  public static final Integer ENFORCE_VISION_14= 144; //监察室监察行政处罚决定书，但是不合规
+  public static final Integer ENFORCE_VISION_15= 145; //不复议，进入被监察对象录入行政处罚情况
   public static final Integer ENFORCE_VISION_OVER= 146;
+  public static final Integer ENFORCE_VISION_16= 147; //复议，进入被监察对象录入复议相关资料
   
-  public static final Integer ENFORCE_VISION_16= 146;
   public static final Integer ENFORCE_VISION_1A= 230; //监察室给出监察意见，但是不合规，回到被监察对象上传立项资料前一状态与130相等
   public static final Integer ENFORCE_VISION_3A= 232; //监察室给出监察意见，但是不合规，回到被监察对象上传意见书前一状态与132相等
   public static final Integer ENFORCE_VISION_2A= 234; //监察室给出监察意见，但是不合规，回到被监察对象录入行政处罚意见告知书前一状态与136相等
