@@ -74,7 +74,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	        dataType:"json", //响应数据类型      
 	        success: function(data) {
 	        	if(data.code==0){ 
-	        		 if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
+	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
 	        			$("#uploader_start").click(); //上传文件
 	        		}else{
 	        		$("#dia_title").text($("#hid_dia_title").val());
@@ -128,30 +128,30 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3"><input id="" 
-								name="name" type="text" doc="taskInfo" value=""  style="width:60%;height:28px;" />  
-								<span style="color:red">*</span> 
-                            	
+								name="name" type="text" doc="taskInfo" value=""  style="width:95%;height:28px;" />  
+								<span style="color:red">*</span>                            	
                             	<input type="hidden" name="preparerOrgId" value="${userOrg.id }">
                             	<input type="hidden" name="id" value="${itemId }">
+                            	<input type="hidden" id="hid_isFileUpload" value="0" />
+								<input type="hidden" id="hid_dia_title" value="立项成功" />
 							</td> 
-						</tr>							<tr>
+						</tr>							
+						<tr>
 							<td align="right" height="50px">项目类别：</td>
 							<td colspan="3">
-								<select id="" name="superItemType" style="width:289px;height:28px;">
+								<select id="" name="superItemType" style="width:51%;height:32px;">
 									<option value="-1">==请选择项目类别==</option>	
 									<c:forEach var="item" items="${meatListByKey }">
 										<option value="${item.id }">${item.name }</option>
 									</c:forEach>																
 								</select> 
-								<span style="color:red">*</span>
-							   
+								<span style="color:red">*</span>							   
 							</td>								
 						</tr>
 						<tr>
 							<td align="right" height="50px">规定完成时间：</td>
-							<td colspan="3">
-								
-							  <input type="text" name="endTimes" value="" id="datepicker" style="width:289px;height:22px;">
+							<td colspan="3">								
+							  <input type="text" name="endTimes" value="" id="datepicker" style="width:50%;height:26px;">
 							 	<span style="color:red">*</span> 
 							</td>								
 						</tr>

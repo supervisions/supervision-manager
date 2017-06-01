@@ -62,6 +62,9 @@ public class Item extends Page {
     //制单部门
     private String preparerOrg;
     
+    //廉政监察的项目名称
+    private String itemNmae;
+    
     /**
      * 定义字段供前台使用
      */
@@ -332,5 +335,13 @@ public class Item extends Page {
 
 	public void setIsFollow(Integer isFollow) {
 		this.isFollow = isFollow;
+	}
+
+	public String getItemNmae() {
+		return itemNmae;
+	}
+
+	public void setItemNmae(String itemNmae) {
+		this.itemNmae = itemNmae;
 	}
 }

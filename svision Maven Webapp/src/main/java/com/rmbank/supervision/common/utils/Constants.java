@@ -120,25 +120,50 @@ public class Constants
   public static final Integer EFFICIENCY_VISION_666=666; //整改建议
   public static final Integer EFFICIENCY_VISION_5=70; //跟踪监察
   public static final Integer EFFICIENCY_VISION_6=71; //效能监察流程完成
-  public static final Integer EFFICIENCY_VISION_7=777; //问责
-  public static final Integer EFFICIENCY_VISION_8=778; //问责再次整改
-  public static final Integer EFFICIENCY_VISION_9=779; //被监察对象再次整改，项目完结
+  public static final Integer EFFICIENCY_VISION_7=777; //需要问责，进入监察室录入问责资料
+  public static final Integer EFFICIENCY_VISION_8=778; //再次上传整改情况
+  public static final Integer EFFICIENCY_VISION_9=779; //监察室录入问责相关资料，项目进入被监察再次上传整改情况
+  public static final Integer EFFICIENCY_VISION_10=688; //监察结论
+  
   
   //廉政监察流程
   public static final Integer INCORRUPT_VISION_0=-1; //新增项目时的初始状态
   public static final Integer INCORRUPT_VISION_00=0; //新增项目时的初始状态
   public static final Integer INCORRUPT_VISION_1=72; //被监察对象录入项目方案
   public static final Integer INCORRUPT_VISION_2=73; //被监察对象录入决策内容
-  public static final Integer INCORRUPT_VISION_3=74; //监察室提出监察意见
-  
+  public static final Integer INCORRUPT_VISION_3=74; //监察室提出监察意见  
   public static final Integer INCORRUPT_VISION_33=777; //录入会议决策后给出监察意见
   public static final Integer INCORRUPT_VISION_4=75; //被监察对象录入执行情况
-  public static final Integer INCORRUPT_VISION_44=779; //录入问责资料
+  public static final Integer INCORRUPT_VISION_44=779; //监察室对执行情况提出不合规的意见，但是不问责，项目又回到被监察对象录入执行情况 等同于75
+  public static final Integer INCORRUPT_VISION_444=666; //监察室对执行情况提出不合规的意见，但是问责，项目又回到被监察对象录入执行情况 等同于75
   public static final Integer INCORRUPT_VISION_5=76; //监察室监察执行情况
-  public static final Integer INCORRUPT_VISION_55=778; //问责
+  public static final Integer INCORRUPT_VISION_55=778; //监察室对执行情况的意见是，不合规并且进行问责
   public static final Integer INCORRUPT_VISION_6=77; //被监察对象提请重新决策
   public static final Integer INCORRUPT_VISION_7=78; //监察室给出监察结论 													
   public static final Integer INCORRUPT_VISION_8=84; //廉政监察完成
   									
   
+  
+  //执法监察流程
+  public static final Integer ENFORCE_VISION_0= -1; //添加工作事项的初始状态
+  public static final Integer ENFORCE_VISION_1= 130; //监察室立项状态
+  public static final Integer ENFORCE_VISION_2= 131; //被监察对象已经录入立项资料
+  public static final Integer ENFORCE_VISION_3= 132; //监察室给出监察立项资料意见，并且合规
+  public static final Integer ENFORCE_VISION_4= 133; //被监察对象录入现场监察报告、意见书
+  public static final Integer ENFORCE_VISION_5= 134; //监察室给出监察意见书意见，并且合规
+  public static final Integer ENFORCE_VISION_6= 135; //被监察对象录入督促整改情况，并且不处罚
+  public static final Integer ENFORCE_VISION_7= 136;
+  public static final Integer ENFORCE_VISION_8= 138;
+  public static final Integer ENFORCE_VISION_9= 139;
+  public static final Integer ENFORCE_VISION_10= 140;
+  public static final Integer ENFORCE_VISION_11= 141;
+  public static final Integer ENFORCE_VISION_12= 142;
+  public static final Integer ENFORCE_VISION_13= 143;
+  public static final Integer ENFORCE_VISION_14= 144;
+  public static final Integer ENFORCE_VISION_15= 145;
+  public static final Integer ENFORCE_VISION_OVER= 146;
+  
+  public static final Integer ENFORCE_VISION_16= 146;
+  public static final Integer ENFORCE_VISION_1A= 230; //监察室给出监察意见，但是不合规，回到被监察对象上传立项资料前一状态与130相等
+  public static final Integer ENFORCE_VISION_3A= 232; //监察室给出监察意见，但是不合规，回到被监察对象上传意见书前一状态与132相等
 }

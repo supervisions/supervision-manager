@@ -516,15 +516,16 @@ public class EfficiencyVisionAction extends SystemAction {
 		js.setMessage("保存信息失败!");
 		try {   
 			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-			if(status == 4){
-				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_3);//监察意见
+			if(status == null){
+				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_6); //监察室给出监察结论，项目完结
 				item.setEndTime(new Date()); //完结
 				item.setStatus(Constants.ITEM_STATUS_OVER);
 				itemService.updateByPrimaryKeySelective(item);
+			}else if(status == 4){
+				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_3);//监察意见为不需要整改，进入监察室录入监察结论
 			}else if(status == 0){			
-				item.setLasgTag(Constants.EFFICIENCY_VISION_4);
-				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_4);//整改
-			}
+				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_4); //监察意见为需要整改，进入被监察对象录入整改情况
+			}			
 	    	//获取当前用户所属的机构id，当做制单部门的ID
 	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
 	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
@@ -571,17 +572,19 @@ public class EfficiencyVisionAction extends SystemAction {
 				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_2){
 					request.setAttribute("ItemProcess2", ip); //已经上传资料
 				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_3){
-					request.setAttribute("ItemProcess3", ip); //监察意见，需要整改
+					request.setAttribute("ItemProcess3", ip); //监察意见
 				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_4){
-					request.setAttribute("ItemProcess4", ip);
+					request.setAttribute("ItemProcess4", ip); //监察室已经给出意见，需要整改，进入到被监察对象录入整改情况
 				}else if(ip.getContentTypeId() ==666){
 					request.setAttribute("ItemProcess5", ip);
+				}else if(ip.getContentTypeId() ==688){
+					request.setAttribute("ItemProcess10", ip); //不问责，进入监察室给出结论
 				}else if(ip.getContentTypeId() ==777){
-					request.setAttribute("ItemProcess6", ip); //问责处理
+					request.setAttribute("ItemProcess6", ip); //监察室录入问责资料
 				}else if(ip.getContentTypeId() ==778){
-					request.setAttribute("ItemProcess7", ip); //再次整改
+					request.setAttribute("ItemProcess7", ip); //再次上传整改情况
 				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_6){
-					request.setAttribute("ItemProcess8", ip); //不问责项目完结
+					request.setAttribute("ItemProcess8", ip); //给出监察结论项目完结
 				}else if(ip.getContentTypeId() ==779){
 					request.setAttribute("ItemProcess9", ip); //再次整改后项目完结
 				}
@@ -630,12 +633,14 @@ public class EfficiencyVisionAction extends SystemAction {
 					request.setAttribute("ItemProcess4", ip); //录入整改情况
 				}else if(ip.getContentTypeId() ==666){
 					request.setAttribute("ItemProcess5", ip); //录入整改意见
+				}else if(ip.getContentTypeId() ==688){
+					request.setAttribute("ItemProcess10", ip); //不问责，进入监察室给出结论
 				}else if(ip.getContentTypeId() ==777){
 					request.setAttribute("ItemProcess6", ip); //问责处理
 				}else if(ip.getContentTypeId() ==778){
 					request.setAttribute("ItemProcess7", ip); //再次整改
 				}else if(ip.getContentTypeId() ==779){
-					request.setAttribute("ItemProcess8", ip); //再次整改后项目完结
+					request.setAttribute("ItemProcess9", ip); //再次整改后，进入监察室给出结论
 				}
 			}
 		}
@@ -655,6 +660,9 @@ public class EfficiencyVisionAction extends SystemAction {
 		}
 		if(tag == 69 ){			
 			return "web/vision/efficiency/resetView";
+		}
+		if(tag==688){
+			return "web/vision/efficiency/jianChaJieLun";
 		}
 		if(tag==777){
 			return "web/vision/efficiency/wenZeView";
@@ -700,16 +708,16 @@ public class EfficiencyVisionAction extends SystemAction {
 			itemProcess.setItemId(itemId);
 			
 			if(isFollow == 1){
-				itemProcess.setContent("不问责项目完结");
-				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_6);//流程完结
-				Item item = itemService.selectByPrimaryKey(itemId);
-				item.setStatus(Constants.ITEM_STATUS_OVER);
-				itemService.updateByPrimaryKeySelective(item);
+				itemProcess.setContent("不问责");
+				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_10);//不问责，进入监察室给出结论
+//				Item item = itemService.selectByPrimaryKey(itemId);
+//				item.setStatus(Constants.ITEM_STATUS_OVER);
+//				itemService.updateByPrimaryKeySelective(item);
 				js.setCode(0);
-				js.setMessage("项目监察完结!"); 
+				js.setMessage("请监察室给出监察结论!"); 
 			}else if(isFollow == 0){
 				itemProcess.setContent("问责");
-				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_7);//监察室录入问责资料
+				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_7);//进入监察室录入问责资料
 				js.setCode(0);
 				js.setMessage("项目进入问责流程!"); 
 			}			
@@ -751,25 +759,8 @@ public class EfficiencyVisionAction extends SystemAction {
 	    	itemProcess.setPreparerId(u.getId());
 	    	itemProcess.setPreparerTime(new Date());
 			itemProcess.setDefined(false); 
-			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_8);	
-//			if(status!=null){
-//				if(status==null ||status!=4){//监察对象给出监察意见
-//					itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_666);				
-//					Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-//					item.setLasgTag(Constants.EFFICIENCY_VISION_4);
-//				}else{
-//					itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_6);//流程完结
-//					Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-//					item.setEndTime(new Date());
-//					item.setStatus(Constants.ITEM_STATUS_OVER);
-//					itemService.updateByPrimaryKeySelective(item);
-//				}
-//			}
-//			if(status==null){//被监察对象整改操作
-//				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_666);				
-//				Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-//				item.setLasgTag(Constants.EFFICIENCY_VISION_4);
-//			}
+			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_4);//被监察对象再次录入了整改资料，项目进入监察室给出结论阶段	
+		
 			itemProcessService.insert(itemProcess);	
 			
 			js.setCode(0);
@@ -804,7 +795,7 @@ public class EfficiencyVisionAction extends SystemAction {
 	    	itemProcess.setPreparerId(u.getId());
 	    	itemProcess.setPreparerTime(new Date());
 			itemProcess.setDefined(false); 
-			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_9); //再洗录入整改意见后项目完结
+			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_8); //再次录入整改情况后进入监察室录入监察结论
 			
 			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
 			item.setStatus(Constants.ITEM_STATUS_OVER);

@@ -146,7 +146,7 @@ function followItem(id,name){
 		    if (r){   
 				followAction(id,0); //问责
 	    	}else{
-	    		$.messager.confirm("问责确认","确认不问责项目："+name+"，即完成当前项目的监察?",function(r){  
+	    		$.messager.confirm("问责确认","确认不问责项目："+name+"?",function(r){  
 		    		if (r){   
 			    		followAction(id,1); //不问责
 		    		}
@@ -289,7 +289,7 @@ function followAction(itemId,status){
 								<span>完结</span>
 							</c:if>
 						</td>
-						<td><%-- <sapn>${item.lasgTag}</sapn> --%>
+						<td><sapn>${item.lasgTag}</sapn>
 							<c:if test="${item.status == 0 and userOrg.id==item.preparerOrgId}">
 								<span style="color: red;" onclick="setProject(${item.id })">立项</span>
 							</c:if>
@@ -307,6 +307,15 @@ function followAction(itemId,status){
 							</c:if>
 							<c:if test="${item.lasgTag == 666 && userOrg.id==item.preparerOrgId}">
 								<a style="color: blue;" onclick="followItem(${item.id},'${item.name}')">问责处理</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 68 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 688 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 779 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a>
 							</c:if>
 							<c:if test="${item.lasgTag == 777 && userOrg.id==item.preparerOrgId}">
 								<a style="color: blue;" onclick="uploadFile(${item.id},777)">录入问责资料</a>

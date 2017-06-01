@@ -143,7 +143,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				        height:150,
 				        modal: true,
 				        open: function (event, ui) {
-		                   $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+		                	$(".ui-dialog-titlebar-close", $(this).parent()).hide();
 		                },
 					    buttons: {
 					        "确定": function() {					        	
@@ -159,19 +159,69 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 
 	//新增/编辑项目
 	function saveItemProcess(obj){	
-        $.ajax({
+        <%-- $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
-	        url: "<%=basePath%>vision/efficiency/jsonSaveOrUpdateItemProcess.do?",
+	        url: "<%=basePath%>vision/efficiency/jsonSaveOrUpdateItemProcess.do",
 	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 	        async: true, //发送异步请求	  
 	        dataType:"json", //响应数据类型      
 	        success: function(data) {
 	        	if(data.code==0){ 
-	        		$("#uploader_start").click(); //上传文件
+	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
+	        			$("#uploader_start").click(); //上传文件
+	        		}else{
+	        		$("#dia_title").text($("#hid_dia_title").val());
+        			$("#dialog1").dialog({
+					      resizable: false,
+					      height:150,
+					      modal: true,
+					      open: function (event, ui) {
+			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+			              },
+					      buttons: {
+					        "确定": function() {
+					          window.location.href='<%=basePath%>manage/branch/branchFHList.do';
+					        } 
+					      }
+					    });
+	        		}
 	        	}else{
 	        		alert(data.message);	        	
 	        	}	
+	        }
+   		}); --%>
+   		$.ajax({
+	        cache: true, //是否缓存当前页面
+	        type: "POST", //请求类型
+	        url: "<%=basePath%>vision/efficiency/jsonSaveOrUpdateItemProcess.do",
+	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+	        async: true, //发送异步请求	  
+	        dataType:"json", //响应数据类型      
+	        success: function(data) {
+	        	if(data.code==0){ 
+	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
+	        			$("#uploader_start").click(); //上传文件
+	        		}else{
+	        		$("#dia_title").text($("#hid_dia_title").val());
+        			$("#dialog1").dialog({
+					      resizable: false,
+					      height:150,
+					      modal: true,
+					      open: function (event, ui) {
+			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+			              },
+					      buttons: {
+					        "确定": function() {
+					          window.location.href='<%=basePath%>vision/efficiency/efficiencyList.do';
+					        } 
+					      }
+					    });
+	        		}
+	        	}else{
+	        		alert(data.message);	        	
+	        	}	
+	            
 	        }
    		});
 	}
@@ -243,6 +293,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" style="height:160px;">上传资料：</td>
 							<td colspan="3">
+								<input type="hidden" id="hid_isFileUpload" value="1" />
 								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>
 					                    $(function() {
@@ -258,18 +309,20 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td colspan="3"> 
 								 <textarea rows="5" cols="5" style="width:60%;" name="content"></textarea>			 
 							 </td>	
-						</tr>	
-						<tr>
-							<td align="right" >是否完结：</td>
-							<td colspan="3">
-								<label>
-									<input type="radio" name="status" value="" >否
-								</label> 
-								<label>
-									<input type="radio" name="status" value="4" checked="checked">是
-								</label> 								
-							</td>	
-						</tr>	
+						</tr>
+						<c:if test="${Item.isStept==0 }">
+							<tr>
+								<td align="right" >是否完结：</td>
+								<td colspan="3">
+									<label>
+										<input type="radio" name="status" value="" >否
+									</label> 
+									<label>
+										<input type="radio" name="status" value="4" checked="checked">是
+									</label> 								
+								</td>	
+							</tr>
+						</c:if>		
 					</table>
 				</div>
 			</form>

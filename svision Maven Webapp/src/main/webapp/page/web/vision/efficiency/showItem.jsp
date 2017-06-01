@@ -87,7 +87,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<!-- 初始状态 -->
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="10%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
@@ -153,7 +153,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 											<a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a>
 									</c:forEach> 
 								</td>		
-							</tr>							
+							</tr>
+							<tr>
+								<td align="right" >是否需要整改：</td>
+								<td>
+									<label>无需整改</label> 
+								</td>		
+							</tr> 							
 						</c:if>
 						<c:if test="${ItemProcess4 != null }">
 							<tr>
@@ -164,7 +170,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 											<a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a>
 									</c:forEach> 
 								</td>		
-							</tr>							
+							</tr>
+							<tr>
+								<td align="right" >是否需要整改：</td>
+								<td>
+									<label>需要整改</label> 
+								</td>		
+							</tr> 							
 						</c:if>
 						
 						<!-- 录入整改情况 -->
@@ -190,16 +202,18 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						<c:if test="${ItemProcess6 != null }">
 							<tr>
-								<td align="right" style="height:100px;">是否问责：</td>
+								<td align="right">是否问责：</td>
 								<td colspan="3">
-									<label>${ItemProcess6.content } </label> 
-									<c:forEach var="fileItem" items="${ItemProcess6.fileList }">
-											<a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a>
-									</c:forEach> 
+									<label>${ItemProcess6.content } </label>									
 								</td>		
 							</tr>							
 						</c:if>
-						
+						<c:if test="${ItemProcess10 !=null && ItemProcess6 == null && ItemProcess7 == null}">
+							<td align="right">是否问责：</td>
+								<td colspan="3">
+									<label>${ItemProcess10.content } </label> 									
+								</td>
+						</c:if>
 						<!-- 录入整改情况 -->
 						<c:if test="${ItemProcess7 != null }">
 							<tr>
@@ -223,7 +237,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						<c:if test="${ItemProcess8 != null }">
 							<tr>
-								<td align="right" style="height:100px;">问责情况：</td>
+								<td align="right" style="height:100px;">监察结论：</td>
 								<td colspan="3">
 									<label>${ItemProcess8.content } </label> 
 									<c:forEach var="fileItem" items="${ItemProcess8.fileList }">
@@ -235,13 +249,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						<c:if test="${ItemProcess9 != null }">
 							<tr>
-								<td align="right" style="height:100px;">再次整改资料：</td>
+								<td align="right" style="height:100px;">问责资料：</td>
 								<td colspan="3">
 									<label>${ItemProcess9.content } </label> 									
 								</td>		
 							</tr> 
 							<tr>
-								<td align="right" >整改附件：</td>
+								<td align="right" >相关附件：</td>
 								<td colspan="3"> 
 									<table style="width:100%;height:100%;min-height:80px;">
 										<c:forEach var="fileItem" items="${ItemProcess9.fileList }">

@@ -24,9 +24,11 @@
     preparer_org_id, preparer_id, preparer_time,end_time,is_stept,status,super_item_type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select i.*,m.name AS sType
-    from t_item AS i
+    select i.*,m.name AS sType,o.name as orgName,m1.name as itemCategory
+    from t_item AS i    
+    LEFT JOIN t_org AS o ON o.id=i.`supervision_org_id`
     LEFT JOIN `t_meta` AS m ON m.`id`=i.`supervision_type_id`
+    LEFT JOIN `t_meta` AS m1 ON m1.id=i.`super_item_type`
     WHERE i.`id`=#{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -266,11 +268,12 @@
   </select>
   <!-- 获取实时监察类型的项目 -->
   <select id="getItemListByType" parameterType="com.rmbank.supervision.model.Item" resultMap="BaseResultMap">
-  	SELECT i.*,o.name as orgName,m.name as itemCategory,
+  	SELECT i.*,o.name as orgName,m.name as itemCategory,ip.content as itemNmae,
   	(SELECT COUNT(*) FROM t_item_process AS tip WHERE i.id=tip.item_id) AS isSign 
   	FROM t_item AS i
 	LEFT JOIN t_org AS o ON o.id=i.`supervision_org_id`
 	LEFT JOIN t_meta AS m ON m.id=i.`super_item_type`
+	LEFT JOIN t_item_process AS ip ON ip.item_id=i.`id` and ip.content_type_id=-1
 	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
 	and i.item_type=#{itemType,jdbcType=INTEGER}
 	<if test="searchName != null and searchName != ''">
@@ -557,11 +560,12 @@
   </select>
   <!-- 实时监察模块获取当前登录用户的项目 -->
   <select id="getItemListByTypeAndLogOrg" parameterType="com.rmbank.supervision.model.Item" resultMap="BaseResultMap">
-  	SELECT i.*,o.name as orgName,m.name as itemCategory,
+  	SELECT i.*,o.name as orgName,m.name as itemCategory,ip.content as itemNmae,
   	(SELECT COUNT(*) FROM t_item_process AS tip WHERE i.id=tip.item_id) AS isSign
   	FROM t_item AS i
 	LEFT JOIN t_org AS o ON o.id=i.`supervision_org_id`
 	LEFT JOIN t_meta AS m ON m.id=i.`super_item_type`
+	LEFT JOIN t_item_process AS ip ON ip.item_id=i.`id` and ip.content_type_id=-1
 	WHERE 
 	 i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
 	and i.item_type=#{itemType,jdbcType=INTEGER}
