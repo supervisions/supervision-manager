@@ -413,15 +413,15 @@ public class EnforcementVisionAction extends SystemAction {
 					request.setAttribute("ItemProcess6", ip); // 监察室对象已经检查意见书
 				}else if (ip.getContentTypeId() == Constants.ENFORCE_VISION_6.intValue()) {
 					request.setAttribute("ItemProcess8", ip); // 监察室已经录入监察执行情况，并且合规
-				} else if (ip.getContentTypeId() == 666) {
-					request.setAttribute("ItemProcess12", ip); // 监察室录入问责资料
+				}else if (ip.getContentTypeId() == Constants.ENFORCE_VISION_7.intValue()) {						
+					request.setAttribute("ItemProcess10", ip); // 被监察对象录入督促整改情况，但是要处罚
+				}else if (ip.getContentTypeId() == Constants.ENFORCE_VISION_8.intValue()) {						
+					request.setAttribute("ItemProcess11", ip); // 被监察对象录入督促整改情况，但是要处罚
 				} else if (ip.getContentTypeId() == 777) {
 					request.setAttribute("ItemProcess6", ip); // 被监察对象录入会议决策内容
 				} else if (ip.getContentTypeId() == 778) {
 					request.setAttribute("ItemProcess10", ip); // 需要问责，问责前一节点的监察意见
-				} else if (ip.getContentTypeId() == 779) {
-					request.setAttribute("ItemProcess11", ip); // 已经给出监察意见，执行情况不合规，但是不问责，回到被监察对象录入执行情况
-				}
+				} 
 			}
 		}
 		// 获取当前用户
@@ -451,11 +451,11 @@ public class EnforcementVisionAction extends SystemAction {
 		if (tag == Constants.ENFORCE_VISION_6.intValue()) {
 			return "web/vision/enforce/itemProcess135"; // 到监察室给出监察结论页面
 		}
-		if (tag == 777) {
-			return "web/vision/enforce/advice"; // 到监察室对会议决策内容给出意见
+		if (tag == Constants.ENFORCE_VISION_7.intValue()) {
+			return "web/vision/enforce/itemProcess136"; // 到被监察对象录入行政处罚意见告知书页面
 		}
-		if (tag == 778) {
-			return "web/vision/enforce/wenZe"; // 到监察室录入问责资料
+		if (tag == Constants.ENFORCE_VISION_8.intValue()) {
+			return "web/vision/enforce/itemProcess137"; // 到监察室录入问责资料
 		}
 		return "";
 	}
@@ -513,6 +513,12 @@ public class EnforcementVisionAction extends SystemAction {
 				item.setEndTime(new Date());
 				item.setStatus(Constants.ITEM_STATUS_OVER);
 				itemService.updateByPrimaryKeySelective(item);
+			}else if(tag==136){
+				itemProcess.setContentTypeId(Constants.ENFORCE_VISION_8);//被监察对象录入行政处罚意见告知书
+			}else if(tag==137 && status==0){
+				itemProcess.setContentTypeId(Constants.ENFORCE_VISION_9);//监察室监察行政处罚意见告知书，并且合规
+			}else if(tag==137 && status==1){
+				itemProcess.setContentTypeId(Constants.ENFORCE_VISION_2A);//监察室监察行政处罚意见告知书，但是不合规
 			}
 			
 
@@ -595,7 +601,6 @@ public class EnforcementVisionAction extends SystemAction {
 			e.printStackTrace();
 		}
 		return js;
-
 	}
 
 	/**
@@ -693,7 +698,37 @@ public class EnforcementVisionAction extends SystemAction {
 				}else if (ip.getContentTypeId() == Constants.ENFORCE_VISION_6.intValue()) {						
 					request.setAttribute("ItemProcess8", ip); // 被监察对象录入督促整改情况，并且不处罚
 				}else if (ip.getContentTypeId() == Constants.ENFORCE_VISION_7.intValue()) {						
-					request.setAttribute("ItemProcess10", ip); // 被监察对象录入督促整改情况
+					request.setAttribute("ItemProcess10", ip); // 被监察对象录入督促整改情况，但是要处罚
+				}else if (ip.getContentTypeId() == Constants.ENFORCE_VISION_8.intValue()) {						
+					request.setAttribute("ItemProcess11", ip); // 被监察对象录入行政处罚意见告知书
+				}else if (ip.getContentTypeId() == Constants.ENFORCE_VISION_9.intValue()) {	
+					List<ItemProcess> list = new ArrayList<ItemProcess>(); // 这里处理了循环不合规的情况
+					for (ItemProcess iplt : itemProcessList) {
+						if (iplt.getContentTypeId() == Constants.ENFORCE_VISION_2.intValue()) {
+							list.add(iplt); //获取回到被监察对象录入资料的情况的流程
+						}
+					}
+					ItemProcess itemProcess = itemProcessList.get(itemProcessList.size() - 1); // 获取最后一个元素
+					if (list.size() <= 1||itemProcess.getContentTypeId() == Constants.ENFORCE_VISION_5.intValue()){
+						request.setAttribute("ItemProcess12", ip); // 监察室监察行政处罚意见告知，并且合规
+					}else if(list.size() > 1 && itemProcess.getContentTypeId()>Constants.ENFORCE_VISION_5.intValue()){
+						request.setAttribute("ItemProcess12", ip); // 监察室监察行政处罚意见告知，并且合规
+					}else {
+						request.setAttribute("ItemProcess12", null); // 已经重新录入资料，上一次的监察意见不显示
+					}					
+				}else if (ip.getContentTypeId() == Constants.ENFORCE_VISION_2A.intValue()) {
+					List<ItemProcess> list = new ArrayList<ItemProcess>(); // 这里处理了循环不合规的情况
+					for (ItemProcess iplt : itemProcessList) {
+						if (iplt.getContentTypeId() == Constants.ENFORCE_VISION_2.intValue()) {
+							list.add(iplt);
+						}
+					}
+					ItemProcess itemProcess = itemProcessList.get(itemProcessList.size() - 1); // 获取最后一个元素
+					if (list.size() <= 1 || itemProcess.getContentTypeId() == Constants.ENFORCE_VISION_2A.intValue()) {
+						request.setAttribute("ItemProcess13", ip); // 监察室监察行政处罚意见告知，但是不合规
+					}else {
+						request.setAttribute("ItemProcess13", null); // 已经重新上传方案，上一次的监察意见不显示
+					}					
 				}else if (ip.getContentTypeId() == Constants.ENFORCE_VISION_OVER.intValue()) {						
 					request.setAttribute("ItemProcess9", ip); // 监察给出监察结论，项目完结
 				}

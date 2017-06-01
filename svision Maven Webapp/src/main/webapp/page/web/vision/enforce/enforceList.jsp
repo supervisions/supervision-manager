@@ -207,6 +207,15 @@ function uploadFile(id,tag){
 							<c:if test="${item.lasgTag == 135}">
 								<a style="color: blue;" onclick="uploadFile(${item.id}, 135)">监察结论</a>
 							</c:if>
+							<c:if test="${item.lasgTag == 136}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 136)">录入行政意见告知书</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 234}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 136)">录入行政意见告知书</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 137}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 137)">监察行政意见告知书</a>
+							</c:if>
 						</td>
 						<td>
 							<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
