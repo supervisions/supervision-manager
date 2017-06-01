@@ -18,7 +18,7 @@ import org.mybatis.generator.internal.DefaultShellCallback;
 public class UnitTest {
 	@Test
     public  void main()  { 
-		 genCfg();
+//		 genCfg();
     }
 
     public void genCfg(){

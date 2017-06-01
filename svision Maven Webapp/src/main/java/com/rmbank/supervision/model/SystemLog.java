@@ -5,19 +5,53 @@ import java.util.Date;
 public class SystemLog {
     private Integer id;
 
+    private Integer moudleId;
+
     private String tableName;
 
     private Integer rowId;
 
-    private Byte operation;
+    private Integer operation;
 
     private String description;
 
     private Integer orgId;
+    
+    private String orgName;
 
     private Integer operId;
+    
+    private String operName;
 
     private Date operTime;
+    
+    private String operTimes;
+
+    public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public String getOperName() {
+		return operName;
+	}
+
+	public void setOperName(String operName) {
+		this.operName = operName;
+	}
+
+	public String getOperTimes() {
+		return operTimes;
+	}
+
+	public void setOperTimes(String operTimes) {
+		this.operTimes = operTimes;
+	}
+
+	private String ip;
 
     public Integer getId() {
         return id;
@@ -25,6 +59,14 @@ public class SystemLog {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getMoudleId() {
+        return moudleId;
+    }
+
+    public void setMoudleId(Integer moudleId) {
+        this.moudleId = moudleId;
     }
 
     public String getTableName() {
@@ -43,11 +85,11 @@ public class SystemLog {
         this.rowId = rowId;
     }
 
-    public Byte getOperation() {
+    public Integer getOperation() {
         return operation;
     }
 
-    public void setOperation(Byte operation) {
+    public void setOperation(Integer operation) {
         this.operation = operation;
     }
 
@@ -81,5 +123,13 @@ public class SystemLog {
 
     public void setOperTime(Date operTime) {
         this.operTime = operTime;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }
