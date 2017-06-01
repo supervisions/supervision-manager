@@ -261,7 +261,7 @@ public class IncorruptVisionAction extends SystemAction {
 				Item temp = itemService.selectByPrimaryKey(item.getId()); 
 				if(temp != null){
 					temp.setStatus(1);
-					temp.setEndTime(Constants.DATE_FORMAT.parse(item.getEndTimes()));
+					temp.setEndTime(Constants.DATE_FORMAT.parse(item.getEndTimes()+" 00:00:00"));
 					itemService.updateByPrimaryKeySelective(temp);
 					List<ItemProcess> itemList = itemProcessService.getItemProcessItemId(item.getId());
 					if(itemList.size()>0){

@@ -87,7 +87,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			              },
 					      buttons: {
 					        "确定": function() {
-					          window.location.href='<%=basePath%>manage/branch/branchFHList.do';
+					          window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do';
 					        } 
 					      }
 					    });

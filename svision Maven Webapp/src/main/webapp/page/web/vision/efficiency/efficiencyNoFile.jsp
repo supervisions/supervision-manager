@@ -278,7 +278,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	<div class="cl"></div>
 </div>
 <div class="cl"></div>
-</div>
-<div id="dialog"></div>
+</div> 
 </body>
 </html>  
