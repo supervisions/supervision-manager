@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
    <base href="<%=basePath%>">
   
-   <title>实时监察</title>
+   <title>效能监察</title>
    
 <meta name="viewport"
 content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" /> 
@@ -208,7 +208,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="10%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
@@ -262,15 +262,26 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr> 
 						
-						<tr>
-							<td align="right" width="8%" align="right" height="100px;">监察意见：</td>
-							<td colspan="3" > 
-								<label>${ItemProcess4.content } </label> 
-							</td> 
-						</tr>	
+						<c:if test="${ItemProcess4 != null }">
+							<tr>
+								<td align="right" style="height:100px;">监察室意见：</td>
+								<td colspan="3">
+									<label>${ItemProcess4.content } </label> 
+									<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
+											<a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a>
+									</c:forEach> 
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" >是否需要整改：</td>
+								<td>
+									<label>需要整改</label> 
+								</td>		
+							</tr> 							
+						</c:if>	
 	
 						<tr>
-							<td align="right" width="8%" align="right" height="100px;">整改情况：</td>
+							<td align="right" width="8%" align="right" height="100px;">整改资料：</td>
 							<td colspan="3" > 
 								<textarea rows="6" cols="5" style="width:60%;" name="content"></textarea>								
 								<input type="hidden" name ="itemId" value="${Item.id }">

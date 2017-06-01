@@ -134,4 +134,13 @@ public interface ItemService {
 	 * @return
 	 */
 	int getItemCountByLogOrgFHLXZZWC(Item item);
+
+	/**
+	 * 执法监察进行到立项
+	 * @param item
+	 * @param content
+	 * @param orgIds
+	 * @return
+	 */
+	boolean updateByItemSelective(Item item, String content, Integer[] orgIds);
 } 

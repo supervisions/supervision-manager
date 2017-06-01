@@ -84,7 +84,12 @@ function authorizeResource(id,name){
 	
 	//window.location.href="toAuthorizationResource.do?id="+id+"&name="+name;
 }
-
+function showItem(id){
+	window.location.href="<%=basePath%>vision/enforce/showItem.do?id="+id;
+}
+function uploadFile(id,tag){
+	window.location.href="<%=basePath%>vision/enforce/enforceFile.do?id="+id+"&tag="+tag;
+}
 </script>
 </head>
 <body>
@@ -112,7 +117,7 @@ function authorizeResource(id,name){
 					</div>
 
 					<div class="fr">
-						<span class="yw-btn bg-green cur" onclick="window.location.href='enforceInfo.do?id=0';">添加工作事项</span>
+						<span class="yw-btn bg-green cur" onclick="window.location.href='itemInfo.do?id=0';">添加工作事项</span>
 						
 					</div>
 					<div class="cl"></div>				
@@ -121,27 +126,30 @@ function authorizeResource(id,name){
 		     </form>
 		 </div>	
           <div class="fl yw-lump"> 
-			<table class="yw-cm-table yw-center yw-bg-hover" id="taskList">
+			<table class="yw-cm-table yw-center yw-bg-hover" border="1" id="taskList">
 				<tr style="background-color:#D6D3D3;font-weight: bold;">
 					<th width="4%" style="display:none">&nbsp;</th>
-					<th>立项情况</th>
-					<th>状态</th>	
-					<th>性质</th>	
+					<th width="5%">立项情况</th>
+					<th width="4%">状态</th>	
+					<th width="5%">性质</th>	
 					<th>工作事项</th>	
-					<th>查看</th>	
+					<th width="4%">查看</th>	
 					<th>立项监察</th>	
-					<th>被监察对象</th>
+					<th width="10%">被监察对象</th>
 					<th>操作1</th>
-					<th>操作2</th>			
+					<th width="6%">操作2</th>			
 				</tr>
 				<c:forEach var="item" items="${itemList}">
 					<tr> 							
 						<td>
-							<c:if test="">
+							<%-- <c:if test="">
 								<span style="color: red;" onclick="setProject(${item.id })">未立项</span>
+							</c:if> --%>
+							<c:if test="${item.status == 0}">
+								<span style="color: red;" >未立项</span>
 							</c:if>
-							<c:if test="">
-								<span>已立项</span>
+							<c:if test="${item.status != 0 }">
+									<span>已立项</span>	
 							</c:if>
 						</td>
 						<td  style="color:green;">
@@ -164,12 +172,45 @@ function authorizeResource(id,name){
 						<%-- <td>${item.name}</td> --%>
 						<td>${item.itemCategory }</td>
 						<td>${item.name}</td>
-						<td><a href="">查看</a></td>						
+						<td><a style="color:blue;" onclick="showItem(${item.id })">查看</a></td>						
 						<td></td>
 						<td>${item.orgName}</td>
-						<td><a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a></td>
-						
-						
+						<td><span>${item.lasgTag}</span>	
+							<%-- <span>${item.lasgTag}</span> --%>						
+						    <%-- <c:if test="${item.status == 0 &&  userOrg.orgtype==44}">
+								<span style="color: red;" onclick="window.location.href='incorruptInfo.do?id=${item.id }';">立项</span>
+							</c:if> --%>
+							<c:if test="${item.status == 0 &&  userOrg.orgtype==44}">
+								<span style="color: red;" onclick="window.location.href='enforceInfo.do?id=${item.id }';">立项</span>
+							</c:if>
+							<c:if test="${item.lasgTag == 130 && userOrg.id==item.supervisionOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 130)">录入执法监察立项资料</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 230 && userOrg.id==item.supervisionOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 130)">录入执法监察立项资料</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 131}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 131)">监察意见</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 132}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 132)">录入监察报告、意见书</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 232}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 132)">录入监察报告、意见书</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 133}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 133)">监察意见书</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 134}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 134)">录入督促整改情况</a>
+							</c:if>
+							<c:if test="${item.lasgTag == 135}">
+								<a style="color: blue;" onclick="uploadFile(${item.id}, 135)">监察结论</a>
+							</c:if>
+						</td>
+						<td>
+							<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+						</td>						
 					</tr>
 				</c:forEach>
 			</table>

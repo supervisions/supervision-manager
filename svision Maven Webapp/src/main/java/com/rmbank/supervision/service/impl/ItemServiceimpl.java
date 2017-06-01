@@ -81,8 +81,7 @@ public class ItemServiceimpl implements ItemService {
 		}
 		try{	
 			//新增项目成功后返回的itemId的集合 
-			List<Integer> itemId=new ArrayList<Integer>(); 
-			
+			List<Integer> itemId=new ArrayList<Integer>(); 			
 			for (Integer i : orgIds) {				
 				item.setSupervisionOrgId(i);
 				itemMapper.insertSelective(item); 
@@ -102,9 +101,8 @@ public class ItemServiceimpl implements ItemService {
 				if(item.getItemType()==Constants.STATIC_ITEM_TYPE_MANAGE){
 					itemProcess.setContentTypeId(contentType);
 				}else {
-					itemProcess.setContentTypeId(-1);
-				}
-				
+					itemProcess.setContentTypeId(-1); 
+				}				
 				itemProcess.setPreparerTime(new Date());
 				itemProcess.setPreparerId(item.getPreparerId());
 				itemProcess.setPreparerOrgId(item.getPreparerOrgId());
@@ -281,6 +279,65 @@ public class ItemServiceimpl implements ItemService {
 	public int getItemCountByLogOrgFHLXZZWC(Item item) {
 		// TODO Auto-generated method stub
 		return itemMapper.getItemCountByLogOrgFHLXZZWC(item);
+	}
+
+	/**
+	 * 执法监察立项
+	 */
+	@Override
+	public boolean updateByItemSelective(Item item, String content, Integer[] orgIds) {
+		boolean isSuccess = false;		
+		try{
+			ItemProcess itemProcess=new ItemProcess();
+			if(item.getSuperItemType() == 61){//综合执法
+				item.setSupervisionOrgId(orgIds[0]);
+				itemMapper.updateByPrimaryKeySelective(item);
+				
+				itemProcess.setUuid(item.getUuid());
+				itemProcess.setItemId(item.getId());
+				itemProcess.setContent(content);
+				itemProcess.setOrgId(orgIds[0]);
+				itemProcess.setContentTypeId(-1);
+				itemProcess.setPreparerTime(new Date());
+				itemProcess.setPreparerId(item.getPreparerId());
+				itemProcess.setPreparerOrgId(item.getPreparerOrgId());
+				itemProcessMapper.insertSelective(itemProcess);
+			}
+//			//新增项目成功后返回的itemId的集合 
+//			List<Integer> itemId=new ArrayList<Integer>(); 			
+//			for (Integer i : orgIds) {				
+//				item.setSupervisionOrgId(i);
+//				itemMapper.insertSelective(item); 
+//				itemId.add(item.getId());
+//				item.setStatus(0);
+//				item.setId(Constants.ITEM_STATUS_NEW);
+//			}
+				
+			/*int i = 0;
+			for (Integer integer : itemId) {
+				itemProcess.setUuid(item.getUuid());
+				itemProcess.setItemId(integer);
+				//itemProcess.setDefined();
+				itemProcess.setContent(content);
+				itemProcess.setOrgId(orgIds[i]);
+				i ++;
+				if(item.getItemType()==Constants.STATIC_ITEM_TYPE_MANAGE){
+					itemProcess.setContentTypeId(contentType);
+				}else {
+					itemProcess.setContentTypeId(-1); 
+				}				
+				itemProcess.setPreparerTime(new Date());
+				itemProcess.setPreparerId(item.getPreparerId());
+				itemProcess.setPreparerOrgId(item.getPreparerOrgId());
+				itemProcessMapper.insertSelective(itemProcess);
+			}*/
+			
+			isSuccess = true;
+         
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return isSuccess;
 	}
 
 }  

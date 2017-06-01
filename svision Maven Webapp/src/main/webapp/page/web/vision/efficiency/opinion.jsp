@@ -162,7 +162,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
         $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
-	        url: "<%=basePath%>vision/efficiency/jsonSaveOpinion.do?",
+	        url: "<%=basePath%>vision/efficiency/jsonSaveOpinion.do",
 	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 	        async: true, //发送异步请求	  
 	        dataType:"json", //响应数据类型      
@@ -208,7 +208,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="10%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
@@ -245,13 +245,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						
 						<tr>
-							<td align="right" style="height:100px;">上传资料内容：</td>
+							<td align="right" style="height:100px;">资料内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess2.content } </label> 
 							</td>		
 						</tr> 
 						<tr>
-							<td align="right">上传资料附件：</td>
+							<td align="right">资料附件：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
 									<c:forEach var="fileItem" items="${ItemProcess2.fileList }">

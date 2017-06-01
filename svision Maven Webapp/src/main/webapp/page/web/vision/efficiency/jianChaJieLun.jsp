@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
    <base href="<%=basePath%>">
   
-   <title>廉政监察</title>
+   <title>效能监察</title>
    
 <meta name="viewport"
 content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" /> 
@@ -147,7 +147,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		                },
 					    buttons: {
 					        "确定": function() {					        	
-					            window.location.href = '<%=basePath%>vision/incorrupt/incorruptList.do';
+					            window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
 					        }
 					    }
 					}); 
@@ -158,11 +158,11 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 });
 	 
 	//新增/编辑项目
-	function saveOpinion(obj){	
+	function saveItemProcess(obj){	
         $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
-	        url: "<%=basePath%>vision/incorrupt/jsonsaveDecision.do",
+	        url: "<%=basePath%>vision/efficiency/jsonSaveOpinion.do?",
 	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 	        async: true, //发送异步请求	  
 	        dataType:"json", //响应数据类型      
@@ -181,7 +181,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			              },
 					      buttons: {
 					        "确定": function() {
-					          window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do';
+					          window.location.href='<%=basePath%>vision/efficiency/efficiencyList.do';
 					        } 
 					      }
 					    });
@@ -203,7 +203,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do'"></i><span>项目列表</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>vision/efficiency/efficiencyList.do'"></i><span>项目列表</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
@@ -215,24 +215,19 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
-				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveOpinion(this);">保存</span>
+				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItemProcess(this);">保存</span>
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div>
-		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
 			<form id="itemInfoForm" name="itemInfoForm"
 				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
 				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="font16 taskTable" >						
+					<table class="font16 taskTable" >
 						<tr>
-							<td width="15%" align="right">项目名称：</td>
+							<td width="10%" align="right">项目名称：</td>
 							<td colspan="3">
-								 <label>${Item.name } </label> 
-								<input type="hidden" value="0" name="id" />
-                            	<%-- <input type="hidden" id="hid_uuid" name="uuid" />
-                            	<input type="hidden" name="itemId" value="${Item.id }" />  
-                            	<input type="hidden" name="contentTypeId" value="${ContentTypeId }" /> --%>
+								 <label>${Item.name } </label>  
 							</td> 
 						</tr>
 						<tr>
@@ -241,12 +236,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 <label>${Item.sType } </label>   
 							</td>								
 						</tr>
-						<%-- <tr>
-							<td align="right">项目类别：</td>
-							<td colspan="3">
-							 <label>${Item.itemCategory } </label>   
-							</td>								
-						</tr> --%>
 						<tr>
 							<td align="right">立项时间：</td>
 							<td colspan="3">
@@ -254,13 +243,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" style="height:40px;">监察内容：</td>
+							<td align="right" style="height:100px;">监察内容：</td>
 							<td colspan="3">
-							 <label>${ItemProcess.content } </label>  
+								<label>${ItemProcess.content } </label> 
 							</td>		
 						</tr> 
 						<tr>
-							<td align="right"style="height:80px;">附件列表：</td>
+							<td align="right">附件列表：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
 									<c:forEach var="fileItem" items="${ItemProcess.fileList }">
@@ -269,15 +258,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<tr><td style="border:0px;"></td><tr>
 								</table>
 							</td>		
-						</tr>
+						</tr> 
+						
+						
 						<tr>
-							<td align="right" style="height:40px;">方案内容：</td>
+							<td align="right" style="height:100px;">上传资料内容：</td>
 							<td colspan="3">
-								<label>${ItemProcess2.content } </label> 									
+								<label>${ItemProcess2.content } </label> 
 							</td>		
 						</tr> 
 						<tr>
-							<td align="right" >方案附件：</td>
+							<td align="right">上传资料附件：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
 									<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
@@ -287,41 +278,103 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</table>
 							</td>		
 						</tr>
-						<tr>
-							<td align="right" style="height:40px;">监察室意见：</td>
-							<td colspan="3">
-								<label>${ItemProcess3.content } </label> 								
-							</td>		
-						</tr>
-						<tr>
-							<td align="right" >相关附件：</td>
-							<td colspan="3"> 
-								<table style="width:100%;height:100%;min-height:80px;">
+						<c:if test="${ItemProcess3 != null }">
+							<tr>
+								<td align="right" style="height:100px;">监察意见：</td>
+								<td colspan="3">
+									<label>${ItemProcess3.content } </label> 
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" >是否需要整改：</td>
+								<td>
+									<label>无需整改</label> 
+								</td>		
+							</tr>
+						</c:if>
+						<c:if test="${ItemProcess4 != null }">
+							<tr>
+								<td align="right" style="height:100px;">监察室意见：</td>
+								<td colspan="3">
+									<label>${ItemProcess4.content } </label> 
 									<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
-										<tr style="height:20px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+											<a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a>
 									</c:forEach> 
-									<tr><td style="border:0px;"></td><tr>
-								</table>
-							</td>		
-						</tr>	
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" >是否需要整改：</td>
+								<td>
+									<label>需要整改</label> 
+								</td>		
+							</tr> 							
+						</c:if>
+						<!-- 录入整改情况 -->
+						<c:if test="${ItemProcess5 != null }">
+							<tr>
+								<td align="right" style="height:100px;">整改内容：</td>
+								<td colspan="3">
+									<label>${ItemProcess5.content } </label> 									
+								</td>		
+							</tr> 
+							<tr>
+								<td align="right" >整改附件：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess5.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>
+						</c:if> 
+						<c:if test="${ItemProcess10 !=null && ItemProcess6 == null && ItemProcess7 == null}">
+							<td align="right">是否问责：</td>
+								<td colspan="3">
+									<label>${ItemProcess10.content } </label> 									
+								</td>
+						</c:if> 
+						<c:if test="${ItemProcess6 != null }">
+							<tr>
+								<td align="right">是否问责：</td>
+								<td colspan="3">
+									<label>${ItemProcess6.content } </label>									
+								</td>		
+							</tr>							
+						</c:if>
+						<c:if test="${ItemProcess9 != null }">
+							<tr>
+								<td align="right" style="height:100px;">再次整改内容：</td>
+								<td colspan="3">
+									<label>${ItemProcess9.content } </label> 									
+								</td>		
+							</tr> 
+							<tr>
+								<td align="right" >整改附件：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess9.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>						
+						</c:if>						
 						<tr>
-							<td align="right">是否合规：</td>
-							<td colspan="3">
-								<label>合规 </label> 									
-							</td>		
-						</tr>		
-						<tr>
-							<td align="right" width="15%" align="right" height="40px;">录入会议决策内容：</td>
-							<td colspan="3" > 
-								<textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>								
+							<td align="right" width="8%" align="right" height="100px;">监察结论：</td>
+							<td colspan="3" >
+								<input type="hidden" id="hid_isFileUpload" value="0" />
+								<input type="hidden" id="hid_dia_title" value="监察室结论提交成功" /> 
+								<textarea rows="6" cols="5" style="width:60%;" name="content"></textarea>								
 								<input type="hidden" name ="itemId" value="${Item.id }">
 								<input type="hidden" id="hid_uuid" name="uuid" />
 							</td> 
 						</tr>	
-						<tr>
-							<td align="right" height="40px;">上传会议决策附件：</td>
+						<!-- <tr>
+							<td align="right" height="129px;">上传附件：</td>
 							<td colspan="3">
-									<input type="hidden" id="hid_isFileUpload" value="1" /> 
 								 <div id="themeswitcher" class="pull-right"></div>
 					                <script>
 					                    $(function() {
@@ -331,16 +384,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					                <div id="uploader">
 					                </div>
 							 </td>	
-						</tr>		
-						
+						</tr> -->
+											
 					</table>
 				</div>
 			</form>
 		</div> 
-	</div>
+	
 	<div class="cl"></div>
 </div>
 <div class="cl"></div>
-</div> 
+</div>
+<div id="dialog"></div>
 </body>
 </html>  

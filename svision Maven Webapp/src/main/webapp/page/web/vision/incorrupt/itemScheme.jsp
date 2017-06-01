@@ -181,7 +181,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			              },
 					      buttons: {
 					        "确定": function() {
-					          window.location.href='<%=basePath%>manage/branch/branchFHList.do';
+					          window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do';
 					        } 
 					      }
 					    });
@@ -269,7 +269,33 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<tr><td style="border:0px;"></td><tr>
 								</table>
 							</td>		
-						</tr> 
+						</tr>
+						<!-- 监察室给出监察意见，但是项目不合规 -->		
+						<c:if test="${ItemProcess0 != null }">
+							<tr>
+								<td align="right" style="height:40px;">监察室意见：</td>
+								<td colspan="3">
+									<label>${ItemProcess0.content } </label> 									
+								</td>	
+							</tr>
+							<tr>
+								<td align="right" >相关附件：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess0.fileList }">
+											<tr style="height:20px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>	
+							<tr>
+								<td align="right">是否合规：</td>
+								<td colspan="3">
+									<label>不合规 </label> 									
+								</td>		
+							</tr>							
+						</c:if>	 
 						<tr>
 							<td align="right" width="15%" align="right" height="40px;">方案内容：</td>
 							<td colspan="3" > 
@@ -281,7 +307,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" height="129px;">上传附件：</td>
 							<td colspan="3">
-									<input type="hidden" id="hid_isFileUpload" value="1" /> 
+								 <input type="hidden" id="hid_isFileUpload" value="1" /> 
 								 <div id="themeswitcher" class="pull-right"></div>
 					                <script>
 					                    $(function() {
