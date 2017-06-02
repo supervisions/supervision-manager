@@ -68,9 +68,7 @@ public class HomeController extends SystemAction {
         //创建模型跟视图，用于渲染页面。并且指定要返回的页面为login页面
         ModelAndView mav = new ModelAndView("login");
         return mav;
-    }
-    
-
+    } 
 	/**
 	 * 加载机构的树
 	 * 
@@ -92,34 +90,55 @@ public class HomeController extends SystemAction {
 			organ.setPid(0);
 		}
 
-		//获取用户所属的机构
-		HttpSession session = request.getSession();
-		List<Integer> userOrgIds= (List<Integer>) session.getAttribute("userOrgIds");
-		
-		List<Organ> list = new ArrayList<Organ>();
-		if(userOrgIds!=null){
-			if(pid != null){				
-				list = organService.getOrganByPId(organ);	
-			}else {
-				list = organService.getOrganByOrgIds(userOrgIds);
-			}			
-		}else{
-			list = organService.getOrganByPId(organ);	
-		}
+		//获取用户所属的机构  
+		List<Organ> list = organService.getOrganByPId(organ);	 
 		// 加载子节点，方式一，无子节点则无展开按钮
-		for (Organ a : list) {
-			a.setText(a.getName()); 
-			if(a.getChildrenCount()>0){
-				a.setState("closed");
+//		for (Organ a : list) {
+//			a.setText(a.getName()); 
+//			if(a.getChildrenCount()>0){
+//				a.setState("closed");
+//			}else{
+//				a.setState("open");
+//			}
+//			
+//		}
+		for(Organ a:list){
+			a.setText(a.getName());
+			Organ org = new Organ();
+			org.setPid(a.getId());
+			List<Organ> list1 = new ArrayList<Organ>();
+			list1 = organService.getOrganByPId(org);
+			if(list1.size() > 0){
+				setChildrenList(list1);
+				a.setChildren(list1);
+				a.setState("open");
 			}else{
+				a.setChildren(new ArrayList<Organ>());
 				a.setState("open");
 			}
-			
 		}
 		
 		return list;// json.toString();
 	}
-	 /**
+	 private void setChildrenList(List<Organ> list) {
+		// TODO Auto-generated method stub
+		 for(Organ a:list){
+				a.setText(a.getName());
+				Organ org = new Organ();
+				org.setPid(a.getId());
+				List<Organ> list1 = new ArrayList<Organ>();
+				list1 = organService.getOrganByPId(org);
+				if(list1.size() > 0){ 
+					a.setState("closed");
+				}else{
+					a.setChildren(new ArrayList<Organ>());
+					a.setState("open");
+				}
+			}
+	}
+
+
+	/**
      * 根据机构ID查询用户
      */
     @ResponseBody

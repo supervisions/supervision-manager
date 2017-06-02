@@ -1,15 +1,6 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<script type="text/javascript">
-    function gotoMainMenu(url,selectedMainMemu) {
-        $.ajax({
-            type : "post",
-            url : "${pageContext.request.contextPath}/jsonLoadSession.do?selectedMainMemu="+selectedMainMemu,
-            async : false
-        });
-
-        window.location.href = url;
-    }
+<script type="text/javascript"> 
     function showdialog(){
         var wz = getDialogPosition($('#chgPwdWindow').get(0),100);
         $('#chgPwdWindow').window({
@@ -60,17 +51,31 @@
 </div>
 <div class="fr head-menu">
     <ul class="fl">
+    	<%-- <c:forEach var="item" items="${sessionScope.userResources}">
+			<c:if test="${item.url == 'vision/efficiency/efficiencyList.do'}">
+				<td><img style="cursor:pointer;" src="<%=basePath %>source/images/model/ssjc.png" title="${item.name}" /></td>
+			</c:if>
+			<c:if test="${item.url == 'manage/branch/branchFHList.do'}">
+				<td><img style="cursor:pointer;"  src="<%=basePath %>source/images/model/zhgl.png" title="${item.name}" /></td>
+			</c:if>
+			<c:if test="${item.url == 'system/user/userList.do'}"> 
+				<td><img style="cursor:pointer;"  src="<%=basePath %>source/images/model/jcgl.png" title="${item.name}" /></td>
+			</c:if> 
+			<c:if test="${item.url == 'system/log/logList.do'}"> 
+				<td><img style="cursor:pointer;"  src="<%=basePath %>source/images/model/rzgl.png" title="${item.name}" /></td>
+			</c:if> 
+		</c:forEach> --%>
         <c:forEach var="item" items="${sessionScope.userResources}">
-            <li
-                    <c:if test="${item.id == sessionScope.userInfo.selectedMainMemu}">
-                        class="head-menu-now"
-                    </c:if> onclick="gotoMainMenu('${pageContext.request.contextPath}/${item.url}','${item.id}')">
+         	<c:if test="${item.id == sessionScope.userInfo.selectedMainMemu}">
+            	<li class="head-menu-now" <%-- onclick="gotoMainMenu('${pageContext.request.contextPath}/${item.url}','${item.id}')" --%>>
                     ${item.name}
-            </li>
+            	</li>
+           	 </c:if>
         </c:forEach>
     </ul>
     <div class="fl head-menu-right">
         <!-- <a href="#"><i class="fl yw-icon icon-dot"></i><span>你有新消息</span></a> -->
+        <a href="javascript:void(0);" onclick="window.location.href='${pageContext.request.contextPath}/moudle/model/modelSelect.do'"><i class="fl yw-icon icon-dot"></i><span  style="color:white;font-size:16px;">返回首页</span></a>
         <a href="javascript:void(0);" onclick="showdialog();"><i class="fl yw-icon icon-dot"></i><span  style="color:white;font-size:16px;">修改密码</span></a>
         <a href="${pageContext.request.contextPath}/logout.do"><i class="fl yw-icon icon-fork"></i><span  style="color:white;font-size:16px;">退出</span></a>
         <%--<a href="${pageContext.request.contextPath}/base/logout.do"><i class="fl yw-icon icon-fork"></i><span  style="color:white;font-size:16px;">退出</span></a>--%>

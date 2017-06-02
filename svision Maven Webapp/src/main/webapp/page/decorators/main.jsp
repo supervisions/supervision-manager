@@ -11,6 +11,7 @@ String  url  =  uri.substring(uri.lastIndexOf("/")+1);
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <title>电子监察平台-<sitemesh:write property='title'/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/source/images/favicon.ico" type="image/x-icon" />
 <link type="text/css" href="${pageContext.request.contextPath}/source/css/base.css" rel="stylesheet"/>
 	<link type="text/css" href="${pageContext.request.contextPath}/source/css/global.css" rel="stylesheet"/>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/jquery-1.11.2.min.js"></script>
