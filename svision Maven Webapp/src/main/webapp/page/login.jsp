@@ -42,8 +42,26 @@
 						    valueField:'account',  
 						    textField:'name',
 						    onLoadSuccess:function(){
-						    	$('#loginName').combobox("setText","=请选择登录用户=")
-						    }  
+						    	var sess= $.trim($("#hid_loginName").val());
+						    	if(sess.length>0){
+							    	var datas = $('#loginName').combobox("getData");
+							    	if(datas.length>0){
+							    		$.each(datas,function(index,obj){
+							    			if(obj.account == sess){
+							    				$('#loginName').combobox("setValue",sess);
+							    				GetPwdAndChkByUserAccount(sess);
+							    			}
+							    		});
+							    	}else{
+							    	   	$('#loginName').combobox("setText","=请选择登录用户=");
+							    	}
+						    	}else{
+						    	   	$('#loginName').combobox("setText","=请选择登录用户=");
+						    	}
+						    },
+						    onSelect:function(urec){ // 	当节点被选中时触发。 
+			  				 	 $("#hid_loginName").val(urec.account);
+			  				 } 
 						});  
 	  				 },
 	  				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。
@@ -124,8 +142,9 @@
 					success:function(data){
 						var item = eval("(" + data + ")");
 						if(item.code == 200){
-							/* SetPwdAndChk(); */
-							window.location.href =baseurl+item.gotoUrl;
+							SetPwdAndChk();
+							/* window.location.href =baseurl+item.gotoUrl; */
+							window.location.href = baseurl +"moudle/model/modelSelect.do"
 							$("#login-alert").html("");
 							$("#login-alert").hide();
 						}
@@ -160,6 +179,7 @@
 						<input id="orgParentTree"  style="width:239px;height:38px;" checkbox="true"  class="easyui-combotree" />
 					</p>
 					<p class="login-rows mt30">
+						<input type="hidden" id="hid_loginName" />
 						<input id="loginName" name="account" class="easyui-combobox"  style="width:239px;height:38px;" />  
 						<%-- <input type="text" name="account" id="loginName" class="login-input login-name easyui-validatebox" placeholder="用户名"  validType="Length[4,22]" data-options="required:true" value="<shiro:principal/>" onblur="GetPwdAndChk();"/> --%>
 					</p>

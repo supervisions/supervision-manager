@@ -1,16 +1,16 @@
 	window.onload=function onLoginLoaded() {
-		if (isPostBack == "False") {
+//		if (isPostBack == "False") {
 			GetLastUser();
-		}
+//		}
 	}
 	
 	function GetLastUser() {
 		var id = "49BAC005-7D5B-4231-8CEA-16939BEACD67";//GUID标识符
 		var usr = GetCookie(id);
 		if (usr != null) {
-			document.getElementById('loginName').value = usr;
+			document.getElementById('hid_loginName').value = usr;
 		} else {
-			document.getElementById('loginName').value = "001";
+			document.getElementById('hid_loginName').value = "";
 		}
 		GetPwdAndChk();
 	}
@@ -18,7 +18,7 @@
 	
 	function SetPwdAndChk() {
 		//取用户名
-		var usr = document.getElementById('loginName').value;
+		var usr = document.getElementById('hid_loginName').value;
 		//alert(usr);
 		//将最后一个用户信息写入到Cookie
 		SetLastUser(usr);
@@ -49,7 +49,24 @@
 	
 	function GetPwdAndChk() {
 		$("#icheckspan").removeClass("yw-checkbox-true");
-		var usr = document.getElementById('loginName').value;
+		var usr = document.getElementById('hid_loginName').value;
+		var pwd = GetCookie(usr);
+		if (pwd != null) {
+			document.getElementById('chkRememberPwd').checked = true;
+			document.getElementById('password').value = pwd;
+			$("#password").css("display","block");
+			$("#password2").css("display","none");
+			$("#icheckspan").addClass("yw-checkbox-true");
+		} else {
+			document.getElementById('chkRememberPwd').checked = false;
+			document.getElementById('password').value = "";
+			$("#password").css("display","none");
+			$("#password2").css("display","block");
+		}
+	}
+	//用户名失去焦点时调用该方法
+	
+	function GetPwdAndChkByUserAccount(usr) { 
 		var pwd = GetCookie(usr);
 		if (pwd != null) {
 			document.getElementById('chkRememberPwd').checked = true;
@@ -101,7 +118,7 @@
 	}
 	
 	function ResetCookie() {
-		var usr = document.getElementById('loginName').value;
+		var usr = document.getElementById('hid_loginName').value;
 		var expdate = new Date();
 		SetCookie(usr, null, expdate);
 	}
