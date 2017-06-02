@@ -646,7 +646,7 @@ public class BranchAction extends SystemAction {
 					} 
 					js.setMessage("监察过程处理成功，完整分行立项中支完成项目"); 
 				}else{
-					itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_3);
+					itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_6);
 					js.setMessage("监察过程处理成功，完整分行立项中支完成项目"); 
 				} 
 			}else{ 

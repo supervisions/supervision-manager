@@ -365,13 +365,23 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</tr>   
 							<tr>
 								<td align="right" style="height:120px;">监察结论：</td>
-								<td colspan="3"> 
-									 <input type="hidden" name="isOver" value="1" />
+								<td colspan="3">  
 									<input type="hidden" id="hid_isFileUpload" value="0" />
 									<input type="hidden" id="hid_dia_title" value="提交监察结论成功，项目监察完结" />
 									 <textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>			 
 								 </td>	
 							</tr> 
+							<tr>
+							<td align="right" >是否完结：</td>
+							<td colspan="3">
+								<label>
+									<input type="radio" name="isOver" value="1" checked="checked">完结
+								</label> 
+								<label>
+									<input type="radio" name="isOver" value="0" >未完结
+								</label>								
+							</td>	
+						</tr>
 						</c:if>
 					</table>
 				</div>
