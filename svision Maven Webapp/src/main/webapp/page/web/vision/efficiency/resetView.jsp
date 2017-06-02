@@ -146,8 +146,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		                   $(".ui-dialog-titlebar-close", $(this).parent()).hide();
 		                },
 					    buttons: {
-					        '确定': function() {					        	
-					            window.location.href = "<%=basePath%>vision/efficiency/efficiencyList.do";
+					        "确定": function() {					        	
+					            window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
 					        }
 					    }
 					}); 
@@ -168,10 +168,27 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	        dataType:"json", //响应数据类型      
 	        success: function(data) {
 	        	if(data.code==0){ 
-	        		$("#uploader_start").click(); //上传文件
+	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
+	        			$("#uploader_start").click(); //上传文件
+	        		}else{
+	        		$("#dia_title").text($("#hid_dia_title").val());
+        			$("#dialog1").dialog({
+					      resizable: false,
+					      height:150,
+					      modal: true,
+					      open: function (event, ui) {
+			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+			              },
+					      buttons: {
+					        "确定": function() {
+					          window.location.href='<%=basePath%>vision/efficiency/efficiencyList.do';
+					        } 
+					      }
+					    });
+	        		}
 	        	}else{
 	        		alert(data.message);	        	
-	        	}	
+	        	}		
 	        }
    		});
 	}
@@ -283,7 +300,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" width="8%" align="right" height="100px;">整改资料：</td>
 							<td colspan="3" > 
-								<textarea rows="6" cols="5" style="width:60%;" name="content"></textarea>								
+								<textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>								
 								<input type="hidden" name ="itemId" value="${Item.id }">
 								<input type="hidden" id="hid_uuid" name="uuid" />
 							</td> 
@@ -291,6 +308,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" height="129px;">上传附件：</td>
 							<td colspan="3">
+								<input type="hidden" id="hid_isFileUpload" value="1" /> 
 								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>
 					                    $(function() {
@@ -324,6 +342,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 </div>
 <div class="cl"></div>
 </div>
-<div id="dialog"></div>
+
 </body>
 </html>  

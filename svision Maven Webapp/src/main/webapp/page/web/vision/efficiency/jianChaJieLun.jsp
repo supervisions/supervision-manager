@@ -335,6 +335,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<label>${ItemProcess10.content } </label> 									
 								</td>
 						</c:if> 
+						
 						<c:if test="${ItemProcess6 != null }">
 							<tr>
 								<td align="right">是否问责：</td>
@@ -345,16 +346,35 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</c:if>
 						<c:if test="${ItemProcess9 != null }">
 							<tr>
-								<td align="right" style="height:100px;">再次整改内容：</td>
+								<td align="right" style="height:100px;">问责资料：</td>
 								<td colspan="3">
 									<label>${ItemProcess9.content } </label> 									
+								</td>		
+							</tr> 
+							<tr>
+								<td align="right" >相关附件：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess9.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>						
+						</c:if>
+						<c:if test="${ItemProcess7 != null }">
+							<tr>
+								<td align="right" style="height:100px;">再次整改内容：</td>
+								<td colspan="3">
+									<label>${ItemProcess7.content } </label> 									
 								</td>		
 							</tr> 
 							<tr>
 								<td align="right" >整改附件：</td>
 								<td colspan="3"> 
 									<table style="width:100%;height:100%;min-height:80px;">
-										<c:forEach var="fileItem" items="${ItemProcess9.fileList }">
+										<c:forEach var="fileItem" items="${ItemProcess7.fileList }">
 											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 										</c:forEach> 
 										<tr><td style="border:0px;"></td><tr>

@@ -157,6 +157,8 @@ public class EfficiencyVisionAction extends SystemAction {
 				for(Organ rc1 : organList){
 					if(rc1.getPid() == rc.getId() && rc1.getSupervision()==0){ 
 						itemList.add(rc1);
+					}else if(rc1.getId()==43 && rc1.getPid() == rc.getId()){
+						itemList.add(rc1);
 					}
 				}
 				frvm.setItemList(itemList);
@@ -759,7 +761,7 @@ public class EfficiencyVisionAction extends SystemAction {
 	    	itemProcess.setPreparerId(u.getId());
 	    	itemProcess.setPreparerTime(new Date());
 			itemProcess.setDefined(false); 
-			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_4);//被监察对象再次录入了整改资料，项目进入监察室给出结论阶段	
+			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_9);//监察室录入问责相关资料，项目进入被监察再次上传整改情况
 		
 			itemProcessService.insert(itemProcess);	
 			
@@ -797,9 +799,9 @@ public class EfficiencyVisionAction extends SystemAction {
 			itemProcess.setDefined(false); 
 			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_8); //再次录入整改情况后进入监察室录入监察结论
 			
-			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-			item.setStatus(Constants.ITEM_STATUS_OVER);
-			itemService.updateByPrimaryKeySelective(item);
+//			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+//			item.setStatus(Constants.ITEM_STATUS_OVER);
+//			itemService.updateByPrimaryKeySelective(item);
 //			if(status!=null){
 //				if(status==null ||status!=4){//监察对象给出监察意见
 //					itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_666);				

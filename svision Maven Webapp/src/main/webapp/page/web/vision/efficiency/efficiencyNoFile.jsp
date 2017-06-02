@@ -245,7 +245,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
 				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItemProcess(this);">保存</span>
-				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
+				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="window.location.href='<%=basePath%>vision/efficiency/efficiencyList.do'">返回</span>
 			</div>
 		</div>
 			<form id="itemInfoForm" name="itemInfoForm" >
@@ -310,16 +310,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								 <textarea rows="5" cols="5" style="width:60%;" name="content"></textarea>			 
 							 </td>	
 						</tr>
-						<c:if test="${Item.isStept==0 }">
+						<c:if test="${Item.isStept==1 }">
 							<tr>
 								<td align="right" >是否完结：</td>
 								<td colspan="3">
 									<label>
-										<input type="radio" name="status" value="" >否
+										<input type="radio" name="status" value="4" checked="checked">是
 									</label> 
 									<label>
-										<input type="radio" name="status" value="4" checked="checked">是
-									</label> 								
+										<input type="radio" name="status" value="" >否
+									</label> 
+																	
 								</td>	
 							</tr>
 						</c:if>		

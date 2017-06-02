@@ -53,7 +53,7 @@ public class UploadAction extends SystemAction {
 	
 	@ResponseBody
     @RequestMapping(value = "/jsonUploadFile.do", method = RequestMethod.POST,produces={ "text/html;charset=UTF-8"} )
-	 @RequiresPermissions("system/upload/jsonUploadFile.do")
+	@RequiresPermissions("system/upload/jsonUploadFile.do")
 	public JsonResult<File> jsonSaveOrUpdateVideoItem(
             @RequestParam(value = "uuid", required = true) String uuid,
             @RequestParam(value = "file", required = true) CommonsMultipartFile file,
@@ -162,6 +162,7 @@ public class UploadAction extends SystemAction {
      */
     @ResponseBody
     @RequestMapping(value = "/downLoadFile.do")
+    @RequiresPermissions("system/upload/downLoadFile.do")
     public void downLoadFile(
             @RequestParam(value = "filePath", required = true) String filePath,
             @RequestParam(value = "fileName", required = true) String fileName,

@@ -351,7 +351,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 被监察对象录入行政处罚意见书 -->
 						<c:if test="${ItemProcess11 != null }">							
 							<tr>
-								<td align="right" >行政处罚意见书：</td>
+								<td align="right" >行政处罚意见告知书：</td>
 								<td colspan="3"> 
 									<table style="width:100%;height:100%;min-height:80px;">
 										<c:forEach var="fileItem" items="${ItemProcess11.fileList }">
@@ -362,7 +362,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</td>		
 							</tr>
 							<tr>
-								<td align="right" style="height:40px;">行政处罚意见书说明：</td>
+								<td align="right" style="height:40px;">处罚意见告知书说明：</td>
 								<td colspan="3">
 									<label>${ItemProcess11.content } </label> 									
 								</td>		

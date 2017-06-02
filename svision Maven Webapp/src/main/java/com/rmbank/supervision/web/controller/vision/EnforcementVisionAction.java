@@ -191,8 +191,7 @@ public class EnforcementVisionAction extends SystemAction {
 	@ResponseBody
 	@RequestMapping(value = "/jsonSaveOrUpdateItem.do", method = RequestMethod.POST)
 	@RequiresPermissions("vision/enforce/jsonSaveOrUpdateItem.do")
-	public JsonResult<Item> jsonSaveOrUpdateItem(
-			Item item,
+	public JsonResult<Item> jsonSaveOrUpdateItem(Item item,			
 			@RequestParam(value = "end_time", required = false) String end_time,// 用于接收前台传过来的String类型的时间
 			@RequestParam(value = "content", required = false) String content,
 			@RequestParam(value = "OrgId", required = false) Integer[] OrgIds,
@@ -318,47 +317,92 @@ public class EnforcementVisionAction extends SystemAction {
 	@ResponseBody
 	@RequestMapping(value = "/jsonUpdateItem.do", method = RequestMethod.POST)
 	@RequiresPermissions("vision/enforce/jsonUpdateItem.do")
-	public JsonResult<Item> jsonUpdateItem(
-			Item item,
+	public JsonResult<Item> jsonUpdateItem(Item item,			
 			@RequestParam(value = "end_time", required = false) String end_time,// 用于接收前台传过来的String类型的时间
 			@RequestParam(value = "content", required = false) String content,
 			@RequestParam(value = "OrgId", required = false) Integer[] OrgIds,
 			HttpServletRequest request, HttpServletResponse response)
 			throws ParseException {
-		// 获取当前登录用户
-		User u = this.getLoginUser();
-		// 将前台传过来的String类型的时间转换为Date类型
-		Item item2 = itemService.selectByPrimaryKey(item.getId());
-		if (item.getSuperItemType() == 61) {// 综合执法
-			if (end_time != null) {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				Date date = sdf.parse(end_time);
-				item2.setEndTime(date); // 完成时间
-				item2.setSupervisionOrgId(OrgIds[0]);
-				item2.setStatus(1);
-				item2.setUuid(item.getUuid());
-			}
-		}
 		// 新建一个json对象 并赋初值
 		JsonResult<Item> js = new JsonResult<Item>();
 		js.setCode(new Integer(1));
 		js.setMessage("保存项目信息失败!");
+		// 获取当前登录用户
+		User u = this.getLoginUser();
+		// 将前台传过来的String类型的时间转换为Date类型
+		Item item2 = itemService.selectByPrimaryKey(item.getId());
 		try {
-			itemService.updateByPrimaryKeySelective(item2);
+			if (end_time != null) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date date = sdf.parse(end_time);
+				item2.setEndTime(date); // 完成时间			
+				item2.setStatus(1);
+				item2.setUuid(item.getUuid());			
+			}
+			if (item.getSuperItemType() == 61) {// 综合执法
+				item2.setSupervisionOrgId(OrgIds[0]);
+				itemService.updateByPrimaryKeySelective(item2);
+				
+				List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());					
+				ItemProcess itemProcess = new ItemProcess();
+				itemProcess.setUuid(item.getUuid());
+				itemProcess.setItemId(item.getId());
+				itemProcess.setDefined(false);
+				itemProcess.setContentTypeId(Constants.ENFORCE_VISION_1);// 监察室立项状态
+				itemProcess.setPreparerOrgId(userOrgIDs.get(0)); // 制单部门的ID
+				itemProcess.setOrgId(userOrgIDs.get(0));
+				itemProcess.setContent(content);
+				itemProcess.setPreparerId(u.getId());
+				itemProcess.setPreparerTime(new Date());
+				itemProcessService.insert(itemProcess);
+				
+			}else if(item.getSuperItemType() == 62){ //单项执法
+				List<Integer> itemIds= new ArrayList<Integer>();
+				//List<Integer> itemProcessIds= new ArrayList<Integer>();
+				itemService.deleteItemById(item2.getId()); //首先删除当前未立项的这条项目
+				//获取当前项目的流程，有且只有一个
+				List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item2.getId()); 
+				//获取初始化流程的附件集合
+				List<ItemProcessFile> fileList = itemProcessFileService.getFileListByItemId(itemProcessList.get(0).getId());
+				
+				ItemProcess getItemProcess = itemProcessList.get(0);
+				for (Integer orgId : OrgIds) {
+					item2.setId(0);
+					item2.setSupervisionOrgId(orgId);
+					itemService.insertSelective(item2);//根据机构数对项目进行立项
+					Integer itemId = item2.getId(); //立项返回的ID
+					itemIds.add(itemId);
+					
+					getItemProcess.setId(0);
+					getItemProcess.setItemId(itemId);				
+					itemProcessService.insert(getItemProcess);//将项目的初始化流程赋给立项的项目				
+					Integer itemProcessId = getItemProcess.getId(); //返回的id
+					
+					//itemProcessIds.add(itemProcessId);
+					
+					
+					for (ItemProcessFile itemProcessFile : fileList) {
+						itemProcessFile.setId(0);
+						itemProcessFile.setItemProcessId(itemProcessId);
+						itemProcessFileService.insertSelective(itemProcessFile);//将初始化的附件赋给流程
+					}
+									
+					
+					List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());					
+					ItemProcess itemProcess = new ItemProcess();
+					itemProcess.setUuid(item.getUuid());
+					itemProcess.setItemId(itemId);
+					itemProcess.setDefined(false);
+					itemProcess.setContentTypeId(Constants.ENFORCE_VISION_1);// 监察室立项状态
+					itemProcess.setPreparerOrgId(orgId); // 制单部门的ID
+					itemProcess.setOrgId(userOrgIDs.get(0));
+					itemProcess.setContent(content);
+					itemProcess.setPreparerId(u.getId());
+					itemProcess.setPreparerTime(new Date());
+					itemProcessService.insert(itemProcess);
+				}
+			}
 
-			List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u
-					.getId());
-			ItemProcess itemProcess = new ItemProcess();
-			itemProcess.setUuid(item.getUuid());
-			itemProcess.setItemId(item.getId());
-			itemProcess.setDefined(false);
-			itemProcess.setContentTypeId(Constants.ENFORCE_VISION_1);// 监察室立项状态
-			itemProcess.setPreparerOrgId(userOrgIDs.get(0)); // 制单部门的ID
-			itemProcess.setOrgId(userOrgIDs.get(0));
-			itemProcess.setContent(content);
-			itemProcess.setPreparerId(u.getId());
-			itemProcess.setPreparerTime(new Date());
-			itemProcessService.insert(itemProcess);
 			js.setCode(new Integer(0));
 			js.setMessage("保存项目信息成功!");
 			return js;
@@ -653,8 +697,7 @@ public class EnforcementVisionAction extends SystemAction {
 					.getPreparerTime()));
 		}
 		// 获取流程集合
-		List<ItemProcess> itemProcessList = itemProcessService
-				.getItemProcessItemId(item.getId());
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId());				
 		if (itemProcessList.size() > 0) {
 			for (ItemProcess ip : itemProcessList) {
 				List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();

@@ -257,7 +257,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</tr>								
 						</c:if>
 						<!-- 有异议提请党委 -->
-						<c:if test="${ItemProcess8 != null }">
+						<c:if test="${ItemProcess8 != null && ItemProcess4==null}">
 							<tr>
 								<td align="right" style="height:40px;">监察室意见：</td>
 								<td colspan="3">

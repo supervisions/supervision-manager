@@ -38,7 +38,7 @@ public class ItemServiceimpl implements ItemService {
 	@Override
 	public int insertSelective(Item record) {
 		// TODO Auto-generated method stub
-		return 0;
+		return itemMapper.insertSelective(record);
 	}
 
 	@Override

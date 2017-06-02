@@ -236,7 +236,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td align="right" height="50px">是否分节点监察：</td>
 							<td colspan="3">
 								<select id="supervisionTypeId" name="isstept" style="width:289px;height:28px;">
-									<option value="-1">请选择是否分节点监察</option>								
+								<!-- 	<option value="-1">请选择是否分节点监察</option>	 -->							
 									<option value="0">否</option>
 									<option value="1">是</option>
 									

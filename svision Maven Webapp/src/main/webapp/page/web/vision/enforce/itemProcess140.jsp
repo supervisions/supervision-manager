@@ -506,10 +506,10 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td align="right" >是否合规：</td>
 							<td colspan="3">
 								<label>
-									<input type="radio" name="status" value="0" checked="checked">是
+									<input type="radio" name="status" value="0" checked="checked">合规
 								</label> 
 								<label>
-									<input type="radio" name="status" value="1" >否
+									<input type="radio" name="status" value="1" >不合规
 								</label>								
 							</td>	
 						</tr>		

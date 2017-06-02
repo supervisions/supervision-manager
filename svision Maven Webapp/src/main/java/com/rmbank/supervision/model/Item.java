@@ -65,6 +65,10 @@ public class Item extends Page {
     //廉政监察的项目名称
     private String itemNmae;
     
+    
+    //执法监察的项目名称
+    private String itemName;
+    
     /**
      * 定义字段供前台使用
      */
@@ -343,5 +347,13 @@ public class Item extends Page {
 
 	public void setItemNmae(String itemNmae) {
 		this.itemNmae = itemNmae;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
 }

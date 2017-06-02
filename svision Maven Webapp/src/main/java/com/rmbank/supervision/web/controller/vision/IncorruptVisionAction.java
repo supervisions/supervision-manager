@@ -286,10 +286,10 @@ public class IncorruptVisionAction extends SystemAction {
 					if (itemList.size() > 0) {
 						ItemProcess itemProcess = itemList.get(0);
 						itemProcess.setContent(item.getName());
-						itemProcess
-								.setContentTypeId(Constants.INCORRUPT_VISION_0);
-						itemProcessService
-								.updateByPrimaryKeySelective(itemProcess);
+						itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_0);
+								
+						itemProcessService.updateByPrimaryKeySelective(itemProcess);
+								
 						js.setCode(0);
 						js.setMessage("立项成功，待被监察对象上传项目方案");
 					}
@@ -786,10 +786,6 @@ public class IncorruptVisionAction extends SystemAction {
 			}
 
 			itemProcessService.insert(itemProcess);
-
-			// Item item =
-			// itemService.selectByPrimaryKey(itemProcess.getItemId());
-			// item.setLasgTag(Constants.INCORRUPT_VISION_8);
 			js.setCode(0);
 			js.setMessage("保存信息成功!");
 		} catch (Exception ex) {

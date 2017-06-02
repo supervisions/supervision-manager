@@ -245,13 +245,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						
 						<tr>
-							<td align="right" style="height:100px;">上传资料内容：</td>
+							<td align="right" style="height:100px;">资料内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess2.content } </label> 
 							</td>		
 						</tr> 
 						<tr>
-							<td align="right">上传资料附件：</td>
+							<td align="right">资料附件：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
 									<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
@@ -294,7 +294,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" width="8%" align="right" height="100px;">问责资料：</td>
 							<td colspan="3" > 
-								<textarea rows="6" cols="5" style="width:60%;" name="content"></textarea>								
+								<textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>								
 								<input type="hidden" name ="itemId" value="${Item.id }">
 								<input type="hidden" id="hid_uuid" name="uuid" />
 							</td> 
@@ -321,6 +321,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 </div>
 <div class="cl"></div>
 </div>
-<div id="dialog"></div>
+
 </body>
 </html>  

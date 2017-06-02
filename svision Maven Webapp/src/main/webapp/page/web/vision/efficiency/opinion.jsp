@@ -286,13 +286,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</tr>    
 						<tr>
 							<td align="right" >是否需要整改：</td>
-							<td colspan="3">
-								<label>
-									<input type="radio" name="status" value="0" >整改
-								</label> 
+							<td colspan="3">								
 								<label>
 									<input type="radio" name="status" value="4" checked="checked">不整改
-								</label>								
+								</label>	
+								<label>
+									<input type="radio" name="status" value="0" >整改
+								</label> 							
 							</td>	
 						</tr>
 						

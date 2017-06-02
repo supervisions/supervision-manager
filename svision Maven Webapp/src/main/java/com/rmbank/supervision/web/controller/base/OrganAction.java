@@ -282,6 +282,7 @@ public class OrganAction extends SystemAction {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/jsonLoadOrganTreeList.do")
+	@RequiresPermissions("system/organ/jsonLoadOrganTreeList.do")
 	public List<Organ> getOrganList(
 			@RequestParam(value = "pid", required = false) Integer pid,
 			HttpServletRequest request, HttpServletResponse response) {

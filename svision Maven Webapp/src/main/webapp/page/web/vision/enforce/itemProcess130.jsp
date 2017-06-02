@@ -324,7 +324,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						 --%>
 							
 						<tr>
-							<td align="right" width="15%" align="right" height="40px;">录入执法检查立项资料：</td>
+							<td align="right" width="15%" align="right" height="40px;">执法检查立项资料：</td>
 							<td colspan="3" > 
 								<textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>								
 								<input type="hidden" name ="itemId" value="${Item.id }">

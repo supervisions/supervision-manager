@@ -173,7 +173,7 @@ function uploadFile(id,tag){
 						<td>${item.itemCategory }</td>
 						<td>${item.name}</td>
 						<td><a style="color:blue;" onclick="showItem(${item.id })">查看</a></td>						
-						<td></td>
+						<td>${item.itemName}</td>
 						<td>${item.orgName}</td>
 						<td><span>${item.lasgTag}</span>	
 							<%-- <span>${item.lasgTag}</span> --%>						
@@ -241,6 +241,9 @@ function uploadFile(id,tag){
 							</c:if>
 							<c:if test="${item.lasgTag == 147}">
 								<a style="color: blue;" onclick="uploadFile(${item.id}, 143)">录入行政处罚情况</a>
+							</c:if>
+							<c:if test="${item.status == 4 }">
+								<span>【已完结】</span>
 							</c:if>
 						</td>
 						<td>

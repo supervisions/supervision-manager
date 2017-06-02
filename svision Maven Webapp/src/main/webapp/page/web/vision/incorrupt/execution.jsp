@@ -350,7 +350,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<label>无异议</label>									
 							</td>		
 						</tr>
-						<c:if test="${ItemProcess11 != null }">
+						<c:if test="${ItemProcess11 != null && ItemProcess10==null}">
 							<tr>
 								<td align="right" style="height:40px;">监察执行情况意见：</td>
 								<td colspan="3">
@@ -382,7 +382,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</tr> --%>
 						</c:if>
 						<!-- 需要问责，问责前一节点的监察意见 -->
-						<c:if test="${ItemProcess10 != null }">
+						<c:if test="${ItemProcess10 != null}">
 							<tr>
 								<td align="right" style="height:40px;">对执行情况的意见：</td>
 								<td colspan="3">

@@ -286,7 +286,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">是否问责：</td>
+							<td align="right" >是否问责：</td>
 							<td colspan="3">
 								<label>${ItemProcess6.content } </label> 
 								<c:forEach var="fileItem" items="${ItemProcess6.fileList }">
@@ -297,14 +297,14 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" style="height:100px;">问责资料：</td>
 							<td colspan="3">
-								<label>${ItemProcess7.content } </label> 									
+								<label>${ItemProcess9.content } </label> 									
 							</td>		
 						</tr> 
 						<tr>
 							<td align="right" >相关附件：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
-									<c:forEach var="fileItem" items="${ItemProcess7.fileList }">
+									<c:forEach var="fileItem" items="${ItemProcess9.fileList }">
 										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 									</c:forEach> 
 									<tr><td style="border:0px;"></td><tr>
@@ -312,9 +312,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>	
 						<tr>
-							<td align="right" width="8%" align="right" height="100px;">再次上传整改内容：</td>
+							<td align="right" width="8%" align="right" height="100px;">再次录入整改内容：</td>
 							<td colspan="3" > 
-								<textarea rows="6" cols="5" style="width:60%;" name="content"></textarea>								
+								<textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>								
 								<input type="hidden" name ="itemId" value="${Item.id }">
 								<input type="hidden" id="hid_uuid" name="uuid" />
 							</td> 
@@ -341,6 +341,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 </div>
 <div class="cl"></div>
 </div>
-<div id="dialog"></div>
+
 </body>
 </html>  

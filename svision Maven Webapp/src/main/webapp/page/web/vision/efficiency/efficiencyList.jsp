@@ -303,7 +303,7 @@ function followAction(itemId,status){
 								<a style="color: blue;" onclick="uploadFile(${item.id},68)">监察意见</a>
 							</c:if>						
 							<c:if test="${item.lasgTag == 69 && userOrg.id == item.supervisionOrgId }">
-								<a style="color: blue;" onclick="uploadFile(${item.id},69)">整改操作</a>
+								<a style="color: blue;" onclick="uploadFile(${item.id},69)">录入整改情况</a>
 							</c:if>
 							<c:if test="${item.lasgTag == 666 && userOrg.id==item.preparerOrgId}">
 								<a style="color: blue;" onclick="followItem(${item.id},'${item.name}')">问责处理</a>
@@ -314,20 +314,26 @@ function followAction(itemId,status){
 							<c:if test="${item.lasgTag == 688 && userOrg.id==item.preparerOrgId}">
 								<a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a>
 							</c:if>
-							<c:if test="${item.lasgTag == 779 && userOrg.id==item.preparerOrgId}">
+							<%-- <c:if test="${item.lasgTag == 779 && userOrg.id==item.preparerOrgId}">
 								<a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a>
+							</c:if> --%>
+							<c:if test="${item.lasgTag == 779 && userOrg.id==item.supervisionOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id},778)">再次录入整改情况</a>
 							</c:if>
 							<c:if test="${item.lasgTag == 777 && userOrg.id==item.preparerOrgId}">
 								<a style="color: blue;" onclick="uploadFile(${item.id},777)">录入问责资料</a>
 							</c:if>
-							<c:if test="${item.lasgTag == 778 && userOrg.id==item.supervisionOrgId}">
-								<a style="color: blue;" onclick="uploadFile(${item.id},778)">整改操作</a>
+							<c:if test="${item.lasgTag == 778 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a>
 							</c:if>
 							<%-- <c:if test="${userOrg.id == item.supervisionOrgId and item.status !=0}">
 								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
 							</c:if>	 --%>
 							<c:if test="${userOrg.id == item.preparerOrgId}">
 								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+							</c:if>
+							<c:if test="${item.status == 4 }">
+								<span>【已完结】</span>
 							</c:if>					
 						</td>
 					</tr>

@@ -214,7 +214,8 @@ function uploadFile(id,tag){
 						<td>${item.itemNmae}</td>
 						<td>${item.orgName}</td>
 						<td>	<span>${item.lasgTag}</span>						
-							    <c:if test="${item.status == 0 &&  userOrg.orgtype==44}">
+							    
+								<c:if test="${userOrg.orgtype==44 && item.status == 0 }">
 									<span style="color: red;" onclick="window.location.href='incorruptInfo.do?id=${item.id }';">立项</span>
 								</c:if>
 								<c:if test="${item.status != 0 && userOrg.id==item.supervisionOrgId && item.lasgTag==-1}">
@@ -241,9 +242,7 @@ function uploadFile(id,tag){
 								<c:if test="${item.lasgTag == 778 && userOrg.id==item.preparerOrgId}">
 									<a style="color: blue;" onclick="uploadFile(${item.id}, 778)">录入问责资料</a>
 								</c:if> 
-								<c:if test="${userOrg.orgtype==44 && item.status == 0 }">
-									<span style="color: red;" onclick="window.location.href='incorruptInfo.do?id=${item.id }';">立项</span>
-								</c:if>
+								
 								<c:if test="${item.lasgTag == 72 &&  userOrg.orgtype==44}">
 									<span style="color: blue;" onclick="uploadFile(${item.id },74)">监察意见</span>
 								</c:if>
