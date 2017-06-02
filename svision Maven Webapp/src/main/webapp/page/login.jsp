@@ -15,7 +15,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<META http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
-	<title>管理平台-登录</title>
+	<title>电子监察平台-登录</title>
 	<link type="text/css" href="<%=basePath%>source/css/base.css" rel="stylesheet"/>
 	<link type="text/css" href="<%=basePath%>source/css/global.css" rel="stylesheet"/>
 	<link type="text/css" href="<%=basePath%>source/js/easyUI/themes/default/easyui.css" rel="stylesheet"/>
