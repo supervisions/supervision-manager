@@ -345,6 +345,39 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								 </td>	
 							</tr> 
 						</c:if>
+						   
+						 <c:if test="${tag == 35 && OverItemProcess != null }">
+							<tr>
+								<td align="right" style="height:120px;">监察意见：</td>
+								<td colspan="3">  
+									 <label>${OverItemProcess.content } </label>  
+								 </td>	
+							</tr> 
+							<td align="right" >是否完结：</td>
+							<td colspan="3"> 
+								<label>未完结</label>								
+							</td>	
+							 <tr>
+								<td align="right" style="height:160px;">跟踪整改资料：</td>
+								<td colspan="3">
+									<input type="hidden" id="hid_isFileUpload" value="1" />
+									 <div id="themeswitcher" class="pull-right"> </div>
+						                <script>
+						                    $(function() {
+						                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
+						                    });
+						                </script>
+						                <div id="uploader">
+						                </div>
+								 </td>	
+							</tr>
+							<tr>
+								<td align="right" style="height:120px;">跟踪整改内容：</td>
+								<td colspan="3"> 
+									 <textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>			 
+								 </td>	
+							</tr> 
+						</c:if>
 						 <c:if test="${tag == 93 && OverItemProcess != null }">
 							<tr>
 								<td align="right" style="height:120px;">跟踪整改内容：</td>
@@ -374,11 +407,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<tr>
 							<td align="right" >是否完结：</td>
 							<td colspan="3">
+								<input type="hidden" name="isOver" value="0" > 
 								<label>
-									<input type="radio" name="isOver" value="1" checked="checked">完结
+									<input type="radio" name="isOverStatus" value="1" checked="checked">完结
 								</label> 
 								<label>
-									<input type="radio" name="isOver" value="0" >未完结
+									<input type="radio" name="isOverStatus" value="0" >未完结
 								</label>								
 							</td>	
 						</tr>

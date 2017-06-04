@@ -33,4 +33,7 @@ public interface GradeSchemeDetailMapper {
 	List<GradeSchemeDetail> getExistDetail(GradeSchemeDetail gsd);
 
 	GradeSchemeDetail getGradeSchemeDetailById(Integer id);
+
+	List<GradeSchemeDetail> getGradeSchemeDetailListByGradeId(
+			GradeSchemeDetail gradeSchemeDetail);
 }		

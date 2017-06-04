@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
    <base href="<%=basePath%>">
   
-   <title>角色管理</title>
+   <title>指标管理</title>
    
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css"> 
@@ -24,40 +24,14 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <link rel="stylesheet" type="text/css" href="styles.css">
 -->
 
-<script type="text/javascript">
-	$(document).ready(function(){	 	
-	 	$("#pid").combotree({
-			 url: 'manage/casedetail/jsonLoadSchemeDetailTreeList.do',  
-  				 required: false,
-  				 onSelect:function(node){  	
-  				 	if(node.path=="" ||node.path==null){  				 			
-  				 		$("#path").val(node.id);  				 			
-			 		}else{
-			 			$("#path").val(node.path+"."+node.id);
-			 		}  	
-  				 	$("#gradeId").val(node.gradeId);
-  				 			 	 				 	 				 	
-  				 },
-  				 onBeforeExpand:function(node){
-  				 	$("#moudleId").combotree('tree').tree('options').url = 'system/function/jsonLoadFunctionTreeList.do?pid='+ node.id;
-  				 },
-  				 onLoadSuccess:function(){  				 	
-  				 	//编辑时默认选中
-  				 	var defaultPid=$("#defaultPid").val();
-  				 	$("#pid").combotree('setValue', defaultPid);
-  				 	
-  				 	var resourceId = $("#resourceId").val();			 	
-  				 	if(resourceId>0){  				 		
-  				 		var pName = $("#pName").val();
-  				 		$("#pid").combotree("setText",pName);  				 		
-  				 	}else{
-					//$("#moudleId").combotree("disable",true);
-   				 	$("#pid").combotree("setText","=请选择所属指标=");
-				}
-  			}
-		});	 	
-	 });
-	
+<script type="text/javascript"> 
+
+	$(document).ready(function(){
+			 var gId = $("#hid_gradeId").val();
+			 if(gId >0){ 
+			 	$("#slt_moudleId").combobox("setValue",gId);
+			 }
+		}); 
 	//新增/编辑资源
 	function saveResource(obj){	 	
 		var moudleId=$("#moudle_Id").val();
@@ -87,7 +61,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	}
 function checkGrade(obj){
 	if(obj.value>100){
-		$.messager.alert("温馨提示！","分值不能大于100!",'error',function(){
+		$.messager.alert("温馨提示！","权重不能大于100!",'error',function(){
 			$("#grade").val("");
 		});
 	}
@@ -107,9 +81,7 @@ function checkGrade(obj){
 			<span class="yw-bi-now">基本信息</span>
 				
 			</div>
-			<div class="fr">
-				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
-				
+			<div class="fr">  
 				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveResource(this);">保存</span>
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
@@ -120,37 +92,66 @@ function checkGrade(obj){
 				<div id="tab1" class="yw-tab">
 					<table class="yw-cm-table font16" id="taskTable">
 						<tr>
-							<td width="8%" align="right">指标名称</td>
-							<td><input id="" class="easyui-validatebox"
-								name="name" type="text" doc="taskInfo" value="${SchemeDetail.name}"
-								required="true" validType="baseValue"
-								style="width:254px;height:28px;" /> <input type="hidden"
-								id="resourceId" name="id" doc="taskInfo" value="${SchemeDetail.id}" /> <span
-								style="color:red">*</span></td>
-							<td width="8%"></td>
+							<td width="8%" align="right">指标名称：</td> 
+							<td width="25%" >
+								<input class="easyui-validatebox" name="name" type="text" value="${SchemeDetail.name}" required="true" validType="baseValue" style="width:254px;height:28px;" /> 
+								<input type="hidden" name="id"  value="${SchemeDetail.id}" /> 
+								<input type="hidden" name="pid"  value="${SchemeDetail.pid}" /> 
+								<input type="hidden" name="level"  value="${SchemeDetail.level}" /> 
+								<span style="color:red">*</span></td>
+							<td ></td>
 						</tr>
 						<tr>
-							<td width="8%" align="right">上级指标</td>
-							<td>
-								<input type="hidden" id="path" name="path" value=""/>
-								<input type="hidden" id="pName" value="${SchemeDetail.pName}"/>
-								<input type="hidden" id="gradeId" name="gradeId" value="">
-								<input type="hidden" id="defaultPid" value="${SchemeDetail.pid}">
-								<input id="pid" name="pid" doc="pointInfo" type="text"
-								class="easyui-combotree" required="true" style="width:256px;height:32px;" />
-								<span style="color:red">*</span>
-							</td>
-							<td width="8%"></td>
+							<c:if test="${SchemeDetail.level == 0 }">
+								<td align="right">所属模型：</td>
+								<td>  
+									<input type="hidden" value="${SchemeDetail.gradeId}" id="hid_gradeId" /> 
+									<select id="slt_moudleId" name="gradeId" class="easyui-combobox"  style="width:254px;height:28px;" > 
+										<option value="">=选择所属量化模型=</option>
+										<c:forEach var="item" items="${SchemeList }">
+											<option value="${item.id }">${item.name }</option>
+										</c:forEach> 
+									</select>
+									<span style="color:red">*</span> 
+								</td>
+								<td></td>
+							</c:if>
+							<c:if test="${SchemeDetail.level > 0 }">
+								<td align="right">所属模型：</td>
+								<td>  
+									<input type="hidden" value="${SchemeDetail.gradeId}" id="hid_gradeId" /> 
+									<select id="slt_moudleId" class="easyui-combobox" data-options="disabled:true"  style="width:254px;height:28px;" > 
+										<option value="">=选择所属量化模型=</option>
+										<c:forEach var="item" items="${SchemeList }">
+											<option value="${item.id }">${item.name }</option>
+										</c:forEach> 
+									</select> 
+								</td>
+								<td> 
+									<label>一级指标：</label> 
+									<input type="hidden" value="${SchemeDetail.gradeId}"  name="gradeId" /> 
+								 	<label>${SchemeDetail.pName}</label>
+								 	<c:if test="${SchemeDetail.level == 2  }"> 
+										<label style="margin-left:30px;">二级指标：</label>  
+									 	<label>${SchemeDetail.ppName}</label>
+								 	</c:if>
+								 </td>
+							</c:if> 
 						</tr>
 						<tr>
-							<td width="8%" align="right">分值</td>
+							<c:if test="${SchemeDetail.level < 2  }"> 
+								<td align="right">权重：</td>
+							</c:if>
+							<c:if test="${SchemeDetail.level == 2  }"> 
+								<td align="right">标准分值：</td>
+							</c:if>
 							<td><input id="grade" oninput="checkGrade(this)" class="easyui-validatebox"
 								name="grade" type="text" doc="taskInfo" value="${SchemeDetail.grade}"
 								required="true" validType="number"
 								style="width:254px;height:28px;" /> 
 								<span style="color:red">*</span>
 							</td>							
-							<td width="8%"></td>
+							<td ></td>
 						</tr>
 					</table>
 				</div>

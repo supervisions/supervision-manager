@@ -27,7 +27,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <script type="text/javascript">
 	$(document).ready(function(){	 	
 	 	//加载机构树
-	 	$("#orgParentTree").combotree({
+	 	/* $("#orgParentTree").combotree({
 			 	 url: 'system/organ/jsonLoadOrganTreeList.do',  
   				 required: false, //是否必须				 
   				 editable:false, //是否支持用户自定义输入	
@@ -51,17 +51,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
    				 	$("#orgParentTree").combotree("setText","=请选择所属机构=");
 				}
   			}
-		});	
+		});	 */
 	 });
 	
 	//新增/编辑资源
 	function saveScheme(obj){	 	
-		var moudleId=$("#orgId").val();
+		/* var moudleId=$("#orgId").val();
 		//alert(moudleId);
 		if(moudleId=="" || moudleId==null){	
 			$.messager.alert("温馨提示！","请选择所属机构!",'error');
 			return false;
-		}		
+		}	 */	
 		if ($('#gradeSchemeInfoForm').form('validate')) {			
 			$(obj).attr("onclick", "");				 
 			$('#gradeSchemeInfoForm').form('submit',{				 
@@ -87,7 +87,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/casemanage/casemanageList.do'"></i><span>方案列表</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/casemanage/casemanageList.do'"></i><span>模型列表</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
@@ -109,7 +109,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="yw-cm-table font16" id="taskTable">
 						<tr>
-							<td width="10%" align="right">方案名称：</td>
+							<td width="10%" align="right">模型名称：</td>
 							<td><input id="" class="easyui-validatebox"
 								name="name" type="text" doc="taskInfo" value="${GradeScheme.name}"
 								required="true" validType="baseValue"
@@ -118,7 +118,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								style="color:red">*</span></td>
 							<td width="8%"></td>
 						</tr>
-						<tr>
+						<%-- <tr>
 							<td width="10%" align="right">所属机构：</td>
 							<td>
 								
@@ -128,8 +128,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<span style="color:red">*</span>
 							</td>
 							<td width="8%"></td>
-						</tr>
-						<tr>
+						</tr> --%>
+						<%-- <tr>
 							<td width="10%" align="right">是否授权下级：</td>
 							<td>
 								<c:if test="${GradeScheme.inherit == 1 }">
@@ -143,15 +143,16 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										
 								</c:if>
 							</td>
-						</tr>							
+						</tr>		 --%>					
 						<tr>
 							<td width="10%" align="right">状态：</td>
 							<td>
-								<c:if test="${GradeScheme.used == 1}">
+							<input type="hidden" name="inherit" value="1" />
+								<c:if test="${GradeScheme.used == 1 || GradeScheme.used==null}">
 									<label><input type="radio" name="used" value="1" checked="checked" />启用</label>									
 									<label><input type="radio" name="used" value="0" />禁用</label>
 								</c:if> 
-								<c:if test="${GradeScheme.used == 0 or GradeScheme.used==null}">
+								<c:if test="${GradeScheme.used == 0 }">
 									<label><input type="radio" name="used" value="1" />启用</label>
 									<label><input type="radio" name="used" value="0" checked="checked" />禁用</label>									
 								</c:if>

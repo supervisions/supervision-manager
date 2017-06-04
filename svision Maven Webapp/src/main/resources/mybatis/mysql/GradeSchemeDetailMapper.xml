@@ -143,10 +143,15 @@
 	LEFT JOIN t_grade_scheme AS gs ON gsd.grade_id=gs.id
 	LEFT JOIN t_grade_scheme_detail AS gsd1 ON gsd1.id=gsd.pid
 	WHERE gsd.pid=#{pid,jdbcType=INTEGER}  
-	<if test="searchName != null and searchName != ''">
-	 	and (
-			gsd.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
-     	)
+  </select>
+  <select id="getGradeSchemeDetailListByGradeId" parameterType="com.rmbank.supervision.model.GradeSchemeDetail" resultMap="BaseResultMap">
+  	SELECT gsd.*,gs.name AS schemaName,gsd1.name AS pName 
+	FROM t_grade_scheme_detail AS gsd
+	LEFT JOIN t_grade_scheme AS gs ON gsd.grade_id=gs.id
+	LEFT JOIN t_grade_scheme_detail AS gsd1 ON gsd1.id=gsd.pid
+	WHERE gsd.grade_id=#{gradeId,jdbcType=INTEGER}  
+	<if test="level != null ">
+	 	and  gsd.level = #{level,jdbcType=INTEGER}
 	</if>
   </select>
   <select id="getGradeSchemeDetailList" parameterType="com.rmbank.supervision.model.GradeSchemeDetail" resultMap="BaseResultMap">

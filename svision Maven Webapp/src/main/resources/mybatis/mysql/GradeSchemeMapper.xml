@@ -108,7 +108,7 @@
 			gs.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')			
      	)
 	</if>
-  	order by gs.id DESC 
+  	order by gs.id asc 
 	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
         limit #{pageStart}, #{pageSize}
     </if>

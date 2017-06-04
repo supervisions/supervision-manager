@@ -46,6 +46,8 @@ public class ItemProcess {
      */
     private Integer isOver;
     
+    private Integer isOverStatus;
+    
     /**
      * 量化选择模型
      */
@@ -199,5 +201,13 @@ public class ItemProcess {
 
 	public void setTag(Integer tag) {
 		this.tag = tag;
+	}
+
+	public Integer getIsOverStatus() {
+		return isOverStatus;
+	}
+
+	public void setIsOverStatus(Integer isOverStatus) {
+		this.isOverStatus = isOverStatus;
 	}
 }

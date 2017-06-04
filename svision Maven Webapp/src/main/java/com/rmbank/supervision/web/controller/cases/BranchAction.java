@@ -605,6 +605,8 @@ public class BranchAction extends SystemAction {
 					User loginUser = this.getLoginUser();
 					String ip = IpUtil.getIpAddress(request);		
 					logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，新增了分行立项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+					js.setCode(0);
+					js.setMessage("保存项目信息成功!");
 					return js;
 				}else{
 					return js;
@@ -659,13 +661,28 @@ public class BranchAction extends SystemAction {
 						item.setStatus(Constants.ITEM_STATUS_OVER);
 						itemService.updateByPrimaryKeySelective(item);
 					} 
-					js.setMessage("监察过程处理成功，完整分行立项中支完成项目"); 
+					js.setMessage("监察过程处理成功"); 
 				}else{
-					itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_6);
-					js.setMessage("监察过程处理成功，完整分行立项中支完成项目"); 
+					if(itemProcess.getIsOverStatus() == Constants.IS_OVER){
+						if(itemProcess.getTag() != null){
+							itemProcess.setContentTypeId(itemProcess.getTag());
+						}else{
+							itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_5);
+						}
+						Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+						if(item != null){
+							item.setEndTime(new Date());
+							item.setStatus(Constants.ITEM_STATUS_OVER);
+							itemService.updateByPrimaryKeySelective(item);
+						} 
+						js.setMessage("监察过程处理成功"); 
+					}else{
+						itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_6);
+					}
+					js.setMessage("监察过程处理成功"); 
 				} 
 			}else{ 
-				js.setMessage("监察过程处理成功，完整分行立项中支完成项目"); 
+				js.setMessage("监察过程处理成功"); 
 			} 
 
 			itemProcessService.insert(itemProcess);

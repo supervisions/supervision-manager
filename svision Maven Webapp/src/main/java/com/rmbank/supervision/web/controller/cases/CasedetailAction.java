@@ -58,34 +58,27 @@ public class CasedetailAction extends SystemAction {
 	@RequiresPermissions("manage/casedetail/casedetailList.do")
 	public String casedetailList(GradeSchemeDetail gradeSchemeDetail,
 			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
-		// 判断搜索名是否为空，不为空则转为utf-8编码
-		if (gradeSchemeDetail.getSearchName() != null && gradeSchemeDetail.getSearchName() != "") {
-			String searchName = new String(gradeSchemeDetail.getSearchName().getBytes(
-					"iso8859-1"), "utf-8");
-			gradeSchemeDetail.setSearchName(searchName);
-		}
-		// 设置页面初始值及页面大小
-		if (gradeSchemeDetail.getPageNo() == null)
-			gradeSchemeDetail.setPageNo(1);
-		gradeSchemeDetail.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-		int totalCount = 0;
+		 
 		// 分页集合
 		List<GradeSchemeDetail> detailList = new ArrayList<GradeSchemeDetail>();
+		List<GradeScheme> gradeSchemeList = new ArrayList<GradeScheme>();
+		int defalult = 0;
 		try {
-			if(gradeSchemeDetail.getPid()==null){
-				gradeSchemeDetail.setPid(0);
+			//取满足要求的参数数据
+			gradeSchemeList =  gradeSchemeService.getGradeSchemeList(new GradeScheme()); 
+			if(gradeSchemeList.size()>0){
+				defalult = gradeSchemeList.get(0).getId();
 			}
+			gradeSchemeDetail.setGradeId(defalult);
 			//取满足要求的参数数据			
-			detailList = gradeSchemeDetailService.getGradeSchemeDetailListByPid(gradeSchemeDetail);
-			//取满足要求的记录总数
-			totalCount = gradeSchemeDetailService.getGradeSchemeDetailCount(gradeSchemeDetail);
+			detailList = gradeSchemeDetailService.getGradeSchemeDetailListByGradeId(gradeSchemeDetail); 
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		// 通过request对象传值到前台
-		gradeSchemeDetail.setTotalCount(totalCount);
-		request.setAttribute("SchemeDetail", gradeSchemeDetail);
+		// 通过request对象传值到前台 
+		request.setAttribute("SchemeDetail", gradeSchemeDetail); 
 		request.setAttribute("DetailList", detailList);
+		request.setAttribute("SchemeId", defalult);
 		
 		User loginUser = this.getLoginUser();
 		String ip = IpUtil.getIpAddress(request);		
@@ -93,95 +86,7 @@ public class CasedetailAction extends SystemAction {
 		
 		return "web/manage/casedetail/casedetailList";
 	}
-	
-	/**
-	 * 根据Pid,geadeId获取明细列表
-	 * @param parentId
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-    @ResponseBody
-    @RequestMapping(value = "/jsonLoadSchemeDetailListByPid.do", method = RequestMethod.POST)
-    @RequiresPermissions("manage/casedetail/jsonLoadSchemeDetailListByPid.do")
-    public JsonResult<GradeSchemeDetail> jsonLoadOrganListByPid(
-            @RequestParam(value = "pid", required = false) Integer pid,
-            @RequestParam(value = "gradeId", required = false) Integer gradeId,
-            HttpServletRequest request, HttpServletResponse response) {    	
-//        JsonResult<GradeSchemeDetail> js = new JsonResult<GradeSchemeDetail>();
-//        js.setCode(new Integer(1));
-//        js.setMessage("获取数据失败!");
-//        GradeSchemeDetail detail = new GradeSchemeDetail();
-//        detail.setPid(pid);
-//        detail.setGradeId(gradeId);        
-//        if (detail.getPageNo() == null)
-//        	detail.setPageNo(1);
-//        detail.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-//        
-//        try{
-//            List<GradeSchemeDetail> lc = gradeSchemeDetailService.getSchemeDetailListByPidAndGradeId(detail);
-//            int totalCount = gradeSchemeDetailService.getGradeSchemeDetailCount(detail);
-//            List<GradeSchemeDetail> deylist=new ArrayList<GradeSchemeDetail>();
-//            for(GradeSchemeDetail c : lc){
-//                if(c.getpName()==null){
-//                    c.setpName("");
-//                }   
-//                if(c.getLeafed()==0 && c.getPid()!=0){
-//                	GradeSchemeDetail det = new GradeSchemeDetail();
-//                	det.setPid(c.getId());
-//                	det.setGradeId(c.getGradeId());
-//                	deylist = gradeSchemeDetailService.getSchemeDetailListByPidAndGradeId(det);
-//                }
-//            }
-//            lc.addAll(deylist);
-//            detail.setTotalCount(totalCount);
-//            js.setObj(detail);
-//            js.setCode(0);
-//            js.setList(lc);
-//            js.setMessage("获取数据成功!");
-//        }
-//        catch(Exception ex){
-//            ex.printStackTrace();
-//        }
-//        return js;
-    	JsonResult<GradeSchemeDetail> js = new JsonResult<GradeSchemeDetail>();
-        js.setCode(new Integer(1));
-        js.setMessage("获取数据失败!");
-        GradeSchemeDetail detail = new GradeSchemeDetail();            
-        if (detail.getPageNo() == null)
-        	detail.setPageNo(1);
-        detail.setPageSize(Constants.DEFAULT_PAGE_SIZE);        
-        try{
-            List<GradeSchemeDetail> lc = gradeSchemeDetailService.getGradeSchemeDetailList(detail);
-            int totalCount = gradeSchemeDetailService.getGradeSchemeDetailCount(detail);
-            List<GradeSchemeDetail> deylist=new ArrayList<GradeSchemeDetail>();
-            String thisPath=pid+"."; //当前节点的孙子节点的path都是以此开头
-            String substring = null;
-            for(GradeSchemeDetail c : lc){
-            	if(c.getPid() == pid && c.getGradeId()==gradeId){
-                	deylist.add(c); //获取儿子节点                	
-                }if(c.getPath().length()>2){
-            		substring = c.getPath().substring(0, thisPath.length());
-            	}if(thisPath.equals(substring) && c.getGradeId()==gradeId){
-                	deylist.add(c);
-                }
-            }            
-            detail.setTotalCount(totalCount);
-            js.setObj(detail);
-            User loginUser = this.getLoginUser();
-    		String ip = IpUtil.getIpAddress(request);		
-    		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了对下级量化指标列表的查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
-    		
-            js.setCode(0);
-            js.setList(deylist);
-            js.setMessage("获取数据成功!");
-        }
-        catch(Exception ex){
-            ex.printStackTrace();
-        }
-        return js;
-    }
-    
+	 
     /**
      * 删除方案明细
      * @param id
@@ -235,18 +140,49 @@ public class CasedetailAction extends SystemAction {
 		
 		
 		GradeSchemeDetail schemeDetail= new GradeSchemeDetail();
+		List<GradeScheme> gradeSchemeList = new ArrayList<GradeScheme>();
 		//若为编辑回显指标属性
-		if(detail.getId() != null && detail.getId() != 0){
-			String pName=new String(detail.getpName().getBytes("iso8859-1"), "utf-8");
-			schemeDetail=gradeSchemeDetailService.getGradeSchemeDetailById(detail.getId());
-			schemeDetail.setpName(pName);
+		if(detail.getId() != null && detail.getId() != 0){ 
+			schemeDetail=gradeSchemeDetailService.getGradeSchemeDetailById(detail.getId()); 
+			if(schemeDetail.getLevel() >0){
+				GradeSchemeDetail temp = gradeSchemeDetailService.getGradeSchemeDetailById(schemeDetail.getPid()); 
+				if(temp != null){
+					schemeDetail.setGradeId(temp.getGradeId());
+					schemeDetail.setpName(temp.getName());
+					if(temp.getPid()>0){
+						temp = gradeSchemeDetailService.getGradeSchemeDetailById(temp.getPid());
+						if(temp != null){ 
+							schemeDetail.setPpName(temp.getName());
+						}
+					}
+				}
+			}
+		}else{
+			schemeDetail.setId(0);
+			schemeDetail.setLevel(detail.getLevel());
+			schemeDetail.setPid(detail.getPid()); 
+			if(detail.getPid()>0){
+				GradeSchemeDetail temp = gradeSchemeDetailService.getGradeSchemeDetailById(detail.getPid()); 
+				if(temp != null){
+					schemeDetail.setGradeId(temp.getGradeId());
+					schemeDetail.setpName(temp.getName());
+					if(temp.getPid()>0){
+						temp = gradeSchemeDetailService.getGradeSchemeDetailById(temp.getPid());
+						if(temp != null){ 
+							schemeDetail.setPpName(temp.getName());
+						}
+					}
+				}
+			}
 		}
-		
+
+		//取满足要求的参数数据
+		gradeSchemeList =  gradeSchemeService.getGradeSchemeList(new GradeScheme()); 
 		request.setAttribute("SchemeDetail", schemeDetail);
-		
+
+		request.setAttribute("SchemeList", gradeSchemeList);
 		return "web/manage/casedetail/casedetailInfo";
-	}
-	
+	} 
 	/**
 	 * 新增/编辑指标
 	 */
@@ -258,16 +194,10 @@ public class CasedetailAction extends SystemAction {
 
 		// 新建一个json对象 并赋初值
 		JsonResult<GradeSchemeDetail> js = new JsonResult<GradeSchemeDetail>();
-		js.setCode(new Integer(1));
+		js.setCode(new Integer(1)); 
 		js.setMessage("保存失败!");
 		boolean state = false;
-		try {
-			// 如为新增，则给id置0
-			if (detail.getId() == null || detail.getId() == 0) {
-				detail.setId(0);
-				detail.setLevel(1);				
-				detail.setLeafed(1);
-			}
+		try { 
 			GradeSchemeDetail gsd = new GradeSchemeDetail();
 			gsd.setId(detail.getId());
 			gsd.setName(detail.getName());
@@ -321,35 +251,66 @@ public class CasedetailAction extends SystemAction {
 	@ResponseBody
 	@RequestMapping(value = "/jsonLoadGradeSchemeTreeList.do")
 	@RequiresPermissions("manage/casedetail/jsonLoadGradeSchemeTreeList.do")
-	public List<GradeScheme> getGradeSchemeList(
-			@RequestParam(value = "pid", required = false) Integer pid,
-			HttpServletRequest request, HttpServletResponse response) {
-    	
-		GradeScheme gradeScheme = new GradeScheme();	
+	public List<GradeScheme> getGradeSchemeList( 
+			HttpServletRequest request, HttpServletResponse response) { 
 		//第一级父节点的集合
-		List<GradeScheme> list = gradeSchemeService.getGradeSchemeListASC(gradeScheme);
-		
+		List<GradeScheme> list = gradeSchemeService.getGradeSchemeListASC(new GradeScheme());
+		GradeScheme gs = null;
 		if(list.size() > 0){
 			for(GradeScheme a:list){
-				a.setText(a.getName());	
-				
-				GradeSchemeDetail gradeSchemeDetail=new GradeSchemeDetail();
-				gradeSchemeDetail.setPid(0);
-				gradeSchemeDetail.setGradeId(a.getId());
-				List<GradeSchemeDetail> list2=gradeSchemeDetailService.getSchemeDetailListByPidAndGradeId(gradeSchemeDetail);
-				for(GradeSchemeDetail a1:list2){
-					a1.setText(a1.getName());
-					a.setChildren(list2);
-					a1.setState("open");
-				}
-				//a.setChildren(list2);
+				a.setText(a.getName());	 
+				List<GradeScheme> itemList = new ArrayList<GradeScheme>();
+				gs = new  GradeScheme();
+				gs.setId(1);
+				gs.setText("一级指标");
+				gs.setIsLeaf(1);
+				gs.setLevel(0);
+				gs.setGradeId(a.getId());
+				itemList.add(gs);
+				gs = new  GradeScheme();
+				gs.setId(1);
+				gs.setText("二级指标");
+				gs.setLevel(1);
+				gs.setGradeId(a.getId());
+				gs.setIsLeaf(1);
+				itemList.add(gs);
+				gs = new  GradeScheme();
+				gs.setId(1);
+				gs.setText("三级指标");
+				gs.setLevel(2);
+				gs.setIsLeaf(1);
+				itemList.add(gs);
+				gs.setGradeId(a.getId());
+				a.setChildren(itemList);
+				a.setIsLeaf(0);
 				a.setState("open");
 			}
 		}
 		
 		return list;// json.toString();
 	}
-    
+
+	/**
+	 * 加载方案管理的树
+	 * @param pid
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/jsonLoadGradeSchemeDetailList.do")
+	@RequiresPermissions("manage/casedetail/jsonLoadGradeSchemeDetailList.do")
+	public List<GradeSchemeDetail> jsonLoadGradeSchemeDetailList( 
+			GradeSchemeDetail gradeSchemeDetail,
+			HttpServletRequest request, HttpServletResponse response) { 
+		//第一级父节点的集合
+		List<GradeSchemeDetail> list = new ArrayList<GradeSchemeDetail>();
+		if(gradeSchemeDetail.getGradeId() != null && gradeSchemeDetail.getGradeId() > 0 ){  
+			//取满足要求的参数数据			
+			list = gradeSchemeDetailService.getGradeSchemeDetailListByGradeId(gradeSchemeDetail); 
+		}
+		return list;// json.toString();
+	}
 	/**
 	 * 新增指标时加载上级指标的树
 	 * @param pid

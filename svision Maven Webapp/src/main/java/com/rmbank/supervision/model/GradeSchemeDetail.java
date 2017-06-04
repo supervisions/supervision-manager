@@ -25,6 +25,8 @@ public class GradeSchemeDetail extends Page{
     
     private String pName;
     
+    private String ppName;
+    
     
     private Integer childrenCount;
     
@@ -143,5 +145,13 @@ public class GradeSchemeDetail extends Page{
 
 	public void setpName(String pName) {
 		this.pName = pName;
+	}
+
+	public String getPpName() {
+		return ppName;
+	}
+
+	public void setPpName(String ppName) {
+		this.ppName = ppName;
 	}
 }

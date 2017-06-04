@@ -60,6 +60,12 @@ public class GradeSchemeDetailServiceimpl implements GradeSchemeDetailService {
 		// TODO Auto-generated method stub
 		return gradeSchemeDetailMapper.getGradeSchemeDetailListByPid(gradeSchemeDetail);
 	}
+	@Override
+	public List<GradeSchemeDetail> getGradeSchemeDetailListByGradeId(
+			GradeSchemeDetail gradeSchemeDetail) {
+		// TODO Auto-generated method stub
+		return gradeSchemeDetailMapper.getGradeSchemeDetailListByGradeId(gradeSchemeDetail);
+	}
 
 	@Override
 	public int getGradeSchemeDetailCount(GradeSchemeDetail gradeSchemeDetail) {

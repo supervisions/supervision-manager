@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     <base href="<%=basePath%>">
-    <title>方案管理</title>
+    <title>模型管理</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -62,7 +62,7 @@ function pagesearch(){
 	}  
 }
 function deleteGradeScheme(id,name){
-	$.messager.confirm("删除确认","确认删除方案："+name+"?",function(r){  
+	$.messager.confirm("删除确认","确认删除模型："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
 				url : "manage/casemanage/jsondeleteGradeSchemeById.do?id="+id,
@@ -84,9 +84,9 @@ function deleteGradeScheme(id,name){
 function updateGradeScheme(id,used,name){
 	var operation=null;
 	if(used==0){
-		operation="确认启用方案："+name+"  ?";		
+		operation="确认启用模型："+name+"  ?";		
 	}else if(used==1){
-		operation="确认禁用方案："+name+"  ?";	
+		operation="确认禁用模型："+name+"  ?";	
 	}
 	$.messager.confirm("修改确认",operation,function(r){  
 		    if (r){   
@@ -118,7 +118,7 @@ function editManage(id,orgName){
     <div class="con-right" id="conRight">
 		<div class="fl yw-lump">
 			<div class="yw-lump-title">
-				<i class="yw-icon icon-partner"></i><span>方案列表</span>
+				<i class="yw-icon icon-partner"></i><span>模型列表</span>
 				
 			</div>
 		</div>
@@ -129,13 +129,13 @@ function editManage(id,orgName){
 				action="manage/casemanage/casemanageList.do" method="get">
 				<div class="pd10">
 					<div class="fl">
-						<span class="ml26">方案列表</span>						
+						<span class="ml26">模型列表</span>						
 						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox" 
 							placeholder="搜索" value="${GradeScheme.searchName}" />						
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>
 					</div>
 					<div class="fr">
-						<span class="fl yw-btn bg-green cur" onclick="window.location.href='manage/casemanage/casemanageInfo.do?id='+ 0">新建方案</span>
+						<span class="fl yw-btn bg-green cur" onclick="window.location.href='manage/casemanage/casemanageInfo.do?id='+ 0">新建模型</span>
 					</div>
 					<div class="cl"></div>
 				</div>
@@ -148,10 +148,10 @@ function editManage(id,orgName){
 				<table class="yw-cm-table yw-center yw-bg-hover" id="deviceList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>
-						<th width="10%" >状态</th>
-						<th width="10%" >方案名称</th>
-						<th width="10%" >所属机构</th>
-						<th width="10%" >是否授权下级</th> 					
+						<th width="10%" >状态</th> 
+						<th width="10%" >模型名称</th>
+						<!-- <th width="10%" >所属机构</th>
+						<th width="10%" >是否授权下级</th>  -->					
 						<th width="10%" >操作</th> 
 					</tr>
 					<c:forEach var="item" items="${GradeSchemeList}">
@@ -162,23 +162,23 @@ function editManage(id,orgName){
 								</c:if> <c:if test="${item.used == 0}">
 									<span>禁用</span>
 								</c:if>
-							</td>
+							</td> 
 							<td>${item.name }</td>
-							<td>${item.orgName }</td>
-							<td>
+							<%-- <td>${item.orgName }</td> --%>
+							<%-- <td>
 								<c:if test="${item.inherit == 1}">
 									<span>是</span>
 								</c:if> <c:if test="${item.inherit == 0}">
 									<span>否</span>
 								</c:if>
-							</td>
+							</td> --%>
 							<td>
 								<c:if test="${item.used == 1}">
 									<a style="color:blue" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">禁用</a>
 								</c:if> 
 								<c:if test="${item.used == 0}">
 									<a style="color:blue" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">启用</a>
-								</c:if>
+								</c:if> 
 								<a style="color:blue" onclick="deleteGradeScheme(${item.id},'${item.name}');">删除</a>							
 								<a style="color:blue" onclick="editManage(${item.id},'${item.orgName }');">编辑</a>
 								

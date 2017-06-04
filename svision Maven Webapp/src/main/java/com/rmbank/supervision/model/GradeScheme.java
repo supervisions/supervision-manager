@@ -21,9 +21,15 @@ public class GradeScheme extends Page {
     
     private String state;
     
-    private String text;
+    private String text; 
     
-    private List<GradeSchemeDetail> children;
+    private Integer isLeaf;
+    
+    private Integer level;
+    
+    private Integer gradeId;
+    
+    private List<GradeScheme> children;
     
     public Integer getId() {
         return id;
@@ -72,11 +78,11 @@ public class GradeScheme extends Page {
 	public void setOrgName(String orgName) {
 		this.orgName = orgName;
 	}
-    public List<GradeSchemeDetail> getChildren() {
+    public List<GradeScheme> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<GradeSchemeDetail> children) {
+	public void setChildren(List<GradeScheme> children) {
 		this.children = children;
 	}
 
@@ -102,5 +108,29 @@ public class GradeScheme extends Page {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public Integer getIsLeaf() {
+		return isLeaf;
+	}
+
+	public void setIsLeaf(Integer isLeaf) {
+		this.isLeaf = isLeaf;
+	}
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	public Integer getGradeId() {
+		return gradeId;
+	}
+
+	public void setGradeId(Integer gradeId) {
+		this.gradeId = gradeId;
 	}
 }

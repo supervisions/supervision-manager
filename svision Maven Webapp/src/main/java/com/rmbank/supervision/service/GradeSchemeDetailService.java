@@ -20,6 +20,9 @@ public interface GradeSchemeDetailService {
 
 		List<GradeSchemeDetail> getGradeSchemeDetailListByPid(
 				GradeSchemeDetail gradeSchemeDetail);
+		
+		List<GradeSchemeDetail> getGradeSchemeDetailListByGradeId(
+				GradeSchemeDetail gradeSchemeDetail);
 
 		int getGradeSchemeDetailCount(GradeSchemeDetail gradeSchemeDetail);
 		
