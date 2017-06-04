@@ -247,7 +247,7 @@ public class CasemanageAction extends SystemAction {
 			if(state==1){
 				User loginUser = this.getLoginUser();
 				String ip = IpUtil.getIpAddress(request);		
-				logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，修改了方案："+gradeScheme.getName()+"的状态", 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
+				logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，修改了方案："+gradeScheme.getName()+"的状态", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 				
 				js.setCode(new Integer(0));
 				js.setMessage("修改方案状态成功!");

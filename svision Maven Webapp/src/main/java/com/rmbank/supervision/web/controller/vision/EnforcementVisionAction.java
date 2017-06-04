@@ -137,7 +137,6 @@ public class EnforcementVisionAction extends SystemAction {
 		request.setAttribute("userOrg", userOrg);
 		request.setAttribute("itemList", itemList);
 		
-		
 		String ip = IpUtil.getIpAddress(request);		
 		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了执法监察项目列表的查看", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/vision/enforce/enforceList";
@@ -416,7 +415,7 @@ public class EnforcementVisionAction extends SystemAction {
 			}
 			User loginUser = this.getLoginUser();
 			String ip = IpUtil.getIpAddress(request);		
-			logService.writeLog(Constants.LOG_TYPE_ZFJC, "用户："+loginUser.getName()+"，对执法监察的项目，进行了立项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+			logService.writeLog(Constants.LOG_TYPE_ZFJC, "用户："+loginUser.getName()+"，对执法监察的项目进行了立项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 			
 			js.setCode(new Integer(0));
 			js.setMessage("保存项目信息成功!");
@@ -867,7 +866,7 @@ public class EnforcementVisionAction extends SystemAction {
 		
 		User loginUser = this.getLoginUser();
 		String ip = IpUtil.getIpAddress(request);		
-		logService.writeLog(Constants.LOG_TYPE_ZFJC, "用户："+loginUser.getName()+"，执行了对执法监察项目的查看", 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
+		logService.writeLog(Constants.LOG_TYPE_ZFJC, "用户："+loginUser.getName()+"，执行了对执法监察项目的查看", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		
 		return "web/vision/enforce/showItem";
 	}

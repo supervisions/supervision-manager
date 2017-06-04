@@ -278,7 +278,7 @@ public class CasedetailAction extends SystemAction {
 				if (state) {
 					User loginUser = this.getLoginUser();
 		    		String ip = IpUtil.getIpAddress(request);		
-		    		logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，新增了量化指标："+detail.getName(), 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+		    		logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，执行了对量化指标信息的修改", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		    		
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
@@ -292,6 +292,10 @@ public class CasedetailAction extends SystemAction {
 			if (lc.size() == 0) {
 				state = gradeSchemeDetailService.saveOrUpdateDetail(detail);
 				if (state) {
+					User loginUser = this.getLoginUser();
+		    		String ip = IpUtil.getIpAddress(request);		
+		    		logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，新增了量化指标："+detail.getName(), 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+		    		
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
 					return js;
