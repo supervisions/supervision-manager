@@ -21,6 +21,8 @@
      <mapping path="**/system/function/json**" exclue="true" />
      <mapping path="**/system/function/json**" exclue="true" />
      <mapping path="**/system/upload/json**" exclue="true" />
+     <mapping path="**/system/permission/json**" exclue="true" />
+     
      <mapping path="**/manage/casemanage/json**" exclue="true" />
      <mapping path="**/manage/casedetail/json**" exclue="true" />
      <mapping path="**/manage/branch/json**" exclue="true" />
@@ -28,6 +30,6 @@
      <mapping path="**/vision/efficiency/json**" exclue="true" />
      <mapping path="**/vision/incorrupt/json**" exclue="true" />
      <mapping path="**/vision/enforce/json**" exclue="true" />
-     
+           
 </sitemesh>
     

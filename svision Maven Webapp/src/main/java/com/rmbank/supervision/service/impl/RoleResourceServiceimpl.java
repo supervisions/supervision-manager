@@ -6,8 +6,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.rmbank.supervision.dao.RoleResourceMapper;
-import com.rmbank.supervision.model.RoleResource;
+import com.rmbank.supervision.dao.RolePermissionMapper;
+import com.rmbank.supervision.model.RolePermission;
 import com.rmbank.supervision.model.UserOrgan;
 import com.rmbank.supervision.service.RoleResourceService;
 
@@ -15,7 +15,7 @@ import com.rmbank.supervision.service.RoleResourceService;
 public class RoleResourceServiceimpl implements RoleResourceService {
 
 	@Resource
-	private RoleResourceMapper roleResourceMapper;
+	private RolePermissionMapper rolePermissionMapper;
 	
 	
 	@Override
@@ -25,50 +25,50 @@ public class RoleResourceServiceimpl implements RoleResourceService {
 	}
 
 	@Override
-	public int insert(RoleResource record) {
+	public int insert(RolePermission record) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int insertSelective(RoleResource record) {
+	public int insertSelective(RolePermission record) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public RoleResource selectByPrimaryKey(Integer id) {
+	public RolePermission selectByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int updateByPrimaryKeySelective(RoleResource record) {
+	public int updateByPrimaryKeySelective(RolePermission record) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int updateByPrimaryKey(RoleResource record) {
+	public int updateByPrimaryKey(RolePermission record) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	
 	@Override
-	public boolean saveRoleResource(Integer roleId, Integer[] resourceIds) {
+	public boolean saveRoleResource(Integer roleId, Integer[] permissionIds) {
 		// TODO Auto-generated method stub
 		boolean isSuccess = false;
 		try {
-			roleResourceMapper.deleteByRoleId(roleId);
-			if(resourceIds!=null){
-				for (Integer resId : resourceIds) {
-					RoleResource roleResource=new RoleResource();
-					roleResource.setId(0);
-					roleResource.setRoleId(roleId);
-					roleResource.setResourceId(resId);
-					roleResource.setControl(1);
-					roleResourceMapper.insert(roleResource);
+			rolePermissionMapper.deleteByRoleId(roleId);
+			if(permissionIds!=null){
+				for (Integer resId : permissionIds) {
+					RolePermission rolePermission=new RolePermission();
+					rolePermission.setId(0);
+					rolePermission.setRoleId(roleId);
+					rolePermission.setPermissionId(resId);
+					rolePermission.setControl(1);
+					rolePermissionMapper.insert(rolePermission);
 				}
 			}
 			isSuccess = true;
@@ -79,9 +79,9 @@ public class RoleResourceServiceimpl implements RoleResourceService {
 	}
 
 	@Override
-	public List<RoleResource> selectByRoleId(Integer id) {
+	public List<RolePermission> selectByRoleId(Integer id) {
 		// TODO Auto-generated method stub
-		return roleResourceMapper.selectByRoleId(id);
+		return rolePermissionMapper.selectByRoleId(id);
 	}
 
 	

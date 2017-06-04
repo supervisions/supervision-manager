@@ -74,7 +74,11 @@ function pagesearch(){
 						<span>条件查询：</span>
 						<input type="text" id="seaarchNameTemp" validType="SpecialWord" class="easyui-validatebox" placeholder="搜索关键字：内容，名称" value="${SystemLog.searchName}" /> 
 						<input type="hidden" name="searchName" id="hid_serarch" /> 
-						
+						<span>起止时间:</span>
+						<input style="width:129px;height:32px;" name="schBeginTime" value="${Item.schBeginTime }" class="easyui-datebox" data-options="sharedCalendar:'#sj'">
+						<span>至</span>
+						<input style="width:129px;height:32px;" name="schEndTime" value="${Item.schEndTime }" class="easyui-datebox" data-options="sharedCalendar:'#sj'">								
+						<div id="sj" class="easyui-calendar"></div>
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
 					</div> 
 						<div class="cl"></div>				
@@ -95,7 +99,7 @@ function pagesearch(){
 					</tr>
 					<c:forEach var="item" items="${LogList}">
 						<tr>
-						<td>${item.description}</td>
+						<td title="${item.description}">${item.description}</td>
 						<td>
 							<c:if test="${item.operation ==1}">
 								新增
