@@ -3798,8 +3798,11 @@
 #sltModel{ 
 	width:100%;height:60%;
 }
+#sltModel td{ 
+	text-align: center;
+}
 #sltModel img{ 
-	cursor:pointer;
+	cursor:pointer;    border-radius: 5%;
 }
 #sltModel img:hover{
 	cursor:pointer;
