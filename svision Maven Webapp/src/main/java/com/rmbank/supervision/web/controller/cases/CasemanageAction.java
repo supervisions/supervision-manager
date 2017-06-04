@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.FunctionMenu;
 import com.rmbank.supervision.model.GradeScheme;
 import com.rmbank.supervision.model.Role;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.GradeSchemeService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
 
@@ -41,6 +43,8 @@ public class CasemanageAction extends SystemAction {
 
 	@Resource
 	private GradeSchemeService gradeSchemeService;
+	@Resource
+	private SysLogService logService;
 	
 	
 	/**
@@ -81,6 +85,9 @@ public class CasemanageAction extends SystemAction {
 		request.setAttribute("GradeScheme", gradeScheme);    	
     	request.setAttribute("GradeSchemeList", gradeSchemeList);
 		
+    	User loginUser = this.getLoginUser();
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了方案列表的查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		
 		return "web/manage/casemanage/casemanageList";
 	}
@@ -148,6 +155,10 @@ public class CasemanageAction extends SystemAction {
 				sch.setId(scheme.getId());
 				state= gradeSchemeService.saveOrUpdateScheme(scheme);
 				if (state) {
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，执行了对方案的修改操作", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
+					
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
 					return js;
@@ -160,6 +171,10 @@ public class CasemanageAction extends SystemAction {
 			if (lc.size() == 0) {
 				state = gradeSchemeService.saveOrUpdateScheme(scheme);
 				if (state) {
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，新增了方案："+scheme.getName(), 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+					
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
 					return js;
@@ -189,8 +204,13 @@ public class CasemanageAction extends SystemAction {
 		js.setCode(new Integer(1));
 		js.setMessage("删除失败!");
 		try {					
+			GradeScheme scheme = gradeSchemeService.selectByPrimaryKey(id);
 			int state= gradeSchemeService.deleteByPrimaryKey(id);
 			if(state==1){
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，删除了方案："+scheme.getName(), 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
+				
 				js.setCode(new Integer(0));
 				js.setMessage("删除成功!");
 				return js;
@@ -221,9 +241,14 @@ public class CasemanageAction extends SystemAction {
 		}else if(gradeScheme.getUsed()==0){
 			gradeScheme.setUsed(1);
 		}
-		try {					
+		try {
+			
 			int state= gradeSchemeService.updateByPrimaryKeySelective(gradeScheme);
 			if(state==1){
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，修改了方案："+gradeScheme.getName()+"的状态", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
+				
 				js.setCode(new Integer(0));
 				js.setMessage("修改方案状态成功!");
 				return js;

@@ -52,6 +52,9 @@ public class SysLogAction {
 		if (systemLog.getPageNo() == null)
 			systemLog.setPageNo(1);
 		systemLog.setPageSize(Constants.DEFAULT_PAGE_SIZE); 
+//		if(systemLog.getMoudleId()==null){
+//			
+//		}
 		if(StringUtil.isEmpty(systemLog.getSchBeginTime())){
 			systemLog.setSchBeginTime(null);
 		}		
@@ -154,7 +157,7 @@ public class SysLogAction {
 		if (systemLog.getPageNo() == null)
 			systemLog.setPageNo(1);
 		systemLog.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-		systemLog.setMoudleId(Constants.LOG_TYPE_LXGL);
+		systemLog.setMoudleId(Constants.LOG_TYPE_BASE_DATA);
 		if(StringUtil.isEmpty(systemLog.getSchBeginTime())){
 			systemLog.setSchBeginTime(null);
 		}		
@@ -206,7 +209,7 @@ public class SysLogAction {
 		if (systemLog.getPageNo() == null)
 			systemLog.setPageNo(1);
 		systemLog.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-		systemLog.setMoudleId(Constants.LOG_TYPE_LXGL);
+		systemLog.setMoudleId(Constants.LOG_TYPE_SYS);
 		if(StringUtil.isEmpty(systemLog.getSchBeginTime())){
 			systemLog.setSchBeginTime(null);
 		}		

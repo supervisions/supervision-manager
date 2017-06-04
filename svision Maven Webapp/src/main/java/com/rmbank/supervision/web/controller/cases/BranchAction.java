@@ -146,11 +146,12 @@ public class BranchAction extends SystemAction {
 				it.setLasgTag(lastItem.getContentTypeId());
 			}
 		}
-		
-		
+
 		request.setAttribute("logUserOrg", logUserOrg);
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item); 
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了分行立项分行完成列表查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/manage/branch/branchFHList";
 	}
 
@@ -222,6 +223,8 @@ public class BranchAction extends SystemAction {
 		request.setAttribute("logUserOrg", logUserOrg);
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item); 
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了分行立项中支完成列表查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/manage/branch/branchZZList";
 	}
 	/**
@@ -451,6 +454,10 @@ public class BranchAction extends SystemAction {
 		request.setAttribute("User", lgUser);  
 		request.setAttribute("Item", item); 
 		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		
+		User loginUser = this.getLoginUser();
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了分行立项分行完成项目的查看", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/manage/branch/branchFHViewForm";
 	}
 	/**
@@ -496,6 +503,9 @@ public class BranchAction extends SystemAction {
 		request.setAttribute("FItemProcess", fitemProcess);
 		request.setAttribute("SItemProcess", sitemProcess);
 		request.setAttribute("Item", item);   
+		User loginUser = this.getLoginUser();
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了分行立项中支完成项目的查看", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/manage/branch/branchZZViewForm";
 	}
 	
@@ -592,13 +602,9 @@ public class BranchAction extends SystemAction {
 			if (lc.size() == 0) {  
 				State = itemService.saveOrUpdateItem(item,OrgIds,content);				
 				if(State){
-					js.setCode(new Integer(0));
-					js.setMessage("保存项目信息成功!");
-					String ip = IpUtil.getIpAddress(request);
-					if("0:0:0:0:0:0:0:1".equals(ip)){
-						ip="localhost";
-					}
-					logService.writeLog(6, "新增项目", 1, u.getId(), userOrgIDs.get(0), ip);
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，新增了分行立项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					return js;
 				}else{
 					return js;
@@ -696,14 +702,20 @@ public class BranchAction extends SystemAction {
 		js.setMessage("删除失败!");
 		boolean state =false;
 		try {				
-			state= itemService.deleteItemById(id);
-			if(state){
-				js.setCode(new Integer(0));
-				js.setMessage("删除成功!");
-				return js;
-			}else{
-				return js;
-			}			
+			Item item = itemService.selectByPrimaryKey(id);
+			if(item!=null){
+				state= itemService.deleteItemById(id);
+				if(state){
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，删除了“"+item.getName()+"”项目", 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
+					js.setCode(new Integer(0));
+					js.setMessage("删除成功!");
+					return js;
+				}else{
+					return js;
+				}		
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		

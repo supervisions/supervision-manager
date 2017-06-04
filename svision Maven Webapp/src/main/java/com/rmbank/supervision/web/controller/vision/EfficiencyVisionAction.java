@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.Item;
 import com.rmbank.supervision.model.ItemProcess;
 import com.rmbank.supervision.model.ItemProcessFile;
@@ -34,6 +35,7 @@ import com.rmbank.supervision.service.ItemProcessFileService;
 import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
@@ -58,6 +60,8 @@ public class EfficiencyVisionAction extends SystemAction {
 	private ItemProcessService itemProcessService;
 	@Resource
 	private ItemProcessFileService itemProcessFileService;
+	@Resource
+	private SysLogService logService;
 	
 	/**
      * 效能监察列表展示
@@ -127,6 +131,10 @@ public class EfficiencyVisionAction extends SystemAction {
 		request.setAttribute("Item", item);
 		request.setAttribute("userOrg", userOrg);
 		request.setAttribute("itemList", itemList);
+
+    	
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了效能监察列表查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
     	return "web/vision/efficiency/efficiencyList";
     }
     
@@ -221,6 +229,10 @@ public class EfficiencyVisionAction extends SystemAction {
 		if (lc.size() == 0) {  
 			State = itemService.saveOrUpdateItem(item,OrgIds,content);				
 			if(State){
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，添加了效能监察的工作事项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+				
 				js.setCode(new Integer(0));
 				js.setMessage("保存项目信息成功!");
 				return js;
@@ -259,6 +271,9 @@ public class EfficiencyVisionAction extends SystemAction {
 
 			boolean state = itemProcessService.insertItemProcessByItemId(itemId);
 			if(state==true){
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，签收了效能监察的工作事项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 				js.setCode(new Integer(0));
 				js.setMessage("签收项目成功!");
 				return js;
@@ -292,6 +307,9 @@ public class EfficiencyVisionAction extends SystemAction {
 			item.setStatus(1);
 			int state = itemService.updateByPrimaryKeySelective(item);
 			if(state==1){
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，对效能监察的工作事项进行立项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 				js.setCode(new Integer(0));
 				js.setMessage("修改立项状态成功!");
 				return js;
@@ -323,9 +341,13 @@ public class EfficiencyVisionAction extends SystemAction {
 		js.setCode(new Integer(1));
 		js.setMessage("删除失败!");
 		boolean state =false;
-		try {				
+		try {
+			
 			state= itemService.deleteItemById(id);
 			if(state){
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，删除了效能监察的工作事项", 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
 				js.setCode(new Integer(0));
 				js.setMessage("删除成功!");
 				return js;
@@ -401,7 +423,11 @@ public class EfficiencyVisionAction extends SystemAction {
 			itemProcessService.insert(itemProcess);			
 			
 			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-			item.setLasgTag(Constants.EFFICIENCY_VISION_2);
+			item.setLasgTag(Constants.EFFICIENCY_VISION_2);	
+			
+			User loginUser = this.getLoginUser();
+			String ip = IpUtil.getIpAddress(request);		
+			logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，上传了效能监察的资料", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 			
 			js.setCode(0);
 			js.setMessage("上传资料成功!"); 
@@ -484,6 +510,9 @@ public class EfficiencyVisionAction extends SystemAction {
 				Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
 				item.setLasgTag(Constants.EFFICIENCY_VISION_4);
 			}
+			User loginUser = this.getLoginUser();
+			String ip = IpUtil.getIpAddress(request);		
+			logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，执行了效能监察流程操作", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 			itemProcessService.insert(itemProcess);	
 			
 			js.setCode(0);
@@ -536,6 +565,9 @@ public class EfficiencyVisionAction extends SystemAction {
 	    	itemProcess.setPreparerTime(new Date());
 			itemProcess.setDefined(false); 
 			
+			User loginUser = this.getLoginUser();
+			String ip = IpUtil.getIpAddress(request);		
+			logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，执行了效能监察流程操作", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 			itemProcessService.insert(itemProcess);			
 			
 			js.setCode(0);
@@ -599,7 +631,10 @@ public class EfficiencyVisionAction extends SystemAction {
 		request.setAttribute("User", lgUser);  
 		request.setAttribute("Item", item); 
 		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
-    	return "web/vision/efficiency/showItem";
+		User loginUser = this.getLoginUser();
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，查看了效能监察的项目", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
+		return "web/vision/efficiency/showItem";
     }
     
     /**
@@ -722,7 +757,10 @@ public class EfficiencyVisionAction extends SystemAction {
 				itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_7);//进入监察室录入问责资料
 				js.setCode(0);
 				js.setMessage("项目进入问责流程!"); 
-			}			
+			}	
+			User loginUser = this.getLoginUser();
+			String ip = IpUtil.getIpAddress(request);		
+			logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，对效能监察项目进行问责操作", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 			itemProcessService.insert(itemProcess);			
 			
 		}catch(Exception ex){
@@ -763,6 +801,9 @@ public class EfficiencyVisionAction extends SystemAction {
 			itemProcess.setDefined(false); 
 			itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_9);//监察室录入问责相关资料，项目进入被监察再次上传整改情况
 		
+			User loginUser = this.getLoginUser();
+			String ip = IpUtil.getIpAddress(request);		
+			logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，录入效能监察项目的问责资料", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 			itemProcessService.insert(itemProcess);	
 			
 			js.setCode(0);
@@ -820,6 +861,9 @@ public class EfficiencyVisionAction extends SystemAction {
 //				Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
 //				item.setLasgTag(Constants.EFFICIENCY_VISION_4);
 //			}
+			User loginUser = this.getLoginUser();
+			String ip = IpUtil.getIpAddress(request);		
+			logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，对效能监察项目进行整改操作", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 			itemProcessService.insert(itemProcess);	
 			
 			js.setCode(0);

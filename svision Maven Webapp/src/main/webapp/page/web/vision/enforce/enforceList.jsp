@@ -175,8 +175,8 @@ function uploadFile(id,tag){
 						<td><a style="color:blue;" onclick="showItem(${item.id })">查看</a></td>						
 						<td>${item.itemName}</td>
 						<td>${item.orgName}</td>
-						<td><span>${item.lasgTag}</span>	
-							<%-- <span>${item.lasgTag}</span> --%>						
+						<td>
+							<%-- <span>${item.lasgTag}</span> --%>												
 						    <%-- <c:if test="${item.status == 0 &&  userOrg.orgtype==44}">
 								<span style="color: red;" onclick="window.location.href='incorruptInfo.do?id=${item.id }';">立项</span>
 							</c:if> --%>

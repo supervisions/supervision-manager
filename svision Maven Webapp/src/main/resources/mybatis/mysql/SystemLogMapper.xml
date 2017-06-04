@@ -161,6 +161,10 @@
   	<if test="moudleId != null and moudleId >0">
   		and l.moudle_id =  #{moudleId,jdbcType=INTEGER}
   	</if>
+  	
+  	<if test="moudleId == null">
+  		and l.moudle_id in (1,2,3)
+  	</if>
   	<if test="orgId != null and orgId >0">
   		and l.org_id =  #{orgId,jdbcType=INTEGER}
   	</if>

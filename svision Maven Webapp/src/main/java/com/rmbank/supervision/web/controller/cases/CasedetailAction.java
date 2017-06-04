@@ -18,13 +18,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.FunctionMenu;
 import com.rmbank.supervision.model.GradeScheme;
 import com.rmbank.supervision.model.GradeSchemeDetail;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.ResourceConfig;
+import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.GradeSchemeDetailService;
 import com.rmbank.supervision.service.GradeSchemeService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
 
@@ -37,12 +40,12 @@ import com.rmbank.supervision.web.controller.SystemAction;
 @Controller
 @RequestMapping("/manage/casedetail")
 public class CasedetailAction extends SystemAction {
-
 	@Resource
 	private GradeSchemeDetailService  gradeSchemeDetailService;
 	@Resource
 	private GradeSchemeService gradeSchemeService;
-	
+	@Resource
+	private SysLogService logService;
 	
 	/**
 	 * 方案明细列表
@@ -81,9 +84,13 @@ public class CasedetailAction extends SystemAction {
 		}
 		// 通过request对象传值到前台
 		gradeSchemeDetail.setTotalCount(totalCount);
-
 		request.setAttribute("SchemeDetail", gradeSchemeDetail);
 		request.setAttribute("DetailList", detailList);
+		
+		User loginUser = this.getLoginUser();
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了量化指标列表的查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
+		
 		return "web/manage/casedetail/casedetailList";
 	}
 	
@@ -161,6 +168,10 @@ public class CasedetailAction extends SystemAction {
             }            
             detail.setTotalCount(totalCount);
             js.setObj(detail);
+            User loginUser = this.getLoginUser();
+    		String ip = IpUtil.getIpAddress(request);		
+    		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了对下级量化指标列表的查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
+    		
             js.setCode(0);
             js.setList(deylist);
             js.setMessage("获取数据成功!");
@@ -189,9 +200,15 @@ public class CasedetailAction extends SystemAction {
 		JsonResult<GradeSchemeDetail> js = new JsonResult<GradeSchemeDetail>();
 		js.setCode(new Integer(1));
 		js.setMessage("删除失败!");
-		try {					
+		try {	
+			GradeSchemeDetail detail = gradeSchemeDetailService.selectByPrimaryKey(id);
 			int state= gradeSchemeDetailService.deleteByPrimaryKey(id);
+			
 			if(state==1){
+				User loginUser = this.getLoginUser();
+	    		String ip = IpUtil.getIpAddress(request);		
+	    		logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，删除了量化指标："+detail.getName(), 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
+	    		
 				js.setCode(new Integer(0));
 				js.setMessage("删除成功!");
 				return js;
@@ -259,6 +276,10 @@ public class CasedetailAction extends SystemAction {
 				gsd.setId(detail.getId());
 				state = gradeSchemeDetailService.saveOrUpdateDetail(detail);
 				if (state) {
+					User loginUser = this.getLoginUser();
+		    		String ip = IpUtil.getIpAddress(request);		
+		    		logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，执行了对量化指标信息的修改", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
+		    		
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
 					return js;
@@ -271,6 +292,10 @@ public class CasedetailAction extends SystemAction {
 			if (lc.size() == 0) {
 				state = gradeSchemeDetailService.saveOrUpdateDetail(detail);
 				if (state) {
+					User loginUser = this.getLoginUser();
+		    		String ip = IpUtil.getIpAddress(request);		
+		    		logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，新增了量化指标："+detail.getName(), 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+		    		
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
 					return js;

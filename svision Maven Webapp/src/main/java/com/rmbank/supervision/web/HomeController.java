@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.ReturnResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.FunctionMenu;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.ResourceConfig;
@@ -19,6 +20,7 @@ import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.ResourceService;
 import com.rmbank.supervision.service.RoleResourceService;
 import com.rmbank.supervision.service.RoleService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
@@ -58,6 +60,10 @@ public class HomeController extends SystemAction {
     @Resource(name="roleResourceService")
     private RoleResourceService roleResourceService;
     
+
+	@Resource
+	private SysLogService logService;
+	
     /***
      * 首页 返回至/page/login.jsp页面
      * @return
@@ -318,6 +324,7 @@ public class HomeController extends SystemAction {
                 //获取当前登录用户的机构
                 List<Organ> userOrgByUserId = userService.getUserOrgByUserId(u.getId());
                 Organ organ = userOrgByUserId.get(0);
+                u.setUserOrgID(organ.getId());
                 if(organ.getSupervision()==1){
                 	u.setIsSupervision(true);
                 }else{
@@ -329,6 +336,10 @@ public class HomeController extends SystemAction {
                 	u.setIsBranch(false);
 				}
                 setLoginUser(u);  /////
+              
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+u.getName()+"登录了系统", 4, u.getId(), u.getUserOrgID(), ip);
+				
                 json.setCode(Constants.RESULT_SUCCESS);
                 json.setMessage("登录成功!");
             } else {

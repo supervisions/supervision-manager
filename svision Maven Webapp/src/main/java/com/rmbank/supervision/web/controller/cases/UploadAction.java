@@ -28,9 +28,11 @@ import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.common.utils.StringUtil;
 import com.rmbank.supervision.service.ItemProcessFileService;
 import com.rmbank.supervision.service.ItemProcessService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 /**
@@ -49,7 +51,8 @@ public class UploadAction extends SystemAction {
 	private UserService userService;
 	@Resource
 	private ItemProcessFileService itemProcessFileService;
-	
+	@Resource
+	private SysLogService logService;
 	
 	@ResponseBody
     @RequestMapping(value = "/jsonUploadFile.do", method = RequestMethod.POST,produces={ "text/html;charset=UTF-8"} )
@@ -101,7 +104,10 @@ public class UploadAction extends SystemAction {
         	ipf.setPreparerTime(new Date());
         	ipf.setPreparerOrgId(orgIds.get(0));        	
         	boolean state = itemProcessFileService.insertSelective(ipf,ipid);
-        	if(state){
+        	if(state){		
+        		
+    			String ip = IpUtil.getIpAddress(request);		
+    			logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，上传了文件"+fileName, 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
         		js.setCode(Constants.RESULT_SUCCESS);
                 js.setMessage("上传文件成功!");
         	}
@@ -184,6 +190,9 @@ public class UploadAction extends SystemAction {
                 byte[] b = new byte[100];
                 int len;
                 while ((len = inStream.read(b)) > 0) {
+                	User loginUser = this.getLoginUser();
+        			String ip = IpUtil.getIpAddress(request);		
+        			logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，下载了文件:"+fileName, 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
                     response.getOutputStream().write(b, 0, len);
                 }
                 inStream.close();

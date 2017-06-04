@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -16,16 +18,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.FunctionResourceVM;
 import com.rmbank.supervision.model.ResourceConfig;
 import com.rmbank.supervision.model.Role;
 import com.rmbank.supervision.model.RoleResource;
+import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.FunctionService;
 import com.rmbank.supervision.service.ResourceService;
 import com.rmbank.supervision.service.RoleResourceService;
 import com.rmbank.supervision.service.RoleService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
 
@@ -45,6 +51,8 @@ public class RoleAction extends SystemAction {
 	private FunctionService functionService;
 	@Resource
 	private ResourceService resourceService;
+	@Resource
+	private SysLogService logService;
 	
 	/**
 	 * 角色列表
@@ -82,9 +90,11 @@ public class RoleAction extends SystemAction {
 		// 通过request对象传值到前台
 		role.setTotalCount(totalCount);
 		request.setAttribute("Role", role);
-
 		request.setAttribute("roleList", roleList);
 
+		User loginUser = this.getLoginUser();
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了角色列表查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/base/role/roleList";
 	}
 
@@ -176,6 +186,9 @@ public class RoleAction extends SystemAction {
 			if (roleId != 0 && roleId !=null) {
 				state = roleResourceService.saveRoleResource(roleId,resourceIds);
 				if (state) {
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，执行了角色授权操作", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
 					return js;
@@ -239,6 +252,9 @@ public class RoleAction extends SystemAction {
 				r.setId(role.getId());
 				saveOrUpdateRole = roleService.saveOrUpdateRole(role);
 				if (saveOrUpdateRole) {
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，执行了修改角色信息操作", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
 					return js;
@@ -251,6 +267,9 @@ public class RoleAction extends SystemAction {
 			if (lc.size() == 0) {
 				saveOrUpdateRole = roleService.saveOrUpdateRole(role);
 				if (saveOrUpdateRole) {
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，新增了"+role.getName()+"角色", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
 					return js;
@@ -285,9 +304,13 @@ public class RoleAction extends SystemAction {
 		js.setCode(new Integer(1));
 		js.setMessage("删除失败!");
 		boolean deleteRoleById =false;
-		try {				
-			deleteRoleById= roleService.deleteRoleById(id);
+		try {
+			Role role = roleService.getRoleById(id);
+			deleteRoleById= roleService.deleteRoleById(id);			
 			if(deleteRoleById){
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，删除了"+role.getName()+"角色", 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
 				js.setCode(new Integer(0));
 				js.setMessage("删除成功!");
 				return js;
