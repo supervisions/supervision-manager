@@ -866,7 +866,7 @@ public class EnforcementVisionAction extends SystemAction {
 		
 		User loginUser = this.getLoginUser();
 		String ip = IpUtil.getIpAddress(request);		
-		logService.writeLog(Constants.LOG_TYPE_ZFJC, "用户："+loginUser.getName()+"，执行了对执法监察项目的查看", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了对执法监察项目的查看", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		
 		return "web/vision/enforce/showItem";
 	}
