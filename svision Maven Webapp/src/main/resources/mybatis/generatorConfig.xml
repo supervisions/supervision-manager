@@ -40,7 +40,12 @@
             <property name="enableSubPackages" value="true"/>  
         </javaClientGenerator>  
 
-        <table tableName="t_log" domainObjectName="SystemLog"
+        <table tableName="t_permission" domainObjectName="Permission"
+               enableSelectByExample="false"
+               enableDeleteByExample="false"
+               enableCountByExample="false"
+               enableUpdateByExample="false"/>
+         <table tableName="t_permission_resource" domainObjectName="PermissionResource"
                enableSelectByExample="false"
                enableDeleteByExample="false"
                enableCountByExample="false"

@@ -13,7 +13,7 @@ import com.rmbank.supervision.model.FunctionMenu;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.ResourceConfig;
 import com.rmbank.supervision.model.Role;
-import com.rmbank.supervision.model.RoleResource;
+import com.rmbank.supervision.model.RolePermission;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.FunctionService;
 import com.rmbank.supervision.service.OrganService;
@@ -338,7 +338,7 @@ public class HomeController extends SystemAction {
                 setLoginUser(u);  /////
               
 				String ip = IpUtil.getIpAddress(request);		
-				logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+u.getName()+"登录了系统", 4, u.getId(), u.getUserOrgID(), ip);
+				logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+u.getName()+"登录了系统", 4, u.getId(), u.getUserOrgID(), ip);
 				
                 json.setCode(Constants.RESULT_SUCCESS);
                 json.setMessage("登录成功!");

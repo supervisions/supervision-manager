@@ -1,11 +1,11 @@
-package com.rmbank.supervision.service;
+package com.rmbank.supervision.dao;
 
 import java.util.List;
 
 import com.rmbank.supervision.model.RolePermission;
-
-public interface RoleResourceService {
-	int deleteByPrimaryKey(Integer id);
+@MyBatisRepository
+public interface RolePermissionMapper {
+    int deleteByPrimaryKey(Integer id);
 
     int insert(RolePermission record);
 
@@ -17,11 +17,7 @@ public interface RoleResourceService {
 
     int updateByPrimaryKey(RolePermission record);
 
-	boolean saveRoleResource(Integer roleId, Integer[] resourceIds);
+	List<RolePermission> selectByRoleId(Integer roleId);
 
-	List<RolePermission> selectByRoleId(Integer id);
-
-	//List<RoleResource> getRoleResourceListByRoleId(Integer id);
-	
-
+	int deleteByRoleId(Integer roleId);
 }

@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
    <base href="<%=basePath%>">
   
-   <title>角色管理</title>
+   <title>权限管理</title>
    
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css"> 
@@ -41,7 +41,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		  			data = $.parseJSON(data);				  			
 		  			if(data.code==0){	 					
 		  				$.messager.alert('保存信息',data.message,'info',function(){
-		  					window.location.href="system/role/roleList.do";
+		  					window.location.href="system/permission/permissionList.do";
 	        			});
 		  			}else{
 						$.messager.alert('错误信息',data.message,'error',function(){
@@ -74,11 +74,11 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
 			</div>
 		</div>
-			<form id="userInfoForm" name="userInfoForm" action="<%=basePath%>system/role/jsonSaveOrUpdateRoleResource.do" method="post">
+			<form id="userInfoForm" name="userInfoForm" action="<%=basePath%>system/permission/jsonSaveOrUpdateRoleResource.do" method="post">
 				<div id="tab1" class="yw-tab" style="padding:15px;">
-				<span style="font-size: 20px">当前角色:</span><input class="easyui-validatebox" readonly="readonly" value="${resourceConfig.name }"style="width:228px;height:20px; padding-left: 12px; background-color: #ccc;"/>		
+				<span style="font-size: 20px">当前权限:</span><input class="easyui-validatebox" readonly="readonly" value="${resourceConfig.name }"style="width:228px;height:20px; padding-left: 12px; background-color: #ccc;"/>		
 				<table class="yw-cm-table font16" id="taskTable">
-					<input type="hidden" name="roleId" value="${resourceConfig.id }">
+					<input type="hidden" name="permissionId" value="${resourceConfig.id }">
 					<c:forEach var="item" items="${resourceList }">
 					<tr>
 						<td style="font-weight: 900;">${item.name }</td>
@@ -86,7 +86,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<tr>	
 						<td>					
 							<c:forEach var="rse" items="${item.itemList }">
-								<label style="float: left;padding-right:15px;"><input type="checkbox"  name="permissionId" value="${rse.id }" <c:forEach var="roleResource" items="${roleResourceList }"><c:if test="${roleResource.permissionId ==rse.id  }">checked="checked"</c:if></c:forEach>>${rse.name }</label>
+								<label style="float: left;padding-right:15px;"><input type="checkbox"  name="resourceId" value="${rse.id }" <c:forEach var="roleResource" items="${permissionResourceList }"><c:if test="${roleResource.resourceId ==rse.id  }">checked="checked"</c:if></c:forEach>>${rse.name }</label>
 							</c:forEach>
 						</td>
 					</tr> 	

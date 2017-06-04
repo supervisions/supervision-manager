@@ -132,7 +132,7 @@ function authorizeResource(id,name){
 					<tr> 							
 						<td>${item.name}</td>
 						<td>${item.description}</td>
-						<td><a style="color:blue" onclick="authorizeResource(${item.id},'${item.name}')">资源授权</a></td>
+						<td><a style="color:blue" onclick="authorizeResource(${item.id},'${item.name}')">角色授权</a></td>
 						<td>
 							<a style="color:blue" onclick="deleteRole(${item.id},'${item.name}');">删除</a>
 							<a style="color:blue" onclick="window.location.href='roleInfo.do?id=${item.id}';">编辑</a>

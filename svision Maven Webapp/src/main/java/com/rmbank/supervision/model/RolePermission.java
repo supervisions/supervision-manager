@@ -1,11 +1,11 @@
 package com.rmbank.supervision.model;
 
-public class RoleResource {
+public class RolePermission {
     private Integer id;
 
     private Integer roleId;
 
-    private Integer resourceId;
+    private Integer permissionId;
 
     private Integer control;
 
@@ -25,13 +25,7 @@ public class RoleResource {
         this.roleId = roleId;
     }
 
-    public Integer getResourceId() {
-        return resourceId;
-    }
-
-    public void setResourceId(Integer resourceId) {
-        this.resourceId = resourceId;
-    }
+   
 
     public Integer getControl() {
         return control;
@@ -40,4 +34,12 @@ public class RoleResource {
     public void setControl(Integer control) {
         this.control = control;
     }
+
+	public Integer getPermissionId() {
+		return permissionId;
+	}
+
+	public void setPermissionId(Integer permissionId) {
+		this.permissionId = permissionId;
+	}
 }

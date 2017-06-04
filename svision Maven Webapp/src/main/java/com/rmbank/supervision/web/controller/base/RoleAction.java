@@ -22,12 +22,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.common.utils.IpUtil;
+import com.rmbank.supervision.model.FunctionPermissionVM;
 import com.rmbank.supervision.model.FunctionResourceVM;
+import com.rmbank.supervision.model.Permission;
 import com.rmbank.supervision.model.ResourceConfig;
 import com.rmbank.supervision.model.Role;
-import com.rmbank.supervision.model.RoleResource;
+import com.rmbank.supervision.model.RolePermission;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.FunctionService;
+import com.rmbank.supervision.service.PermissionService;
 import com.rmbank.supervision.service.ResourceService;
 import com.rmbank.supervision.service.RoleResourceService;
 import com.rmbank.supervision.service.RoleService;
@@ -53,7 +56,8 @@ public class RoleAction extends SystemAction {
 	private ResourceService resourceService;
 	@Resource
 	private SysLogService logService;
-	
+	@Resource
+	private PermissionService permissionService;
 	/**
 	 * 角色列表
 	 * 
@@ -107,8 +111,9 @@ public class RoleAction extends SystemAction {
 	public String authorizeResource(ResourceConfig resourceConfig,
 			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{		
 		//根据角色id回显该角色对应的资源
-		List<RoleResource> roleResourceList=roleResourceService.selectByRoleId(resourceConfig.getId());
+		List<RolePermission> roleResourceList=roleResourceService.selectByRoleId(resourceConfig.getId());
 		request.setAttribute("roleResourceList", roleResourceList);
+
 		
 		//根据moudleId获取资源
 		ResourceConfig resource=new ResourceConfig();
@@ -121,7 +126,41 @@ public class RoleAction extends SystemAction {
             }
         });*/
 		
-		List<ResourceConfig> resourceList=resourceService.getResourceList(resource);
+		Permission permission=new Permission();
+		List<Permission> permissionList=permissionService.getPermissionList(permission);
+
+		List<FunctionPermissionVM> list = new ArrayList<FunctionPermissionVM>();
+		int tempId = 0;
+		FunctionPermissionVM frvm = null;
+		Map<Integer,Integer> map = new HashMap<Integer,Integer>();
+		for(Permission rc : permissionList){
+			if(tempId != rc.getMoudleId()){
+				tempId = rc.getMoudleId(); 
+				frvm = new FunctionPermissionVM();
+			}else{ 
+				//用于当做FunctionResourceVM的itemList
+				List<Permission> itemList = new ArrayList<Permission>();
+				
+				frvm.setId(rc.getMoudleId());
+				frvm.setName(rc.getfName());
+				for(Permission rc1 : permissionList){
+					if(rc1.getMoudleId() == tempId){ 
+						itemList.add(rc1);
+					}
+				}
+				frvm.setItemList(itemList);
+				if(map.isEmpty()){
+					list.add(frvm);
+					map.put(frvm.getId(), frvm.getId());
+				}else{
+					if(map.get(frvm.getId()) == null){ 
+						list.add(frvm);
+						map.put(frvm.getId(), frvm.getId());
+					}
+				}
+			}
+		}
+		/*List<ResourceConfig> resourceList=resourceService.getResourceList(resource);
 		
 		List<FunctionResourceVM> list = new ArrayList<FunctionResourceVM>();
 		int tempId = 0;
@@ -153,7 +192,7 @@ public class RoleAction extends SystemAction {
 					}
 				}
 			}
-		}
+		}*/
 		 
 		request.setAttribute("resourceList", list);
 		request.setAttribute("resourceConfig", resourceConfig);
@@ -171,20 +210,20 @@ public class RoleAction extends SystemAction {
 	@ResponseBody
 	@RequestMapping(value = "/jsonSaveOrUpdateRoleResource.do", method = RequestMethod.POST)
 	@RequiresPermissions("system/role/jsonSaveOrUpdateRoleResource.do")
-	public JsonResult<RoleResource> jsonSaveOrUpdateRoleResource(
+	public JsonResult<RolePermission> jsonSaveOrUpdateRoleResource(
 			@RequestParam(value="roleId", required=false) Integer roleId,
-			@RequestParam(value="resourceId", required=false) Integer [] resourceIds,
+			@RequestParam(value="permissionId", required=false) Integer [] permissionIds,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		// 新建一个json对象 并赋初值
-		JsonResult<RoleResource> js = new JsonResult<RoleResource>();
+		JsonResult<RolePermission> js = new JsonResult<RolePermission>();
 		js.setCode(new Integer(1));
 		js.setMessage("保存失败!");
 		boolean state = false;
 		try {
 			//当roleId不等于0并且不等于null的时候才去新增
 			if (roleId != 0 && roleId !=null) {
-				state = roleResourceService.saveRoleResource(roleId,resourceIds);
+				state = roleResourceService.saveRoleResource(roleId,permissionIds);
 				if (state) {
 					User loginUser = this.getLoginUser();
 					String ip = IpUtil.getIpAddress(request);		
