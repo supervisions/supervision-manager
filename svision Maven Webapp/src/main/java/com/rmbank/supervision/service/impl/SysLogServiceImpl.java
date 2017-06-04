@@ -49,6 +49,7 @@ public class SysLogServiceImpl implements SysLogService {
 		log.setOperTime(new Date());
 		log.setOperId(userId);
 		log.setOrgId(orgId);
+		log.setIp(ip);
 		logMapper.insertSelective(log);		
 	}
  

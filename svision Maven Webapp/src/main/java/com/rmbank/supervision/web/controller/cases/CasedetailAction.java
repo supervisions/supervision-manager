@@ -151,9 +151,8 @@ public class CasedetailAction extends SystemAction {
             String thisPath=pid+"."; //当前节点的孙子节点的path都是以此开头
             String substring = null;
             for(GradeSchemeDetail c : lc){
-            	if(c.getPid() == pid ){
-                	deylist.add(c); //获取儿子节点
-                	
+            	if(c.getPid() == pid && c.getGradeId()==gradeId){
+                	deylist.add(c); //获取儿子节点                	
                 }if(c.getPath().length()>2){
             		substring = c.getPath().substring(0, thisPath.length());
             	}if(thisPath.equals(substring) && c.getGradeId()==gradeId){

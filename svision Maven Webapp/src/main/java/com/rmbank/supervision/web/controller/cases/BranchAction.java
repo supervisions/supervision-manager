@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.common.utils.StringUtil;
 import com.rmbank.supervision.model.FunctionResourceVM;
 import com.rmbank.supervision.model.GradeScheme;
@@ -43,6 +44,7 @@ import com.rmbank.supervision.service.ItemProcessFileService;
 import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 /**
@@ -70,7 +72,9 @@ public class BranchAction extends SystemAction {
 	private ItemProcessFileService itemProcessFileService;
 	@Resource
 	private UserService userService;
-	
+
+	@Resource
+	private SysLogService logService;
 
 	/**
 	 * 分行立项分行完成列表
@@ -590,6 +594,11 @@ public class BranchAction extends SystemAction {
 				if(State){
 					js.setCode(new Integer(0));
 					js.setMessage("保存项目信息成功!");
+					String ip = IpUtil.getIpAddress(request);
+					if("0:0:0:0:0:0:0:1".equals(ip)){
+						ip="localhost";
+					}
+					logService.writeLog(6, "新增项目", 1, u.getId(), userOrgIDs.get(0), ip);
 					return js;
 				}else{
 					return js;
