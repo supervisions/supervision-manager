@@ -26,10 +26,12 @@ import com.rmbank.supervision.model.UserOrgan;
 import com.rmbank.supervision.service.ConfigService;
 import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.RoleService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 
 
 @Scope("prototype")
@@ -48,7 +50,8 @@ public class UserAction extends SystemAction  {
 		private OrganService organService; 		
 		@Resource
 		private ConfigService configService; 
-	
+		@Resource
+		private SysLogService logService;
 		
 		/**
 	     * 用户管理列表
@@ -126,6 +129,10 @@ public class UserAction extends SystemAction  {
 //	    	List<Meta> postList=configService.getUserPost();
 //	    	request.setAttribute("postList", postList);
 	    	
+	    	
+	    	User loginUser = this.getLoginUser();
+			String ip = IpUtil.getIpAddress(request);		
+			logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了用户列表查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 	    	return "web/base/user/userList";
 	    }
 	    
@@ -153,6 +160,10 @@ public class UserAction extends SystemAction  {
 	            List<User> lc = userService.getUserListByOrgId(orgId);	
 	            int totalCount = userService.getUserCountByOrgId(user);
 	            user.setTotalCount(totalCount);
+	            
+	            User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，查询了所属机构下拥有的用户", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 	            js.setObj(user);
 	            js.setCode(0);
 	            js.setList(lc);
@@ -251,6 +262,9 @@ public class UserAction extends SystemAction  {
 					u.setId(user.getId());					
 					State = userService.saveOrUpdateUser(user,roleIds,orgIds,postId);
 					if(State){
+						User loginUser = this.getLoginUser();
+						String ip = IpUtil.getIpAddress(request);		
+						logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，执行了修改用户信息", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 						js.setCode(new Integer(0));
 						js.setMessage("保存用户信息成功!");
 						return js;
@@ -263,6 +277,9 @@ public class UserAction extends SystemAction  {
 				if (lc.size() == 0) {  
 					State = userService.saveOrUpdateUser(user,roleIds,orgIds,postId);
 					if(State){
+						User loginUser = this.getLoginUser();
+						String ip = IpUtil.getIpAddress(request);		
+						logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，新增了"+user.getName()+"用户", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 						js.setCode(new Integer(0));
 						js.setMessage("保存用户信息成功!");
 						return js;
@@ -294,9 +311,13 @@ public class UserAction extends SystemAction  {
 			JsonResult<User> js = new JsonResult<User>();
 			js.setCode(new Integer(1));
 			js.setMessage("删除失败!");
-			try {					
-				boolean state = userService.deleteUserById(id);
+			try {			
+				User user = userService.getUserById(id);
+				boolean state = userService.deleteUserById(id);				
 				if(state){
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，删除了"+user.getName()+"用户", 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					js.setCode(new Integer(0));
 					js.setMessage("删除成功!");
 					return js;
@@ -330,7 +351,11 @@ public class UserAction extends SystemAction  {
 					user.setUsed(1);
 				}
 				boolean state = userService.updateUserUsedById(user);
+				User user2 = userService.getUserById(user.getId());
 				if(state){
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，修改了用户："+user2.getName()+"的状态", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					js.setCode(new Integer(0));
 					js.setMessage("修改用户状态成功!");
 					return js;
@@ -364,6 +389,9 @@ public class UserAction extends SystemAction  {
 			try{
 				boolean state = userService.updateByPrimaryKey(userById);
 				if(state){
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，重置了用户："+userById.getName()+"的密码", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					js.setCode(new Integer(0));
 					js.setMessage("重置用户密码成功!");
 					return js;

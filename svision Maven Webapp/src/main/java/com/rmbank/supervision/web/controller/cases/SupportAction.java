@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.GradeScheme;
 import com.rmbank.supervision.model.Item;
 import com.rmbank.supervision.model.ItemProcess;
@@ -36,6 +37,7 @@ import com.rmbank.supervision.service.ItemProcessFileService;
 import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
@@ -64,8 +66,8 @@ public class SupportAction extends SystemAction {
 	private ItemProcessFileService itemProcessFileService;
 	@Resource
 	private UserService userService;
-	
-
+	@Resource
+	private SysLogService logService;
 	@Resource
 	private GradeSchemeService gradeSchemeService;
 	
@@ -130,6 +132,9 @@ public class SupportAction extends SystemAction {
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item);
 		request.setAttribute("UserOrgId", logUserOrg);
+		
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了中支立项列表查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/manage/support/supportList";
 	}
 	

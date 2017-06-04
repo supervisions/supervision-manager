@@ -20,10 +20,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Organ;
+import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ConfigService;
 import com.rmbank.supervision.service.OrganService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
 @Scope("prototype")
@@ -35,6 +38,8 @@ public class OrganAction extends SystemAction {
 	private OrganService organService;
 	@Resource
 	private ConfigService configService;
+	@Resource
+	private SysLogService logService;
 
 	/**
 	 * 获取机构列表
@@ -75,11 +80,13 @@ public class OrganAction extends SystemAction {
 		}
 		// 通过request对象传值到前台
 		organ.setTotalCount(totalCount);
-
 		request.setAttribute("Organ", organ);
-
 		request.setAttribute("organList", organList);
 
+		User loginUser = this.getLoginUser();
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行机构列表查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
+		
 		return "web/base/organ/organList";
 	}
 
@@ -99,6 +106,11 @@ public class OrganAction extends SystemAction {
         JsonResult<Organ> js = new JsonResult<Organ>();
         js.setCode(new Integer(1));
         js.setMessage("获取数据失败!");
+        
+        User loginUser = this.getLoginUser();
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行下级机构列表查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
+        
         Organ organ = new Organ();
         organ.setPid(pid);
         if (organ.getPageNo() == null)
@@ -187,6 +199,10 @@ public class OrganAction extends SystemAction {
 				o.setId(organ.getId());
 				state = organService.saveOrUpdateOrgan(organ);
 				if (state) {
+					
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，执行修改机构的信息", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
 					return js;
@@ -198,7 +214,10 @@ public class OrganAction extends SystemAction {
 			List<Organ> lc = organService.getExistOrgan(o);
 			if (lc.size() == 0) {
 				state = organService.saveOrUpdateOrgan(organ);
-				if (state) {
+				if (state) {				
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，新增了“"+organ.getName()+"”机构", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
 					return js;
@@ -229,8 +248,12 @@ public class OrganAction extends SystemAction {
 		js.setCode(new Integer(1));
 		js.setMessage("删除失败!");
 		try {
-			boolean state = organService.deleteOrgByid(id);
+			Organ organ = organService.selectByPrimaryKey(id);
+			boolean state = organService.deleteOrgByid(id);			
 			if (state) {
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，删除了“"+organ.getName()+"”机构", 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
 				js.setCode(new Integer(0));
 				js.setMessage("删除成功!");
 				return js;
@@ -260,6 +283,9 @@ public class OrganAction extends SystemAction {
 		try {
 			boolean state = organService.updateOrgStateByid(organ);
 			if (state) {
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，修改了“"+organ.getName()+"”的状态", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 				js.setCode(new Integer(0));
 				js.setMessage("修改机构状态成功!");
 				return js;

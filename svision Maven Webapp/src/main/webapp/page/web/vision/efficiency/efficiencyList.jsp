@@ -289,7 +289,7 @@ function followAction(itemId,status){
 								<span>完结</span>
 							</c:if>
 						</td>
-						<td><sapn>${item.lasgTag}</sapn>
+						<td><%-- <sapn>${item.lasgTag}</sapn> --%>
 							<c:if test="${item.status == 0 and userOrg.id==item.preparerOrgId}">
 								<span style="color: red;" onclick="setProject(${item.id })">立项</span>
 							</c:if>

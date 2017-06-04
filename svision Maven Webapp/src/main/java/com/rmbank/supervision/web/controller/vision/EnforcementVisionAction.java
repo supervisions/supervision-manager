@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.Item;
 import com.rmbank.supervision.model.ItemProcess;
 import com.rmbank.supervision.model.ItemProcessFile;
@@ -34,6 +35,7 @@ import com.rmbank.supervision.service.ItemProcessFileService;
 import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
@@ -60,7 +62,9 @@ public class EnforcementVisionAction extends SystemAction {
 	private ItemProcessService itemProcessService;
 	@Resource
 	private ItemProcessFileService itemProcessFileService;
-
+	@Resource
+	private SysLogService logService;
+	
 	/**
 	 * 执法监察列表
 	 * 
@@ -132,6 +136,10 @@ public class EnforcementVisionAction extends SystemAction {
 		request.setAttribute("Item", item);
 		request.setAttribute("userOrg", userOrg);
 		request.setAttribute("itemList", itemList);
+		
+		
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了执法监察项目列表的查看", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/vision/enforce/enforceList";
 	}
 
@@ -234,6 +242,10 @@ public class EnforcementVisionAction extends SystemAction {
 			if (lc.size() == 0) {
 				State = itemService.saveOrUpdateItem(item, OrgIds, content);
 				if (State) {
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_ZFJC, "用户："+loginUser.getName()+"，添加了执法监察的工作事项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+					
 					js.setCode(new Integer(0));
 					js.setMessage("保存项目信息成功!");
 					return js;
@@ -402,7 +414,10 @@ public class EnforcementVisionAction extends SystemAction {
 					itemProcessService.insert(itemProcess);
 				}
 			}
-
+			User loginUser = this.getLoginUser();
+			String ip = IpUtil.getIpAddress(request);		
+			logService.writeLog(Constants.LOG_TYPE_ZFJC, "用户："+loginUser.getName()+"，对执法监察的项目，进行了立项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+			
 			js.setCode(new Integer(0));
 			js.setMessage("保存项目信息成功!");
 			return js;
@@ -600,6 +615,10 @@ public class EnforcementVisionAction extends SystemAction {
 				itemProcess.setContentTypeId(Constants.ENFORCE_VISION_16);//复议，录入复议相关资料
 			}			
 
+			User loginUser = this.getLoginUser();
+			String ip = IpUtil.getIpAddress(request);		
+			logService.writeLog(Constants.LOG_TYPE_ZFJC, "用户："+loginUser.getName()+"，执行了对执法监察项目的流程操作", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+			
 			itemProcessService.insert(itemProcess);
 
 			js.setCode(0);
@@ -665,8 +684,13 @@ public class EnforcementVisionAction extends SystemAction {
 		js.setMessage("删除失败!");
 		boolean state = false;
 		try {
+			Item item = itemService.selectByPrimaryKey(id);
 			state = itemService.deleteItemById(id);
 			if (state) {
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_ZFJC, "用户："+loginUser.getName()+"，删除了项目："+item.getName(), 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
+				
 				js.setCode(new Integer(0));
 				js.setMessage("删除成功!");
 				return js;
@@ -840,6 +864,11 @@ public class EnforcementVisionAction extends SystemAction {
 		request.setAttribute("Item", item);
 		request.setAttribute("ContentTypeId",
 				Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		
+		User loginUser = this.getLoginUser();
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_ZFJC, "用户："+loginUser.getName()+"，执行了对执法监察项目的查看", 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
+		
 		return "web/vision/enforce/showItem";
 	}
 }

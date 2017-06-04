@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.ResourceConfig;
+import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ResourceService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
 
@@ -31,7 +34,8 @@ public class ResourceAction extends SystemAction {
 	
 	@Resource
 	private ResourceService resourceService;
-	
+	@Resource
+	private SysLogService logService;
 	
 	/**
 	 * 加载资源列表
@@ -70,7 +74,9 @@ public class ResourceAction extends SystemAction {
 		request.setAttribute("ResourceConfig", resourceConfig);    	
     	request.setAttribute("resourceList", resourceList);
 		
-		
+    	User loginUser = this.getLoginUser();
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了资源列表查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/base/resource/resourceList";
 	}
 	
@@ -128,6 +134,9 @@ public class ResourceAction extends SystemAction {
 				r.setId(resourceConfig.getId());
 				state = resourceService.saveOrUpdateResource(resourceConfig);
 				if (state) {
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，执行了修改资源信息", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
 					return js;
@@ -140,6 +149,9 @@ public class ResourceAction extends SystemAction {
 			if (lc.size() == 0) {
 				state = resourceService.saveOrUpdateResource(resourceConfig);
 				if (state) {
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，新增了"+resourceConfig.getName()+"资源", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
 					return js;
@@ -173,9 +185,14 @@ public class ResourceAction extends SystemAction {
 		js.setCode(new Integer(1));
 		js.setMessage("删除失败!");
 		boolean state =false;
-		try {				
-			state= resourceService.deleteResourceById(id);
+		try {	
+			
+			ResourceConfig resourceById = resourceService.getResourceById(id);
+			state= resourceService.deleteResourceById(id);			
 			if(state){
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，删除了"+resourceById.getName()+"资源", 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
 				js.setCode(new Integer(0));
 				js.setMessage("删除成功!");
 				return js;

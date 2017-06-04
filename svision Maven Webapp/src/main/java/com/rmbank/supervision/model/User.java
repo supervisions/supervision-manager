@@ -25,6 +25,7 @@ public class User extends Page{
     
     private boolean isBranch; //是否分行机构
     
+    private int userOrgID;//用户所属的机构ID    
     
     private boolean rememberMe;
 
@@ -174,5 +175,13 @@ public class User extends Page{
 
 	public void setIsBranch(boolean isBranch) {
 		this.isBranch = isBranch;
+	}
+
+	public int getUserOrgID() {
+		return userOrgID;
+	}
+
+	public void setUserOrgID(int userOrgID) {
+		this.userOrgID = userOrgID;
 	}
 }

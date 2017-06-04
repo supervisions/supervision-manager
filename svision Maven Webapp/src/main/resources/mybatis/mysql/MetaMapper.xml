@@ -169,7 +169,7 @@
   <select id="getConfigListByPid" parameterType="com.rmbank.supervision.model.Meta" resultMap="BaseResultMap">
   	select meta.*, 
 		(select count(*) from t_meta as m where m.pid = meta.id ) as childrenCount 
-	from t_meta as meta where meta.pid=#{pid,jdbcType=INTEGER}  	
+	from t_meta as meta where used=1 and meta.pid=#{pid,jdbcType=INTEGER}  	
 	<if test="searchName != null and searchName != ''">
 		and (meta.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
 			OR meta.key like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')

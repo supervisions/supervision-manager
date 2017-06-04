@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
+import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Role;
+import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ConfigService;
+import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
 
@@ -34,7 +37,8 @@ public class ConfigAction extends SystemAction {
 	@Resource 
 	private ConfigService configService;
 	
-	
+	@Resource
+	private SysLogService logService;
 	
 	/**
 	 * 配置列表
@@ -75,9 +79,11 @@ public class ConfigAction extends SystemAction {
 		// 通过request对象传值到前台
 		meta.setTotalCount(totalCount);
 		request.setAttribute("Config", meta);
-
 		request.setAttribute("configList", configList);
-
+		
+		User loginUser = this.getLoginUser();
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了配置列表查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/base/config/configList";
 	}
 	
@@ -98,6 +104,11 @@ public class ConfigAction extends SystemAction {
         JsonResult<Meta> js = new JsonResult<Meta>();
         js.setCode(new Integer(1));
         js.setMessage("获取数据失败!");
+        
+        User loginUser = this.getLoginUser();
+		String ip = IpUtil.getIpAddress(request);		
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行查询下级配置列表", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
+        
         Meta meta = new Meta();
         meta.setPid(pid);
         if (meta.getPageNo() == null){
@@ -143,9 +154,14 @@ public class ConfigAction extends SystemAction {
 		JsonResult<Meta> js = new JsonResult<Meta>();
 		js.setCode(new Integer(1));
 		js.setMessage("删除配置失败!");
-		try {				
-			boolean state = configService.deleteMetaById(id);
+
+		try {
+			Meta meta = configService.selectByPrimaryKey(id);
+			boolean state = configService.deleteMetaById(id);			
 			if(state){
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，删除了“"+meta.getName()+"”配置", 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
 				js.setCode(new Integer(0));
 				js.setMessage("删除配置成功!");
 				return js;
@@ -205,6 +221,8 @@ public class ConfigAction extends SystemAction {
 		js.setCode(new Integer(1));
 		js.setMessage("保存失败!");
 		
+		
+		
 		boolean State =  false;
 		try {
 			//如果ID和pid相同，则修改无效
@@ -240,6 +258,9 @@ public class ConfigAction extends SystemAction {
 				mt.setId(meta.getId());
 				State = configService.saveOrUpdateMeta(meta);
 				if(State){
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，执行了修改配置操作", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					js.setCode(new Integer(0));
 					js.setMessage("修改配置信息成功!");
 					return js;
@@ -253,6 +274,9 @@ public class ConfigAction extends SystemAction {
 			if (lc.size() == 0) {  
 				State = configService.saveOrUpdateMeta(meta);
 				if(State){
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，新增了"+meta.getName()+"配置", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					js.setCode(new Integer(0));
 					js.setMessage("保存配置信息成功!");
 					return js;
@@ -292,7 +316,11 @@ public class ConfigAction extends SystemAction {
 				meta.setUsed(1);
 			}
 			metaState= configService.MetaStateById(meta);
-			if(metaState){
+			Meta meta2 = configService.selectByPrimaryKey(meta.getId());
+			if(metaState){				
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，修改了"+meta2.getName()+"配置的状态", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 				js.setCode(new Integer(0));
 				js.setMessage("修改配置状态成功!");
 				return js;
