@@ -230,7 +230,7 @@ public class PermissionAction extends SystemAction {
 		boolean state = false;
 		try {
 			//当roleId不等于0并且不等于null的时候才去新增
-			if (permissionId != 0 && permissionId !=null) {
+			if (permissionId != 0 && permissionId !=null) { 
 				state = permissionResourceService.savePermissionResource(permissionId,resourceIds);
 				if (state) {
 					User loginUser = this.getLoginUser();

@@ -71,6 +71,16 @@ public class PermissionResourceServiceimpl implements PermissionResourceService 
 							permissionResource.setResourceId(resId);
 							permissionResourceMapper.insert(permissionResource);
 						}
+						PermissionResource permissionResource=new PermissionResource();
+						permissionResource.setId(0);
+						permissionResource.setPermissionId(permissionId);
+						permissionResource.setResourceId(66);
+						permissionResourceMapper.insert(permissionResource);
+						permissionResource=new PermissionResource();
+						permissionResource.setId(0);
+						permissionResource.setPermissionId(permissionId);
+						permissionResource.setResourceId(67);
+						permissionResourceMapper.insert(permissionResource);
 					}
 					isSuccess = true;
 				} catch (Exception e) {
