@@ -123,11 +123,16 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" height="40px;">量化分值：</td>
 							<td colspan="3"> 
-								 
+								 <c:if test="${IsValue == 0 }">
+								 	<label>未量化</label>
+								 </c:if>
+								 <c:if test="${IsValue == 1 }">
+								 	<a title="点击查看量化">${ItemValue }</a>
+								 </c:if>
 							 </td>	
 						</tr>	
 						<tr>
-							<td align="right" style="height:100px;">跟踪监察结论：</td>
+							<td align="right" style="height:100px;">上传文件说明：</td>
 							<td colspan="3"> 
 								<label>${SItemProcess.content } </label>  
 							</td>	

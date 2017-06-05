@@ -28,6 +28,7 @@ import com.rmbank.supervision.model.GradeSchemeDetail;
 import com.rmbank.supervision.model.Item;
 import com.rmbank.supervision.model.ItemProcess;
 import com.rmbank.supervision.model.ItemProcessFile;
+import com.rmbank.supervision.model.ItemProcessGrade;
 import com.rmbank.supervision.model.Meta;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.OrganVM;
@@ -286,9 +287,24 @@ public class SupportAction extends SystemAction {
 		//获取当前用户
 		User lgUser=this.getLoginUser();  
 		
+		List<ItemProcessGrade> gradeList = new ArrayList<ItemProcessGrade>();
+		int isValue = Constants.NOT_VALUE;
+		double item_value = 0;
+		if(sitemProcess.getId() != null){
+			gradeList = gradeSchemeService.getGradeListByItemProcessId(sitemProcess.getId());
+			if(gradeList != null &&  gradeList.size()>0){
+				isValue = Constants.IS_VALUE;
+				for(ItemProcessGrade ipg : gradeList){
+					item_value  = item_value + ipg.getGrade();
+				}
+			}
+		}
+		
 		request.setAttribute("User", lgUser); 
 		request.setAttribute("FItemProcess", fitemProcess);
 		request.setAttribute("SItemProcess", sitemProcess);
+		request.setAttribute("IsValue", isValue);
+		request.setAttribute("ItemValue", item_value);
 		request.setAttribute("Item", item); 
 		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
 		return "web/manage/support/supportViewForm";
@@ -372,7 +388,14 @@ public class SupportAction extends SystemAction {
     	User u = this.getLoginUser(); 
 		js.setCode(new Integer(1));
 		js.setMessage("保存项目信息失败!");
-		try {   
+		try {  
+
+			if(itemProcess.getIsValue()== Constants.IS_VALUE){
+				if(itemProcess.getValues()  == null || itemProcess.getValues().size()==0 || itemProcess.getDetailId() == null || itemProcess.getDetailId().size() != itemProcess.getValues().size()){
+					js.setMessage("量化分指标填写不完善，请检查"); 
+					return js;
+				}
+			}
 	    	//获取当前用户所属的机构id，当做制单部门的ID
 	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
 	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
@@ -387,9 +410,21 @@ public class SupportAction extends SystemAction {
 				item.setEndTime(new Date());
 				item.setStatus(Constants.ITEM_STATUS_OVER);
 				itemService.updateByPrimaryKeySelective(item);
+			} 
+			if(itemProcess.getIsValue()== Constants.IS_VALUE){
+				 List<ItemProcessGrade> gradeList = new ArrayList<ItemProcessGrade>();
+				 for(int i = 0; i<itemProcess.getValues().size();i++){
+					 if(itemProcess.getValues().get(i)!= null && itemProcess.getValues().get(i)>0){
+						 ItemProcessGrade grade = new ItemProcessGrade();
+						 grade.setId(0);
+						 grade.setItemProcessId(itemProcess.getId());
+						 grade.setGrade(itemProcess.getValues().get(i));
+						 grade.setGradeDetailId(itemProcess.getDetailId().get(i));
+						 gradeList.add(grade);
+					 }
+				 }
+				 gradeSchemeService.insertGradeList(gradeList);
 			}
-			
-			
 			js.setCode(0);
 			js.setMessage("上传资料成功，完整中支立项项目"); 
 		}catch(Exception ex){

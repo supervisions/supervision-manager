@@ -7,7 +7,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.rmbank.supervision.dao.GradeSchemeMapper;
+import com.rmbank.supervision.dao.ItemProcessGradeMapper;
 import com.rmbank.supervision.model.GradeScheme;
+import com.rmbank.supervision.model.ItemProcessGrade;
 import com.rmbank.supervision.model.Role;
 import com.rmbank.supervision.service.GradeSchemeService;
 
@@ -16,6 +18,8 @@ public class GradeSchemeServiceimpl implements GradeSchemeService {
 
 	@Resource
 	private GradeSchemeMapper gradeSchemeMapper;
+	@Resource
+	private ItemProcessGradeMapper itemProcessGradeMapper;
 	
 	@Override
 	public List<GradeScheme> getGradeSchemeList(GradeScheme gradeScheme) {
@@ -93,6 +97,18 @@ public class GradeSchemeServiceimpl implements GradeSchemeService {
 	public List<GradeScheme> getGradeSchemeListASC(GradeScheme gradeScheme) {
 		// TODO Auto-generated method stub
 		return gradeSchemeMapper.getGradeSchemeListASC(gradeScheme);
+	}
+
+	@Override
+	public void insertGradeList(List<ItemProcessGrade> gradeList) {
+		// TODO Auto-generated method stub
+		itemProcessGradeMapper.insertGradeList(gradeList);
+	}
+
+	@Override
+	public List<ItemProcessGrade> getGradeListByItemProcessId(Integer id) {
+		// TODO Auto-generated method stub
+		return itemProcessGradeMapper.getGradeListByItemProcessId(id);
 	}
 
 }

@@ -121,7 +121,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr> 
 						<tr>
-							<td align="right" style="height:100px;">跟踪监察结论：</td>
+							<td align="right" style="height:100px;">上传文件说明：</td>
 							<td colspan="3"> 
 								<label>${SItemProcess.content } </label>  
 							</td>	

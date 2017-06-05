@@ -79,4 +79,21 @@
       grade = #{grade,jdbcType=DOUBLE}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  
+  <insert id="insertGradeList"  parameterType="java.util.List">
+    insert into t_item_process_grade (id, item_process_id, grade_detail_id, 
+      grade)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id,jdbcType=INTEGER}, #{item.itemProcessId,jdbcType=INTEGER}, #{item.gradeDetailId,jdbcType=INTEGER}, #{item.grade,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  <select id="getGradeListByItemProcessId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_item_process_grade
+    where item_process_id = #{id,jdbcType=INTEGER}
+  
+  </select>
 </mapper>

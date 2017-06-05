@@ -26,7 +26,12 @@ public class ItemProcess {
 
     private Integer preparerId;
     
+    /**
+     * 量化节点分值
+     */
+    private List<Double> values;
     
+    private List<Integer> detailId;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date preparerTime;
@@ -209,5 +214,21 @@ public class ItemProcess {
 
 	public void setIsOverStatus(Integer isOverStatus) {
 		this.isOverStatus = isOverStatus;
+	}
+
+	public List<Double> getValues() {
+		return values;
+	}
+
+	public void setValues(List<Double> values) {
+		this.values = values;
+	}
+
+	public List<Integer> getDetailId() {
+		return detailId;
+	}
+
+	public void setDetailId(List<Integer> detailId) {
+		this.detailId = detailId;
 	}
 }

@@ -66,7 +66,7 @@ function checkGrade(obj){
 		});
 	}
 }
-</script>
+</script> 
  </head> 
  <body>
 <div class="con-right" id="conRight">
@@ -154,7 +154,7 @@ function checkGrade(obj){
 							<td ></td>
 						</tr>
 					</table>
-				</div>
+				</div> 
 			</form>
 		</div> 
 	
