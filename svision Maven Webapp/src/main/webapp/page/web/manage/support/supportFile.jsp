@@ -181,6 +181,69 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		var fileName = encodeURI(encodeURI(name));
 		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
 	}
+	function gradeChange(){
+		var pId = $.trim($("#valueTypeId").val());
+		if(pId == "-1"){
+			$("#dia_title").text("请选择量化模型，并量化分值");
+			var mesDia = $("#dialog1").dialog({
+		      resizable: false,
+		      height:150,
+		      modal: true,
+		      open: function (event, ui) {
+                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+              },
+		      buttons: {
+		        "确定": function() {
+		    		 $(this).dialog("close");
+		        } 
+		      }
+		    }); 
+		    return;
+		}
+		$.ajax({ 
+	        type: "POST", //请求类型
+	        url: "<%=basePath%>manage/support/jsonLoadGradeSchemeDetail.do?id="+pId,  
+	        dataType:"json", //响应数据类型      
+	        success: function(data) {
+	        	if(data != undefined && data != null){ 
+	        		 if(data.length >0){
+	        		 	
+	        		 }else{
+	        		 	$("#dia_title").text("该模型未量化指标，请在量化指标模块完善");
+						 $("#dialog1").dialog({
+					      resizable: false,
+					      height:150,
+					      modal: true,
+					      open: function (event, ui) {
+			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+			              },
+					      buttons: {
+					        "确定": function() {
+					    		 $(this).dialog("close");
+					        } 
+					      }
+					    }); 
+	        		 }
+	        	}else{
+	        		$("#dia_title").text("加载量化模型指标失败");
+					 $("#dialog1").dialog({
+				      resizable: false,
+				      height:150,
+				      modal: true,
+				      open: function (event, ui) {
+		                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+		              },
+				      buttons: {
+				        "确定": function() {
+				    		 $(this).dialog("close");
+				        } 
+				      }
+				    });     	
+	        	}	
+	            
+	        }
+   		});
+	}
 </script>
  </head> 
  <body>
@@ -250,13 +313,18 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<td align="right" style="height:70px;" >选择量化模型：</td>
 								<td colspan="3"> 
 								<input type="hidden" name="valueTypeValue" id="hid_valueTypeValue" />
-									<select id="valueTypeId" name="valueTypeId"  style="width:254px;height:35px;" >
+									<select id="valueTypeId" name="valueTypeId"  style="width:254px;height:35px;" onchange="gradeChange()">
 										<option value="-1">请选择量化模型</option>									
-										<%-- <c:forEach var="position" items="${meatListByKey}">
-											<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
-										</c:forEach> --%>
+										<c:forEach var="item" items="${GradeSchemeList}">
+											<option value="${item.id}" >${item.name}</option>
+										</c:forEach> 
 									</select> 	
 								 </td>	
+							</tr>
+							<tr>
+								<td align="right" style="height:70px;" >量化分值</td>
+								<td colspan="3" id="td_value">  
+								</td>	
 							</tr>
 						</c:if>	
 						<c:if test="${IsValue == 0}"> 

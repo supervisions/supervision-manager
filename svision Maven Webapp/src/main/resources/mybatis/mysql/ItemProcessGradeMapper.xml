@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="item_process_id" property="itemProcessId" jdbcType="INTEGER" />
     <result column="grade_detail_id" property="gradeDetailId" jdbcType="INTEGER" />
-    <result column="grade" property="grade" jdbcType="INTEGER" />
+    <result column="grade" property="grade" jdbcType="DOUBLE" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, item_process_id, grade_detail_id, grade
@@ -24,7 +24,7 @@
     insert into t_item_process_grade (id, item_process_id, grade_detail_id, 
       grade)
     values (#{id,jdbcType=INTEGER}, #{itemProcessId,jdbcType=INTEGER}, #{gradeDetailId,jdbcType=INTEGER}, 
-      #{grade,jdbcType=INTEGER})
+      #{grade,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.rmbank.supervision.model.ItemProcessGrade" >
     insert into t_item_process_grade
@@ -53,7 +53,7 @@
         #{gradeDetailId,jdbcType=INTEGER},
       </if>
       <if test="grade != null" >
-        #{grade,jdbcType=INTEGER},
+        #{grade,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -67,7 +67,7 @@
         grade_detail_id = #{gradeDetailId,jdbcType=INTEGER},
       </if>
       <if test="grade != null" >
-        grade = #{grade,jdbcType=INTEGER},
+        grade = #{grade,jdbcType=DOUBLE},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -76,7 +76,7 @@
     update t_item_process_grade
     set item_process_id = #{itemProcessId,jdbcType=INTEGER},
       grade_detail_id = #{gradeDetailId,jdbcType=INTEGER},
-      grade = #{grade,jdbcType=INTEGER}
+      grade = #{grade,jdbcType=DOUBLE}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

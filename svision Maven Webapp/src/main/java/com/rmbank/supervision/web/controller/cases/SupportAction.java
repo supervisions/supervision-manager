@@ -24,6 +24,7 @@ import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.GradeScheme;
+import com.rmbank.supervision.model.GradeSchemeDetail;
 import com.rmbank.supervision.model.Item;
 import com.rmbank.supervision.model.ItemProcess;
 import com.rmbank.supervision.model.ItemProcessFile;
@@ -32,6 +33,7 @@ import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.OrganVM;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ConfigService;
+import com.rmbank.supervision.service.GradeSchemeDetailService;
 import com.rmbank.supervision.service.GradeSchemeService;
 import com.rmbank.supervision.service.ItemProcessFileService;
 import com.rmbank.supervision.service.ItemProcessService;
@@ -70,6 +72,8 @@ public class SupportAction extends SystemAction {
 	private SysLogService logService;
 	@Resource
 	private GradeSchemeService gradeSchemeService;
+	@Resource
+	private GradeSchemeDetailService gradeSchemeDetailService;
 	
 	/**
 	 * 中支立项列表
@@ -211,6 +215,10 @@ public class SupportAction extends SystemAction {
 		if(itemProcessList.size()>0){
 			itemProcess = itemProcessList.get(0); 
 		}
+		List<GradeScheme> gsList = new ArrayList<GradeScheme>();
+		if(isValue>0){
+			gsList = gradeSchemeService.getGradeSchemeList(new GradeScheme()); 
+		}
 		
 		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
 		if(itemProcess.getId() != null){
@@ -219,7 +227,7 @@ public class SupportAction extends SystemAction {
 		//获取当前用户
 		User lgUser=this.getLoginUser(); 
 		 
-		if(itemProcess.getIsValue()==Constants.IS_VALUE){
+		if(itemProcess.getIsValue() != null && itemProcess.getIsValue()==Constants.IS_VALUE){
 			List<GradeScheme> gradeList =  gradeSchemeService.getGradeSchemeList(new GradeScheme());
 			request.setAttribute("GradeList", gradeList);
 		} 
@@ -227,6 +235,7 @@ public class SupportAction extends SystemAction {
 		request.setAttribute("User", lgUser);
 		request.setAttribute("IsValue", isValue);
 		request.setAttribute("ItemProcess", itemProcess);
+		request.setAttribute("GradeSchemeList", gsList);
 		request.setAttribute("Item", item);
 		request.setAttribute("FileList", fileList);
 		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
@@ -387,4 +396,45 @@ public class SupportAction extends SystemAction {
 		return js;
     }
     
-} 
+
+	/** 
+	 * 根据选择的模型，加载量化指标
+	 * @throws ParseException 
+	 */
+    @ResponseBody
+    @RequestMapping(value = "/jsonLoadGradeSchemeDetail.do", method=RequestMethod.POST)
+    @RequiresPermissions("manage/support/jsonLoadGradeSchemeDetail.do")
+    public List<GradeSchemeDetail> jsonLoadGradeSchemeDetail(GradeSchemeDetail gradeSchemeDetail, 
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+    	List<GradeSchemeDetail> templist = new ArrayList<GradeSchemeDetail>();
+    	List<GradeSchemeDetail> list = new ArrayList<GradeSchemeDetail>();
+    	templist = gradeSchemeDetailService.getGradeSchemeDetailListByGradeId(gradeSchemeDetail);
+    	if(templist.size()>0){
+    		for(GradeSchemeDetail gsd : templist){
+    			if(gsd.getLevel() == 0){
+    				List<GradeSchemeDetail> child = new ArrayList<GradeSchemeDetail>();
+	    			for(GradeSchemeDetail a : templist){ 
+	    				if(a.getPid()==gsd.getId() && a.getLevel() == 1){
+	    					List<GradeSchemeDetail> subchild = new ArrayList<GradeSchemeDetail>();
+	    					for(GradeSchemeDetail b : templist){
+	    						if(a.getId()==b.getPid() && b.getLevel() == 2){
+	    							subchild.add(b); 
+	    	    				}
+	    					}
+	    					a.setChildren(subchild);
+	    					child.add(a);
+	    				}
+	    			}
+	    			gsd.setChildren(child);
+	    			list.add(gsd);
+    			}
+    		}
+    		
+    	}
+    	
+		return list;
+    }
+    
+
+    } 
