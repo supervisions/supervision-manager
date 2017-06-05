@@ -104,19 +104,20 @@ public class SupportAction extends SystemAction {
 		Organ organ = userOrgByUserId.get(0);
 		//获取项目列表,根据不同的机构类型加载不同的项目
 		List<Item> itemList =null;
-		if(organ.getOrgtype()==Constants.ORG_TYPE_1 ||Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
+		if(organ.getOrgtype()==Constants.ORG_TYPE_1 ||
+				organ.getOrgtype()==Constants.ORG_TYPE_2 ||
+				organ.getOrgtype()==Constants.ORG_TYPE_3 ||
+				Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
 			//成都分行监察室和超级管理员加载所有的中支立项项目
 			//itemList=itemService.getItemList(item);
 			item.setItemType(Constants.STATIC_ITEM_TYPE_MANAGE);
-			item.setOrgTypeA(Constants.ORG_TYPE_3);
-			item.setOrgTypeB(Constants.ORG_TYPE_4);
+			item.setOrgTypeA(Constants.ORG_TYPE_6);			
 			itemList=itemService.getItemListByOrgType(item);
 			totalCount=itemService.getItemCountZZLXALL(item);
 		}else{
 			//当前登录机构只加载当前登录中支立的项目和子机构完成的项目
 			item.setItemType(Constants.STATIC_ITEM_TYPE_MANAGE);
-			item.setOrgTypeA(Constants.ORG_TYPE_3);
-			item.setOrgTypeB(Constants.ORG_TYPE_4);
+			item.setOrgTypeA(Constants.ORG_TYPE_6);	
 			item.setSupervisionOrgId(logUserOrg);
 			item.setPreparerOrgId(logUserOrg);
 			itemList=itemService.getItemListByOrgTypeAndLogOrg(item);
@@ -132,7 +133,7 @@ public class SupportAction extends SystemAction {
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item);
 		request.setAttribute("UserOrgId", logUserOrg);
-		
+		request.setAttribute("UserOrg", organ);
 		String ip = IpUtil.getIpAddress(request);		
 		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了中支立项列表查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/manage/support/supportList";
@@ -157,12 +158,14 @@ public class SupportAction extends SystemAction {
 		
 		//获取当前用户的机构
 		User lgUser=this.getLoginUser();
+		List<Organ> userOrgs = userService.getUserOrgByUserId(lgUser.getId());
 		List<Integer> userOrgIds=userService.getUserOrgIdsByUserId(lgUser.getId());
-		Integer userOrgID = userOrgIds.get(0);		
+		Integer userOrgID = userOrgIds.get(0);	
+		Organ userOrg = userOrgs.get(0);
 		List<OrganVM> list=new ArrayList<OrganVM>();
 		OrganVM frvm = null;
 		for(Organ rc : organList){
-			if(rc.getId()==userOrgID){
+			if(rc.getId()==userOrg.getPid()){
 				frvm = new OrganVM();
 				List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
 				frvm.setId(rc.getId());
@@ -174,7 +177,7 @@ public class SupportAction extends SystemAction {
 					if(rc1.getPath().length()>path.length()){
 						substring=rc1.getPath().substring(0, path.length());
 					}
-					if(rc1.getPid() == rc.getId()){//添加子级节点						
+					if(rc1.getPid() == rc.getId() && rc1.getSupervision()==0){//添加子级节点						
 						itemList.add(rc1);
 					}else if(path.equals(substring)){//添加孙子级节点	
 						itemList.add(rc1);								

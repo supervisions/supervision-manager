@@ -132,7 +132,10 @@ function showDialogModel(id,name){
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>
 					</div>
 					<div class="fr">
-						<span class="fl yw-btn bg-green cur" onclick="window.location.href='manage/support/supportInfo.do?pointId='+ 0">新建项目</span>
+						<c:if test="${UserOrg.orgtype==43 }">
+							<span class="fl yw-btn bg-green cur" onclick="window.location.href='manage/support/supportInfo.do?pointId='+ 0">新建项目</span>
+						</c:if>
+						
 					</div>
 					<div class="cl"></div>
 				</div>

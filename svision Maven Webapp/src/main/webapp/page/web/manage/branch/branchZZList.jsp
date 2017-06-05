@@ -98,7 +98,9 @@ function getItemByItemType(type){
 						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox"
 							   style="width: 120px;" placeholder="搜索关键字：名称" value="${Organ.searchName}" /> 
 						<span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
-						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>manage/branch/branchZZInfo.do'">新建项目</span>
+						<c:if test="${logUserOrg == 19 }">
+							<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>manage/branch/branchZZInfo.do'">新建项目</span>
+						</c:if>
 					</div>
 					<div class="cl"></div>
 				</div>
@@ -156,7 +158,7 @@ function getItemByItemType(type){
 										<c:if test="${item.status == 4}">
 											 【已完结】 
 										</c:if> 
-										<c:if test="${item == null || item.status != 4}"> 
+										<c:if test="${item == null && logUserOrg == item.supervisionOrgId || item.status != 4 && logUserOrg == item.supervisionOrgId}"> 
 											<a style="color: blue;" onclick="window.location.href='<%=basePath %>manage/branch/branchZZFile.do?id=${item.id}'">上传资料</a>
 										</c:if> 
 									<%-- </c:if>									

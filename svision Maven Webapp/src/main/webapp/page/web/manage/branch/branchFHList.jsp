@@ -126,7 +126,12 @@ function followItem(id,name){
 						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox"
 							   style="width: 120px;" placeholder="搜索关键字：名称" value="${Organ.searchName}" /> 
 						<span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
-						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHInfo.do'">新建项目</span>
+						
+						<c:if test="${logUserOrg == 19 }">
+							<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHInfo.do'">新建项目</span>
+						</c:if>
+						
+					
 					</div>
 					<div class="cl"></div>
 				</div>
@@ -175,9 +180,7 @@ function followItem(id,name){
 							<td>${item.preparerOrg}</td>
 							<td>${item.orgName}</td>
 							<td>
-								<c:if test="${logUserOrg == item.preparerOrgId}">
-									<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
-								</c:if>							
+														
 								
 								<%-- <c:if test="${logUserOrg != item.supervisionOrgId}"> 
 									<c:if test="${Type == 2 }"> --%>
@@ -185,25 +188,28 @@ function followItem(id,name){
 											 【已完结】 
 										</c:if>
 										<c:if test="${item.status != 4}">
-											<c:if test="${item.lasgTag == 31 }">
+											<c:if test="${item.lasgTag == 31 && logUserOrg ==item.supervisionOrgId}">
 												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >上传资料</a>
 											</c:if>
-											<c:if test="${item.lasgTag == 32 }">
+											<c:if test="${item.lasgTag == 32 && logUserOrg ==19}">
 												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >监察意见</a>
 											</c:if> 
-											<c:if test="${item.lasgTag == 33 }">
+											<c:if test="${item.lasgTag == 33 && logUserOrg ==item.supervisionOrgId}">
 												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=34'" >录入整改情况</a>
 											</c:if> 
-											<c:if test="${item.lasgTag == 34 }">
+											<c:if test="${item.lasgTag == 34 && logUserOrg ==19}">
 												<a style="color: blue;" onclick="followItem(${item.id},'${item.name}')" >跟踪处理</a>
 											</c:if>
-											<c:if test="${item.lasgTag == 91 }">
+											<c:if test="${item.lasgTag == 91 && logUserOrg ==item.supervisionOrgId}">
 												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >跟踪整根情况 </a>
 											</c:if>
-											<c:if test="${item.lasgTag == 35 }">
+											<c:if test="${item.lasgTag == 35 && logUserOrg ==19}">
 												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=93'" >监察结论</a>
 											</c:if>
 										 </c:if>
+										 <c:if test="${logUserOrg == item.preparerOrgId}">
+											<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+										</c:if>	
 								<%-- 	</c:if>									
 								</c:if>	 --%>
 							</td>							

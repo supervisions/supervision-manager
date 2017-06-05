@@ -82,6 +82,7 @@ public class Constants
   public static final Integer ORG_TYPE_3= 47; //监察室
   public static final Integer ORG_TYPE_4= 48; //分行机关
   public static final Integer ORG_TYPE_5= 49; //中支机构
+  public static final Integer ORG_TYPE_6= 43; //中支监察室
   
   //分行立项，分行完成项目进行流程
   public static final Integer CONTENT_TYPE_ID_1= 31; 

@@ -127,8 +127,7 @@ public class BranchAction extends SystemAction {
 			item.setItemType(Constants.STATIC_ITEM_TYPE_MANAGE);
 			item.setSupervisionOrgId(logUserOrg); //完成机构
 			item.setPreparerOrgId(logUserOrg); //立项机构
-			item.setOrgTypeA(Constants.ORG_TYPE_4);
-			
+			item.setOrgTypeA(Constants.ORG_TYPE_4);			
 			itemList=itemService.getItemListByLogOrgFHLXFHWC(item); 
 			totalCount=itemService.getItemCountByLogOrgFHLXFHWC(item);
 			item.setTotalCount(totalCount);
@@ -194,10 +193,7 @@ public class BranchAction extends SystemAction {
 			item.setItemType(Constants.STATIC_ITEM_TYPE_MANAGE);
 			item.setSupervisionOrgId(logUserOrg); //完成机构
 			item.setPreparerOrgId(logUserOrg);    //立项机构
-			item.setOrgTypeA(Constants.ORG_TYPE_1);
-			item.setOrgTypeB(Constants.ORG_TYPE_4);
-			item.setOrgTypeC(Constants.ORG_TYPE_3);
-			item.setOrgTypeD(Constants.ORG_TYPE_4);
+			item.setOrgTypeA(Constants.ORG_TYPE_5);
 			itemList=itemService.getItemListByFHLXZZWC(item);
 			totalCount=itemService.getItemCountByFHLXZZWCALL(item);
 			item.setTotalCount(totalCount);
@@ -206,10 +202,7 @@ public class BranchAction extends SystemAction {
 			item.setItemType(Constants.STATIC_ITEM_TYPE_MANAGE);
 			item.setSupervisionOrgId(logUserOrg); //完成机构
 			item.setPreparerOrgId(logUserOrg);    //立项机构
-			item.setOrgTypeA(Constants.ORG_TYPE_1);
-			item.setOrgTypeB(Constants.ORG_TYPE_2);
-			item.setOrgTypeC(Constants.ORG_TYPE_3);
-			item.setOrgTypeD(Constants.ORG_TYPE_4);
+			item.setOrgTypeA(Constants.ORG_TYPE_5);
 			itemList=itemService.getItemListByLogOrgFHLXZZWC(item);
 			totalCount=itemService.getItemCountByLogOrgFHLXZZWC(item);
 			item.setTotalCount(totalCount);
