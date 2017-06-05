@@ -88,7 +88,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<!-- 初始状态 -->
 						<tr>
-							<td width="15%" align="right">工作事项：</td>
+							<td width="16%" align="right">工作事项：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
@@ -136,15 +136,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 			
 						<!-- 被监察录入执法监察资料状态-->						
-						<c:if test="${ItemProcess2 != null }">
+						<c:if test="${ItemProcess2 != null }">							
 							<tr>
-								<td align="right" style="height:40px;">执法检查立项资料：</td>
-								<td colspan="3">
-									<label>${ItemProcess2.content } </label> 									
-								</td>		
-							</tr> 
-							<tr>
-								<td align="right" >立项资料附件：</td>
+								<td align="right" >执法检查立项资料：</td>
 								<td colspan="3"> 
 									<table style="width:100%;height:100%;min-height:80px;">
 										<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
@@ -154,6 +148,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									</table>
 								</td>		
 							</tr>
+							<tr>
+								<td align="right" style="height:40px;">执法检查立项资料说明：</td>
+								<td colspan="3">
+									<label>${ItemProcess2.content } </label> 									
+								</td>		
+							</tr> 
 						</c:if>
 						<!-- 监察室给出监察意见，并且项目合规 -->		
 						<c:if test="${ItemProcess3 != null }">

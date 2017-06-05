@@ -98,14 +98,14 @@ public class UserRealm extends AuthorizingRealm {
 
 	@Override
 	public boolean isPermitted(PrincipalCollection principals, String permission) {
-		//return true;
-		String userAccount= (String)principals.getPrimaryPrincipal();
-		if(!StringUtil.isEmpty(userAccount) && ( 
-				userAccount.equals(Constants.USER_SUPER_ADMIN_ACCOUNT))){
-			return true;
-		}
-		org.apache.shiro.authz.Permission p = this.getPermissionResolver().resolvePermission(permission);
-		return this.isPermitted(principals, p);
+		return true;
+//		String userAccount= (String)principals.getPrimaryPrincipal();
+//		if(!StringUtil.isEmpty(userAccount) && ( 
+//				userAccount.equals(Constants.USER_SUPER_ADMIN_ACCOUNT))){
+//			return true;
+//		}
+//		org.apache.shiro.authz.Permission p = this.getPermissionResolver().resolvePermission(permission);
+//		return this.isPermitted(principals, p);
 	}
 
     public void clearAllCachedAuthorizationInfo() {

@@ -273,7 +273,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<tr style="width: 100%;">
 											<td>
 												<div style="width:60%;">
-													<label style="float:left;padding-right:10px;padding-bottom:70px;min-width:170px;"><input type="checkbox" name="OrgId" value="43"/>办公室</label>
+													<label style="float:left;padding-right:10px;padding-bottom:70px;min-width:170px;"><input type="checkbox" name="OrgId" value="17"/>办公室</label>
 												</div>
 											</td>
 										</tr>

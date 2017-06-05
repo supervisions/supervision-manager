@@ -18,6 +18,7 @@ import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.FunctionService;
 import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.ResourceService;
+import com.rmbank.supervision.service.RolePermissionService;
 import com.rmbank.supervision.service.RoleResourceService;
 import com.rmbank.supervision.service.RoleService;
 import com.rmbank.supervision.service.SysLogService;
@@ -59,6 +60,9 @@ public class HomeController extends SystemAction {
 
     @Resource(name="roleResourceService")
     private RoleResourceService roleResourceService;
+    
+    @Resource(name="rolePermissionService")
+    private RolePermissionService rolePermissionService;
     
 
 	@Resource
@@ -106,7 +110,6 @@ public class HomeController extends SystemAction {
 //			}else{
 //				a.setState("open");
 //			}
-//			
 //		}
 		for(Organ a:list){
 			a.setText(a.getName());
@@ -176,71 +179,22 @@ public class HomeController extends SystemAction {
                 User u = res.getResultObject(); 
                 //获取该用户类型所有模块 
                 List<FunctionMenu> lf = new ArrayList<FunctionMenu>(); 
-//                //不是超级管理员
+                //不是超级管理员
                 if(!u.getAccount().equals(Constants.USER_SUPER_ADMIN_ACCOUNT)){
                     //获取当前用户角色  
                     List<Role> roleList = roleService.getRolesByUserId(u.getId());
                     
-                    
-                    //根据角色查询资源
-                    /*List<RoleResource> roleResourceList=new ArrayList<RoleResource>();                    
-                    for (Role role : roleList) {
-                    	List<RoleResource> rrl=new ArrayList<RoleResource>();
-                    	rrl=roleResourceService.selectByRoleId(role.getId());
-                    	roleResourceList.addAll(rrl);
-					}
-                    //用户角色所对应的资源
-                    List<ResourceConfig> resourceList = new ArrayList<ResourceConfig>(); 
-                    for (RoleResource roleResource : roleResourceList) {
-                    	ResourceConfig resourceById=new ResourceConfig();
-                    	resourceById = resourceService.getResourceById(roleResource.getResourceId());
-                    	resourceList.add(resourceById);
-                    }
-                    //根据用户对应的资源查询function  
-                    List<FunctionMenu> fList=new ArrayList<FunctionMenu>();
-                    Map<String,String> map = new HashMap<String,String>();
-                    FunctionMenu functionMenu=null;
-                    for(ResourceConfig rcf : resourceList) {
-                    	functionMenu=functionService.getFunctionMenusById(rcf.getMoudleId());
-                    	if(map.isEmpty()){
-                    		fList.add(functionMenu);
-         					map.put(functionMenu.getName(), functionMenu.getName());
-         				}else{
-	     					if(map.get(functionMenu.getName())==null){ 
-	     						fList.add(functionMenu);
-	     						map.put(functionMenu.getName(), functionMenu.getName());
-	     					}
-         				}
-                    	 //lf.add(functionMenu);        
-					}
-                    Map<String,String> map1 = new HashMap<String,String>();
-                    FunctionMenu functionMenusById=null;
-                    for (FunctionMenu am : fList) {
-                    	functionMenusById = functionService.getFunctionMenusById(am.getParentId());
-                    	if(map1.isEmpty()){
-                    		lf.add(functionMenusById);
-                    		map1.put(functionMenusById.getName(), functionMenusById.getName());
-         				}else{
-	     					if(map1.get(functionMenusById.getName())==null){ 
-	     						lf.add(functionMenusById);
-	     						map1.put(functionMenusById.getName(), functionMenusById.getName());
-	     					}
-         				}
-                    	
-					}*/
-                   
-                    //根据用户角色查询一级按钮
-                   	//lf = functionService.getFunctionMenusByUserRoles(roleList);
-                    
-                    
-                    
-                    //查询当前用户权限拥有的资源
+
+                    //根据用户ID获取一级模块
+                    List<FunctionMenu> fcm=functionService.getFunctionByUserId(u.getId());
+                    lf = parseFunctionMenuList(this.functionService.getFunctionMenuByParentId(0));
+                   /* //查询当前用户权限拥有的资源
                     List<ResourceConfig> ResourceConfigList = resourceService.getResourceConfigsByUserRoles(roleList);
                     
                     Map<String,String> map = new HashMap<String,String>();
                     for (ResourceConfig rcf : ResourceConfigList) {
 						if(map.isEmpty()){
-							map.put(rcf.getParentName(), rcf.getParentName());
+							map.put(rcf.getParentName(), rcf.getParentName());//获取一级菜单
 							FunctionMenu functionMenu=new FunctionMenu();
 							functionMenu.setName(rcf.getParentName());
 							functionMenu.setUrl(rcf.getUrl());
@@ -302,9 +256,7 @@ public class HomeController extends SystemAction {
 								lf.add(functionMenu);
 							}
 						}
-					}                   
-       
-                    
+					}               */    
                 }
                 else{                	
                     lf = parseFunctionMenuList(this.functionService.getFunctionMenuByParentId(0));

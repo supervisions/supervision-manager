@@ -351,13 +351,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</tr>						
 						<tr>
 							<td align="right" >是否有异议：</td>
-							<td colspan="3">
-								<label>
-									<input type="radio" name="status" value="5" >有异议
-								</label> 
+							<td colspan="3">								
 								<label>
 									<input type="radio" name="status" value="6" checked="checked">无异议
-								</label>								
+								</label>	
+								<label>
+									<input type="radio" name="status" value="5" >有异议
+								</label> 							
 							</td>	
 						</tr>
 					</table>

@@ -99,9 +99,11 @@ public class EnforcementVisionAction extends SystemAction {
 		// 获取当前用户对应的第一个机构
 		Organ userOrg = userOrgList.get(0);
 		try {
-			if (userOrg.getOrgtype() == Constants.ORG_TYPE_1
-					|| Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser
-							.getAccount())) {
+			if (userOrg.getOrgtype()==Constants.ORG_TYPE_1 ||
+					userOrg.getOrgtype()==Constants.ORG_TYPE_2 ||
+					userOrg.getOrgtype()==Constants.ORG_TYPE_3 ||
+					Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())) {
+							
 				// 取满足要求的参数数据
 				item.setSupervisionTypeId(4);
 				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION);

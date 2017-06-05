@@ -97,7 +97,10 @@ public class EfficiencyVisionAction extends SystemAction {
 		List<Item> itemList = new ArrayList<Item>();
 		try {
 			//成都分行和超级管理员获取所有项目
-			if(userOrg.getOrgtype()==Constants.ORG_TYPE_1 ||Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
+			if(userOrg.getOrgtype()==Constants.ORG_TYPE_1 ||
+					userOrg.getOrgtype()==Constants.ORG_TYPE_2 ||
+							userOrg.getOrgtype()==Constants.ORG_TYPE_3 ||
+					Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
 				
 				item.setSupervisionTypeId(2); //2代表效能监察
 				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //实时监察模块
