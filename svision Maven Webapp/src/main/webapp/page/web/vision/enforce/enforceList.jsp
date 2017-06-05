@@ -110,7 +110,7 @@ function uploadFile(id,tag){
 				<div class=pd10>
 					<div class="fl">  
 						<span>条件查询：</span>
-						<input type="text" id="seaarchNameTemp" validType="SpecialWord" class="easyui-validatebox" placeholder="搜索" value="${Role.searchName}" /> 
+						<input type="text" id="seaarchNameTemp" validType="SpecialWord" class="easyui-validatebox" placeholder="搜索" value="${Item.searchName}" /> 
 						<input type="hidden" name="searchName" id="hid_serarch" /> 
 						
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
