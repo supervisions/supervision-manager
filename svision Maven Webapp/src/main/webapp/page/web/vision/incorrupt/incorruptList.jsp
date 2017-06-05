@@ -146,14 +146,14 @@ function uploadFile(id,tag){
 				<div class=pd10>
 					<div class="fl">  
 						<span>条件查询：</span>
-						<input type="text" id="seaarchNameTemp" validType="SpecialWord" class="easyui-validatebox" placeholder="搜索" value="${Role.searchName}" /> 
+						<input type="text" id="seaarchNameTemp" validType="SpecialWord" class="easyui-validatebox" placeholder="搜索" value="${Item.searchName}" /> 
 						<input type="hidden" name="searchName" id="hid_serarch" /> 
 						
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
 					</div>
 					
 					<div class="fr">
-						<c:if test="${userOrg.orgtype ==48 || userOrg.orgtype ==48}">
+						<c:if test="${userOrg.orgtype ==48 || userOrg.orgtype ==49}">
 							<span class="yw-btn bg-green cur" onclick="window.location.href='itemInfo.do';">添加工作事项</span>							
 						</c:if>
 						

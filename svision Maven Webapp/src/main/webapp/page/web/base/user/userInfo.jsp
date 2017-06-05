@@ -127,7 +127,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 				<table class="yw-cm-table font16" id="userTable">
 					<tr>
-						<td width="8%" align="right">用户名称:</td>
+						<td width="8%" align="right">用户名称：</td>
 						<td> 
 							<input id="userName" class="easyui-validatebox" name="name" type="text"  doc="taskInfo" value="${User.name}" required="true" validType="baseValue" style="width:254px;height:28px;"/>
 							<input type="hidden" id="userId" name="id" doc="taskInfo" value="${User.id}"/>								
@@ -137,7 +137,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					</tr> 
 					<c:if test="${User.id == 0 || User.id == null }">
 						<tr>
-							<td width="8%" align="right">用户账号</td>
+							<td width="8%" align="right">用户账号：</td>
 							<td>
 								<input id="userAccount" name="account" type="text"
 								doc="taskInfo" value="${User.account}" required="true"
@@ -148,7 +148,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td width="8%"></td>
 						</tr>
 						<tr>
-							<td width="8%" align="right">用户密码</td>
+							<td width="8%" align="right">用户密码：</td>
 							<td>
 								<input id="pwd" name="pwd" type="password"
 								doc="taskInfo" value="${User.name}" required="true"
@@ -159,7 +159,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td width="8%"></td>
 						</tr>
 						<tr>
-							<td align="right">确认密码</td>
+							<td width="8%" align="right">确认密码：</td>
 							<td><input id="ppwd" name="ppwd" type="password"
 								doc="taskInfo" value="${User.name}" required="true"
 								class="easyui-validatebox" validType="equalTo['#pwd']"
@@ -170,7 +170,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					</c:if>
 					<tr>
 						<input type="hidden" id="OrganName" value="" />
-						<td align="right">所属机构:</td>
+						<td align="right">所属机构：</td>
 						<td>	
 							<!-- t_user_org表中user_id对应的id -->
 							<c:forEach var="userOrg" items="${userOrgList}">
@@ -184,7 +184,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					</tr>
 					
 					<tr>
-						<td width="8%" align="right">职务名称</td>
+						<td width="8%" align="right">职务名称：</td>
 						<td><select name="postId" class="easyui-combobox"
 							style="width:254px;height:28px;" editable="false">		
 							<option value="">=请选择职务=</option>						
@@ -195,19 +195,19 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<td width="8%"></td>
 					</tr>
 					<tr>
-						<td align="right">用户角色</td>						
+						<td align="right">用户角色：</td>						
 						<td> 
 							<!-- 角色列表 -->
 							<c:forEach var="item" items="${roleList }">								
 								<label> 
-								<input type="checkbox" doc="taskInfo" <c:forEach var="selectItem" items="${userRoleList}"><c:if test="${item.id == selectItem.id}">checked="checked"</c:if></c:forEach> required="true" name="roleId" value="${item.id}" />${item.name}
+								<input type="radio" doc="taskInfo" <c:forEach var="selectItem" items="${userRoleList}"><c:if test="${item.id == selectItem.id}">checked="checked"</c:if></c:forEach> required="true" name="roleId" value="${item.id}" />${item.name}
 								</label>
 							</c:forEach>
 						</td>
 						<td width="8%"></td>
 					</tr>
 					<tr>
-						<td align="right">用户状态</td>
+						<td align="right">用户状态：</td>
 						<td><c:if test="${User.used == 1 || User.used == null }">
 								<label><input type="radio" name="used" value="1"
 									checked="checked" />启用</label>

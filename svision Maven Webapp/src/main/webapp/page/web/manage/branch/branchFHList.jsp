@@ -124,7 +124,7 @@ function followItem(id,name){
 					</div>
 					<div class="fr">
 						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox"
-							   style="width: 120px;" placeholder="搜索关键字：名称" value="${Organ.searchName}" /> 
+							   style="width: 120px;" placeholder="搜索关键字：名称" value="${Item.searchName}" /> 
 						<span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
 						
 						<c:if test="${logUserOrg == 19 }">
