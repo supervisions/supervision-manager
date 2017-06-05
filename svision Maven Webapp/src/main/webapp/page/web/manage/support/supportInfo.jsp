@@ -61,6 +61,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	$(document).ready(function(){	 
 		$("#datepicker").datepicker(); 
 		$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
+		
+		$("#datepicker1").datepicker(); 
+		$("#datepicker1").datepicker("option", "dateFormat", "yy-mm-dd");	
 	 	 	var len=32;//32长度
             var radix=16;//16进制
             var chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
@@ -229,7 +232,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 <span style="color:red">*</span> 
 							</td>								
 						</tr>
-						
+						<tr>
+							<td  align="right">规定完成时间：</td>
+							<td colspan="3">
+								 <input type="text" name="end_time" value="" id="datepicker1" style="width:258px;height:22px;">
+							 	<span style="color:red">*</span> 
+							</td>
+						</tr>
 						<tr>
 							<td align="right" height="100px;">立项审批表、方案 ：</td>
 							<td colspan="3"> 

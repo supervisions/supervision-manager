@@ -9,6 +9,7 @@ import java.util.Iterator;
 public class Constants
 {
   public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  public static final SimpleDateFormat DATE_FORMAT1 = new SimpleDateFormat("yyyy-MM-dd");
   public static final String USER_ADMIN_ACCOUNT = "admin";
   public static final String USER_SUPER_ADMIN_ACCOUNT = "administrator";
   public static final String USER_SESSION_RESOURCE = "userResources";

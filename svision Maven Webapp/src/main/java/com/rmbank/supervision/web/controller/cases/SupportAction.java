@@ -320,13 +320,14 @@ public class SupportAction extends SystemAction {
     @RequiresPermissions("manage/support/jsonSaveOrUpdateItem.do")
     public JsonResult<Item> jsonSaveOrUpdateItem(Item item,
     		@RequestParam(value = "pTime", required = false) String pTime,//用于接收前台传过来的String类型的时间
+    		@RequestParam(value = "end_time", required = false) String endTime,//用于接收前台传过来的String类型的时间
     		@RequestParam(value = "content", required = false) String content,
     		@RequestParam(value = "OrgId", required = false) Integer[] OrgIds,    		
     		HttpServletRequest request, HttpServletResponse response) throws ParseException{
     	//将前台传过来的String类型的时间转换为Date类型
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    	Date date = sdf.parse(pTime);    	
-    	item.setPreparerTime(date); //制单时间
+    	 
+    	item.setPreparerTime(Constants.DATE_FORMAT1.parse(pTime)); //制单时间
+    	item.setEndTime(Constants.DATE_FORMAT1.parse(endTime)); //规定完成时间
     	item.setItemType(Constants.STATIC_ITEM_TYPE_MANAGE); //项目类型
     	item.setPid(0); //主任务节点的ID
     	item.setStageIndex(new Byte("0")); //工作阶段排序   	
@@ -407,7 +408,7 @@ public class SupportAction extends SystemAction {
 			
 			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
 			if(item != null){
-				item.setEndTime(new Date());
+//				item.setEndTime(new Date());
 				item.setStatus(Constants.ITEM_STATUS_OVER);
 				itemService.updateByPrimaryKeySelective(item);
 			} 
