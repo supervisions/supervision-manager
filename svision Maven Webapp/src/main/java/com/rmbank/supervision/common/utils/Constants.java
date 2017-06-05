@@ -77,10 +77,11 @@ public class Constants
   public static final Integer STATIC_ITEM_TYPE_SVISION = 0;
   
   //机构类型
-  public static final Integer ORG_TYPE_1= 46; //分行监察室
-  public static final Integer ORG_TYPE_2= 47; //分行机关
-  public static final Integer ORG_TYPE_3= 48; //中支单位
-  public static final Integer ORG_TYPE_4= 49; //县支行
+  public static final Integer ORG_TYPE_1= 45; //行领导
+  public static final Integer ORG_TYPE_2= 46; //依法行政领导办公室
+  public static final Integer ORG_TYPE_3= 47; //监察室
+  public static final Integer ORG_TYPE_4= 48; //分行机关
+  public static final Integer ORG_TYPE_5= 49; //中支机构
   
   //分行立项，分行完成项目进行流程
   public static final Integer CONTENT_TYPE_ID_1= 31; 

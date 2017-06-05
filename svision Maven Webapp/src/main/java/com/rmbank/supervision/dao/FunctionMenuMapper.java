@@ -24,4 +24,6 @@ public interface FunctionMenuMapper {
 	List<FunctionMenu> getFunctionMenuList(FunctionMenu functionMenu);
 
 	FunctionMenu getFunctionMenusById(Integer id);
+
+	List<FunctionMenu> getFunctionByUserId(Integer userId);
 }

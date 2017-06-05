@@ -196,10 +196,9 @@ function followAction(itemId,status){
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
 					</div>
 					<div class="fr">
-						<%-- <c:if test="${userOrg.supervision ==1 }">
+						<c:if test="${userOrg.orgtype ==47  }">
 							<span class="yw-btn bg-green cur" onclick="window.location.href='efficiencyInfo.do?id=0';">添加工作事项</span>							
-						</c:if> --%>
-						<span class="yw-btn bg-green cur" onclick="window.location.href='efficiencyInfo.do?id=0';">添加工作事项</span>
+						</c:if>
 						
 					</div>
 					<div class="cl"></div>				
@@ -290,7 +289,7 @@ function followAction(itemId,status){
 							</c:if>
 						</td>
 						<td><%-- <sapn>${item.lasgTag}</sapn> --%>
-							<c:if test="${item.status == 0 and userOrg.id==item.preparerOrgId}">
+							<c:if test="${item.status == 0 && userOrg.id==17 || item.status == 0 && userOrg.id==18 || item.status == 0 && userOrg.id==19}">
 								<span style="color: red;" onclick="setProject(${item.id })">立项</span>
 							</c:if>
 							<c:if test="${userOrg.id == item.supervisionOrgId and item.status != 0 and item.isSign <= 1}">

@@ -15,5 +15,7 @@ public interface FunctionService {
 	List<FunctionMenu> getFunctionMenuList(FunctionMenu functionMenu);
 
 	FunctionMenu getFunctionMenusById(Integer moudleId);
+
+	List<FunctionMenu> getFunctionByUserId(Integer id);
  
 }

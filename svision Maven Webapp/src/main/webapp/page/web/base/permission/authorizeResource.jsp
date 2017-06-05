@@ -81,7 +81,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<input type="hidden" name="permissionId" value="${resourceConfig.id }">
 					<c:forEach var="item" items="${resourceList }">
 					<tr>
-						<td style="font-weight: 900;">${item.name }</td>
+						<td style="font-weight: 900;"><sapn>所属模块：</sapn>${item.name }</td>
 					</tr>
 					<tr>	
 						<td>					

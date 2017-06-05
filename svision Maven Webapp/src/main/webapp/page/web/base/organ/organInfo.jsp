@@ -127,7 +127,7 @@
 				<div id="tab1" class="yw-tab">
 					<table class="yw-cm-table font16" id="taskTable">
 						<tr>
-							<td width="8%" align="right">机构名称</td>
+							<td width="10%" align="right">机构名称:</td>
 							<td><input id="orgName" class="easyui-validatebox"
 								name="name" type="text" doc="taskInfo" value="${Organ.name}"
 								required="true" validType="baseValue"
@@ -140,7 +140,7 @@
 						</tr>								
 						<tr>
 							<input type="hidden" id="OrganName" value="" />
-							<td align="right" width="8%">所属机构:</td>
+							<td align="right">所属机构:</td>
 							<td>							
 								<input id="orgPid" name="pid" type="hidden" value="${Organ.pid }" />
 								<input id="orgParentTree" name="" value="" style="width:254px;height:28px;" checkbox="true"  class="easyui-combotree" />
@@ -149,7 +149,7 @@
 							</td>
 						</tr>
 						<tr>							
-							<td align="right" width="8%">机构类型:</td>
+							<td align="right">机构类型:</td>
 							<td>							
 								<select name="orgtype" class="easyui-combobox" style="width:254px;height:28px;">
 									<option value="-1">=请选择机构类型=</option>
@@ -162,7 +162,7 @@
 							</td>
 						</tr>									
 						<tr>
-							<td align="right" width="20%">是否监察部门：</td>
+							<td align="right">是否监察部门:</td>
 							<td>
 								<c:if test="${Organ.supervision==1}">
 									<label><input type="radio" name="supervision" value="1"
@@ -177,7 +177,7 @@
 							<td width="8%"></td>
 						</tr>
 						<tr>
-							<td align="right">机构状态</td>
+							<td align="right">机构状态:</td>
 							<td>
 								<c:if test="${Organ.used==1}">
 									<label><input type="radio" name="used" value="1"
