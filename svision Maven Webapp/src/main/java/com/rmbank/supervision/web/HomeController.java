@@ -183,80 +183,12 @@ public class HomeController extends SystemAction {
                 if(!u.getAccount().equals(Constants.USER_SUPER_ADMIN_ACCOUNT)){
                     //获取当前用户角色  
                     List<Role> roleList = roleService.getRolesByUserId(u.getId());
-                    
-
-                    //根据用户ID获取一级模块
-                    List<FunctionMenu> fcm=functionService.getFunctionByUserId(u.getId());
-                    lf = parseFunctionMenuList(this.functionService.getFunctionMenuByParentId(0));
-                   /* //查询当前用户权限拥有的资源
-                    List<ResourceConfig> ResourceConfigList = resourceService.getResourceConfigsByUserRoles(roleList);
-                    
-                    Map<String,String> map = new HashMap<String,String>();
-                    for (ResourceConfig rcf : ResourceConfigList) {
-						if(map.isEmpty()){
-							map.put(rcf.getParentName(), rcf.getParentName());//获取一级菜单
-							FunctionMenu functionMenu=new FunctionMenu();
-							functionMenu.setName(rcf.getParentName());
-							functionMenu.setUrl(rcf.getUrl());
-							functionMenu.setId(rcf.getMoudleId());							
-							List<FunctionMenu> fList= new ArrayList<FunctionMenu>();							
-							Map<Integer,Integer> map1=new HashMap<Integer, Integer>();
-							Integer pid=rcf.getParentId();							 
-							for (ResourceConfig rcl : ResourceConfigList) {
-								if(map1.isEmpty()){
-									map1.put(rcl.getMoudleId(),rcl.getParentId());
-									FunctionMenu fm=new FunctionMenu();
-									fm.setName(rcl.getFunctionName());
-									fm.setUrl(rcl.getUrl());
-									fm.setId(rcl.getMoudleId());
-									fList.add(fm);
-								}else {
-									if(map1.get(rcl.getMoudleId())==null && rcl.getParentId()==pid){
-										map1.put(rcl.getMoudleId(),rcl.getParentId());
-										FunctionMenu fm=new FunctionMenu();
-										fm.setName(rcl.getFunctionName());
-										fm.setUrl(rcl.getUrl());
-										fm.setId(rcl.getMoudleId());
-										fList.add(fm);
-									}
-								}								
-							}
-							functionMenu.setChildMenulist(fList);
-							lf.add(functionMenu);
-						}else {
-							if(map.get(rcf.getParentName())==null){
-								map.put(rcf.getParentName(), rcf.getParentName());
-								FunctionMenu functionMenu=new FunctionMenu();
-								functionMenu.setName(rcf.getParentName());
-								functionMenu.setUrl(rcf.getUrl());
-								functionMenu.setId(rcf.getMoudleId());								
-								List<FunctionMenu> fList= new ArrayList<FunctionMenu>();								
-								Map<Integer,Integer> map1=new HashMap<Integer, Integer>();
-								Integer pid=rcf.getParentId();					 
-								for (ResourceConfig rcl : ResourceConfigList) {
-									if(map1.isEmpty() && rcl.getParentId()==pid){
-										map1.put(rcl.getMoudleId(),rcl.getParentId());
-										FunctionMenu fm=new FunctionMenu();
-										fm.setName(rcl.getFunctionName());
-										fm.setUrl(rcl.getUrl());
-										fm.setId(rcl.getMoudleId());
-										fList.add(fm);
-									}else {
-										if(map1.get(rcl.getMoudleId())==null && rcl.getParentId()==pid){
-											map1.put(rcl.getMoudleId(),rcl.getParentId());
-											FunctionMenu fm=new FunctionMenu();
-											fm.setName(rcl.getFunctionName());
-											fm.setUrl(rcl.getUrl());
-											fm.setId(rcl.getMoudleId());
-											fList.add(fm);
-										}
-									}								
-								}
-								functionMenu.setChildMenulist(fList);
-								lf.add(functionMenu);
-							}
-						}
-					}               */    
+                    List<FunctionMenu> subList = functionService.getFunctionByUserId(u.getId()); 
+                    if(subList.size() ==0){
+                         json.setMessage("登录失败，当前登录用户为授权!");
+                    }else{
+                    	lf = getFunctionMenuListByItem(subList);
+                    }
                 }
                 else{                	
                     lf = parseFunctionMenuList(this.functionService.getFunctionMenuByParentId(0));
@@ -304,7 +236,47 @@ public class HomeController extends SystemAction {
     }
   
 
-    private List<FunctionMenu> parseFunctionMenuList(List<FunctionMenu> src)
+    private List<FunctionMenu> getFunctionMenuListByItem(
+			List<FunctionMenu> subList) {
+		// TODO Auto-generated method stub
+    	List<FunctionMenu> lf = new ArrayList<FunctionMenu>();
+    	List<Integer> idList = new ArrayList<Integer>();
+    	List<Integer> itemIdList = new ArrayList<Integer>();
+		for(FunctionMenu fm: subList){
+			if(idList.size() == 0){
+				idList.add(fm.getParentId());
+			}else if(!idList.contains(fm.getParentId())){
+				idList.add(fm.getParentId());
+			}
+			itemIdList.add(fm.getId());
+		}
+		System.out.println(idList.size());
+		for(int id : idList){
+			FunctionMenu fms = functionService.getFunctionMenusById(id);
+			lf.add(fms);
+		}
+		lf = parseFunctionMenuListByItemId(lf,itemIdList);  
+		return lf;
+	}
+	private List<FunctionMenu> parseFunctionMenuListByItemId(List<FunctionMenu> src,List<Integer> itemIdList)
+    {
+        for (FunctionMenu f : src) {
+            if(f.getLeaf() == 0) {
+            	List<FunctionMenu> tempList = this.functionService.getFunctionMenuByParentId(f.getId()); 
+            	List<FunctionMenu> cList = new ArrayList<FunctionMenu>();
+            	for(FunctionMenu tf : tempList){
+            		for(int id : itemIdList){
+            			if(id == tf.getId()){
+            				cList.add(tf);
+            			}
+            		}
+            	}
+                f.setChildMenulist(cList);
+            }
+        }
+        return src;
+    }
+	private List<FunctionMenu> parseFunctionMenuList(List<FunctionMenu> src)
     {
         for (FunctionMenu f : src) {
             if(f.getLeaf() == 0) {

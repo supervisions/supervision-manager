@@ -45,8 +45,12 @@
 		<tr> 
 			<td style="width:20%"></td>
 			<c:forEach var="item" items="${sessionScope.userResources}">
-				<c:if test="${item.url == 'vision/efficiency/efficiencyList.do'}">
-					<td><img src="<%=basePath %>source/images/model/ssjc.png" title="${item.name}" onclick="gotoMainMenu('${pageContext.request.contextPath}/${item.url}','${item.id}')" /></td>
+				<c:if test="${item.url == 'vision/efficiency/efficiencyList.do'}"> 
+					<c:forEach var="subItem" items="${item.childMenulist}" varStatus="status"> 
+						<c:if test="${status.index == 0}">
+							<td><img src="<%=basePath %>source/images/model/ssjc.png" title="${item.name}" onclick="gotoMainMenu('${pageContext.request.contextPath}/${subItem.url}','${item.id}')" /></td>
+						</c:if>
+					</c:forEach>
 				</c:if>
 				<c:if test="${item.url == 'manage/branch/branchFHList.do'}">
 					<td><img src="<%=basePath %>source/images/model/zhgl.png" title="${item.name}" onclick="gotoMainMenu('${pageContext.request.contextPath}/${item.url}','${item.id}')"  /></td>

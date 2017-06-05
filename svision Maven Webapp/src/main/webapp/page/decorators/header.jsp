@@ -65,13 +65,13 @@
 				<td><img style="cursor:pointer;"  src="<%=basePath %>source/images/model/rzgl.png" title="${item.name}" /></td>
 			</c:if> 
 		</c:forEach> --%>
-        <c:forEach var="item" items="${sessionScope.userResources}">
+       <%--  <c:forEach var="item" items="${sessionScope.userResources}">
          	<c:if test="${item.id == sessionScope.userInfo.selectedMainMemu}">
-            	<li class="head-menu-now" <%-- onclick="gotoMainMenu('${pageContext.request.contextPath}/${item.url}','${item.id}')" --%>>
+            	<li class="head-menu-now" onclick="gotoMainMenu('${pageContext.request.contextPath}/${item.url}','${item.id}')">
                     ${item.name}
             	</li>
            	 </c:if>
-        </c:forEach>
+        </c:forEach> --%>
     </ul>
     <div class="fl head-menu-right">
         <!-- <a href="#"><i class="fl yw-icon icon-dot"></i><span>你有新消息</span></a> -->

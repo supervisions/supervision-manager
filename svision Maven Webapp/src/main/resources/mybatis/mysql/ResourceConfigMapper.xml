@@ -137,7 +137,16 @@
   	where moudle_id=#{moudleId,jdbcType=VARCHAR}
   </select>
   <select id="getResourceConfigsByUserRoles" parameterType="java.util.List" resultMap="BaseResultMap">
-  	SELECT r.*,f.`name` AS functionName,f.`parent_id` AS parentId,f.url,
+  
+  select DISTINCT r.* from t_role_permission rp
+	left join t_permission p on rp.permission_id = p.id
+	left join t_permission_resource pr on p.id = pr.permission_id
+	left join t_resource r on pr.resource_id = r.id
+	where rp.role_id in 
+<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+	  #{item.id,jdbcType=INTEGER}  
+	</foreach>  
+  	<!-- SELECT r.*,f.`name` AS functionName,f.`parent_id` AS parentId,f.url,
 	(SELECT ff.name FROM t_function ff WHERE ff.id = f.`parent_id`)AS parentName
 	FROM t_role_resource rr
 	LEFT JOIN t_resource r ON rr.`resource_id` = r.`id`
@@ -147,6 +156,6 @@
 	  #{item.id,jdbcType=INTEGER}  
 	</foreach>  
 	AND r.name IS NOT NULL
-	ORDER BY f.`sort` ASC
+	ORDER BY f.`sort` ASC -->
   </select>
 </mapper>
