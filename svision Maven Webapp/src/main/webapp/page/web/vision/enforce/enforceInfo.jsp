@@ -34,6 +34,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/plupload.full.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery.ui.plupload.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/zh_CN.js" charset="UTF-8"></script>
+    
+    <!-- 以下两个引的文件用于layer -->
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
+	<script src="<%=basePath%>source/js/layer/layer.js"></script>
+    
+    
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
     <![endif]-->
@@ -161,7 +167,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	
 	//新增/编辑项目
 	function saveItem(obj){	
-        $.ajax({
+		if(isNull()!=false){
+			$.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
 	        url: "<%=basePath%>vision/enforce/jsonUpdateItem.do",
@@ -176,6 +183,20 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	        	}	
 	        }
    		});
+		}
+        
+	}
+	
+	function isNull(){			
+		if($("#datepicker").val()==null || $("#datepicker").val()==""){
+			layer.alert('请输入规定完成时间！');
+			return false;
+		} 
+		var OrgId=$("input[name='OrgId']").is(':checked');
+		if(OrgId==false){
+			layer.alert('请选择被监察对象！');
+			return false;
+		} 
 	}
 </script>
  </head> 
@@ -204,14 +225,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				method="post">
 				<div id="tab1" class="yw-tab">
 					<table class="font16" id="taskTable">
-						<!-- <tr>
-							<td width="10%" align="right">项目名称：</td>
-							<td colspan="3"><input id="" 
-								name="name" type="text" doc="taskInfo" value=""  style="width:60%;height:28px;" />  
-								<span style="color:red">*</span> 
-                            	
-							</td> 
-						</tr> 	 -->				
+									
 						<tr>
 							<td  width="10%"  align="right" height="100px;">监察内容：</td>
 							<td colspan="3"> 

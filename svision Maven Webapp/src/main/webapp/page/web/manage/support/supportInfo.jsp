@@ -34,6 +34,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/plupload.full.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery.ui.plupload.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/zh_CN.js" charset="UTF-8"></script>
+    
+    <!-- 以下两个引的文件用于layer -->
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
+	<script src="<%=basePath%>source/js/layer/layer.js"></script>
+      
+    
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
     <![endif]-->
@@ -164,22 +170,46 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	
 	//新增/编辑项目
 	function saveItem(obj){	
-        $.ajax({
-	        cache: true, //是否缓存当前页面
-	        type: "POST", //请求类型
-	        url: "manage/support/jsonSaveOrUpdateItem.do",
-	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
-	        async: true, //发送异步请求	  
-	        dataType:"json", //响应数据类型      
-	        success: function(data) {
-	        	if(data.code==0){ 
-	        		$("#uploader_start").click(); //上传文件
-	        	}else{
-	        		alert(data.message);	        	
-	        	}	
-	            
-	        }
-   		});
+		if(isNull()!=false){
+			$.ajax({
+		        cache: true, //是否缓存当前页面
+		        type: "POST", //请求类型
+		        url: "manage/support/jsonSaveOrUpdateItem.do",
+		        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+		        async: true, //发送异步请求	  
+		        dataType:"json", //响应数据类型      
+		        success: function(data) {
+		        	if(data.code==0){ 
+		        		$("#uploader_start").click(); //上传文件
+		        	}else{
+		        		alert(data.message);	        	
+		        	}		            
+		        }
+	   		});
+		}        
+	}
+	function isNull(){		
+		if($("#itemName").val()==null || $("#itemName").val()==""){	
+			layer.alert('请输入项目名称！');				
+			return false;
+		} 
+		if($("#datepicker").val()==null || $("#datepicker").val()==""){
+			layer.alert('请输入立项时间！');			
+			return false;
+		}
+		if($("#datepicker1").val()==null || $("#datepicker1").val()==""){
+			layer.alert('请输入规定完成时间！');			
+			return false;
+		}
+		if($("#supervisionTypeId").val()<1 ){
+			layer.alert('请选择项目分类！');			
+			return false;
+		}  
+		var OrgId=$("input[name='OrgId']").is(':checked');
+		if(OrgId==false){
+			layer.alert('请选择被监察对象！');	
+			return false;
+		} 
 	}
 </script>
  </head> 
@@ -211,7 +241,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
-								<input name="name" type="text" value="" style="width:60%;height:28px;" />  
+								<input  id="itemName" name="name" type="text" value="" style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
                             	<input type="hidden" id="hid_uuid" name="uuid" />
                             	<input type="hidden"  name="defined" value="1" />

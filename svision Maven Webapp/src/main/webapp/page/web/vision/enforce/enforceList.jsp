@@ -285,7 +285,7 @@ function uploadFile(id,tag){
 							</c:if>
 						</td>
 						<td>
-							<c:if test="${userOrg.orgtype==47}">
+							<c:if test="${userOrg.orgtype==47 || userOrg.orgtype==46}">
 								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
 							</c:if>
 						</td>						

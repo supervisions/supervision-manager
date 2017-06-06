@@ -34,6 +34,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/plupload.full.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery.ui.plupload.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/zh_CN.js" charset="UTF-8"></script>
+    
+    <!-- 以下两个引的文件用于layer -->
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
+	<script src="<%=basePath%>source/js/layer/layer.js"></script>
+    
+    
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
     <![endif]-->
@@ -161,22 +167,34 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	
 	//新增/编辑项目
 	function saveItem(obj){	
-        $.ajax({
-	        cache: true, //是否缓存当前页面
-	        type: "POST", //请求类型
-	        url: "<%=basePath%>vision/enforce/jsonSaveOrUpdateItem.do",
-	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
-	        async: true, //发送异步请求	  
-	        dataType:"json", //响应数据类型      
-	        success: function(data) {
-	        	if(data.code==0){ 
-	        		$("#uploader_start").click(); //上传文件
-	        	}else{
-	        		alert(data.message);	        	
-	        	}	
-	            
-	        }
-   		});
+		if(isNull()!=false){
+	        $.ajax({
+		        cache: true, //是否缓存当前页面
+		        type: "POST", //请求类型
+		        url: "<%=basePath%>vision/enforce/jsonSaveOrUpdateItem.do",
+		        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+		        async: true, //发送异步请求	  
+		        dataType:"json", //响应数据类型      
+		        success: function(data) {
+		        	if(data.code==0){ 
+		        		$("#uploader_start").click(); //上传文件
+		        	}else{
+		        		alert(data.message);	        	
+		        	}			            
+		        }
+	   		});
+   		}
+	}
+	function isNull(){		
+		if($("#itemName").val()==null || $("#itemName").val()==""){
+			layer.alert('请录入工作事项！');	
+			return false;
+		}		
+		var superItemType=$("#superItemType").val();		
+		if(superItemType==-1||superItemType==null){
+			layer.alert('请选择项目类别！');	
+			return false;
+		} 
 	}
 </script>
  </head> 
@@ -208,7 +226,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td width="8%" align="right">工作事项：</td>
 							<td colspan="3">
-								<input name="name" type="text" value="" style="width:60%;height:28px;" />  
+								<input id="itemName" name="name" type="text" value="" style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
                             	<input type="hidden" id="hid_uuid" name="uuid" />
                             	<input type="hidden" name="OrgId" value="${userOrg.id}">
@@ -236,7 +254,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" height="50px">项目类别：</td>
 							<td colspan="3">
-								<select id="" name="superItemType" style="width:289px;height:28px;">
+								<select id="superItemType" name="superItemType" style="width:289px;height:28px;">
 									<option value="-1">==请选择项目类别==</option>	
 									<c:forEach var="item" items="${meatListByKey }">
 										<option value="${item.id }">${item.name }</option>
