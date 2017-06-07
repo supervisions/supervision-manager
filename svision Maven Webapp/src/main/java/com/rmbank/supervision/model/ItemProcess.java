@@ -53,6 +53,9 @@ public class ItemProcess {
     
     private Integer isOverStatus;
     
+    
+    private Integer isFollowStatus;
+    
     /**
      * 量化选择模型
      */
@@ -230,5 +233,13 @@ public class ItemProcess {
 
 	public void setDetailId(List<Integer> detailId) {
 		this.detailId = detailId;
+	}
+
+	public Integer getIsFollowStatus() {
+		return isFollowStatus;
+	}
+
+	public void setIsFollowStatus(Integer isFollowStatus) {
+		this.isFollowStatus = isFollowStatus;
 	}
 }
