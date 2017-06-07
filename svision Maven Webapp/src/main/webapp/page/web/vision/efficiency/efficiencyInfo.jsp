@@ -34,6 +34,11 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/plupload.full.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery.ui.plupload.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/zh_CN.js" charset="UTF-8"></script>
+    
+    <!-- 以下两个引的文件用于layer -->
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
+	<script src="<%=basePath%>source/js/layer/layer.js"></script>
+    
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
     <![endif]-->
@@ -161,23 +166,42 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	
 	//新增/编辑项目
 	function saveItem(obj){	
-        $.ajax({
-	        cache: true, //是否缓存当前页面
-	        type: "POST", //请求类型
-	        url: "vision/efficiency/jsonSaveOrUpdateItem.do",
-	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
-	        async: true, //发送异步请求	  
-	        dataType:"json", //响应数据类型      
-	        success: function(data) {
-	        	if(data.code==0){ 
-	        		$("#uploader_start").click(); //上传文件
-	        	}else{
-	        		alert(data.message);	        	
-	        	}	
-	            
-	        }
-   		});
+		if(isNull()!=false){
+	        $.ajax({
+		        cache: true, //是否缓存当前页面
+		        type: "POST", //请求类型
+		        url: "vision/efficiency/jsonSaveOrUpdateItem.do",
+		        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+		        async: true, //发送异步请求	  
+		        dataType:"json", //响应数据类型      
+		        success: function(data) {
+		        	if(data.code==0){ 
+		        		$("#uploader_start").click(); //上传文件
+		        	}else{
+		        		alert(data.message);	        	
+		        	}	
+		            
+		        }
+	   		});
+   		}
 	}
+	
+	function isNull(){		
+		if($("#itemName").val()==null || $("#itemName").val()==""){	
+			layer.alert('请录入监察项目！');				
+			return false;
+		} 
+		if($("#datepicker").val()==null || $("#datepicker").val()==""){
+			layer.alert('请输入规定完成时间！');			
+			return false;
+		} 
+		var roleId=$("input[name='OrgId']").is(':checked');
+		if(roleId==false){
+			layer.alert('请选择被监察对象！');	
+			return false;
+		} 
+	}
+	
 </script>
  </head> 
  <body>
@@ -207,8 +231,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<table class="font16" id="taskTable">
 						<tr>
 							<td width="8%" align="right">监察项目：</td>
-							<td colspan="3"><input id="" 
-								name="name" type="text" doc="taskInfo" value=""  style="width:60%;height:28px;" />  
+							<td colspan="3"><input id="itemName" 
+								name="name" type="text" required="true" missingMessage="不克不及为空" value=""  style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
                             	<input type="hidden" id="hid_uuid" name="uuid" />
 							</td> 
@@ -288,6 +312,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	
 	<div class="cl"></div>
 </div>
+
 <div class="cl"></div>
 </div>
 </body>

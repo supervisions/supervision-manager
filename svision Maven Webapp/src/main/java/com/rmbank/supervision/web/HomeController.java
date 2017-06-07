@@ -185,7 +185,7 @@ public class HomeController extends SystemAction {
                     List<Role> roleList = roleService.getRolesByUserId(u.getId());
                     List<FunctionMenu> subList = functionService.getFunctionByUserId(u.getId()); 
                     if(subList.size() ==0){
-                         json.setMessage("登录失败，当前登录用户为授权!");
+                         json.setMessage("登录失败，当前登录用户未授权!");
                     }else{
                     	lf = getFunctionMenuListByItem(subList);
                     }
