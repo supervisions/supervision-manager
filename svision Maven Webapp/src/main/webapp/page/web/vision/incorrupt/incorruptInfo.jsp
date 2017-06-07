@@ -33,6 +33,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/plupload.full.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery.ui.plupload.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/zh_CN.js" charset="UTF-8"></script>
+    
+    <!-- 以下两个引的文件用于layer -->
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
+	<script src="<%=basePath%>source/js/layer/layer.js"></script>
+    
+    
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
     <![endif]-->
@@ -64,40 +70,58 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 });
 	
 	//新增/编辑项目
-	function saveItem(obj){	
-        $.ajax({
-	        cache: true, //是否缓存当前页面
-	        type: "POST", //请求类型
-	        url: "<%=basePath %>vision/incorrupt/jsonsetProjectById.do",
-	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
-	        async: true, //发送异步请求	  
-	        dataType:"json", //响应数据类型      
-	        success: function(data) {
-	        	if(data.code==0){ 
-	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
-	        			$("#uploader_start").click(); //上传文件
-	        		}else{
-	        		$("#dia_title").text($("#hid_dia_title").val());
-        			$("#dialog1").dialog({
-					      resizable: false,
-					      height:150,
-					      modal: true,
-					      open: function (event, ui) {
-			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-			              },
-					      buttons: {
-					        "确定": function() {
-					          window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do';
-					        } 
-					      }
-					    });
-	        		}
-	        	}else{
-	        		alert(data.message);	        	
-	        	}	
-	            
-	        }
-   		});
+	function saveItem(obj){
+		if(isNull()!=false){
+			$.ajax({
+		        cache: true, //是否缓存当前页面
+		        type: "POST", //请求类型
+		        url: "<%=basePath %>vision/incorrupt/jsonsetProjectById.do",
+		        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+		        async: true, //发送异步请求	  
+		        dataType:"json", //响应数据类型      
+		        success: function(data) {
+		        	if(data.code==0){ 
+		        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
+		        			$("#uploader_start").click(); //上传文件
+		        		}else{
+		        		$("#dia_title").text($("#hid_dia_title").val());
+	        			$("#dialog1").dialog({
+						      resizable: false,
+						      height:150,
+						      modal: true,
+						      open: function (event, ui) {
+				                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+				              },
+						      buttons: {
+						        "确定": function() {
+						          window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do';
+						        } 
+						      }
+						    });
+		        		}
+		        	}else{
+		        		layer.alert(data.message);	        	
+		        	}	            
+		        }
+	   		});
+		}	
+        
+	}
+	
+	function isNull(){		
+		if($("#itemName").val()==null || $("#itemName").val()==""){	
+			layer.alert('请输入项目名称！');				
+			return false;
+		} 		
+		var superItemType=$("#superItemType").val();
+		if(superItemType<0 || superItemType==null){
+			layer.alert('请选择项目类别！');	
+			return false;
+		}
+		if($("#datepicker").val()==null || $("#datepicker").val()==""){
+			layer.alert('请输入规定完成时间！');			
+			return false;
+		}  
 	}
 </script>
  </head> 
@@ -127,7 +151,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<table class="font16" id="taskTable">
 						<tr>
 							<td width="15%" align="right">项目名称：</td>
-							<td colspan="3"><input id="" 
+							<td colspan="3"><input id="itemName" 
 								name="name" type="text" doc="taskInfo" value=""  style="width:95%;height:28px;" />  
 								<span style="color:red">*</span>                            	
                             	<input type="hidden" name="preparerOrgId" value="${userOrg.id }">
@@ -139,7 +163,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" height="50px">项目类别：</td>
 							<td colspan="3">
-								<select id="" name="superItemType" style="width:51%;height:32px;">
+								<select id="superItemType" name="superItemType" style="width:51%;height:32px;">
 									<option value="-1">==请选择项目类别==</option>	
 									<c:forEach var="item" items="${meatListByKey }">
 										<option value="${item.id }">${item.name }</option>

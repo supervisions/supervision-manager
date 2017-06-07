@@ -312,15 +312,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</tr>						
 						</c:if>	
 						
-						<!-- 监察结论 -->							
-						<c:if test="${ItemProcess9 != null }">
-							<tr>
-								<td align="right" style="height:40px;">监察结论：</td>
-								<td colspan="3">
-									<label>${ItemProcess9.content } </label> 									
-								</td>		
-							</tr> 										
-						</c:if>
+						
 						
 						<!-- 被监察对象录入督促整改情况，但是要处罚 -->
 						<c:if test="${ItemProcess10 != null }">
@@ -530,6 +522,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									</table>
 								</td>		
 							</tr>									
+						</c:if>
+						
+						
+						<!-- 监察结论 -->							
+						<c:if test="${ItemProcess9 != null }">
+							<tr>
+								<td align="right" style="height:40px;">监察结论：</td>
+								<td colspan="3">
+									<label>${ItemProcess9.content } </label> 									
+								</td>		
+							</tr> 										
 						</c:if>
 					</table>
 				</div>

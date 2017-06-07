@@ -178,7 +178,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        	if(data.code==0){ 
 		        		$("#uploader_start").click(); //上传文件
 		        	}else{
-		        		alert(data.message);	        	
+		        		layer.alert(data.message);	        	
 		        	}	
 		            
 		        }
