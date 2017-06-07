@@ -54,6 +54,16 @@ public class UploadAction extends SystemAction {
 	@Resource
 	private SysLogService logService;
 	
+	
+	/**
+	 * 文件上传
+	 * @param uuid
+	 * @param file
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @return
+	 */
 	@ResponseBody
     @RequestMapping(value = "/jsonUploadFile.do", method = RequestMethod.POST,produces={ "text/html;charset=UTF-8"} )
 	@RequiresPermissions("system/upload/jsonUploadFile.do")
