@@ -672,7 +672,11 @@ public class BranchAction extends SystemAction {
 						} 
 						js.setMessage("监察过程处理成功"); 
 					}else{
-						itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_6);
+						if(itemProcess.getIsFollowStatus() != null && itemProcess.getIsFollowStatus() == Constants.NOT_OVER){
+							itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_3);
+						}else{
+							itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_6);
+						}
 					}
 					js.setMessage("监察过程处理成功"); 
 				} 

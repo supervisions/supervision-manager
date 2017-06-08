@@ -316,6 +316,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<tr>
 								<td align="right" style="height:40px;">是否完结：</td>
 								<td colspan="3"> 
+									<input type="hidden" name="isFollowStatus" value="0" />
 									<label><input type="radio" name="isOver" value="1" checked="checked" />完结</label>
 									<label><input type="radio" name="isOver" value="0" />未完结</label> 
 								 </td>	
