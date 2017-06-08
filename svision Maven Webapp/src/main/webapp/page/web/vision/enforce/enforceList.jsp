@@ -138,8 +138,8 @@ function uploadFile(id,tag){
 					<th width="4%">查看</th>	
 					<th>立项监察</th>	
 					<th width="10%">被监察对象</th>
-					<th>操作1</th>
-					<th width="6%">操作2</th>			
+					<th>操作一</th>
+					<th width="6%">操作二</th>			
 				</tr>
 				<c:forEach var="item" items="${itemList}">
 					<tr> 							

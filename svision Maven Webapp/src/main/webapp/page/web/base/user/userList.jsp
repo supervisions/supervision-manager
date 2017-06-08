@@ -202,12 +202,13 @@ function getUserListByOrgId(orgId){
 };
 function fillMetaList(lst){
 	var html = "<tbody>";
-	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th width='15%'><span style='margin-left:40px'>状态</span></th><th width='15%'>用户名称</th><th width='15%'>用户账号</th><th width='25%'>所属机构</th><th width='25%'>操作</th></tr>";
+	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th width='15%'><span style='margin-left:40px'>状态</span></th><th width='15%'>用户名称</th><th width='15%'>用户账号</th><th width='25%'>所属机构</th><th width='15%'>操作一</th><th width='10%'>操作二</th></tr>";
 	for(var i = 0; i<lst.length;i++){
 		html += "<tr>";
 		html += "<td  style='display:none'>"+lst[i].id+"</td><td align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td align='left' >"+lst[i].name+"</td><td align='left'>"+lst[i].account+"</td>";
 		html += "<td align='left' class='orgName' title=\'"+lst[i].orgName+"\'>"+lst[i].orgName+"</td>";
-		html += "<td align='left'>"+"<a href='javascript:void(0);' class='stateBut' onclick=updateUser(\'"+lst[i].id+"\',\'"+lst[i].used+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >启用</a>&nbsp;<a href='javascript:void(0);' onclick=deleteUser(\'"+lst[i].id+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >删除</a>&nbsp;<a href='javascript:void(0);' onclick=goToUserInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a>&nbsp;<a href='javascript:void(0);' onclick=resetUserPwd(\'"+lst[i].id+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >重置密码</a></td>";
+		html += "<td align='left'>"+"<a href='javascript:void(0);' class='stateBut' onclick=updateUser(\'"+lst[i].id+"\',\'"+lst[i].used+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >启用</a>&nbsp;<a href='javascript:void(0);' onclick=goToUserInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a>&nbsp;<a href='javascript:void(0);' onclick=resetUserPwd(\'"+lst[i].id+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >重置密码</a></td>";
+		html += "<td align='left'>"+"<a href='javascript:void(0);' onclick=deleteUser(\'"+lst[i].id+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >删除</a></td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";
@@ -269,7 +270,8 @@ function goToUserInfo(id){
 						<th width="15%">用户名称</th>
 						<th width="15%">用户账号</th>
 						<th width="25%">所属机构</th>								
-						<th width="25%">操作</th>		
+						<th width="15%">操作一</th>	
+						<th width="10%">操作二</th>	
 					</tr>
 					<c:forEach var="item" items="${userList}">
 						<tr> 
@@ -279,19 +281,21 @@ function goToUserInfo(id){
 								<span style='margin-left:40px'>禁用</span>
 							</c:if></td>
 							<td>${item.name}</td>
-						<td>${item.account}</td>
-						<td title="${item.orgName}" class="orgName">${item.orgName}</td>
-						
-						<td>
-							<c:if test="${item.used == 1}">
-								<a style="color:blue" onclick="updateUser(${item.id},${item.used},'${item.name}');">禁用</a>
-							</c:if> 
-							<c:if test="${item.used == 0}">
-								<a style="color:blue" onclick="updateUser(${item.id},${item.used},'${item.name}');">启用</a>
-							</c:if>
-							<a style="color:blue" onclick="deleteUser(${item.id},'${item.name}');">删除</a>							
-							<a style="color:blue" onclick="window.location.href='userInfo.do?id=${item.id}';">编辑</a>
-							<a style="color:blue" onclick="resetUserPwd(${item.id},'${item.name}');">重置密码</a>
+							<td>${item.account}</td>
+							<td title="${item.orgName}" class="orgName">${item.orgName}</td>
+							
+							<td>
+								<c:if test="${item.used == 1}">
+									<a style="color:blue" onclick="updateUser(${item.id},${item.used},'${item.name}');">禁用</a>
+								</c:if> 
+								<c:if test="${item.used == 0}">
+									<a style="color:blue" onclick="updateUser(${item.id},${item.used},'${item.name}');">启用</a>
+								</c:if>								
+								<a style="color:blue" onclick="window.location.href='userInfo.do?id=${item.id}';">编辑</a>
+								<a style="color:blue" onclick="resetUserPwd(${item.id},'${item.name}');">重置密码</a>
+							</td>
+							<td>
+								<a style="color:blue" onclick="deleteUser(${item.id},'${item.name}');">删除</a>							
 							</td>
 						</tr>
 					</c:forEach>

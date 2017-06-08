@@ -150,7 +150,7 @@ function getMetaListByPid(pid){
 };
 function fillMetaList(lst){
 	var html = "<tbody>";
-	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>配置状态</span></th><th>配置名称</th><th>描述</th><th>操作</th></tr>";
+	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>配置状态</span></th><th>配置名称</th><th>描述</th><th>操作一</th><th>操作二</th></tr>";
 	for(var i = 0; i<lst.length;i++){
 		html += "<tr>";
 		html += "<td  style='display:none'>"+lst[i].id+"</td><td onclick=goToMetaInfo(\'"+lst[i].id+"\') align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td onclick=goToMetaInfo(\'"+lst[i].id+"\') align='left' >"+lst[i].name+"</td>";
@@ -159,7 +159,8 @@ function fillMetaList(lst){
 			html += lst[i].description;
 		}
 		html += "</td>";
-		html += "<td align='left'>"+"<a href='javascript:void(0);' onclick=goToMetaInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a>&nbsp;<a href='javascript:void(0);' class='stateBut' onclick=metaState(\'"+lst[i].id+"\',\'"+lst[i].used+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >启用</a>&nbsp;<a href='javascript:void(0);' onclick=deleteConfig(\'"+lst[i].id+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >删除</a></td>";
+		html += "<td align='left'>"+"<a href='javascript:void(0);' onclick=goToMetaInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a></td>";
+		html += "<td align='left'>"+"<a href='javascript:void(0);' onclick=deleteConfig(\'"+lst[i].id+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >删除</a></td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";
@@ -278,7 +279,8 @@ function goToMetaInfo(metaId){
 						<!-- <th><span style='margin-left:40px'>配置状态</span></th> -->
 						<th>配置名称</th>						
 						<th>描述</th>
-						<th>操作</th>
+						<th>操作一</th>
+						<th>操作二</th>
 					</tr>
 					<c:forEach var="item" items="${configList}">
 					<tr>
@@ -290,7 +292,7 @@ function goToMetaInfo(metaId){
 						<td>${item.description}</td>							
 						<td>
 							<a style="color:blue" onclick="window.location.href='configInfo.do?id=${item.id}';">编辑</a>
-							<a style="color:blue" onclick="deleteConfig(${item.id},'${item.name}');">删除</a>
+							
 							<%-- <c:if test="${item.used == 1}">
 								<a style="color:blue"
 									onclick="metaState(${item.id},${item.used},'${item.name}');">禁用</a>
@@ -298,6 +300,9 @@ function goToMetaInfo(metaId){
 								<a style="color:blue"
 									onclick="metaState(${item.id},${item.used},'${item.name}');">启用</a>
 							</c:if>		 --%>					
+						</td>
+						<td>
+							<a style="color:blue" onclick="deleteConfig(${item.id},'${item.name}');">删除</a>
 						</td>
 					</tr>
 					</c:forEach>

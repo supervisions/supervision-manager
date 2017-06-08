@@ -174,8 +174,8 @@ function uploadFile(id,tag){
 					<th width="12%">项目类别</th>	
 					<th width="30%">项目名称</th>	
 					<th>被监察对象</th>
-					
-					<th>操作</th>			
+					<th>操作一</th>	
+					<th>操作二</th>			
 				</tr>
 				<c:forEach var="item" items="${itemList}">
 					<tr> 							
@@ -227,7 +227,7 @@ function uploadFile(id,tag){
 									<span style="color: blue;" onclick="uploadFile(${item.id },73)">录入会议决策</span>
 								</c:if>
 								<c:if test="${item.lasgTag == 77 && userOrg.id==item.supervisionOrgId}">
-									<span style="color: blue;" onclick="uploadFile(${item.id },73)">提请党委参考</span>
+									<span style="color: blue;" onclick="uploadFile(${item.id },77)">提请党委审议</span>
 								</c:if>
 								<c:if test="${item.lasgTag == 75 && userOrg.id==item.supervisionOrgId}">
 									<a style="color: blue;" onclick="uploadFile(${item.id}, 75)">执行情况</a><!-- 正常流程的录入执行情况 -->
@@ -255,19 +255,17 @@ function uploadFile(id,tag){
 								<c:if test="${item.lasgTag == 78  &&  userOrg.orgtype==47}">
 									<a style="color: blue;" onclick="uploadFile(${item.id}, 78)">监察结论</a>
 								</c:if>
-								<c:if test="${ userOrg.orgtype==47}">
-									<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
-								</c:if>	 
-							
-							
-							
+														
 							
 							<%-- <c:if test="${item.lasgTag == 777 && userOrg.id==item.preparerOrgId}">
 								<span style="color: blue;" onclick="toOpinion(${item.id },777)">监察意见</span>
 							</c:if> --%>
 						</td>
-							
-						
+						<td>
+							<c:if test="${ userOrg.orgtype==47}">
+									<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+								</c:if>	
+						</td>						
 					</tr>
 				</c:forEach>
 			</table>

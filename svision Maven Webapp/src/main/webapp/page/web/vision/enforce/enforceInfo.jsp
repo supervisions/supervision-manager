@@ -167,24 +167,30 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	
 	//新增/编辑项目
 	function saveItem(obj){	
-		if(isNull()!=false){
-			$.ajax({
-	        cache: true, //是否缓存当前页面
-	        type: "POST", //请求类型
-	        url: "<%=basePath%>vision/enforce/jsonUpdateItem.do",
-	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
-	        async: true, //发送异步请求	  
-	        dataType:"json", //响应数据类型      
-	        success: function(data) {
-	        	if(data.code==0){ 
-	        		$("#uploader_start").click(); //上传文件
-	        	}else{
-	        		layer.alert(data.message);	        	
-	        	}	
-	        }
-   		});
-		}
-        
+		layer.confirm('确认信息已经填写完整，并且保存？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			if(isNull()!=false){
+				$.ajax({
+			        cache: true, //是否缓存当前页面
+			        type: "POST", //请求类型
+			        url: "<%=basePath%>vision/enforce/jsonUpdateItem.do",
+			        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+			        async: true, //发送异步请求	  
+			        dataType:"json", //响应数据类型      
+			        success: function(data) {
+			        	if(data.code==0){ 
+			        		$("#uploader_start").click(); //上传文件
+			        	}else{
+			        		layer.alert(data.message);	        	
+			        	}	
+			        }
+		   		});
+			}
+		}, function(){
+			
+		});        
 	}
 	
 	function isNull(){			
@@ -197,6 +203,16 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			layer.alert('请选择被监察对象！');
 			return false;
 		} 
+	}
+	function returnPage(){
+		layer.confirm('当前项目资料尚未提交，是否离开当前页面？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			window.location.href='<%=basePath%>vision/enforce/enforceList.do';
+		}, function(){
+			
+		});
 	}
 </script>
  </head> 
@@ -216,8 +232,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
-				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItem(this);">保存</span>
-				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
+				
 			</div>
 		</div>
 			<form id="itemInfoForm" name="itemInfoForm"
@@ -287,7 +302,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<tr style="width: 100%;">
 											<td>
 												<div style="width:60%;">
-													<label style="float:left;padding-right:10px;padding-bottom:70px;min-width:170px;"><input type="checkbox" name="OrgId" value="17"/>办公室</label>
+													<label style="float:left;padding-right:10px;padding-bottom:70px;min-width:170px;"><input type="checkbox" name="OrgId" value="16"/>依法领导小组办公室</label>
 												</div>
 											</td>
 										</tr>
@@ -296,7 +311,14 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</c:if>
 							 </td>	
 						</tr>	
-						
+						<tr>
+							<td></td>
+							<td>
+								<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItem(this);">提交</span>
+								<span class="yw-btn bg-green" style="margin-left: 50px;margin-right: 10px;" onclick="returnPage();">返回</span>
+							</td>
+							
+						</tr>
 					</table>
 				</div>
 			</form>

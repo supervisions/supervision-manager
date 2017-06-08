@@ -34,6 +34,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/plupload.full.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery.ui.plupload.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/zh_CN.js" charset="UTF-8"></script>
+    
+    <!-- 以下两个引的文件用于layer -->
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
+	<script src="<%=basePath%>source/js/layer/layer.js"></script>
+    
+    
+    
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
     <![endif]-->
@@ -197,6 +204,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		var fileName = encodeURI(encodeURI(name));
 		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
 	}
+	
+	function returnPage(){
+		layer.confirm('当前项目资料尚未提交，是否离开当前页面？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do';
+		}, function(){
+			
+		});
+	}
 </script>
  </head> 
  <body>
@@ -215,8 +233,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
-				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveOpinion(this);">保存</span>
-				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
+				
 			</div>
 		</div>
 		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
@@ -404,14 +421,34 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" width="15%" align="right" height="40px;">监察结论：</td>
 							<td colspan="3" > 
-									<input type="hidden" id="hid_isFileUpload" value="0" />
-									<input type="hidden" id="hid_dia_title" value="监察室结论提交成功" />
+									
 								<textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>								
 								<input type="hidden" name ="itemId" value="${Item.id }">
 								<input type="hidden" id="hid_uuid" name="uuid" />
 							</td> 
+						</tr>
+						<tr>
+							<td align="right" height="129px;">上传附件：</td>
+							<td colspan="3">
+								<input type="hidden" id="hid_isFileUpload" value="1" />
+									
+								 <div id="themeswitcher" class="pull-right"></div>
+					                <script>
+					                    $(function() {
+					                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
+					                    });
+					                </script>
+					                <div id="uploader">
+					                </div>
+							 </td>	
 						</tr>					
-						
+						<tr>
+							<td></td>
+							<td>
+								<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveOpinion(this);">提交</span>
+								<span class="yw-btn bg-green" style="margin-left: 50px;margin-right: 10px;" onclick="returnPage();">返回</span>
+							</td>
+						</tr>
 					</table>
 				</div>
 			</form>

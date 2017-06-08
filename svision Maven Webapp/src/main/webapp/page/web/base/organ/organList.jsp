@@ -120,12 +120,13 @@ function deleteOrgan(id,name){
 }
 function fillOrganList(lst){
 	var html = "<tbody>";
-	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>机构状态</span></th><th>机构名称</th><th>上级机构</th><th>是否监察部门</th><th>操作</th></tr>";
+	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>机构状态</span></th><th>机构名称</th><th>上级机构</th><th>是否监察部门</th><th>操作一</th><th>操作二</th></tr>";
 	for(var i = 0; i<lst.length;i++){
 		html += "<tr>";
 		html += "<td  style='display:none'>"+lst[i].id+"</td><td align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td align='left' ><span>"+lst[i].name+"</span></td><td align='left' >"+lst[i].parentName+"</td>";
 		html += "<td class='supervisionState'>"+lst[i].supervision+"</td>";
-		html +="<td align='left'>"+"<a style='color:blue' onclick=deleteOrgan(\'"+lst[i].id+"\',\'"+lst[i].name+"\')>删除</a>&nbsp;<a onclick=goToOrganInfo(\'"+lst[i].id+"\')  style='color:blue' >编辑</a></td>";
+		html +="<td align='left'>"+"<a onclick=goToOrganInfo(\'"+lst[i].id+"\')  style='color:blue' >编辑</a></td>";
+		html +="<td align='left'>"+"<a style='color:blue' onclick=deleteOrgan(\'"+lst[i].id+"\',\'"+lst[i].name+"\')>删除</a></td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";
@@ -208,7 +209,8 @@ function goToOrganInfo(organId){
 						<th>机构名称</th>
 						<th>上级机构</th>
 						<th>是否监察部门</th>
-						<th>操作</th>
+						<th>操作一</th>
+						<th>操作二</th>
 					</tr>
 					<c:forEach var="item" items="${organList }">
 						<tr>
@@ -229,9 +231,11 @@ function goToOrganInfo(organId){
 									<span>否</span>
 								</c:if>
 							</td>
-							<td align="left">
-								<a style="color:blue" onclick="deleteOrgan(${item.id },'${item.name }')">删除</a>
+							<td align="left">								
 								<a style="color:blue" onclick="goToOrganInfo(${item.id })">编辑</a>
+							</td>
+							<td>
+								<a style="color:blue" onclick="deleteOrgan(${item.id },'${item.name }')">删除</a>
 							</td>
 						</tr>
 					</c:forEach>

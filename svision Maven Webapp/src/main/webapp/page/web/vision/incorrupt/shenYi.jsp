@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
    <base href="<%=basePath%>">
   
-   <title>综合管理</title>
+   <title>廉政监察</title>
    
 <meta name="viewport"
 content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" /> 
@@ -34,6 +34,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/plupload.full.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery.ui.plupload.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/zh_CN.js" charset="UTF-8"></script>
+    
+    <!-- 以下两个引的文件用于layer -->
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
+	<script src="<%=basePath%>source/js/layer/layer.js"></script>
+    
+    
+    
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
     <![endif]-->
@@ -139,48 +146,81 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             uploader.bind('UploadComplete',function(uploader,files){
                 if(null != files && files.length>0){ 
                 	$("#dialog").dialog({
-				      resizable: false,
-				      height:150,
-				      modal: true,
-				      open: function (event, ui) {
-		                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-		              },
-				      buttons: {
-				        "确定": function() {
-				          window.location.href='<%=basePath%>manage/branch/branchZZList.do';
-				        } 
-				      }
-				    });
+				        resizable: false,
+				        height:150,
+				        modal: true,
+				        open: function (event, ui) {
+		                   $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+		                },
+					    buttons: {
+					        "确定": function() {					        	
+					            window.location.href = '<%=basePath%>vision/incorrupt/incorruptList.do';
+					        }
+					    }
+					}); 
                 }
             });
             $("#uploader_browse").removeAttr("style");
             $("#uploader_browse").attr("style","z-index: 1;font-size: 12px;font-weight: normal;");
 	 });
-	
+	 
 	//新增/编辑项目
-	var tuuid =  encodeURI(encodeURI("中支"));
-	function saveItem(obj){	
-        $.ajax({
-	        cache: true, //是否缓存当前页面
-	        type: "POST", //请求类型
-	        url: "<%=basePath%>manage/branch/jsonSaveOrUpdateFileItem.do?s="+tuuid,
-	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
-	        async: true, //发送异步请求	  
-	        dataType:"json", //响应数据类型      
-	        success: function(data) {
-	        	if(data.code==0){ 
-	        		$("#uploader_start").click(); //上传文件
-	        	}else{
-	        		alert(data.message);	        	
-	        	}	
-	            
-	        }
-   		});
+	function saveOpinion(obj){
+		layer.confirm('确认信息已经填写完整，并且保存？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			$.ajax({
+		        cache: true, //是否缓存当前页面
+		        type: "POST", //请求类型
+		        url: "<%=basePath%>vision/incorrupt/jsonsaveOpinion.do",
+		        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+		        async: true, //发送异步请求	  
+		        dataType:"json", //响应数据类型      
+		        success: function(data) {
+		        	if(data.code==0){ 
+		        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
+		        			$("#uploader_start").click(); //上传文件
+		        		}else{
+		        		$("#dia_title").text($("#hid_dia_title").val());
+	        			$("#dialog1").dialog({
+						      resizable: false,
+						      height:150,
+						      modal: true,
+						      open: function (event, ui) {
+				                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+				              },
+						      buttons: {
+						        "确定": function() {
+						          window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do';
+						        } 
+						      }
+						    });
+		        		}
+		        	}else{
+		        		alert(data.message);	        	
+		        	}	
+		        }
+	   		});
+		}, function(){
+			
+		});		
+        
 	}
 	function downLoadFile(path,name){
 		var filePath = encodeURI(encodeURI(path));
 		var fileName = encodeURI(encodeURI(name));
 		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
+	}
+	function returnPage(){
+		layer.confirm('当前项目资料尚未提交，是否离开当前页面？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do';
+		}, function(){
+			
+		});
 	}
 </script>
  </head> 
@@ -188,33 +228,35 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>manage/branch/branchZZList.do'"></i><span>分行立项中支完成</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do'"></i><span>项目列表</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
 		<div class="yw-bi-rows">
 			<div class="yw-bi-tabs mt5" id="ywTabs">
-			<span class="yw-bi-now">上传资料</span>
+			<span class="yw-bi-now">基本信息</span>
 				
 			</div>
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
-				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItem(this);">提交</span>
-				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
+				
 			</div>
 		</div>
-			<form id="itemInfoForm" name="itemInfoForm" >
+		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
+			<form id="itemInfoForm" name="itemInfoForm"
+				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
+				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
+					<table class="font16 taskTable" >						
 						<tr>
 							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label> 
 								<input type="hidden" value="0" name="id" />
-                            	<input type="hidden" id="hid_uuid" name="uuid" />
+                            	<%-- <input type="hidden" id="hid_uuid" name="uuid" />
                             	<input type="hidden" name="itemId" value="${Item.id }" />  
-                            	<input type="hidden" name="contentTypeId" value="${ContentTypeId }" />
+                            	<input type="hidden" name="contentTypeId" value="${ContentTypeId }" /> --%>
 							</td> 
 						</tr>
 						<tr>
@@ -223,6 +265,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 <label>${Item.sType } </label>   
 							</td>								
 						</tr>
+						<%-- <tr>
+							<td align="right">项目类别：</td>
+							<td colspan="3">
+							 <label>${Item.itemCategory } </label>   
+							</td>								
+						</tr> --%>
 						<tr>
 							<td align="right">立项时间：</td>
 							<td colspan="3">
@@ -230,7 +278,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">立项审批表、方案：</td>
+							<td align="right" style="height:40px;">监察内容：</td>
 							<td colspan="3">
 							 <label>${ItemProcess.content } </label>  
 							</td>		
@@ -239,17 +287,119 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td align="right"style="height:80px;">附件列表：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
-									<c:forEach var="fileItem" items="${FileList }">
+									<c:forEach var="fileItem" items="${ItemProcess.fileList }">
 										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 									</c:forEach> 
 									<tr><td style="border:0px;"></td><tr>
 								</table>
 							</td>		
+						</tr>
+						<tr>
+							<td align="right" style="height:40px;">方案内容：</td>
+							<td colspan="3">
+								<label>${ItemProcess2.content } </label> 									
+							</td>		
 						</tr> 
 						<tr>
-							<td align="right" style="height:160px;">监察报告、整改建议书、整改报告、监察决定书：</td>
+							<td align="right" >方案附件：</td>
+							<td colspan="3"> 
+								<table style="width:100%;height:100%;min-height:80px;">
+									<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
+										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+									</c:forEach> 
+									<tr><td style="border:0px;"></td><tr>
+								</table>
+							</td>		
+						</tr>
+						<tr>
+							<td align="right" style="height:40px;">监察室意见：</td>
 							<td colspan="3">
-								 <div id="themeswitcher" class="pull-right"> </div>
+								<label>${ItemProcess3.content } </label>								
+							</td>		
+						</tr>
+						<tr>
+							<td align="right" >相关附件：</td>
+							<td colspan="3"> 
+								<table style="width:100%;height:100%;min-height:80px;">
+									<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
+										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+									</c:forEach> 
+									<tr><td style="border:0px;"></td><tr>
+								</table>
+							</td>		
+						</tr>	
+						<tr>
+							<td align="right">是否合规：</td>
+							<td colspan="3">
+								<label>合规 </label> 									
+							</td>		
+						</tr>		
+						<tr>
+							<td align="right" style="height:40px;">会议决策：</td>
+							<td colspan="3">
+								<label>${ItemProcess6.content } </label>								 
+							</td>		
+						</tr>
+						<tr>
+							<td align="right" >相关附件：</td>
+							<td colspan="3"> 
+								<table style="width:100%;height:100%;min-height:80px;">
+									<c:forEach var="fileItem" items="${ItemProcess6.fileList }">
+										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+									</c:forEach> 
+									<tr><td style="border:0px;"></td><tr>
+								</table>
+							</td>		
+						</tr>
+						<tr>
+							<td align="right" style="height:40px;">监察室意见：</td>
+							<td colspan="3">
+								<label>${ItemProcess8.content } </label> 								
+							</td>		
+						</tr>
+						<tr>
+							<td align="right" >相关附件：</td>
+							<td colspan="3"> 
+								<table style="width:100%;height:100%;min-height:80px;">
+									<c:forEach var="fileItem" items="${ItemProcess8.fileList }">
+										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+									</c:forEach> 
+									<tr><td style="border:0px;"></td><tr>
+								</table>
+							</td>		
+						</tr>
+						<tr>
+							<td align="right">是否有异议：</td>
+							<td colspan="3">
+								<label>有异议</label>									
+							</td>		
+						</tr>
+						<tr>
+							<td align="right" >党委意见：</td>
+							<td colspan="3">								
+								<label>
+									<input type="radio" name="yijian" value="1" >党委采纳意见，重新决策
+								</label>	
+								<label style="margin-left: 60px;">
+									<input type="radio" name="yijian" value="0" >党委维持原决议
+								</label> 							
+							</td>	
+						</tr>
+						
+								
+						<%-- <tr>
+							<td align="right" width="15%" align="right" height="40px;">执行情况：</td>
+							<td colspan="3" > 
+								<textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>								
+								<input type="hidden" name ="itemId" value="${Item.id }">
+								<input type="hidden" id="hid_uuid" name="uuid" />
+							</td> 
+						</tr>	
+						<tr>
+							<td align="right" height="129px;">上传附件：</td>
+							<td colspan="3">
+									<input type="hidden" id="hid_isFileUpload" value="1" /> 
+								 <div id="themeswitcher" class="pull-right"></div>
 					                <script>
 					                    $(function() {
 					                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
@@ -258,17 +408,19 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					                <div id="uploader">
 					                </div>
 							 </td>	
-						</tr>
+						</tr>		 --%>				
 						<tr>
-							<td align="right" style="height:120px;">上传文件说明：</td>
-							<td colspan="3"> 
-								 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
-							 </td>	
-						</tr>	
+							<td></td>
+							<td>
+								<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveOpinion(this);">提交</span>
+								<span class="yw-btn bg-green" style="margin-left: 50px;margin-right: 10px;" onclick="returnPage();">返回</span>
+							</td>
+							
+						</tr>
 					</table>
 				</div>
 			</form>
-		</div> 
+		</div> </div>
 	
 	<div class="cl"></div>
 </div>

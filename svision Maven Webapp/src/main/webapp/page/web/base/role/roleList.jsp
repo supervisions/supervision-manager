@@ -125,19 +125,21 @@ function authorizeResource(id,name){
 					<th width="4%" style="display:none">&nbsp;</th>
 				<th width="20%">角色名称</th>
 				<th width="20%">角色描述</th>	
-				<th width="20%">授权</th>	
-				<th width="20%">操作</th>			
+				<th width="20%">角色授权</th>	
+				<th width="8%">操作一</th>	
+				<th width="8%">操作二</th>			
 				</tr>
 				<c:forEach var="item" items="${roleList}">
 					<tr> 							
 						<td>${item.name}</td>
 						<td>${item.description}</td>
 						<td><a style="color:blue" onclick="authorizeResource(${item.id},'${item.name}')">角色授权</a></td>
-						<td>
-							<a style="color:blue" onclick="deleteRole(${item.id},'${item.name}');">删除</a>
+						<td>							
 							<a style="color:blue" onclick="window.location.href='roleInfo.do?id=${item.id}';">编辑</a>
 						</td>
-						
+						<td>
+							<a style="color:blue" onclick="deleteRole(${item.id},'${item.name}');">删除</a>
+						</td>
 					</tr>
 				</c:forEach>
 			</table>
