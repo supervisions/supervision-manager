@@ -335,6 +335,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" style="height:120px;">资料说明：</td>
 							<td colspan="3"> 
+								<input type="hidden" name="contentID" value="${contentID }">
 								 <textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>			 
 							 </td>	
 						</tr>

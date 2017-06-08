@@ -212,7 +212,7 @@ function uploadFile(id,tag){
 						<td>${item.itemCategory}</td>
 						<td>${item.itemNmae}</td>
 						<td>${item.orgName}</td>
-						<td>	<%-- <span>${item.lasgTag}</span>	 --%>					
+						<td>	<span>${item.lasgTag}</span>			
 							    
 								<c:if test="${userOrg.orgtype==47 && item.status == 0 }">
 									<span style="color: red;" onclick="window.location.href='incorruptInfo.do?id=${item.id }';">立项</span>
@@ -225,6 +225,9 @@ function uploadFile(id,tag){
 								</c:if>
 								<c:if test="${item.lasgTag == 73 && userOrg.id==item.supervisionOrgId}">
 									<span style="color: blue;" onclick="uploadFile(${item.id },73)">录入会议决策</span>
+								</c:if>
+								<c:if test="${item.lasgTag == 85 && userOrg.id==item.supervisionOrgId}">
+									<span style="color: blue;" onclick="uploadFile(${item.id },73)">录入会议决策</span><!-- 党委采纳意见，重新决策 -->
 								</c:if>
 								<c:if test="${item.lasgTag == 77 && userOrg.id==item.supervisionOrgId}">
 									<span style="color: blue;" onclick="uploadFile(${item.id },77)">提请党委审议</span>
@@ -255,7 +258,9 @@ function uploadFile(id,tag){
 								<c:if test="${item.lasgTag == 78  &&  userOrg.orgtype==47}">
 									<a style="color: blue;" onclick="uploadFile(${item.id}, 78)">监察结论</a>
 								</c:if>
-														
+								<c:if test="${item.lasgTag == 86  &&  userOrg.orgtype==47}">
+									<a style="color: blue;" onclick="uploadFile(${item.id}, 86)">监察结论</a><!-- 党委维持原决议，给出监察结论 -->
+								</c:if>						
 							
 							<%-- <c:if test="${item.lasgTag == 777 && userOrg.id==item.preparerOrgId}">
 								<span style="color: blue;" onclick="toOpinion(${item.id },777)">监察意见</span>

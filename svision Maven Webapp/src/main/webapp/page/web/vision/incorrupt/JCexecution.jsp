@@ -213,8 +213,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
 	}
 	
-	function show(){
-		//判断是否是子配置		
+	function show(){		
 		var cfgType=$('input:radio[name="status"]:checked').val();		
 		if(cfgType == 0){
 			$("#wenze").show();			
@@ -435,13 +434,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>
 							<td align="left" width="60%">
 								<span id="wenze" style="display: none;">
-								是否问责：
-								<label>
-									<input  type="radio" name="wenze" value="0" checked="checked">不问责
-								</label> 
-								<label>
-									<input type="radio" name="wenze" value="1" >问责
-								</label>
+									是否问责：
+									<label>
+										<input  type="radio" name="wenze" value="0" checked="checked">不问责
+									</label> 
+									<label>
+										<input type="radio" name="wenze" value="1" >问责
+									</label>
 								</span>	
 							</td>								
 						</tr>

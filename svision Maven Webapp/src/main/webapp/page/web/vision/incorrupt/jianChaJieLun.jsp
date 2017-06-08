@@ -166,38 +166,47 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 
 	//新增/编辑项目
 	function saveOpinion(obj){	
-        $.ajax({
-	        cache: true, //是否缓存当前页面
-	        type: "POST", //请求类型
-	        url: "<%=basePath%>vision/incorrupt/jsonSaveJianChaJieLun.do",
-	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
-	        async: true, //发送异步请求	  
-	        dataType:"json", //响应数据类型      
-	        success: function(data) {
-	        	if(data.code==0){ 
-	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
-	        			$("#uploader_start").click(); //上传文件
-	        		}else{
-	        		$("#dia_title").text($("#hid_dia_title").val());
-        			$("#dialog1").dialog({
-					      resizable: false,
-					      height:150,
-					      modal: true,
-					      open: function (event, ui) {
-			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-			              },
-					      buttons: {
-					        "确定": function() {
-					          window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do';
-					        } 
-					      }
-					    });
-	        		}
-	        	}else{
-	        		alert(data.message);	        	
-	        	}	
-	        }
-   		});
+		layer.confirm('确认信息已经填写完整，并且保存？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			$.ajax({
+		        cache: true, //是否缓存当前页面
+		        type: "POST", //请求类型
+		        url: "<%=basePath%>vision/incorrupt/jsonSaveJianChaJieLun.do",
+		        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+		        async: true, //发送异步请求	  
+		        dataType:"json", //响应数据类型      
+		        success: function(data) {
+		        	if(data.code==0){ 
+		        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
+		        			$("#uploader_start").click(); //上传文件
+		        		}else{
+		        		$("#dia_title").text($("#hid_dia_title").val());
+	        			$("#dialog1").dialog({
+						      resizable: false,
+						      height:150,
+						      modal: true,
+						      open: function (event, ui) {
+				                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+				              },
+						      buttons: {
+						        "确定": function() {
+						          window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do';
+						        } 
+						      }
+						    });
+		        		}
+		        	}else{
+		        		alert(data.message);	        	
+		        	}	
+		        }
+	   		});
+		}, function(){
+			
+		});	
+	
+        
 	}
 	function downLoadFile(path,name){
 		var filePath = encodeURI(encodeURI(path));
@@ -392,6 +401,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<label>${ItemProcess7.content } </label> 									
 							</td>		
 						</tr> 
+						<tr>
+							<td align="right" >相关附件：</td>
+							<td colspan="3"> 
+								<table style="width:100%;height:100%;min-height:80px;">
+									<c:forEach var="fileItem" items="${ItemProcess7.fileList }">
+										<tr style="height:20px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+									</c:forEach> 
+									<tr><td style="border:0px;"></td><tr>
+								</table>
+							</td>		
+						</tr>
 						<tr>
 							<td align="right">执行情况是否合规：</td>
 							<td colspan="3">

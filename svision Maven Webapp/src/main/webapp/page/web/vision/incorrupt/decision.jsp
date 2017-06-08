@@ -332,7 +332,43 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td colspan="3">
 								<label>合规 </label> 									
 							</td>		
-						</tr>		
+						</tr>
+						<!-- 有异议提请党委 -->
+						<c:if test="${ItemProcess8 != null && ItemProcess4==null}">
+							<tr>
+								<td align="right" style="height:40px;">监察室意见：</td>
+								<td colspan="3">
+									<label>${ItemProcess8.content } </label>									
+								</td>		
+							</tr>
+							<tr>
+								<td align="right" >相关附件：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess8.fileList }">
+											<tr style="height:20px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>		
+							<tr>
+								<td align="right">是否有异议：</td>
+								<td colspan="3">
+									<label>有异议</label> 									
+								</td>		
+							</tr>						
+						</c:if>
+						<!-- 党委意见，重新决策 -->
+						<c:if test="${ItemProcess13 != null}">
+							<tr>
+								<td align="right" style="height:40px;">党委意见：</td>
+								<td colspan="3">
+									<label>${ItemProcess13.content } </label>									
+								</td>		
+							</tr>
+											
+						</c:if>		
 						<tr>
 							<td align="right" width="15%" align="right" height="40px;">录入会议决策内容：</td>
 							<td colspan="3" > 

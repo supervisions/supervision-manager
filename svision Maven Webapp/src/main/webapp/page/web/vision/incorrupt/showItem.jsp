@@ -285,6 +285,24 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</td>		
 							</tr>						
 						</c:if>
+						<!-- 党委意见，重新决策 -->
+						<c:if test="${ItemProcess13 != null}">
+							<tr>
+								<td align="right" style="height:40px;">党委意见：</td>
+								<td colspan="3">
+									<label>${ItemProcess13.content } </label>									
+								</td>		
+							</tr>											
+						</c:if>
+						<!-- 党委意见，维持原决议 -->
+						<c:if test="${ItemProcess14 != null}">
+							<tr>
+								<td align="right" style="height:40px;">党委意见：</td>
+								<td colspan="3">
+									<label>${ItemProcess14.content } </label>									
+								</td>		
+							</tr>											
+						</c:if>
 						<!-- 被监察对象录入执行情况-->
 						<c:if test="${ItemProcess5 != null }">
 							<tr>

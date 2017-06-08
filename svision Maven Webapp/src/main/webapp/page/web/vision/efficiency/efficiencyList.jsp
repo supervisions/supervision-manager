@@ -207,18 +207,18 @@ function followAction(itemId,status){
 		     </form>
 		 </div>	
           <div class="fl yw-lump"> 
-			<table class="yw-cm-table yw-center yw-bg-hover" id="taskList">
+			<table class="yw-cm-table yw-center yw-bg-hover"  id="taskList">
 				<tr style="background-color:#D6D3D3;font-weight: bold;">
 					<th width="4%" style="display:none">&nbsp;</th>
 					<th width="6%">立项情况</th>
 					<th width="4%">状态</th>	
 					<th width="20%">工作事项</th>	
 					<th width="4%">查看</th>	
-					<th width="15%">被监察对象</th>	
+					<th width="12%">被监察对象</th>	
 					<th width="6%">签收情况</th>	
-					<th width="8%">部门完成情况</th>	
+					<th width="7%">部门完成情况</th>	
 					<th width="5%">是否完结</th>	
-					<th width="10%">规定办理时间</th>	
+					<th width="7%">规定办理时间</th>	
 					<th width="6%">状态提醒</th>
 					<th>操作一</th>
 					<th>操作二</th>			
@@ -299,9 +299,15 @@ function followAction(itemId,status){
 							<c:if test="${userOrg.id == item.supervisionOrgId && item.isSign >1 && item.lasgTag == 66}">
 								<a style="color: blue;" onclick="uploadFile(${item.id},67)">上传资料</a>
 							</c:if>
+							<c:if test="${userOrg.id == item.supervisionOrgId && item.isSign >1 && item.lasgTag == 72}">
+								<a style="color: blue;" onclick="uploadFile(${item.id},67)">上传资料</a>
+							</c:if>
 							<c:if test="${item.lasgTag == 67 && userOrg.id==item.preparerOrgId}">
 								<a style="color: blue;" onclick="uploadFile(${item.id},68)">监察意见</a>
-							</c:if>						
+							</c:if>		
+							<c:if test="${item.lasgTag == 999 && userOrg.id==item.preparerOrgId}">
+								<a style="color: blue;" onclick="uploadFile(${item.id},68)">监察意见</a>
+							</c:if>				
 							<c:if test="${item.lasgTag == 69 && userOrg.id == item.supervisionOrgId }">
 								<a style="color: blue;" onclick="uploadFile(${item.id},69)">录入整改情况</a>
 							</c:if>

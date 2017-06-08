@@ -169,22 +169,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			btn: ['确认','取消'] //按钮
 		}, function(){//点击确认按钮调用
 			layer.close(layer.confirm());//关闭当前弹出层
-			ajaxPost();
-		}, function(){
-			
-		});
-        
-	}
-	function downLoadFile(path,name){
-		var filePath = encodeURI(encodeURI(path));
-		var fileName = encodeURI(encodeURI(name));
-		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
-	}
-	function returnPage(){
-		layer.confirm('当前项目资料尚未提交，是否离开当前页面？', {
-			btn: ['确认','取消'] //按钮
-		}, function(){//点击确认按钮调用
-			layer.close(layer.confirm());//关闭当前弹出层
 			$.ajax({
 		        cache: true, //是否缓存当前页面
 		        type: "POST", //请求类型
@@ -217,6 +201,22 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        	}		
 		        }
 	   		});
+		}, function(){
+			
+		});
+        
+	}
+	function downLoadFile(path,name){
+		var filePath = encodeURI(encodeURI(path));
+		var fileName = encodeURI(encodeURI(name));
+		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
+	}
+	function returnPage(){
+		layer.confirm('当前项目资料尚未提交，是否离开当前页面？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			 window.location.href='<%=basePath%>vision/efficiency/efficiencyList.do';
 		}, function(){
 			
 		});
@@ -309,6 +309,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
 											<a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a>
 									</c:forEach> 
+								</td>		
+							</tr>
+							<tr>
+								<td align="right">相关附件：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess4.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
 								</td>		
 							</tr>
 							<tr>

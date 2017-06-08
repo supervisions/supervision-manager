@@ -298,7 +298,7 @@ public class EnforcementVisionAction extends SystemAction {
 					}
 					if (rc1.getPid() == rc.getId() && rc1.getSupervision() == 0) {
 						itemList.add(rc1);
-					}else if(path.equals(substring)){//添加孙子级节点	
+					}else if(path.equals(substring) && rc1.getSupervision() == 0){//添加孙子级节点	
 						itemList.add(rc1);								
 					}/*
 					 * else if(rc1.getId()==43 && rc1.getPid() == rc.getId()){
