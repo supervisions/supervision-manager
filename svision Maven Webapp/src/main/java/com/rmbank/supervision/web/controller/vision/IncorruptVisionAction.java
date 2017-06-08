@@ -295,8 +295,8 @@ public class IncorruptVisionAction extends SystemAction {
 						temp.setEndTime(Constants.DATE_FORMAT.parse(item.getEndTimes()+" 00:00:00"));
 					}
 					itemService.updateByPrimaryKeySelective(temp);
-					List<ItemProcess> itemList = itemProcessService
-							.getItemProcessItemId(item.getId());
+					List<ItemProcess> itemList = itemProcessService.getItemProcessItemId(item.getId());
+							
 					if (itemList.size() > 0) {
 						ItemProcess itemProcess = itemList.get(0);
 						itemProcess.setContent(item.getName());
@@ -632,6 +632,7 @@ public class IncorruptVisionAction extends SystemAction {
 	@RequiresPermissions("vision/incorrupt/jsonsaveOpinion.do")
 	public JsonResult<ItemProcess> jsonsaveOpinion(ItemProcess itemProcess,
 			@RequestParam(value = "status", required = false) Integer status,
+			@RequestParam(value = "yijian", required = false) Integer yijian,
 			HttpServletRequest request, HttpServletResponse response)
 			throws ParseException {
 		// 新建一个json对象 并赋初值
@@ -659,6 +660,10 @@ public class IncorruptVisionAction extends SystemAction {
 				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_6); // 监察室给出监察意见，但是有异议，进入被监察对象提请党委参考监察意见
 			} else if (status == 6) {
 				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_4); // 监察室给出监察意见，并且无异议，进入被监察对象录入执行情况
+			}else if (yijian == 0) {
+				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_9); // 监察室给出监察意见，并且无异议，进入被监察对象录入执行情况
+			}else if (yijian == 1) {
+				itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_10); // 监察室给出监察意见，并且无异议，进入被监察对象录入执行情况
 			}
 			
 			User loginUser = this.getLoginUser();
@@ -927,6 +932,8 @@ public class IncorruptVisionAction extends SystemAction {
 					request.setAttribute("ItemProcess4", ip); // 监察室给出监察意见，并且无异议
 				} else if (ip.getContentTypeId() == Constants.INCORRUPT_VISION_5) {
 					request.setAttribute("ItemProcess5", ip); // 被监察对象已经录入执行情况
+				}else if (ip.getContentTypeId() == Constants.INCORRUPT_VISION_6) {
+					request.setAttribute("ItemProcess8", ip); // 监察室给出监察意见，但是无异议
 				} else if (ip.getContentTypeId() == Constants.INCORRUPT_VISION_7) {
 					request.setAttribute("ItemProcess7", ip); // 监察室已经录入监察执行情况，并且合规
 				} else if (ip.getContentTypeId() == 666) {
@@ -963,6 +970,9 @@ public class IncorruptVisionAction extends SystemAction {
 		}
 		if (tag == 76) {
 			return "web/vision/incorrupt/JCexecution"; // 到监察室监察执行情况
+		}
+		if (tag == 77) {
+			return "web/vision/incorrupt/shenYi"; // 到监察室监察执行情况
 		}
 		if (tag == 78) {
 			return "web/vision/incorrupt/jianChaJieLun"; // 到监察室给出监察结论

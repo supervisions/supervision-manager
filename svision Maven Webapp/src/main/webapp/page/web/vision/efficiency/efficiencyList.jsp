@@ -220,7 +220,8 @@ function followAction(itemId,status){
 					<th width="5%">是否完结</th>	
 					<th width="10%">规定办理时间</th>	
 					<th width="6%">状态提醒</th>
-					<th>操作</th>			
+					<th>操作一</th>
+					<th>操作二</th>			
 				</tr>
 				<c:forEach var="item" items="${itemList}">
 					<tr> 							
@@ -249,7 +250,7 @@ function followAction(itemId,status){
 								<span>完结</span>
 							</c:if>
 						</td>
-						<td>${item.name}</td>
+						<td title="${item.name}">${item.name}</td>
 						<td><a style="color:blue;" onclick="showItem(${item.id })">查看</a></td>
 						<td>${item.orgName}</td>
 						<td>
@@ -328,12 +329,15 @@ function followAction(itemId,status){
 							<%-- <c:if test="${userOrg.id == item.supervisionOrgId and item.status !=0}">
 								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
 							</c:if>	 --%>
-							<c:if test="${userOrg.id == item.preparerOrgId}">
-								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
-							</c:if>
+							
 							<c:if test="${item.status == 4 }">
 								<span>【已完结】</span>
 							</c:if>					
+						</td>
+						<td>
+							<c:if test="${userOrg.orgtype ==47}">
+								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+							</c:if>
 						</td>
 					</tr>
 				</c:forEach>

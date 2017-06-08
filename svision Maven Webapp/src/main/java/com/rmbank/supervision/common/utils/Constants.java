@@ -151,7 +151,8 @@ public class Constants
   public static final Integer INCORRUPT_VISION_6=77; //被监察对象提请重新决策
   public static final Integer INCORRUPT_VISION_7=78; //监察室给出监察结论 													
   public static final Integer INCORRUPT_VISION_8=84; //廉政监察完成
-  									
+  public static final Integer INCORRUPT_VISION_9=85;
+  public static final Integer INCORRUPT_VISION_10=86;
   
   
   //执法监察流程

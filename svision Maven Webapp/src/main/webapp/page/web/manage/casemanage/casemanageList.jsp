@@ -149,10 +149,11 @@ function editManage(id,orgName){
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>
 						<th width="10%" >状态</th> 
-						<th width="10%" >模型名称</th>
+						<th width="15%" >模型名称</th>
 						<!-- <th width="10%" >所属机构</th>
 						<th width="10%" >是否授权下级</th>  -->					
-						<th width="10%" >操作</th> 
+						<th width="10%" >操作一</th>
+						<th width="5%" >操作二</th> 
 					</tr>
 					<c:forEach var="item" items="${GradeSchemeList}">
 						<tr>
@@ -178,10 +179,12 @@ function editManage(id,orgName){
 								</c:if> 
 								<c:if test="${item.used == 0}">
 									<a style="color:blue" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">启用</a>
-								</c:if> 
-								<a style="color:blue" onclick="deleteGradeScheme(${item.id},'${item.name}');">删除</a>							
+								</c:if> 															
 								<a style="color:blue" onclick="editManage(${item.id},'${item.orgName }');">编辑</a>
 								
+							</td>
+							<td>
+								<a style="color:blue" onclick="deleteGradeScheme(${item.id},'${item.name}');">删除</a>
 							</td>
 						</tr>
 					</c:forEach>

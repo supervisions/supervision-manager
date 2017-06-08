@@ -57,19 +57,7 @@ function pagesearch(){
 		taskForm.submit();
 	}
 }
-/* function showdialog(){
-	var wz = getDialogPosition($('#taskInfoWindow').get(0),100);
-	$('#taskInfoWindow').window({
-		  	top: 100,
-		    left: wz[1],
-		    onBeforeClose: function () {
-		    },
-		    onClose:function(){
-		    	$('#saveTaskForm .easyui-validatebox').val(''); 
-		    }
-	});
-	$('#taskInfoWindow').window('open');
-} */
+
 function deleteResource(id,name){
 	$.messager.confirm("删除确认","确认删除资源："+name+"?",function(r){  
 		    if (r){   
@@ -116,28 +104,7 @@ function deleteResource(id,name){
 	    }  
 	}); 
 }
-function resetUserPwd(id,name){
-	$.messager.confirm("重置密码确认","确认重置用户："+name+"的密码？：",function(r){  
-		    if (r){   
-			$.ajax({
-				url : "jsonResetUserPwd.do?id="+id,
-				type : "post",  
-		    	dataType : "json",								
-				success : function(data) { 									
-		  			if(data.code == 0){ 
-		  				$.messager.alert('操作信息',data.message,'info',function(){ 
-		  					search();  
-		      			});
-		  			}else{		  			    
-						$.messager.alert('错误信息','重置密码失败！','error');
-		  			}  
-			    } 
-			});
-	    }  
-	}); 
-}
-
- */
+*/
 
 </script>
 </head>
@@ -175,21 +142,23 @@ function resetUserPwd(id,name){
 						<th width="10%">资源名称</th>	
 						<th width="20%" align="left">资源地址</th>
 						<th width="8%">所属模块</th>
-						<th width="15%">操作</th>			
+						<th width="10%">操作一</th>
+						<th width="5%">操作二</th>			
 					
 					</tr>
 					<c:forEach var="item" items="${resourceList}">
 						<tr>
-						<td>${item.name}</td>
-						<td align="left">${item.resource}</td>
-						<td>${item.functionName}</td>
-						<td>
-							<a style="color:blue" onclick="deleteResource(${item.id},'${item.name}');">删除</a>							
-							<a style="color:blue" onclick="window.location.href='resourceInfo.do?id=${item.id}';">编辑</a>							
-						</td>
+							<td>${item.name}</td>
+							<td align="left">${item.resource}</td>
+							<td>${item.functionName}</td>
+							<td>															
+								<a style="color:blue" onclick="window.location.href='resourceInfo.do?id=${item.id}';">编辑</a>							
+							</td>
+							<td>
+								<a style="color:blue" onclick="deleteResource(${item.id},'${item.name}');">删除</a>
+							</td>
 						</tr>
-					</c:forEach>
-					
+					</c:forEach>					
 				</table>
 				<div class="page" id="pager"></div>
 				</div>

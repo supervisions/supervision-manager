@@ -33,7 +33,7 @@
 		}); 
 function fillOrganList(lst){
 	var html = "<tbody>";
-	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>指标等级</span></th><th>指标名称</th><th>上级指标</th><th>所属模型</th><th>权重/标准分</th><th>操作</th></tr>";
+	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th><span style='margin-left:40px'>指标等级</span></th><th>指标名称</th><th>上级指标</th><th>所属模型</th><th>权重/标准分</th><th>操作一</th><th>操作二</th></tr>";
 	for(var i = 0; i<lst.length;i++){
 		html += "<tr>";
 		html += "<td  style='display:none'>"+lst[i].id+"</td><td align='left' ><span style='margin-left:40px'>";
@@ -49,13 +49,14 @@ function fillOrganList(lst){
 			html += lst[i].pName;
 		} 
 		html += "</td><td align='left' >"+lst[i].schemaName+"</td><td class='supervisionState'>"+lst[i].grade+"</td>";
-		html +="<td align='left'>"+"<a style='color:blue' onclick=deleteDetail(\'"+lst[i].id+"\',\'"+lst[i].name+"\')>删除</a> <a style='color:blue'onclick=editDetail(\'"+lst[i].id+"\',\'"+lst[i].pName+"\')>编辑</a> ";
+		html +="<td align='left'>"+"<a style='color:blue'onclick=editDetail(\'"+lst[i].id+"\',\'"+lst[i].pName+"\')>编辑</a> ";
 		if(lst[i].level == 0){
 			html +="<a href=\"javascript:void(0);\" style=\"color:blue\" onclick=window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=1&pid="+lst[i].id+"'>添加二级指标</a> ";
 		}else if(lst[i].level == 1){
 			html +="<a href=\"javascript:void(0);\" style=\"color:blue\" onclick=window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=2&pid="+lst[i].id+"'>添加三级指标</a>";
 		}
-		html += "</td></tr>";
+		html += "</td>";
+		html += "<td align='left' >"+"<a style='color:blue' onclick=deleteDetail(\'"+lst[i].id+"\',\'"+lst[i].name+"\')>删除</a></td></tr>";
 	}
 	html += "</tbody>";
 	$("#organList").html(html);
@@ -155,7 +156,8 @@ function editDetail(id,pName){
 						<th>上级指标</th> 		
 						<th>所属模型</th> 		
 						<th>权重/标准分</th>											
-						<th>操作</th> 
+						<th>操作一</th> 
+						<th>操作二</th>
 					</tr>
 					<c:forEach var="item" items="${DetailList }">
 						<tr> 			
@@ -171,11 +173,11 @@ function editDetail(id,pName){
 								</c:if>
 							</td>		
 							<td>${item.name }</td> 
-							<td  align="left">${item.pName }</td>
-							<td  align="left">${item.schemaName }</td>
-							<td  align="left">${item.grade }</td>
+							<td align="left">${item.pName }</td>
+							<td align="left">${item.schemaName }</td>
+							<td align="left">${item.grade }</td>
 							<td align="left">
-								<a href="javascript:void(0);" style="color:blue" onclick="deleteDetail(${item.id},'${item.name}')">删除</a>
+								
 								<a href="javascript:void(0);" style="color:blue" onclick="editDetail(${item.id},'${item.pName }');">编辑</a>
 								<c:if test="${item.level == 0 }"> 
 									<a href="javascript:void(0);" style="color:blue" onclick="window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=1&pid=${item.id }'">添加二级指标</a> 
@@ -183,6 +185,9 @@ function editDetail(id,pName){
 								<c:if test="${item.level == 1 }"> 
 									<a href="javascript:void(0);" style="color:blue" onclick="window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=2&pid=${item.id }'">添加三级指标</a> 
 								</c:if>
+							</td>
+							<td>
+								<a href="javascript:void(0);" style="color:blue" onclick="deleteDetail(${item.id},'${item.name}')">删除</a>
 							</td>
 						</tr>
 					</c:forEach>

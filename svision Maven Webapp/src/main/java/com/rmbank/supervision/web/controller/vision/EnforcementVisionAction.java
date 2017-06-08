@@ -164,7 +164,7 @@ public class EnforcementVisionAction extends SystemAction {
 		List<OrganVM> list = new ArrayList<OrganVM>();
 		OrganVM frvm = null;
 		for (Organ rc : organList) {
-			if (rc.getId() == 21) {
+			if (rc.getId() == 21 || rc.getId() == 20) {
 				frvm = new OrganVM();
 				List<Organ> itemList = new ArrayList<Organ>();// 用于当做OrganVM的itemList
 				frvm.setId(rc.getId());
@@ -285,14 +285,21 @@ public class EnforcementVisionAction extends SystemAction {
 		List<OrganVM> list = new ArrayList<OrganVM>();
 		OrganVM frvm = null;
 		for (Organ rc : organList) {
-			if (rc.getId() == 21) {
+			if (rc.getId() == 21 || rc.getId() == 20) {
 				frvm = new OrganVM();
 				List<Organ> itemList = new ArrayList<Organ>();// 用于当做OrganVM的itemList
 				frvm.setId(rc.getId());
 				frvm.setName(rc.getName());
+				String path =rc.getId()+".";//当前登录机构的子机构的path都以此开头
+				String substring=null;
 				for (Organ rc1 : organList) {
+					if(rc1.getPath().length()>path.length()){
+						substring=rc1.getPath().substring(0, path.length());
+					}
 					if (rc1.getPid() == rc.getId() && rc1.getSupervision() == 0) {
 						itemList.add(rc1);
+					}else if(path.equals(substring)){//添加孙子级节点	
+						itemList.add(rc1);								
 					}/*
 					 * else if(rc1.getId()==43 && rc1.getPid() == rc.getId()){
 					 * itemList.add(rc1); }

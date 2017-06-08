@@ -34,6 +34,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/plupload.full.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery.ui.plupload.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/zh_CN.js" charset="UTF-8"></script>
+   
+    <!-- 以下两个引的文件用于layer -->
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
+	<script src="<%=basePath%>source/js/layer/layer.js"></script>
+    
+   
+   
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
     <![endif]-->
@@ -158,44 +165,61 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 });
 	 
 	//新增/编辑项目
-	function saveItemScheme(obj){	
-        $.ajax({
-	        cache: true, //是否缓存当前页面
-	        type: "POST", //请求类型
-	        url: "<%=basePath%>vision/enforce/jsonSaveItemProcess.do",
-	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
-	        async: true, //发送异步请求	  
-	        dataType:"json", //响应数据类型      
-	        success: function(data) {
-	        	if(data.code==0){ 
-	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
-	        			$("#uploader_start").click(); //上传文件
-	        		}else{
-	        		$("#dia_title").text($("#hid_dia_title").val());
-        			$("#dialog1").dialog({
-					      resizable: false,
-					      height:150,
-					      modal: true,
-					      open: function (event, ui) {
-			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-			              },
-					      buttons: {
-					        "确定": function() {
-					          window.location.href='<%=basePath%>vision/enforce/enforceList.do';
-					        } 
-					      }
-					    });
-	        		}
-	        	}else{
-	        		alert(data.message);	        	
-	        	}	
-	        }
-   		});
+	function saveItemScheme(obj){
+		var state=$("input[name='status']").is(':checked');
+		var status=$("input[name='status']:checked").val();
+		if(state==true &&　status　==0){
+			layer.confirm('确认信息已经填写完整，并且保存？', {
+				btn: ['确认','取消'] //按钮
+			}, function(){//点击确认按钮调用
+				layer.close(layer.confirm());//关闭当前弹出层
+				$.ajax({
+			        cache: true, //是否缓存当前页面
+			        type: "POST", //请求类型
+			        url: "<%=basePath%>vision/enforce/jsonSaveItemProcess.do",
+			        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+			        async: true, //发送异步请求	  
+			        dataType:"json", //响应数据类型      
+			        success: function(data) {
+			        	if(data.code==0){ 
+			        		$("#uploader_start").click(); //上传文件
+			        	}else{
+			        		layer.alert(data.message);	        	
+			        	}	
+			        }
+		   		});
+				
+			}, function(){
+				
+			});
+		}else if(state==false){
+			layer.alert("请选择是否经行政处罚委员会批准！");	
+		}else if(status==1){
+			layer.alert("未经行政处罚委员会批准，无法提交！");	
+		}
+		
+        
 	}
 	function downLoadFile(path,name){
 		var filePath = encodeURI(encodeURI(path));
 		var fileName = encodeURI(encodeURI(name));
 		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
+	}
+	
+	function returnPage(){
+		layer.confirm('当前项目资料尚未提交，是否离开当前页面？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			window.location.href='<%=basePath%>vision/enforce/enforceList.do';
+		}, function(){
+			
+		});
+	}
+	
+	function isApproval(){
+		var status=$("input[name='status']").val();
+		alert(status);
 	}
 </script>
  </head> 
@@ -215,8 +239,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
-				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItemScheme(this);">保存</span>
-				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
+				
 			</div>
 		</div>
 		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
@@ -226,7 +249,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >
 						<tr>
-							<td width="15%" align="right">工作事项：</td>
+							<td width="16%" align="right">工作事项：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
@@ -484,12 +507,20 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<td align="right" >经行政处罚委员会批准：</td>
 							<td colspan="3">
 								<label>
-									<input type="radio" name="status" value="0" checked="checked">是
+									<input type="radio" name="status" value="0">是
 								</label> 
 								<label>
 									<input type="radio" name="status" value="1" >否
 								</label>								
 							</td>	
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItemScheme(this);">提交</span>
+								<span class="yw-btn bg-green" style="margin-left: 50px;margin-right: 10px;" onclick="returnPage();">返回</span>
+							</td>
+							
 						</tr>						
 					</table>
 				</div>
