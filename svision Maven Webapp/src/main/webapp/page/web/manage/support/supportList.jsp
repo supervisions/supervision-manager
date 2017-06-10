@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     <base href="<%=basePath%>">
-    <title>分行立项</title>
+    <title>中支立项中支完成</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -65,7 +65,7 @@ function deleteItem(id,name){
 	$.messager.confirm("删除确认","确认删除项目："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "manage/branch/jsondeleteItemById.do?id="+id,
+				url : "<%=basePath %>manage/branch/jsondeleteItemById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -82,18 +82,8 @@ function deleteItem(id,name){
 	}); 
 }
 function edit(id){
-	window.location.href="manage/branch/showItem.do?id="+id;
-}
-function showDialogModel(id,name){
-   	var itemId = encodeURI(encodeURI(id));
-	$.messager.confirm("操作确认","是否量化项目："+name+"?",function(r){  
-	    if (r){   
-	    	window.location.href='<%=basePath %>manage/support/supportFile.do?id='+itemId+'&isValue=1';
-    	}else{
-    		window.location.href='<%=basePath %>manage/support/supportFile.do?id='+itemId+'&isValue=0';
-    	}
-	}); 
-}
+	window.location.href="<%=basePath %>manage/branch/showItem.do?id="+id;
+} 
 </script>
   </head>
   
@@ -133,7 +123,7 @@ function showDialogModel(id,name){
 					</div>
 					<div class="fr">
 						<c:if test="${UserOrg.orgtype==43 }">
-							<span class="fl yw-btn bg-green cur" onclick="window.location.href='manage/support/supportInfo.do?pointId='+ 0">新建项目</span>
+							<span class="fl yw-btn bg-green cur" onclick="window.location.href='<%=basePath %>manage/support/supportInfo.do?pointId='+ 0">新建项目</span>
 						</c:if>
 						
 					</div>
@@ -154,7 +144,8 @@ function showDialogModel(id,name){
 						<th width="10%" >立项单位（部门）</th>					
 						<th width="10%" >完成单位（部门）</th>
 						
-						<th width="10%" >操作</th> 
+						<th width="10%" >操作1</th> 
+						<th width="10%" >操作2</th> 
 					</tr>
 					<c:forEach var="item" items="${itemList}">
 						<tr>
@@ -171,13 +162,25 @@ function showDialogModel(id,name){
 								<c:if test="${item.status != 4 }">
 									
 									<c:if test="${UserOrgId == item.supervisionOrgId }">
-										<a style="color: blue;" onclick="showDialogModel(${item.id},'${item.name}');">上传资料</a>
+										<c:if test="${item.lasgTag == 31 }">
+											<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/support/supportFile.do?id=${item.id}'">上传资料</a>
+										</c:if> 
+										<c:if test="${item.lasgTag == 998 }">
+											<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/support/supportReFile.do?id=${item.id}'">继续上传资料</a>
+										</c:if> 
 									</c:if> 
 									<c:if test="${UserOrgId == item.preparerOrgId }">
-										<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> 
+										<c:if test="${item.lasgTag == 999 }">
+											<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/support/supportValue.do?id=${item.id}'" >项目量化</a>
+										</c:if>    
 									</c:if>
 								</c:if>								
-							</td>							
+							</td>			
+							<td>
+								<c:if test="${UserOrgId == item.preparerOrgId }"> 
+									<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> 
+								</c:if>
+							</td>				
 						</tr>
 					</c:forEach>
 				</table>

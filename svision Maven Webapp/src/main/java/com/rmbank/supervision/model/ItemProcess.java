@@ -22,6 +22,8 @@ public class ItemProcess {
 
     private String content;
 
+    private String changeContent;
+
     private Integer preparerOrgId;
 
     private Integer preparerId;
@@ -29,9 +31,11 @@ public class ItemProcess {
     /**
      * 量化节点分值
      */
-    private List<Double> values;
+    private Integer gradeSchemeId;
     
-    private List<Integer> detailId;
+    private String values;
+    
+    private String detailId;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date preparerTime;
@@ -63,7 +67,7 @@ public class ItemProcess {
     /**
      * 量化分值
      */
-    private Integer valueTypeValue; 
+    private Double valueTypeValue; 
     
     private List<ItemProcessFile> fileList;
 
@@ -179,11 +183,11 @@ public class ItemProcess {
 		this.preparerTimes = preparerTimes;
 	}
 
-	public Integer getValueTypeValue() {
+	public Double getValueTypeValue() {
 		return valueTypeValue;
 	}
 
-	public void setValueTypeValue(Integer valueTypeValue) {
+	public void setValueTypeValue(Double valueTypeValue) {
 		this.valueTypeValue = valueTypeValue;
 	}
 
@@ -219,19 +223,19 @@ public class ItemProcess {
 		this.isOverStatus = isOverStatus;
 	}
 
-	public List<Double> getValues() {
+	public String getValues() {
 		return values;
 	}
 
-	public void setValues(List<Double> values) {
+	public void setValues(String values) {
 		this.values = values;
 	}
 
-	public List<Integer> getDetailId() {
+	public String getDetailId() {
 		return detailId;
 	}
 
-	public void setDetailId(List<Integer> detailId) {
+	public void setDetailId(String detailId) {
 		this.detailId = detailId;
 	}
 
@@ -241,5 +245,21 @@ public class ItemProcess {
 
 	public void setIsFollowStatus(Integer isFollowStatus) {
 		this.isFollowStatus = isFollowStatus;
+	}
+
+	public String getChangeContent() {
+		return changeContent;
+	}
+
+	public void setChangeContent(String changeContent) {
+		this.changeContent = changeContent;
+	}
+
+	public Integer getGradeSchemeId() {
+		return gradeSchemeId;
+	}
+
+	public void setGradeSchemeId(Integer gradeSchemeId) {
+		this.gradeSchemeId = gradeSchemeId;
 	}
 }

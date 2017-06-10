@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.common.utils.IpUtil;
+import com.rmbank.supervision.common.utils.StringUtil;
 import com.rmbank.supervision.model.GradeScheme;
 import com.rmbank.supervision.model.GradeSchemeDetail;
 import com.rmbank.supervision.model.Item;
@@ -132,7 +134,12 @@ public class SupportAction extends SystemAction {
 		for (Item it : itemList) {
 			Date preparerTime = it.getPreparerTime();
 			String format = formatter.format(preparerTime);
-			it.setShowDate(format); 
+			it.setShowDate(format);
+			List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(it.getId());
+			if(itemProcessList.size()>0){
+				ItemProcess ip = itemProcessList.get(itemProcessList.size() - 1);
+				it.setLasgTag(ip.getContentTypeId());
+			} 
 		}
 		item.setTotalCount(totalCount);
 		request.setAttribute("itemList", itemList);
@@ -208,8 +215,7 @@ public class SupportAction extends SystemAction {
 	@RequiresPermissions("manage/support/supportFile.do")
 	public String supportFile(Item item,
 			HttpServletRequest request, HttpServletResponse response){
-
-		int isValue = item.getIsValue(); 
+ 
 		item = itemService.selectByPrimaryKey(item.getId());
 		if(item.getPreparerTime() != null){
 			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
@@ -218,11 +224,7 @@ public class SupportAction extends SystemAction {
 		ItemProcess itemProcess = new ItemProcess();
 		if(itemProcessList.size()>0){
 			itemProcess = itemProcessList.get(0); 
-		}
-		List<GradeScheme> gsList = new ArrayList<GradeScheme>();
-		if(isValue>0){
-			gsList = gradeSchemeService.getGradeSchemeList(new GradeScheme()); 
-		}
+		} 
 		
 		List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
 		if(itemProcess.getId() != null){
@@ -230,24 +232,115 @@ public class SupportAction extends SystemAction {
 		}
 		//获取当前用户
 		User lgUser=this.getLoginUser(); 
-		 
-		if(itemProcess.getIsValue() != null && itemProcess.getIsValue()==Constants.IS_VALUE){
-			List<GradeScheme> gradeList =  gradeSchemeService.getGradeSchemeList(new GradeScheme());
-			request.setAttribute("GradeList", gradeList);
-		} 
+		  
 		
-		request.setAttribute("User", lgUser);
-		request.setAttribute("IsValue", isValue);
-		request.setAttribute("ItemProcess", itemProcess);
-		request.setAttribute("GradeSchemeList", gsList);
+		request.setAttribute("User", lgUser); 
+		request.setAttribute("ItemProcess", itemProcess); 
 		request.setAttribute("Item", item);
 		request.setAttribute("FileList", fileList);
 		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
 		return "web/manage/support/supportFile";
 	}
 	
-	
-	
+
+
+
+	/**
+	 * 跳转到监察室量化项目页面
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/supportValue.do")
+	@RequiresPermissions("manage/support/supportValue.do")
+	public String supportValue(Item item,
+			HttpServletRequest request, HttpServletResponse response){
+ 
+		item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+		/*ItemProcess itemProcess = new ItemProcess();
+		if(itemProcessList.size()>0){
+			itemProcess = itemProcessList.get(0); 
+		}*/
+		if(itemProcessList.size()>0){ 
+			for(ItemProcess ip : itemProcessList){  
+				List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+				fileList = itemProcessFileService.getFileListByItemId(ip.getId());
+				ip.setFileList(fileList);  
+				if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_1){
+					request.setAttribute("ItemProcess", ip);
+				}else if(ip.getContentTypeId() == 999){ 
+					request.setAttribute("FileItemProcess", ip); 
+				}else if(ip.getContentTypeId() == Constants.CONTENT_TYPE_ID_ZZZZ_OVER){
+					request.setAttribute("OverItemProcess", ip);
+				}
+			}
+		}
+		
+		
+		List<GradeScheme> gsList = gradeSchemeService.getGradeSchemeList(new GradeScheme());  
+		 
+		//获取当前用户
+		User lgUser=this.getLoginUser(); 
+		 
+		request.setAttribute("User", lgUser);  
+		request.setAttribute("GradeSchemeList", gsList);
+		request.setAttribute("Item", item); 
+		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		return "web/manage/support/supportValue";
+	}
+
+	/**
+	 * 跳转到监察室量化项目页面
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/supportReFile.do")
+	@RequiresPermissions("manage/support/supportReFile.do")
+	public String supportReFile(Item item,
+			HttpServletRequest request, HttpServletResponse response){
+
+		item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
+		 
+		if(itemProcessList.size()>0){ 
+			for(ItemProcess ip : itemProcessList){  
+				List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+				fileList = itemProcessFileService.getFileListByItemId(ip.getId());
+				ip.setFileList(fileList);  
+				if(ip.getContentTypeId() == 31){
+					request.setAttribute("ItemProcess", ip);
+				}else if(ip.getContentTypeId() == 999){
+					request.setAttribute("FileItemProcess", ip);
+				}else if(ip.getContentTypeId() == 998){
+					List<ItemProcessGrade> gsList = gradeSchemeService.getGradeListByItemProcessId(ip.getId());
+					if(gsList.size()>0){
+						double valueTypeValue = 0;
+						for(ItemProcessGrade ipg : gsList){
+							valueTypeValue = valueTypeValue + ipg.getGrade();
+						}
+						ip.setValueTypeValue(valueTypeValue);
+					}
+					request.setAttribute("ValueItemProcess", ip);
+				} 
+			}
+		}
+		 
+		//获取当前用户
+		User lgUser=this.getLoginUser();    
+		request.setAttribute("User", lgUser);   
+		request.setAttribute("Item", item);  
+		return "web/manage/support/supportReFile";
+	}
+		
+		
 	/**
 	 * 跳转到表单查看模块
 	 * @param request
@@ -264,49 +357,36 @@ public class SupportAction extends SystemAction {
 			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
 		}
 		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId()); 
-		
-		ItemProcess fitemProcess = new ItemProcess();
-		ItemProcess sitemProcess = new ItemProcess();
-		if(itemProcessList.size()>0){
-			fitemProcess = itemProcessList.get(0);
-			if(itemProcessList.size() ==2){
-				sitemProcess = itemProcessList.get(1);
-			}
-		}
-		
-		List<ItemProcessFile> ffileList = new ArrayList<ItemProcessFile>();
-		List<ItemProcessFile> sfileList = new ArrayList<ItemProcessFile>();
-		if(fitemProcess.getId() != null){
-			ffileList = itemProcessFileService.getFileListByItemId(fitemProcess.getId());
-			fitemProcess.setFileList(ffileList);
-		}
-		if(sitemProcess.getId() != null){
-			sfileList = itemProcessFileService.getFileListByItemId(sitemProcess.getId());
-			sitemProcess.setFileList(sfileList);
-		}
-		//获取当前用户
-		User lgUser=this.getLoginUser();  
-		
-		List<ItemProcessGrade> gradeList = new ArrayList<ItemProcessGrade>();
-		int isValue = Constants.NOT_VALUE;
-		double item_value = 0;
-		if(sitemProcess.getId() != null){
-			gradeList = gradeSchemeService.getGradeListByItemProcessId(sitemProcess.getId());
-			if(gradeList != null &&  gradeList.size()>0){
-				isValue = Constants.IS_VALUE;
-				for(ItemProcessGrade ipg : gradeList){
-					item_value  = item_value + ipg.getGrade();
+		 
+		if(itemProcessList.size()>0){ 
+			for(ItemProcess ip : itemProcessList){  
+				List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+				fileList = itemProcessFileService.getFileListByItemId(ip.getId());
+				ip.setFileList(fileList);  
+				if(ip.getContentTypeId() == 31){
+					request.setAttribute("ItemProcess", ip);
+				}else if(ip.getContentTypeId() == 999){
+					request.setAttribute("FileItemProcess", ip);
+				}else if(ip.getContentTypeId() == 998){
+					List<ItemProcessGrade> gsList = gradeSchemeService.getGradeListByItemProcessId(ip.getId());
+					if(gsList.size()>0){
+						double valueTypeValue = 0;
+						for(ItemProcessGrade ipg : gsList){
+							valueTypeValue = valueTypeValue + ipg.getGrade();
+						}
+						ip.setValueTypeValue(valueTypeValue);
+					}
+					request.setAttribute("ValueItemProcess", ip);
+				}else if(ip.getContentTypeId() == 52){
+					request.setAttribute("OverItemProcess", ip);
 				}
 			}
 		}
-		
-		request.setAttribute("User", lgUser); 
-		request.setAttribute("FItemProcess", fitemProcess);
-		request.setAttribute("SItemProcess", sitemProcess);
-		request.setAttribute("IsValue", isValue);
-		request.setAttribute("ItemValue", item_value);
-		request.setAttribute("Item", item); 
-		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		 
+		//获取当前用户
+		User lgUser=this.getLoginUser();    
+		request.setAttribute("User", lgUser);   
+		request.setAttribute("Item", item);  
 		return "web/manage/support/supportViewForm";
 	}
 	
@@ -389,43 +469,118 @@ public class SupportAction extends SystemAction {
     	User u = this.getLoginUser(); 
 		js.setCode(new Integer(1));
 		js.setMessage("保存项目信息失败!");
-		try {  
-
-			if(itemProcess.getIsValue()== Constants.IS_VALUE){
-				if(itemProcess.getValues()  == null || itemProcess.getValues().size()==0 || itemProcess.getDetailId() == null || itemProcess.getDetailId().size() != itemProcess.getValues().size()){
-					js.setMessage("量化分指标填写不完善，请检查"); 
-					return js;
-				}
-			}
+		try {   
 	    	//获取当前用户所属的机构id，当做制单部门的ID
 	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
 	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
 	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
 	    	itemProcess.setPreparerId(u.getId());
 	    	itemProcess.setPreparerTime(new Date());
+	    	itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_ZZZZ_VALUE);
 			itemProcess.setDefined(false); 
 			itemProcessService.insert(itemProcess);
+			  
+			js.setCode(0);
+			js.setMessage("上传资料成功，完整中支立项项目"); 
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+
+	/** 
+	 * 新增,编辑项目
+	 * @throws ParseException 
+	 */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveOrUpdateItemValue.do", method=RequestMethod.POST)
+    @RequiresPermissions("manage/support/jsonSaveOrUpdateItemValue.do")
+    public JsonResult<ItemProcess> jsonSaveOrUpdateItemValue(ItemProcess itemProcess, 
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
 			
-			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-			if(item != null){
-//				item.setEndTime(new Date());
-				item.setStatus(Constants.ITEM_STATUS_OVER);
-				itemService.updateByPrimaryKeySelective(item);
-			} 
-			if(itemProcess.getIsValue()== Constants.IS_VALUE){
-				 List<ItemProcessGrade> gradeList = new ArrayList<ItemProcessGrade>();
-				 for(int i = 0; i<itemProcess.getValues().size();i++){
-					 if(itemProcess.getValues().get(i)!= null && itemProcess.getValues().get(i)>0){
-						 ItemProcessGrade grade = new ItemProcessGrade();
-						 grade.setId(0);
-						 grade.setItemProcessId(itemProcess.getId());
-						 grade.setGrade(itemProcess.getValues().get(i));
-						 grade.setGradeDetailId(itemProcess.getDetailId().get(i));
-						 gradeList.add(grade);
-					 }
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+	    	itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_ZZZZ_RE_FILE);
+	    	UUID uid = UUID.randomUUID();
+	    	String uuid = uid.toString();
+	    	itemProcess.setUuid(uuid); 
+			itemProcess.setDefined(false); 
+			itemProcessService.insert(itemProcess);
+			if(itemProcess.getIsValue() == Constants.IS_VALUE){
+				List<ItemProcessGrade> gradeList = new ArrayList<ItemProcessGrade>();
+				String[] values = itemProcess.getValues().split(",");
+				String[] detailIds = itemProcess.getDetailId().split(",");
+				for(int i = 0; i<values.length;i++){ 
+					 ItemProcessGrade grade = new ItemProcessGrade();
+					 grade.setId(0); 
+					 grade.setGradeSchemeId(itemProcess.getGradeSchemeId());
+					 grade.setItemProcessId(itemProcess.getId());
+					 grade.setGrade(Double.valueOf(values[i]));
+					 grade.setGradeDetailId(Integer.parseInt(detailIds[i]));
+					 gradeList.add(grade); 
 				 }
 				 gradeSchemeService.insertGradeList(gradeList);
+				js.setCode(0);
+				js.setMessage("量化项目成功，等待中支继续上传资料"); 
+			} else{ 
+				js.setCode(0);
+				js.setMessage("项目未量化，等待中支继续上传资料"); 
 			}
+		}catch(Exception ex){
+			js.setMessage("保存数据出错!");
+			ex.printStackTrace();
+		}
+		return js;
+    }
+
+	/** 
+	 * 新增,编辑项目
+	 * @throws ParseException 
+	 */
+    @ResponseBody
+    @RequestMapping(value = "/jsonSaveOrUpdateItemOver.do", method=RequestMethod.POST)
+    @RequiresPermissions("manage/support/jsonSaveOrUpdateItemOver.do")
+    public JsonResult<ItemProcess> jsonSaveOrUpdateItemOver(ItemProcess itemProcess, 
+    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
+    	//新建一个json对象 并赋初值
+		JsonResult<ItemProcess> js = new JsonResult<ItemProcess>();
+    	//获取当前登录用户
+    	User u = this.getLoginUser(); 
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		try {   
+			
+	    	//获取当前用户所属的机构id，当做制单部门的ID
+	    	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	    	itemProcess.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setOrgId(userOrgIDs.get(0)); //制单部门的ID
+	    	itemProcess.setPreparerId(u.getId());
+	    	itemProcess.setPreparerTime(new Date());
+	    	itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+			itemProcess.setDefined(false); 
+			itemProcessService.insert(itemProcess); 
+			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
+			if(item != null){
+				if(item.getStatus() == 3){
+					item.setStatus(5);
+				}else{
+					item.setStatus(4);
+				}
+				itemService.updateByPrimaryKeySelective(item);
+			}
+					
 			js.setCode(0);
 			js.setMessage("上传资料成功，完整中支立项项目"); 
 		}catch(Exception ex){
@@ -435,7 +590,6 @@ public class SupportAction extends SystemAction {
 		return js;
     }
     
-
 	/** 
 	 * 根据选择的模型，加载量化指标
 	 * @throws ParseException 
@@ -474,6 +628,4 @@ public class SupportAction extends SystemAction {
     	
 		return list;
     }
-    
-
-    } 
+} 

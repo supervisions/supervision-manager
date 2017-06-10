@@ -340,6 +340,17 @@ public class BranchAction extends SystemAction {
 				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_2){
 					request.setAttribute("FileItemProcess", ip);
 				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_3){
+					if(!StringUtil.isEmpty(ip.getContent())){
+						if(ip.getContent().contains("&&")){
+							String[] content = ip.getContent().split("&&");
+							if(content.length >0){
+								ip.setContent(content[0]);
+							}
+							if(content.length>1){
+								ip.setChangeContent(content[1]);
+							}
+						}
+					}
 					request.setAttribute("ChangeItemProcess", ip);
 				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_4){
 					request.setAttribute("FollowItemProcess", ip);
@@ -419,6 +430,17 @@ public class BranchAction extends SystemAction {
 				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_2){
 					request.setAttribute("FileItemProcess", ip);
 				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_3){
+					if(!StringUtil.isEmpty(ip.getContent())){
+						if(ip.getContent().contains("&&")){
+							String[] content = ip.getContent().split("&&");
+							if(content.length >0){
+								ip.setContent(content[0]);
+							}
+							if(content.length>1){
+								ip.setChangeContent(content[1]);
+							}
+						}
+					}
 					request.setAttribute("ChangeItemProcess", ip);
 				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_4){
 					request.setAttribute("FollowItemProcess", ip);
@@ -502,6 +524,61 @@ public class BranchAction extends SystemAction {
 		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了分行立项中支完成项目的查看", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/manage/branch/branchZZViewForm";
 	}
+	/**
+	 * 分行监察室，确认是否跟踪项目
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/branchFollowChange.do")
+	@RequiresPermissions("manage/branch/branchFollowChange.do")
+	public String branchFollowChange(Item item,
+			HttpServletRequest request, HttpServletResponse response){ 
+		item = itemService.selectByPrimaryKey(item.getId());
+		if(item.getPreparerTime() != null){
+			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		}
+		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId());  
+		if(itemProcessList.size()>0){ 
+			for(ItemProcess ip : itemProcessList){  
+				List<ItemProcessFile> fileList = new ArrayList<ItemProcessFile>();
+				fileList = itemProcessFileService.getFileListByItemId(ip.getId());
+				ip.setFileList(fileList);  
+				if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_1){
+					request.setAttribute("ItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_2){
+					request.setAttribute("FileItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_3){
+					if(!StringUtil.isEmpty(ip.getContent())){
+						if(ip.getContent().contains("&&")){
+							String[] content = ip.getContent().split("&&");
+							if(content.length >0){
+								ip.setContent(content[0]);
+							}
+							if(content.length>1){
+								ip.setChangeContent(content[1]);
+							}
+						}
+					}
+					request.setAttribute("ChangeItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_4){
+					request.setAttribute("FollowItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_5){
+					request.setAttribute("OverItemProcess", ip);
+				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_6){
+					request.setAttribute("FollowChangeProcess", ip);
+				} 
+			}
+		}
+		
+		//获取当前用户
+		User lgUser=this.getLoginUser(); 
+		   
+		request.setAttribute("User", lgUser);  
+		request.setAttribute("Item", item);  
+		request.setAttribute("ContentTypeId", Constants.CONTENT_TYPE_ID_ZZZZ_OVER);
+		return "web/manage/branch/branchFollowChange";
+	}
 	
 	/**
 	 * 跳转到被监察对象上报跟踪肩擦整改情况
@@ -529,6 +606,17 @@ public class BranchAction extends SystemAction {
 				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_2){
 					request.setAttribute("FileItemProcess", ip);
 				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_3){
+					if(!StringUtil.isEmpty(ip.getContent())){
+						if(ip.getContent().contains("&&")){
+							String[] content = ip.getContent().split("&&");
+							if(content.length >0){
+								ip.setContent(content[0]);
+							}
+							if(content.length>1){
+								ip.setChangeContent(content[1]);
+							}
+						}
+					}
 					request.setAttribute("ChangeItemProcess", ip);
 				}else if(ip.getContentTypeId() ==Constants.CONTENT_TYPE_ID_4){
 					request.setAttribute("FollowItemProcess", ip);
@@ -673,6 +761,11 @@ public class BranchAction extends SystemAction {
 						js.setMessage("监察过程处理成功"); 
 					}else{
 						if(itemProcess.getIsFollowStatus() != null && itemProcess.getIsFollowStatus() == Constants.NOT_OVER){
+							if(!StringUtil.isEmpty(itemProcess.getChangeContent())){
+								String changeContent = itemProcess.getChangeContent();
+								String totalContent = changeContent + "&&" + itemProcess.getContent();
+								itemProcess.setContent(totalContent);
+							}
 							itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_3);
 						}else{
 							itemProcess.setContentTypeId(Constants.CONTENT_TYPE_ID_6);
@@ -752,16 +845,17 @@ public class BranchAction extends SystemAction {
 	public JsonResult<Item> jsonfollowItemById( 
 			Item item,
 			HttpServletRequest request, HttpServletResponse response) { 
-		// 新建一个json对象 并赋初值
+		// 新建一个json对象 并赋初值 
 		JsonResult<Item> js = new JsonResult<Item>();
 		js.setCode(new Integer(1));
 		js.setMessage("操作失败!"); 
-		try {				
-			Integer isFollow = item.getIsFollow();
+		try {		 
+			Integer isFollow = item.getIsFollow(); 
+			String content = item.getContent();
 			item = itemService.selectByPrimaryKey(item.getId());
 			if(isFollow>0){
 				if(item != null){
-					item.setEndTime(new Date());
+//					item.setEndTime(new Date());
 					item.setStatus(Constants.ITEM_STATUS_OVER);
 					itemService.updateByPrimaryKeySelective(item);
 				} 
@@ -777,7 +871,7 @@ public class BranchAction extends SystemAction {
 			    	it.setOrgId(userOrgIDs.get(0)); //制单部门的ID
 			    	it.setPreparerId(u.getId());
 			    	it.setPreparerTime(new Date());
-			    	it.setContent("");
+			    	it.setContent(content);
 			    	it.setDefined(false); 
 			    	UUID uid = UUID.randomUUID();
 			    	String uuid = uid.toString();

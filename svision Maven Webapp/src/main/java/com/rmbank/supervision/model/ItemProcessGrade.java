@@ -4,6 +4,8 @@ public class ItemProcessGrade {
     private Integer id;
 
     private Integer itemProcessId;
+    
+    private Integer gradeSchemeId;
 
     private Integer gradeDetailId;
 
@@ -40,4 +42,12 @@ public class ItemProcessGrade {
     public void setGrade(Double grade) {
         this.grade = grade;
     }
+
+	public Integer getGradeSchemeId() {
+		return gradeSchemeId;
+	}
+
+	public void setGradeSchemeId(Integer gradeSchemeId) {
+		this.gradeSchemeId = gradeSchemeId;
+	}
 }

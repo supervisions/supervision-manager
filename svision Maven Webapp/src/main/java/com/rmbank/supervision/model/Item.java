@@ -73,6 +73,8 @@ public class Item extends Page {
      * 定义字段供前台使用
      */
     private String uuid;
+    
+    private String content;
 
 	public Integer getStatus() {
 		return status;
@@ -355,5 +357,13 @@ public class Item extends Page {
 
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 }

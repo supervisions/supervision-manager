@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="utf-8"> 
-<title>组织机构管理</title> 
+<title>分行立项分行完成</title> 
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css"> 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/easyUI/jquery.easyui.min.js"></script>
@@ -99,7 +99,7 @@ function followItem(id,name){
   					search();  
       			});
   			}else{		  			    
-				$.messager.alert('错误信息','删除失败！','error');
+				$.messager.alert('错误信息','跟踪失败！','error');
   			}  
 	    } 
 	});
@@ -117,7 +117,7 @@ function followItem(id,name){
 		</div>
 		<div class="fl yw-lump mt10">
 			<form id="organForm" name="organForm"
-				action="branchFHList.do" method="get">
+				action="<%=basePath %>manage/branch/branchFHList.do" method="get">
 				<div class="pd10-28">
 					<div class="fl">
 						 <button class="yw-btn bg-blue cur">项目列表</button>  
@@ -198,7 +198,8 @@ function followItem(id,name){
 												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=34'" >录入整改情况</a>
 											</c:if> 
 											<c:if test="${item.lasgTag == 34 && logUserOrg ==19}">
-												<a style="color: blue;" onclick="followItem(${item.id},'${item.name}')" >跟踪处理</a>
+												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowChange.do?id=${item.id}'" >跟踪整改</a>
+												<%-- <a style="color: blue;" onclick="followItem(${item.id},'${item.name}')" >跟踪整改</a> --%>
 											</c:if>
 											<c:if test="${item.lasgTag == 91 && logUserOrg ==item.supervisionOrgId}">
 												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >跟踪整根情况 </a>

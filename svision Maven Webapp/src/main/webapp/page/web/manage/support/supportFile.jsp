@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
    <base href="<%=basePath%>">
   
-   <title>综合管理</title>
+   <title>中支上传资料</title>
    
 <meta name="viewport"
 content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" /> 
@@ -158,25 +158,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 });
 	
 	//新增/编辑项目
-	function saveItem(obj){	
-		var pId = $.trim($("#valueTypeId").val());
-		if(pId == "-1"){
-			$("#dia_title").text("请选择量化模型，并量化分值");
-			var mesDia = $("#dialog1").dialog({
-		      resizable: false,
-		      height:150,
-		      modal: true,
-		      open: function (event, ui) {
-                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-              },
-		      buttons: {
-		        "确定": function() {
-		    		 $(this).dialog("close");
-		        } 
-		      }
-		    }); 
-		    return;
-		}
+	function saveItem(obj){	 
         $.ajax({
 	        cache: true, //是否缓存当前页面
 	        type: "POST", //请求类型
@@ -198,133 +180,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		var filePath = encodeURI(encodeURI(path));
 		var fileName = encodeURI(encodeURI(name));
 		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
-	}
-	function gradeChange(){
-		var pId = $.trim($("#valueTypeId").val());
-		if(pId == "-1"){
-			$("#dia_title").text("请选择量化模型，并量化分值");
-			var mesDia = $("#dialog1").dialog({
-		      resizable: false,
-		      height:150,
-		      modal: true,
-		      open: function (event, ui) {
-                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-              },
-		      buttons: {
-		        "确定": function() {
-		    		 $(this).dialog("close");
-		        } 
-		      }
-		    }); 
-		    return;
-		}
-		$("#sp_total_value").text("未量化");
-		$.ajax({ 
-	        type: "POST", //请求类型
-	        url: "<%=basePath%>manage/support/jsonLoadGradeSchemeDetail.do?gradeId="+pId,  
-	        dataType:"json", //响应数据类型      
-	        success: function(data) {
-	        	if(data != undefined && data != null){ 
-	        		 if(data.length >0){ 
-	        			var aHtml ="";
-	        			for(var i = 0; i< data.length;i++)
-	        			{    
-	        				if(data[i].level == 0){ 
-	        					aHtml +="<tr><td colspan='3'><label>一级指标：</label><span>"+data[i].name+"</span><label style='margin-left:6%;'>权重：</label><span>"+data[i].grade+"</span></td><td></td></tr>";
-								if(data[i].children != null && data[i].children.length>0){
-									for(var j = 0; j< data[i].children.length;j++){ 
-										aHtml +="<tr><td width='3%'></td><td colspan='2'><label>二级指标：</label><span>"+data[i].children[j].name+"</span><label style='margin-left:3%;'>权重：</label><span>"+data[i].children[j].grade+"</span></td><td></td></tr>";
-										if(data[i].children[j].children != null && data[i].children[j].children.length>0){
-											for(var m = 0;m<data[i].children[j].children.length;m++){
-												aHtml +="<tr name='tr_"+i+"'><td colspan='2' width='6%'></td> <td><label>三级指标：</label><span>"+data[i].children[j].children[m].name+"</span><label>标准分：</label><span>"+data[i].children[j].children[m].grade+"，</span> ";
-												aHtml +="<label>得分：</label><input type='hidden' name='detailId' value='"+data[i].children[j].children[m].id+"' /><input doc='ipt_value' type='text' name='values' class='easyui-validatebox' onchange='getValue(this,"+i+","+data[i].children[j].children[m].grade+")' validType='number' /></td><td></td></tr>"; 
-											}
-										}   
-									}   
-								}  
-	        				}  
-	        				aHtml +="<tr><td colspan='3'><label style='color:red'>该一级指标得分：</label><span id='sp_subTotal_"+i+"' style='color:red;font-weight:bold;'>未量化</span></td><td></td></tr>";
-	        			}
-	        			//aHtml += "<tr><td colspan='3'><a class='yw-btn bg-red' style='margin-left: 300px;' onclick=''>计算得分</a></td><td></td></tr>"
-	        			$("#value_table").html(aHtml); 
-	        		 }else{
-	        		 	$("#dia_title").text("该模型未量化指标，请在量化指标模块完善");
-						 $("#dialog1").dialog({
-					      resizable: false,
-					      height:150,
-					      modal: true,
-					      open: function (event, ui) {
-			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-			              },
-					      buttons: {
-					        "确定": function() {
-					    		 $(this).dialog("close");
-					        } 
-					      }
-					    }); 
-	        		 }
-	        	}else{
-	        		$("#dia_title").text("加载量化模型指标失败");
-					 $("#dialog1").dialog({
-				      resizable: false,
-				      height:150,
-				      modal: true,
-				      open: function (event, ui) {
-		                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-		              },
-				      buttons: {
-				        "确定": function() {
-				    		 $(this).dialog("close");
-				        } 
-				      }
-				    });     	
-	        	}	
-	            
-	        }
-   		});
 	} 
-function getValue(obj,index,maxValue){
-	if($(obj).val()>maxValue){ 
-		 $("#dia_title").text("量化分值，不能超过标准分值");
-			var mesDia = $("#dialog1").dialog({
-		      resizable: false,
-		      height:150,
-		      modal: true,
-		      open: function (event, ui) {
-                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-              },
-		      buttons: {
-		        "确定": function() {
-		    		 $(this).dialog("close");
-		        } 
-		      }
-		    }); 
-		 $(obj).val(maxValue); 
-		 getValue(obj,index,maxValue);
-	}else{
-		var ipt_collect = $("#value_table tr[name='tr_"+index+"'] input[doc='ipt_value']");
-		var subTotalValue = 0;
-		$.each(ipt_collect,function(s,item){ 
-			if(item.value != ""){
-				if(!isNaN(Number(item.value))){
-					subTotalValue = subTotalValue + Number(item.value); 
-				}
-			}
-		});
-		$("#sp_subTotal_"+index).text(subTotalValue+"分"); 
-		
-		var totalValue = 0;
-		var totla_collect = $("#value_table input[doc='ipt_value']");
-		$.each(totla_collect,function(s,item){ 
-			if(item.value != ""){
-				if(!isNaN(Number(item.value))){
-					totalValue = totalValue + Number(item.value); 
-				}
-			}
-		});
-		$("#sp_total_value").text(totalValue+"分");
-	}
-} 
 </script>
  </head> 
  <body>
@@ -356,8 +212,7 @@ function getValue(obj,index,maxValue){
 								 <label>${Item.name } </label> 
 								<input type="hidden" value="0" name="id" />
                             	<input type="hidden" id="hid_uuid" name="uuid" />
-                            	<input type="hidden" name="itemId" value="${Item.id }" />  
-                            	<input type="hidden" name="contentTypeId" value="${ContentTypeId }" />
+                            	<input type="hidden" name="itemId" value="${Item.id }" />   
 							</td> 
 						</tr>
 						<tr>
@@ -388,38 +243,7 @@ function getValue(obj,index,maxValue){
 									<tr><td style="border:0px;"></td><tr>
 								</table>
 							</td>		
-						</tr>
-						<c:if test="${IsValue == 1}"> 
-							<tr>
-								<td align="right" style="height:70px;" >选择量化模型：</td>
-								<td colspan="3">  
-									<input type="hidden" name="isValue" value="1" />
-									<select id="valueTypeId" name="valueTypeId"  style="width:254px;height:35px;" onchange="gradeChange()">
-										<option value="-1">=请选择量化模型=</option>									
-										<c:forEach var="item" items="${GradeSchemeList}">
-											<option value="${item.id}" >${item.name}</option>
-										</c:forEach> 
-									</select> 	
-									<label style='color:red'>量化指标总得分：</label><span id='sp_total_value' style='color:red;font-weight:bold;'>未量化</span>
-								 </td>	
-							</tr>
-							<tr> 
-								<td align="right" style="height:270px;" >量化分值：</td>  
-								<td colspan="2" id="testd">    
-									<div style="width:100%; max-height:270px;overflow-x:hidden;">
-										<table id="value_table">
-											 
-										</table> 
-									</div>
-								</td>			
-							</tr>
-						</c:if>	
-						<c:if test="${IsValue == 0}"> 
-							<tr>
-								<td align="right">是否量化：</td>  
-								<td colspan="2"><label>不量化</label><input type="hidden" name="isValue" value="0" /></td> 
-							</tr>
-						</c:if>	 
+						</tr> 
 						<tr>
 							<td align="right" style="height:160px;">监察报告、整改建议书、整改报告、监察决定书：</td>
 							<td colspan="3">

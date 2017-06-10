@@ -199,6 +199,21 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		var fileName = encodeURI(encodeURI(name));
 		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
 	}
+	function overStatusClick(stus){
+		if(stus==0){
+			if($("#tr_changeContent").hasClass("displaynone")){
+				$("#tr_changeContent").removeClass("displaynone");
+			}
+			$("#td_opion").html("监察/整改意见附件：");
+		}else{
+			if(!$("#tr_changeContent").hasClass("displaynone")){
+				$("#tr_changeContent").addClass("displaynone");
+			}
+			$("#td_opion").html("监察意见附件：");
+			$("#ar_changeContent").val("");
+			$("#ar_changeContent").text("");
+		}
+	}
 </script>
  </head> 
  <body>
@@ -306,9 +321,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</tr>   
 							<tr>
 								<td align="right" style="height:40px;">监察室意见：</td>
-								<td colspan="3"> 
-								
-									<input type="hidden" id="hid_isFileUpload" value="0" />
+								<td colspan="3">  
 									<input type="hidden" id="hid_dia_title" value="监察室提交意见成功" />
 									 <textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>			 
 								 </td>	
@@ -317,10 +330,30 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<td align="right" style="height:40px;">是否完结：</td>
 								<td colspan="3"> 
 									<input type="hidden" name="isFollowStatus" value="0" />
-									<label><input type="radio" name="isOver" value="1" checked="checked" />完结</label>
-									<label><input type="radio" name="isOver" value="0" />未完结</label> 
+									<label><input type="radio" name="isOver" value="1" checked="checked"  onclick="overStatusClick(1);" />完结</label>
+									<label><input type="radio" name="isOver" value="0"  onclick="overStatusClick(0);" />未完结</label> 
 								 </td>	
 							</tr> 
+							<tr id="tr_changeContent" class="displaynone">
+								<td align="right" style="height:40px;">整改意见：</td>
+								<td colspan="3">  
+									 <textarea rows="3" cols="5" style="width:60%;" id="ar_changeContent" name="changeContent" ></textarea>	
+								 </td>	
+							</tr> 	
+							 <tr>
+								<td align="right" style="height:160px;" id="td_opion"></td>
+								<td colspan="3">
+									<input type="hidden" id="hid_isFileUpload" value="1" />
+									 <div id="themeswitcher" class="pull-right"> </div>
+						                <script>
+						                    $(function() {
+						                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
+						                    });
+						                </script>
+						                <div id="uploader">
+						                </div>
+								 </td>	
+							</tr>
 						</c:if>
 						<c:if test="${tag == 34 }">
 							<tr>
@@ -346,6 +379,23 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									 <laben>${ChangeItemProcess.content }</laben>			 
 								 </td>	
 							</tr>	
+							<tr>
+								<td align="right" style="height:40px;">整改意见：</td>
+								<td colspan="3">  
+									 <laben>${ChangeItemProcess.changeContent }</laben>			 
+								 </td>	
+							</tr>	
+							<tr>
+								<td align="right">整改意见附件：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ChangeItemProcess.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>   
 							 <tr>
 								<td align="right" style="height:160px;">整改资料：</td>
 								<td colspan="3">
