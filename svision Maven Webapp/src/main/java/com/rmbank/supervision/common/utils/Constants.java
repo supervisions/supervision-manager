@@ -136,7 +136,10 @@ public class Constants
   public static final Integer EFFICIENCY_VISION_8=778; //再次上传整改情况
   public static final Integer EFFICIENCY_VISION_9=779; //监察室录入问责相关资料，项目进入被监察再次上传整改情况
   public static final Integer EFFICIENCY_VISION_10=688; //监察结论
-  //public static final Integer EFFICIENCY_VISION_11=72; //监察室录入问责资料
+  public static final Integer EFFICIENCY_VISION_11=72; //项目未完结，继续录入资料
+  public static final Integer EFFICIENCY_VISION_12=999; //未完结时，上传的资料
+  
+  
   
   //廉政监察流程
   public static final Integer INCORRUPT_VISION_0=-1; //新增项目时的初始状态
@@ -153,8 +156,8 @@ public class Constants
   public static final Integer INCORRUPT_VISION_6=77; //被监察对象提请重新决策
   public static final Integer INCORRUPT_VISION_7=78; //监察室给出监察结论 													
   public static final Integer INCORRUPT_VISION_8=84; //廉政监察完成
-  public static final Integer INCORRUPT_VISION_9=85;
-  public static final Integer INCORRUPT_VISION_10=86;
+  public static final Integer INCORRUPT_VISION_9=85; //党委采纳意见重新决策
+  public static final Integer INCORRUPT_VISION_10=86; //党委维持原决议
   
   
   //执法监察流程

@@ -249,7 +249,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16" id="taskTable">
 						<tr>
-							<td width="8%" align="right">监察项目：</td>
+							<td width="12%" align="right">项目名称：</td>
 							<td colspan="3"><input id="itemName" 
 								name="name" type="text" required="true" missingMessage="不克不及为空" value=""  style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
@@ -278,7 +278,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" height="50px">是否分节点监察：</td>
 							<td colspan="3">
-								<select id="supervisionTypeId" name="isstept" style="width:289px;height:28px;">
+								<select id="supervisionTypeId" name="isStept" style="width:289px;height:28px;">
 								<!-- 	<option value="-1">请选择是否分节点监察</option>	 -->							
 									<option value="0">否</option>
 									<option value="1">是</option>

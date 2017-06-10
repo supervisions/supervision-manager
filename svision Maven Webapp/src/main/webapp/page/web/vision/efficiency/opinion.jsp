@@ -164,37 +164,18 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	 });
 	 
 	//新增/编辑项目
-	function saveItemProcess(obj){	
-        <%-- $.ajax({
-	        cache: true, //是否缓存当前页面
-	        type: "POST", //请求类型
-	        url: "<%=basePath%>vision/efficiency/jsonSaveOpinion.do",
-	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
-	        async: true, //发送异步请求	  
-	        dataType:"json", //响应数据类型      
-	        success: function(data) {
-	        	if(data.code==0){ 
-	        	
-	        	$("#dia_title").text("提交监察意见成功");
-	        		$("#dialog1").dialog({
-				        resizable: false,
-				        height:150,
-				        modal: true,
-				        open: function (event, ui) {
-		                   $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-		                },
-					    buttons: {
-					        "确定": function() {					        	
-					            window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
-					        }
-					    }
-					}); 
-	        	}else{
-	        		alert(data.message);	        	
-	        	}	
-	        }
-   		}); --%>
-   		$.ajax({
+	function saveItemProcess(obj){        
+   		layer.confirm('确认信息已经填写完整，并且保存？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			var wanjie=$("input[name='wanjie']").is(':checked');
+			if(wanjie==false){
+				layer.alert('请选择想');
+			}
+			
+			
+			layer.close(layer.confirm());//关闭当前弹出层
+			$.ajax({
 		        cache: true, //是否缓存当前页面
 		        type: "POST", //请求类型
 		        url: "<%=basePath%>vision/efficiency/jsonSaveOpinion.do",
@@ -226,6 +207,10 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        	}	
 		        }
 	   		});
+		}, function(){
+			
+		});
+   		
 	}
 	function downLoadFile(path,name){
 		var filePath = encodeURI(encodeURI(path));
@@ -241,6 +226,14 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		}, function(){
 			
 		});
+	}
+	function show(){		
+		var wanjie=$('input:radio[name="wanjie"]:checked').val();		
+		if(wanjie == 0){
+			$("#yijian").hide();			
+		}else if(wanjie == 1) {			
+			$("#yijian").show();
+		}
 	}
 </script>
  </head> 
@@ -330,18 +323,60 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<input type="hidden" name ="itemId" value="${Item.id }">
 								<input type="hidden" id="hid_uuid" name="uuid" />
 							</td> 
-						</tr>    
+						</tr> 
 						<tr>
-							<td align="right" >是否需要整改：</td>
-							<td colspan="3">								
-								<label>
-									<input type="radio" name="status" value="4" checked="checked">不整改
-								</label>	
-								<label>
-									<input type="radio" name="status" value="0" >整改
-								</label> 							
-							</td>	
-						</tr>
+							<td align="right" height="129px;">上传附件：</td>
+							<td colspan="3">
+								<input type="hidden" id="hid_isFileUpload" value="1" /> 
+								 <div id="themeswitcher" class="pull-right"></div>
+					                <script>
+					                    $(function() {
+					                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
+					                    });
+					                </script>
+					                <div id="uploader">
+					                </div>
+							 </td>	
+						</tr>   
+						
+						<c:if test="${Item.isStept==1 }">
+							<tr>
+								<td align="right" >是否完结：</td>
+								<td colspan="3">								
+									<label>
+										<input onclick="show()" type="radio" name="wanjie" value="1" checked="checked">完结
+									</label>	
+									<label>
+										<input onclick="show()" type="radio" name="wanjie" value="0" >未完结
+									</label> 							
+								</td>	
+							</tr>
+							<tr>
+								<td align="right" >是否需要整改：</td>
+								<td colspan="3">								
+									<label>
+										<input type="radio" name="status" value="4" checked="checked">不整改
+									</label>	
+									<label>
+										<input type="radio" name="status" value="0" >整改
+									</label> 							
+								</td>	
+							</tr>
+						</c:if>
+						<c:if test="${Item.isStept==0 }">							
+							<tr>
+								<td align="right" >是否需要整改：</td>
+								<td colspan="3">								
+									<label>
+										<input type="radio" name="status" value="4" checked="checked">不整改
+									</label>	
+									<label>
+										<input type="radio" name="status" value="0" >整改
+									</label> 							
+								</td>	
+							</tr>
+						</c:if>
+						
 						<tr>
 							<td></td>
 							<td>
