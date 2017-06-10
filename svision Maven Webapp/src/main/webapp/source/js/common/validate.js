@@ -507,3 +507,31 @@ function diffTime(startTime,endTime){
 	}
 	return true;
 }
+
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+    if (r != null) return unescape(r[2]); return null; //返回参数值
+}
+function setDefaultDate(){
+	var t1 = getUrlParam("schBeginTime");
+	var t2 = getUrlParam("schEndTime");
+	if(t1 == null && t2 == null){
+		var lastDate = getlasdMonthDate();
+		var nowDate = getnowDate();
+		$("#dtx_schBeginTime").datebox("setValue",lastDate);
+		$("#dtx_schEndTime").datebox("setValue",nowDate);
+	} 
+} 
+
+function stTimeslt(date){
+	var stT = $("#dtx_schBeginTime").datebox("getValue");
+	var edT = $("#dtx_schEndTime").datebox("getValue");
+	if(stT != null && stT != "" && edT != null && edT != "" ){
+		var resutl = diffTime(stT,edT);
+		if(!resutl){
+			$.messager.alert("操作提示","查询条件 ：结束时间不能小于开始时间~","error");
+			var edT = $("#dtx_schEndTime").datebox("setValue","");
+		}
+	}
+}

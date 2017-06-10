@@ -93,7 +93,8 @@ public class Constants
   public static final Integer CONTENT_TYPE_ID_5= 35;  
   public static final Integer CONTENT_TYPE_ID_6= 91;   
   public static final Integer CONTENT_TYPE_ID_7= 93;  
-  
+
+  public static final Integer SUPERVISION_ORGAN_ID_CDFH = 19;
   
   public static final Integer SUPERVISION_TYPE_ID_XL = 2;
   public static final Integer SUPERVISION_TYPE_ID_LZ = 3;  
@@ -119,6 +120,7 @@ public class Constants
   public static final Integer ITEM_STATUS_REBACK =2; 
   public static final Integer ITEM_STATUS_OVERLINE =3;
   public static final Integer ITEM_STATUS_OVER =4;
+  public static final Integer ITEM_STATUS_OVER_COMPLETE =5;
   
   
   //效能监察流程

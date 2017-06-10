@@ -61,6 +61,9 @@
 				<c:if test="${item.url == 'system/log/logList.do'}"> 
 					<td><img src="<%=basePath %>source/images/model/rzgl.png" title="${item.name}" onclick="gotoMainMenu('${pageContext.request.contextPath}/${item.url}','${item.id}')"  /></td>
 				</c:if> 
+				<c:if test="${item.url == 'statistic/efficiency/efficencyStatistic.do'}"> 
+					<td><img src="<%=basePath %>source/images/model/tjfx.png" title="${item.name}" onclick="gotoMainMenu('${pageContext.request.contextPath}/${item.url}','${item.id}')"  /></td>
+				</c:if> 
 			</c:forEach>
 			<td style="width:20%"></td>  
 		</tr> 
