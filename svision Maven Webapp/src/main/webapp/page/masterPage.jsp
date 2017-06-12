@@ -17,6 +17,7 @@ String  url  =  uri.substring(uri.lastIndexOf("/")+1);
 <script type="text/javascript" src="${pageContext.request.contextPath}/source/js/jquery-1.11.2.min.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/source/js/jquery.easing.1.3.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/source/js/jquery.skitter.js"></script> 
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/source/images/favicon.ico" type="image/x-icon" />
  
 <!-- 导入页面引用的特殊js和css文件 -->
 <sitemesh:write property='head' />

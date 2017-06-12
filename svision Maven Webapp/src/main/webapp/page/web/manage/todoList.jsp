@@ -20,12 +20,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" />  
 <script type="text/javascript">
 function showItem(id,type){
-	if(type == 2){
-		window.location.href="<%=basePath%>vision/efficiency/showItem.do?id="+id;
-	}else if(type == 3){
-		window.location.href="<%=basePath%>vision/incorrupt/showItem.do?id="+id;
-	}else if(type == 4){
-		window.location.href="<%=basePath%>vision/enforce/showItem.do?id="+id;
+	if(type == 1){
+		window.location.href="<%=basePath %>manage/branch/branchFHView.do?id="+id;
+	}else if(type == 2){
+		window.location.href="<%=basePath %>manage/branch/branchZZView.do?id="+id;
+	}else if(type == 0){
+		window.location.href="<%=basePath %>manage/support/supportView.do?id="+id;
 	}
 }
 </script>
@@ -41,7 +41,7 @@ function showItem(id,type){
 			<div class=pd10>
 				<div class="fl">  
 					<span>待办事项：</span>
-					<span>共计 20 项，其中：效能监察： 5项，廉政监察：10项，执法监察：5项</span> 				
+					<span>共计 20 项，其中：分行立项分行完成： 5项，分行立项中支完成：10项，中支立项中支完成：5项</span> 				
 				</div> 
 				<div class="cl"></div>	 
                </div> 
@@ -49,37 +49,37 @@ function showItem(id,type){
           <div class="fl yw-lump"> 
 			<table class="yw-cm-table yw-center yw-bg-hover"  id="taskList">
 				<tr style="background-color:#D6D3D3;font-weight: bold;"> 
-					<th width="30%">效能监察</th>
-					<th width="30%">廉政监察</th>	
-					<th width="30%">执法监察</th>	 
+					<th width="30%">分行立项分行完成</th>
+					<th width="30%">分行立项中支完成</th>	
+					<th width="30%">中支立项中支完成</th>	 
 				</tr> 
 				<tr> 							
 					<td> 
 					<table style="width:100%;">
-						<c:forEach var="xlItem" items="${xlList }">
+						<c:forEach var="fhItem" items="${FHFHList }">
 							<tr>
-								<td>${xlItem.name }</td>
-								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${xlItem.id },2)"  /></td>
+								<td>${fhItem.name }</td>
+								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${fhItem.id },1)"  /></td>
 							</tr>
 						</c:forEach>
 					</table>
 					</td> 					
 					<td> 
 					<table style="width:100%;">
-						<c:forEach var="lzItem" items="${lzList }">
+						<c:forEach var="zzItem" items="${FHZZList }">
 							<tr>
-								<td>${lzItem.name }</td>
-								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${lzItem.id },3)"  /></td>
+								<td>${zzItem.name }</td>
+								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${zzItem.id },2)"  /></td>
 							</tr>
 						</c:forEach>
 					</table>
 					</td> 					
 					<td> 
 					<table style="width:100%;">
-						<c:forEach var="zfItem" items="${zfList }">
+						<c:forEach var="zzItem" items="${ZZList }">
 							<tr>
-								<td>${zfItem.name }</td>
-								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${zfItem.id },4)"  /></td>
+								<td>${zzItem.name }</td>
+								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${zzItem.id },0)"  /></td>
 							</tr>
 						</c:forEach>
 					</table>
