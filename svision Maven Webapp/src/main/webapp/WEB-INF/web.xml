@@ -95,7 +95,7 @@
     <url-pattern>*.do</url-pattern>
   </filter-mapping>
   <welcome-file-list>
-    <welcome-file>index.do</welcome-file>
+    <welcome-file>homePage.do</welcome-file>
   </welcome-file-list>
   <session-config>
     <session-timeout>600</session-timeout>

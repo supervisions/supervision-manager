@@ -58,6 +58,7 @@
         <property name="filterChainDefinitions">
             <value> 
                 /login.do = anon
+                /homePage.do = anon
                 /adminLogin.do = anon
                 /source/** = anon 
                 /fileUpload/** = anon

@@ -68,6 +68,15 @@ public class HomeController extends SystemAction {
 	@Resource
 	private SysLogService logService;
 	
+
+	@RequestMapping("homePage")  
+    public ModelAndView homePage( 
+			HttpServletRequest request, HttpServletResponse response){  
+        //创建模型跟视图，用于渲染页面。并且指定要返回的页面为login页面
+        ModelAndView mav = new ModelAndView("masterPage"); 
+        return mav;
+	}
+	
     /***
      * 首页 返回至/page/login.jsp页面
      * @return
