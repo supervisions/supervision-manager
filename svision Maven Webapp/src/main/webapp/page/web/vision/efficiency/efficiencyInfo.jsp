@@ -119,7 +119,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
                 //每个事件监听函数都会传入一些很有用的参数，
                 //我们可以利用这些参数提供的信息来做比如更新UI，提示上传进度等操作
                 var percentMsg = "正在上传文件，可能会花费一点时间，已上传:" + uploader.total.percent + "%";
-                
             });
             //绑定文件添加
             uploader.bind('FilesAdded',function(uploader,files){
@@ -145,19 +144,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             //绑定文件是否全部上传完成
             uploader.bind('UploadComplete',function(uploader,files){
                 if(null != files && files.length>0){ 
-                	$("#dialog").dialog({
-				        resizable: false,
-				        height:150,
-				        modal: true,
-				        open: function (event, ui) {
-		                   $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-		                },
-					    buttons: {
-					        "确定": function() {					        	
-					            window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
-					        }
-					    }
-					}); 
+                	layer.confirm('添加工作事项成功，等待被监察对象签收！', {
+								btn: ['确认'] //按钮
+							}, function(){//点击确认按钮调用
+								layer.close(layer.confirm());//关闭当前弹出层
+								window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
+							});
                 }
             });
             $("#uploader_browse").removeAttr("style");
@@ -202,7 +194,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        dataType:"json", //响应数据类型      
 		        success: function(data) {
 		        	if(data.code==0){ 
-		        		$("#uploader_start").click(); //上传文件
+			        	var uploader = $('#uploader').plupload('getUploader');
+			        	if(uploader.files>0){
+			        		$("#uploader_start").click(); //上传文件
+			        	}else{
+			        		layer.confirm('添加工作事项成功，等待被监察对象签收！', {
+								btn: ['确认'] //按钮
+							}, function(){//点击确认按钮调用
+								layer.close(layer.confirm());//关闭当前弹出层
+								window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
+							});		        		
+			        	}		        		
 		        	}else{
 		        		layer.alert(data.message);	        	
 		        	}	
@@ -238,7 +240,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			</div>
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
-				
 				
 			</div>
 		</div>

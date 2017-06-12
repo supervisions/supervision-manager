@@ -312,7 +312,7 @@ function followAction(itemId,status){
 							</c:if>
 							<c:if test="${userOrg.id == item.supervisionOrgId && item.isSign >1 && item.lasgTag == 66}">
 								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},67)">上传资料</a> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},67)">签收</span>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},67)">上传资料</span>
 							</c:if>
 							<c:if test="${userOrg.id == item.supervisionOrgId && item.isSign >1 && item.lasgTag == 72}">
 								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},67)">上传资料</a> --%>

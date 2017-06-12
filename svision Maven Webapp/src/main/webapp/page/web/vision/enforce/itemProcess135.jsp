@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
    <base href="<%=basePath%>">
   
-   <title>廉政监察</title>
+   <title>执法监察</title>
    
 <meta name="viewport"
 content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" /> 
@@ -145,19 +145,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             //绑定文件是否全部上传完成
             uploader.bind('UploadComplete',function(uploader,files){
                 if(null != files && files.length>0){ 
-                	$("#dialog").dialog({
-				        resizable: false,
-				        height:150,
-				        modal: true,
-				        open: function (event, ui) {
-		                   $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-		                },
-					    buttons: {
-					        "确定": function() {					        	
-					            window.location.href = '<%=basePath%>vision/enforce/enforceList.do';
-					        }
-					    }
-					}); 
+                	layer.confirm('提交监察结论成功，项目完结！', {
+								btn: ['确认'] //按钮
+							}, function(){//点击确认按钮调用
+								layer.close(layer.confirm());//关闭当前弹出层
+								window.location.href = '<%=basePath%>vision/enforce/enforceList.do';
+							});
                 }
             });
             $("#uploader_browse").removeAttr("style");
@@ -179,7 +172,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        dataType:"json", //响应数据类型      
 		        success: function(data) {
 		        	if(data.code==0){ 
-		        		$("#uploader_start").click(); //上传文件
+		        		var uploader = $('#uploader').plupload('getUploader');
+			        	if(uploader.files>0){
+			        		$("#uploader_start").click(); //上传文件
+			        	}else{
+			        		layer.confirm('提交监察结论成功，项目完结！', {
+								btn: ['确认'] //按钮
+							}, function(){//点击确认按钮调用
+								layer.close(layer.confirm());//关闭当前弹出层
+								window.location.href = '<%=basePath%>vision/enforce/enforceList.do';
+							});		        		
+			        	}
 		        	}else{
 		        		layer.alert(data.message);	        	
 		        	}	

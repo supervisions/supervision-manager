@@ -190,7 +190,7 @@ function uploadFile(id,tag){
 						<td>${item.itemName}</td>
 						<td>${item.orgName}</td>
 						<td>
-							<%-- <span>${userOrg.id}</span> 		 --%>									
+							<%-- <span>${item.lasgTag}</span>  --%>		 								
 						    <%-- <c:if test="${item.status == 0 &&  userOrg.orgtype==44}">
 								<span style="color: red;" onclick="window.location.href='incorruptInfo.do?id=${item.id }';">立项</span>
 							</c:if> --%>
@@ -214,7 +214,7 @@ function uploadFile(id,tag){
 								</c:if>
 								<c:if test="${item.status == 0 && userOrg.id==19}">
 									<%-- <span style="color: red;" onclick="window.location.href='enforceInfo.do?id=${item.id }';">立项</span> --%>
-									<span class="yw-btn-small bg-red cur" onclick="window.location.href='enforceInfo.do?id=${item.id }';">监察结论</span>
+									<span class="yw-btn-small bg-red cur" onclick="window.location.href='enforceInfo.do?id=${item.id }';">立项</span>
 								</c:if>
 								<c:if test="${item.lasgTag == 137 && userOrg.id==19}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 137)">监察行政意见告知书</a> --%>

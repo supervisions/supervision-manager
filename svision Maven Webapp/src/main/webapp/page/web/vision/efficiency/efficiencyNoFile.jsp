@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
    <base href="<%=basePath%>">
   
-   <title>综合管理</title>
+   <title>效能监察</title>
    
 <meta name="viewport"
 content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" /> 
@@ -144,19 +144,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             //绑定文件是否全部上传完成
             uploader.bind('UploadComplete',function(uploader,files){
                 if(null != files && files.length>0){ 
-                	$("#dialog").dialog({
-				        resizable: false,
-				        height:150,
-				        modal: true,
-				        open: function (event, ui) {
-		                	$(".ui-dialog-titlebar-close", $(this).parent()).hide();
-		                },
-					    buttons: {
-					        "确定": function() {					        	
-					            window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
-					        }
-					    }
-					});
+                	layer.confirm('被监察对象上传资料成功！', {
+							btn: ['确认'] //按钮
+						}, function(){//点击确认按钮调用
+							layer.close(layer.confirm());//关闭当前弹出层
+							window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
+						});	
                 }
             });
             $("#uploader_browse").removeAttr("style");
@@ -223,24 +216,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	        dataType:"json", //响应数据类型      
 	        success: function(data) {
 	        	if(data.code==0){ 
-	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
-	        			$("#uploader_start").click(); //上传文件
-	        		}else{
-	        			$("#dia_title").text($("#hid_dia_title").val());
-	       				$("#dialog1").dialog({
-					      resizable: false,
-					      height:150,
-					      modal: true,
-					      open: function (event, ui) {
-			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-			              },
-					      buttons: {
-					        "确定": function() {
-					          window.location.href='<%=basePath%>vision/efficiency/efficiencyList.do';
-					        } 
-					      }
-					    });
-	        		}
+	        		var uploader = $('#uploader').plupload('getUploader');
+		        	if(uploader.files>0){
+		        		$("#uploader_start").click(); //上传文件
+		        	}else{
+		        		layer.confirm('被监察对象上传资料成功！', {
+							btn: ['确认'] //按钮
+						}, function(){//点击确认按钮调用
+							layer.close(layer.confirm());//关闭当前弹出层
+							window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
+						});		        		
+		        	}
 	        	}else{
 	        		layer.alert(data.message);	        	
 	        	}	
