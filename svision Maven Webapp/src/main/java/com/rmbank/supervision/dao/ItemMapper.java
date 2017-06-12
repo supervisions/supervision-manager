@@ -7,6 +7,8 @@ import com.rmbank.supervision.model.Item;
 @MyBatisRepository
 public interface ItemMapper {
     int deleteByPrimaryKey(Integer id);
+    
+    int updateItemStatus(Integer id);
 
     int insert(Item record);
 

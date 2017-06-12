@@ -34,6 +34,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/plupload.full.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/jquery.ui.plupload.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="<%=basePath%>source/js/plupload/zh_CN.js" charset="UTF-8"></script>
+    
+    <!-- 以下两个引的文件用于layer -->
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
+	<script src="<%=basePath%>source/js/layer/layer.js"></script>
+    
+    
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
     <![endif]-->
@@ -181,6 +187,16 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		var filePath = encodeURI(encodeURI(path));
 		var fileName = encodeURI(encodeURI(name));
 		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
+	}
+	function returnPage(){
+		layer.confirm('当前项目资料尚未提交，是否离开当前页面？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			 window.location.href='<%=basePath%>manage/branch/branchZZList.do';
+		}, function(){
+			
+		});
 	}
 </script>
  </head> 

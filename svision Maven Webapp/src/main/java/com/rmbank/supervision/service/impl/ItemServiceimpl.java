@@ -134,7 +134,8 @@ public class ItemServiceimpl implements ItemService {
 		// TODO Auto-generated method stub
 		boolean isSuccess = false;
 		try{
-			itemMapper.deleteByPrimaryKey(id);
+			//itemMapper.deleteByPrimaryKey(id);
+			itemMapper.updateItemStatus(id);
 			isSuccess = true;
 		}catch(Exception ex){
 			ex.printStackTrace();

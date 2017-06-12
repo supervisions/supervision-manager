@@ -211,6 +211,16 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			return false;
 		} 
 	}
+	function returnPage(){
+		layer.confirm('当前项目资料尚未提交，是否离开当前页面？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			 window.location.href='<%=basePath%>manage/branch/branchFHList.do';
+		}, function(){
+			
+		});
+	}
 </script>
  </head> 
  <body>

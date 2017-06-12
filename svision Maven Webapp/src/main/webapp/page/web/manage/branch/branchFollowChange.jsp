@@ -65,6 +65,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    } 
 		});
 	 }
+	 function returnPage(){
+		layer.confirm('当前项目资料尚未提交，是否离开当前页面？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			 window.location.href='<%=basePath%>manage/branch/branchFHList.do';
+		}, function(){
+			
+		});
+	}
 </script>
  </head> 
  <body>

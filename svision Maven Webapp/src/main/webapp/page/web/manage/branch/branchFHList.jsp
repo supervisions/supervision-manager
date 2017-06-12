@@ -128,7 +128,7 @@ function followItem(id,name){
 						<span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
 						
 						<c:if test="${logUserOrg == 19 }">
-							<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHInfo.do'">新建项目</span>
+							<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHInfo.do'">添加项目</span>
 						</c:if>
 						
 					
