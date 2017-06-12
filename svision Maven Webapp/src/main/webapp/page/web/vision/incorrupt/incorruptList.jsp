@@ -212,7 +212,7 @@ function uploadFile(id,tag){
 						<td>${item.itemCategory}</td>
 						<td>${item.itemNmae}</td>
 						<td>${item.orgName}</td>
-						<td>	<span>${item.lasgTag}</span>			
+						<td>	<%-- <span>${item.lasgTag}</span> --%>			
 							    
 								<c:if test="${userOrg.orgtype==47 && item.status == 0 }">
 									<span style="color: red;" onclick="window.location.href='incorruptInfo.do?id=${item.id }';">立项</span>

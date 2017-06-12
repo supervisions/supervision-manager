@@ -123,7 +123,7 @@ function edit(id){
 					</div>
 					<div class="fr">
 						<c:if test="${UserOrg.orgtype==43 }">
-							<span class="fl yw-btn bg-green cur" onclick="window.location.href='<%=basePath %>manage/support/supportInfo.do?pointId='+ 0">新建项目</span>
+							<span class="fl yw-btn bg-green cur" onclick="window.location.href='<%=basePath %>manage/support/supportInfo.do?pointId='+ 0">添加项目</span>
 						</c:if>
 						
 					</div>
