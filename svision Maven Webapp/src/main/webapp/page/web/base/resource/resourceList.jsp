@@ -152,10 +152,12 @@ function deleteResource(id,name){
 							<td align="left">${item.resource}</td>
 							<td>${item.functionName}</td>
 							<td>															
-								<a style="color:blue" onclick="window.location.href='resourceInfo.do?id=${item.id}';">编辑</a>							
+								<%-- <a style="color:blue" onclick="window.location.href='resourceInfo.do?id=${item.id}';">编辑</a>	 --%>
+								<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='resourceInfo.do?id=${item.id}';">编辑</span>						
 							</td>
 							<td>
-								<a style="color:blue" onclick="deleteResource(${item.id},'${item.name}');">删除</a>
+								<%-- <a style="color:blue" onclick="deleteResource(${item.id},'${item.name}');">删除</a> --%>
+								<span class="yw-btn-small bg-red cur"  onclick="deleteResource(${item.id},'${item.name}');">删除</span>
 							</td>
 						</tr>
 					</c:forEach>					

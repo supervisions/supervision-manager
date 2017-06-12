@@ -232,10 +232,12 @@ function goToOrganInfo(organId){
 								</c:if>
 							</td>
 							<td align="left">								
-								<a style="color:blue" onclick="goToOrganInfo(${item.id })">编辑</a>
+								<%-- <a style="color:blue" onclick="goToOrganInfo(${item.id })">编辑</a> --%>
+								<span class="yw-btn-small bg-lan cur" onclick="goToOrganInfo(${item.id })">编辑</span>
 							</td>
 							<td>
-								<a style="color:blue" onclick="deleteOrgan(${item.id },'${item.name }')">删除</a>
+								<%-- <a style="color:blue" onclick="deleteOrgan(${item.id },'${item.name }')">删除</a> --%>
+								<span class="yw-btn-small bg-red cur" onclick="deleteOrgan(${item.id },'${item.name }')">删除</span>
 							</td>
 						</tr>
 					</c:forEach>

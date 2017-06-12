@@ -286,16 +286,21 @@ function goToUserInfo(id){
 							
 							<td>
 								<c:if test="${item.used == 1}">
-									<a style="color:blue" onclick="updateUser(${item.id},${item.used},'${item.name}');">禁用</a>
+									<%-- <a style="color:blue" onclick="updateUser(${item.id},${item.used},'${item.name}');">禁用</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="updateUser(${item.id},${item.used},'${item.name}');">禁用</span>	
 								</c:if> 
 								<c:if test="${item.used == 0}">
-									<a style="color:blue" onclick="updateUser(${item.id},${item.used},'${item.name}');">启用</a>
+									<%-- <a style="color:blue" onclick="updateUser(${item.id},${item.used},'${item.name}');">启用</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="updateUser(${item.id},${item.used},'${item.name}');">启用</span>	
 								</c:if>								
-								<a style="color:blue" onclick="window.location.href='userInfo.do?id=${item.id}';">编辑</a>
-								<a style="color:blue" onclick="resetUserPwd(${item.id},'${item.name}');">重置密码</a>
+								<%-- <a style="color:blue" onclick="window.location.href='userInfo.do?id=${item.id}';">编辑</a> --%>
+								<span class="yw-btn-small bg-lan cur" onclick="window.location.href='userInfo.do?id=${item.id}';">编辑</span>	
+								<%-- <a style="color:blue" onclick="resetUserPwd(${item.id},'${item.name}');">重置密码</a> --%>
+								<span class="yw-btn-small bg-red cur" onclick="resetUserPwd(${item.id},'${item.name}');">重置密码</span>	
 							</td>
 							<td>
-								<a style="color:blue" onclick="deleteUser(${item.id},'${item.name}');">删除</a>							
+								<%-- <a style="color:blue" onclick="deleteUser(${item.id},'${item.name}');">删除</a>		 --%>
+								<span class="yw-btn-small bg-red cur" onclick="deleteUser(${item.id},'${item.name}');">删除</span>					
 							</td>
 						</tr>
 					</c:forEach>

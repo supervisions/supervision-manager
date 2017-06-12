@@ -291,7 +291,8 @@ function goToMetaInfo(metaId){
 						<td>${item.name}</td>
 						<td>${item.description}</td>							
 						<td>
-							<a style="color:blue" onclick="window.location.href='configInfo.do?id=${item.id}';">编辑</a>
+							<%-- <a style="color:blue" onclick="window.location.href='configInfo.do?id=${item.id}';">编辑</a> --%>
+									<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='configInfo.do?id=${item.id}';">编辑</span>
 							
 							<%-- <c:if test="${item.used == 1}">
 								<a style="color:blue"
@@ -302,7 +303,8 @@ function goToMetaInfo(metaId){
 							</c:if>		 --%>					
 						</td>
 						<td>
-							<a style="color:blue" onclick="deleteConfig(${item.id},'${item.name}');">删除</a>
+									<span class="yw-btn-small bg-red cur"  onclick="deleteConfig(${item.id},'${item.name}');">删除</span>
+							<%-- <a style="color:blue" onclick="deleteConfig(${item.id},'${item.name}');">删除</a> --%>
 						</td>
 					</tr>
 					</c:forEach>
