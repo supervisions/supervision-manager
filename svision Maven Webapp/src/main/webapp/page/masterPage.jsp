@@ -68,7 +68,7 @@ String  url  =  uri.substring(uri.lastIndexOf("/")+1);
  
 <body style="overflow:auto">
 	<div id="main">
-		 <div id="header" style="height:120px"><jsp:include page="/page/decorators/masterHeader.jsp"></jsp:include></div> 
+		 <div id="header" style="height:120px;background-color: #1894f4;"><jsp:include page="/page/decorators/masterHeader.jsp"></jsp:include></div> 
 		<div id="content">
 			 <jsp:include page="/page/decorators/advertisement.jsp"></jsp:include>
 			 <div class="yw-main-notice">
@@ -78,13 +78,16 @@ String  url  =  uri.substring(uri.lastIndexOf("/")+1);
 			      </div>
 			      <div class="yw-span3">
 			        <span>·&nbsp;</span>
-			       <a title=" " href="javascript:void(0);" target="_blank" class="yw-clear"><span class="title"> </span></a></div>
+			       <a title=" " href="javascript:void(0);" target="_blank" class="yw-clear"><span class="title" style="color:red;font-size:14px;font-weight:bold;"> 网站链接1 </span></a></div>
 			      <div class="yw-span3">
 			        <span>·&nbsp;</span>
-			       <a title=" " href="javascript:void(0);" target="_blank" class="yw-clear"><span class="title"> </span></a></div>
+			       <a title=" " href="javascript:void(0);" target="_blank" class="yw-clear"><span class="title" style="color:red;font-size:14px;font-weight:bold;">  网站链接2</span></a></div>
 			      <div class="yw-span3">
 			        <span>·&nbsp;</span>
-			       <a title=" " href="javascript:void(0);" target="_blank" class="yw-clear"><span class="title"> </span></a></div>
+			       <a title=" " href="javascript:void(0);" target="_blank" class="yw-clear"><span class="title" style="color:red;font-size:14px;font-weight:bold;"> 网站链接3 </span></a></div>
+			      <div class="yw-span3">
+			        <span>·&nbsp;</span>
+			       <a title=" " href="javascript:void(0);" target="_blank" class="yw-clear"><span class="title" style="color:red;font-size:14px;font-weight:bold;"> 网站链接4 </span></a></div>
 			      <div class="yw-span2 y-last">
 			        <a href="javascript:void(0);" target="_blank">
 			         <!--  更多&gt;&gt; -->
@@ -92,7 +95,7 @@ String  url  =  uri.substring(uri.lastIndexOf("/")+1);
 			      </div>
 			    </div>
 			  </div>   
-		  	 
+		  	 <jsp:include page="/page/decorators/masterIndex.jsp"></jsp:include>
 			<div class="cl"></div>
 		</div>
 		<div id="footer"><jsp:include page="/page/decorators/footer.jsp"></jsp:include></div>

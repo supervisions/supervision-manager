@@ -5,7 +5,7 @@
 	<div class="box_skitter box_skitter_large">
 		<ul class="yw-center">
 			<li class="yw-center"> 
-				<a href="javascript:void(0);"><img src="${pageContext.request.contextPath}/source/images/logo-bg-1-1.jpg" alt="" /></a>
+				<a href="javascript:void(0);"><img src="${pageContext.request.contextPath}/source/images/bg_1_1_1.png" alt="" /></a>
 				<%-- <div class="label_text">
 					<!-- <h3 class="colortext uppercase"> ——为了无处不在的计算
 					</h3> -->
@@ -14,7 +14,7 @@
 				</div> --%>
 			</li>
 			<li class="yw-center">
-				<a href="javascript:void(0);"><img src="${pageContext.request.contextPath}/source/images/logo-bg-1-1.jpg" alt="" /></a>
+				<a href="javascript:void(0);"><img src="${pageContext.request.contextPath}/source/images/bg_1_1_1.png" alt="" /></a>
 				<%-- <div class="label_text">
 					<!-- <h3 class="colortext uppercase"> ——为了无处不在的计算
 					</h3> -->
@@ -22,7 +22,7 @@
 				</div>  --%>
 			</li>
 			<li class="yw-center">
-				<a href="javascript:void(0);"><img src="${pageContext.request.contextPath}/source/images/logo-bg-1-1.jpg" alt="" /></a>
+				<a href="javascript:void(0);"><img src="${pageContext.request.contextPath}/source/images/bg_1_1_1.png" alt="" /></a>
 				<%-- <div class="label_text">
 					<!-- <h3 class="colortext uppercase"> ——为了无处不在的计算
 					</h3> -->

@@ -37,7 +37,7 @@
 <body class="modelbg">
 <div style="width:100%;height:30px;">
 	 <div class="fr head-menu-right"> 
-        <a href="${pageContext.request.contextPath}/logout.do"> <span  style="color:red;font-size:16px;" title="退出登录">退出</span></a>
+        <a href="${pageContext.request.contextPath}/logout.do"> <span  style="color:#1894f4;font-size:16px;font-weight:bold" title="退出登录">退出</span></a>
     </div>
 </div>
 <div class="box">  

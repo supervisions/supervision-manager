@@ -98,7 +98,7 @@ function pagesearch(){
 					<div class="fl">   
 						<input type="hidden" value="${SystemLog.moudleId}" id="hid_moudleId" />
 						<span>监察类型：</span>
-						<select id="slt_moudleId" name="moudleId" class="easyui-combobox"  style="width:184px;height:32px;" >
+						<select id="slt_moudleId" name="moudleId" class="easyui-combobox"  style="width:154px;height:32px;" >
 							<option value="">=选择监察类型进行查询=</option>
 							<option value="1">效能监察</option>
 							<option value="2">廉政监察</option>
@@ -106,9 +106,9 @@ function pagesearch(){
 						</select>
 						<span>机构选择：</span>
 						<input type="hidden" name="orgId" value="${SystemLog.orgId}" id="hid_orgId" />
-						<input id="orgParentTree"  style="width:184px;height:32px;" class="easyui-combotree" />
+						<input id="orgParentTree"  style="width:154px;height:32px;" class="easyui-combotree" />
 						<span>关键字：</span>
-						<input type="text" id="seaarchNameTemp" validType="SpecialWord"   style="width:180px;height:26px;"  class="easyui-validatebox" placeholder="搜索关键字：内容，名称" value="${SystemLog.searchName}" /> 
+						<input type="text" id="seaarchNameTemp" validType="SpecialWord"   style="width:150px;height:26px;"  class="easyui-validatebox" placeholder="搜索关键字：内容，名称" value="${SystemLog.searchName}" /> 
 						<input type="hidden" name="searchName" id="hid_serarch" /> 
 						<span>起止时间:</span>
 						<input style="width:129px;height:32px;" name="schBeginTime" value="${Item.schBeginTime }" class="easyui-datebox" data-options="sharedCalendar:'#sj'">
