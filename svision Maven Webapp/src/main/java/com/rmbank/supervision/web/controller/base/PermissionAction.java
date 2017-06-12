@@ -23,9 +23,12 @@ import com.rmbank.supervision.common.JsonResult;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.FunctionResourceVM;
+import com.rmbank.supervision.model.Meta;
+import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.Permission;
 import com.rmbank.supervision.model.PermissionResource;
 import com.rmbank.supervision.model.ResourceConfig;
+import com.rmbank.supervision.model.Role;
 import com.rmbank.supervision.model.RolePermission;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.FunctionService;
@@ -111,10 +114,88 @@ public class PermissionAction extends SystemAction {
 	 */
 	@RequestMapping(value = "/permissionInfo.do")
 	@RequiresPermissions("system/permission/permissionInfo.do")
-	public String permissionInfo(Permission permission, 
+	public String permissionInfo(
+			@RequestParam(value = "id", required = false) Integer id, 
 			HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException{
-
+		// 根据参数id判断是新增还是编辑，新增为0，不用传值；编辑为选中的参数id值，取对象，传值
+		if (id != null && id != 0) {
+			Permission permission = new Permission();
+			try {
+				permission = permissionService.selectByPrimaryKey(id);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			request.setAttribute("Permission", permission);
+		}
+		
+		
+		
 		return "web/base/permission/permissionInfo";
+	}
+	
+	/**
+	 * 新增权限
+	 * @param permission
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/jsonSaveOrUpdatePermission.do", method = RequestMethod.POST)
+	@RequiresPermissions("system/permission/jsonSaveOrUpdatePermission.do")
+	public JsonResult<Permission> jsonSaveOrUpdatePermission(Permission permission,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		// 新建一个json对象 并赋初值
+		JsonResult<Permission> js = new JsonResult<Permission>();
+		js.setCode(new Integer(1));
+		js.setMessage("保存失败!");
+		boolean saveOrUpdateRole = false;
+		try {
+			// 如为新增，则给id置0
+			if (permission.getId() == null || permission.getId() == 0) {
+				permission.setId(0);
+			}
+
+			Permission per = new Permission();
+			per.setId(permission.getId());
+			per.setName(permission.getName());
+			// 如为编辑，则给新建role对象赋传来的id值
+			if (permission.getId() > 0) {
+				per.setId(permission.getId());
+				saveOrUpdateRole = permissionService.saveOrUpdatePermission(permission);
+				if (saveOrUpdateRole) {
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，执行了修改权限信息操作", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
+					js.setCode(new Integer(0));
+					js.setMessage("保存成功!");
+					return js;
+				} else {
+					return js;
+				}
+			}
+			// 根据设备编号和id去数据库匹配，如编辑，则可以直接保存；如新增，则需匹配设备编号是否重复
+			List<Permission> lc = permissionService.getExistPermission(per);
+			if (lc.size() == 0) {
+				saveOrUpdateRole = permissionService.saveOrUpdatePermission(permission);
+				if (saveOrUpdateRole) {
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，新增了"+per.getName()+"权限", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+					js.setCode(new Integer(0));
+					js.setMessage("保存成功!");
+					return js;
+				} else {
+					return js;
+				}
+			} else {
+				js.setMessage("该权限已存在!");
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return js;
 	}
 
 	/**
@@ -247,5 +328,44 @@ public class PermissionAction extends SystemAction {
 			ex.printStackTrace();
 		}
 		return js;
+	}
+	
+	/**
+	 * 删除权限
+	 * @param id
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/jsondeletePermissionById.do", method = RequestMethod.POST)
+	@RequiresPermissions("system/permission/jsondeletePermissionById.do")
+	public JsonResult<Role> jsondeleteRoleById(
+			@RequestParam(value = "id", required = false) Integer id,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		// 新建一个json对象 并赋初值
+		JsonResult<Role> js = new JsonResult<Role>();
+		js.setCode(new Integer(1));
+		js.setMessage("删除失败!");
+		boolean state =false;
+		try {
+			Permission permission = permissionService.selectByPrimaryKey(id);
+			state= permissionService.deletePermissionById(id);			
+			if(state){
+				User loginUser = this.getLoginUser();
+				String ip = IpUtil.getIpAddress(request);		
+				logService.writeLog(Constants.LOG_TYPE_BASE_DATA, "用户："+loginUser.getName()+"，删除了"+permission.getName()+"权限", 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
+				js.setCode(new Integer(0));
+				js.setMessage("删除成功!");
+				return js;
+			}else{
+				return js;
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return js;
+
 	}
 }

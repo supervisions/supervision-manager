@@ -12,10 +12,10 @@
     id, name, moudle_id, description
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_permission
-    where id = #{id,jdbcType=INTEGER}
+    select p.*,f.name as fName 
+    from t_permission as p 
+    LEFT JOIN `t_function` AS f ON p.`moudle_id`=f.`id`       
+    where p.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_permission
@@ -103,5 +103,9 @@
 		OR p.description like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')		
 		)
 	</if>
+  </select>
+  <select id="getExistPermission"  parameterType="com.rmbank.supervision.model.Permission" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" />
+	from t_permission where name=#{name,jdbcType=VARCHAR}
   </select>
 </mapper>

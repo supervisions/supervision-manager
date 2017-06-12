@@ -62,6 +62,45 @@ public class PermissionServiceimpl implements PermissionService {
 		// TODO Auto-generated method stub
 		return permissionMapper.getPermissionCount(permission);
 	}
+
+	@Override
+	public boolean saveOrUpdatePermission(Permission permission) {
+		// TODO Auto-generated method stub
+		boolean isSuccess = false;
+		try{
+			//id存在则为修改操作
+			if(permission.getId()>0){
+				permissionMapper.updateByPrimaryKeySelective(permission);
+				isSuccess = true;
+			}else{	               
+				permissionMapper.insert(permission); 
+				isSuccess = true;
+         
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return isSuccess;
+	}
+
+	@Override
+	public List<Permission> getExistPermission(Permission per) {
+		// TODO Auto-generated method stub
+		return permissionMapper.getExistPermission(per);
+	}
+
+	@Override
+	public boolean deletePermissionById(Integer id) {
+		// TODO Auto-generated method stub
+		boolean isSuccess = false;
+		try{
+			permissionMapper.deleteByPrimaryKey(id);
+			isSuccess=true;			
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return isSuccess;
+	}
 	
 	
 }
