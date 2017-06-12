@@ -178,7 +178,16 @@ function followAction(itemId,status){
 	<div class="con-right" id="conRight">	
 		<div class="fl yw-lump">
 			<div class="yw-lump-title">
-				<i class="yw-icon icon-partner"></i><span>项目列表</span> 
+				<i class="yw-icon icon-partner"></i><span>项目列表</span>
+				<div class="fr mr10">
+					<span>状态说明： </span>
+					 <img src="<%=basePath %>source/images/new.gif" /> 新立项事项
+					 <img src="<%=basePath %>source/images/dui.gif" /> 已完结
+					 <img src="<%=basePath %>source/images/green.gif" /> 监察中
+					 <img src="<%=basePath %>source/images/red.gif" /> 逾期
+					 <img src="<%=basePath %>source/images/yellow.gif" /> 未完成
+					 <img src="<%=basePath %>source/images/mark.png" width="15" height="15" /> 未签收
+				</div>
 			</div>
 		</div>
 		<div class="fl yw-lump mt10">			
@@ -235,58 +244,61 @@ function followAction(itemId,status){
 						</td>
 						<td  style="color:green;">
 							<c:if test="${item.status == 0 }">
-								<span>新</span>
+								<img alt="新项目" title="新项目" src="<%=basePath %>source/images/new.gif" />
 							</c:if>
 							<c:if test="${item.status == 1 }">
-								<span>正常</span>
+								<img alt="正在监察中" title="正在监察中" src="<%=basePath %>source/images/green.gif" />
 							</c:if>
 							<c:if test="${item.status == 2 }">
-								<span>退回</span>
+								<img alt="正在监察中" title="正在监察中"  src="<%=basePath %>source/images/green.gif" />
 							</c:if>
 							<c:if test="${item.status == 3 }">
 								<span>逾期</span>
 							</c:if>
 							<c:if test="${item.status == 4 }">
-								<span>完结</span>
+								<img alt="已完结" title="已完结" src="<%=basePath %>source/images/dui.gif" />
 							</c:if>
 						</td>
 						<td title="${item.name}">${item.name}</td>
-						<td><a style="color:blue;" onclick="showItem(${item.id })">查看</a></td>
+						<td>
+							<img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${item.id })"  />
+							<!-- <a style="color:blue;" >查看</a> -->
+						</td> 
 						<td>${item.orgName}</td>
 						<td>
-							<c:if test="${item.isSign <= 1}">							
-								<span>未签收</span>
+							<c:if test="${item.isSign <= 1}">	
+								<img alt="未签收"  title="未签收" src="<%=basePath %>source/images/mark.png" width="16"  height="16" /> 
 							</c:if>
 							<c:if test="${item.isSign > 1}">
-								<span style="color:green;">已签收</span>
+								<img alt="已签收" src="<%=basePath %>source/images/dui.gif" /> 
 							</c:if>
 						</td>
 						<td>
 							<c:if test="${item.status == 4 }">
-								<span>完成</span>
-							</c:if>
-							<c:if test="${item.status != 4 }">
-								<span>未完成</span>
-							</c:if>
+								<span>已完成</span>
+								<%-- <img alt="已完成" src="<%=basePath %>source/images/dui.gif" /> --%> 
+							</c:if> 
 						</td>
-						<td>
-							<c:if test="${item.status == 4 }">
-								<span>完结</span>
+						<td> 
+							<c:if test="${item.status == 4 }"> 
+								<img alt="已完结" src="<%=basePath %>source/images/dui.gif" />
 							</c:if>
-							<c:if test="${item.status != 4 }">
-								<span>未完结</span>
-							</c:if>
+							<c:if test="${item.status != 4 && item.status != 0}">
+								<img alt="未完结" src="<%=basePath %>source/images/yellow.gif" /> 
+								<!-- <span>未完结</span> -->
+							</c:if> 
 						</td>
 						<td>${item.showDate}</td>
 						<td>
 							<c:if test="${item.status == 3 }">
+								<img alt="已逾期" src="<%=basePath %>source/images/red.gif" /> 
 								<span>逾期</span>
 							</c:if>
-							<c:if test="${item.status != 3 && item.status !=4 }">
-								<span>正常</span>
-							</c:if>
+							<%-- <c:if test="${item.status != 3 && item.status !=4 }">
+								<img alt="正在监察中" src="<%=basePath %>source/images/green.gif" />
+							</c:if> --%>
 							<c:if test="${item.status ==4  }">
-								<span>完结</span>
+								<img alt="已完结" src="<%=basePath %>source/images/dui.gif" /> 
 							</c:if>
 						</td>
 						<td><%-- <sapn>${item.lasgTag}</sapn> --%>
@@ -337,6 +349,7 @@ function followAction(itemId,status){
 							</c:if>	 --%>
 							
 							<c:if test="${item.status == 4 }">
+								<%-- <img alt="已完结" src="<%=basePath %>source/images/dui.gif" />  --%>
 								<span>【已完结】</span>
 							</c:if>					
 						</td>

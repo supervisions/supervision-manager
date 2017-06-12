@@ -97,6 +97,15 @@ function uploadFile(id,tag){
 		<div class="fl yw-lump">
 			<div class="yw-lump-title">
 				<i class="yw-icon icon-partner"></i><span>项目列表</span> 
+				<div class="fr mr10">
+					<span>状态说明： </span>
+					 <img src="<%=basePath %>source/images/new.gif" /> 新立项事项
+					 <img src="<%=basePath %>source/images/dui.gif" /> 已完结
+					 <img src="<%=basePath %>source/images/green.gif" /> 监察中
+					 <img src="<%=basePath %>source/images/red.gif" /> 逾期
+					 <img src="<%=basePath %>source/images/yellow.gif" /> 未完成
+					 <img src="<%=basePath %>source/images/mark.png" width="15" height="15" /> 未签收
+				</div>
 			</div>
 		</div>
 		<div class="fl yw-lump mt10">
@@ -156,25 +165,28 @@ function uploadFile(id,tag){
 						</td>
 						<td  style="color:green;">
 							<c:if test="${item.status == 0 }">
-								<span>新</span>
+								<img alt="新项目" title="新项目" src="<%=basePath %>source/images/new.gif" />
 							</c:if>
 							<c:if test="${item.status == 1 }">
-								<span>正常</span>
+								<img alt="正在监察" title="正在监察" src="<%=basePath %>source/images/green.gif" />
 							</c:if>
 							<c:if test="${item.status == 2 }">
-								<span>退回</span>
+								<img alt="正在监察" title="正在监察" src="<%=basePath %>source/images/green.gif" />
 							</c:if>
 							<c:if test="${item.status == 3 }">
-								<span>逾期</span>
-							</c:if>
+								<img alt="已逾期" title="已逾期" src="<%=basePath %>source/images/red.gif" /> 
+							</c:if> 
 							<c:if test="${item.status == 4 }">
-								<span>完结</span>
+								<img alt="已完结" title="已完结" src="<%=basePath %>source/images/dui.gif" /> 
 							</c:if>
 						</td>
 						<%-- <td>${item.name}</td> --%>
 						<td>${item.itemCategory }</td>
 						<td>${item.name}</td>
-						<td><a style="color:blue;" onclick="showItem(${item.id })">查看</a></td>						
+						<td>
+							<img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${item.id })"  />
+							<%-- <a style="color:blue;" onclick="showItem(${item.id })">查看</a> --%>
+						</td>						
 						<td>${item.itemName}</td>
 						<td>${item.orgName}</td>
 						<td>
