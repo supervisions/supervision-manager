@@ -166,39 +166,47 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	//新增/编辑项目
 	var tuuid =  encodeURI(encodeURI("分行"));
 	function saveItem(obj){	
-        $.ajax({
-	        cache: true, //是否缓存当前页面
-	        type: "POST", //请求类型
-	        url: "<%=basePath%>manage/branch/jsonSaveOrUpdateFileItem.do?s="+tuuid,
-	        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
-	        async: true, //发送异步请求	  
-	        dataType:"json", //响应数据类型      
-	        success: function(data) {
-	        	if(data.code==0){ 
-	        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
-	        			$("#uploader_start").click(); //上传文件
-	        		}else{
-	        		$("#dia_title").text($("#hid_dia_title").val());
-        			$("#dialog1").dialog({
-					      resizable: false,
-					      height:150,
-					      modal: true,
-					      open: function (event, ui) {
-			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-			              },
-					      buttons: {
-					        "确定": function() {
-					          window.location.href='<%=basePath%>manage/branch/branchFHList.do';
-					        } 
-					      }
-					    });
-	        		}
-	        	}else{
-	        		alert(data.message);	        	
-	        	}	
-	            
-	        }
-   		});
+		layer.confirm('确认信息已经填写完整，并且保存？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			$.ajax({
+		        cache: true, //是否缓存当前页面
+		        type: "POST", //请求类型
+		        url: "<%=basePath%>manage/branch/jsonSaveOrUpdateFileItem.do?s="+tuuid,
+		        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+		        async: true, //发送异步请求	  
+		        dataType:"json", //响应数据类型      
+		        success: function(data) {
+		        	if(data.code==0){ 
+		        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
+		        			$("#uploader_start").click(); //上传文件
+		        		}else{
+		        		$("#dia_title").text($("#hid_dia_title").val());
+	        			$("#dialog1").dialog({
+						      resizable: false,
+						      height:150,
+						      modal: true,
+						      open: function (event, ui) {
+				                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+				              },
+						      buttons: {
+						        "确定": function() {
+						          window.location.href='<%=basePath%>manage/branch/branchFHList.do';
+						        } 
+						      }
+						    });
+		        		}
+		        	}else{
+		        		layer.alert(data.message);	        	
+		        	}	
+		            
+		        }
+	   		});
+		}, function(){
+			
+		});
+        
 	}
 	function downLoadFile(path,name){
 		var filePath = encodeURI(encodeURI(path));
@@ -233,8 +241,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
-				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItem(this);">提交</span>
-				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
+				
 			</div>
 		</div>
 		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
@@ -445,6 +452,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>	
 						</tr>
 						</c:if>
+						<tr>
+							<td></td>
+							<td>
+								<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItem(this);">提交</span>
+								<span class="yw-btn bg-green" style="margin-left: 50px;margin-right: 10px;" onclick="returnPage();">返回</span>
+							</td>							
+						</tr>
 					</table>
 				</div>
 			</form>

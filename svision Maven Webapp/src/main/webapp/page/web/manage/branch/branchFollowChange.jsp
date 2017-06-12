@@ -21,7 +21,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="${pageContext.request.contextPath}/source/js/pager/jquery.pager.js"></script>
 	<link href="${pageContext.request.contextPath}/source/js/pager/Pager.css" rel="stylesheet" />
 	<link rel="shortcut icon" href="<%=basePath%>source/images/favicon.ico" type="image/x-icon" />
-
+	
+	
+	<!-- 以下两个引的文件用于layer -->
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
+	<script src="<%=basePath%>source/js/layer/layer.js"></script>
+    
 <script type="text/javascript"> 
 	  
 	function downLoadFile(path,name){
@@ -49,21 +54,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 	obj.id = $.trim($("#hid_itemId").val());
 	 	obj.isFollow = $.trim($("#hid_isFollowStatus").val());
 	 	obj.content = $.trim($("#ar_followContent").val()); 
-		$.ajax({
-			url : "<%=basePath%>manage/branch/jsonfollowItemById.do",
-			type : "post",  
-	    	dataType : "json",		
-	    	data:obj,						
-			success : function(data) { 									
-	  			if(data.code == 0){ 
-	  				$.messager.alert('操作信息',data.message,'info',function(){ 
-	  				 	window.location.href='<%=basePath%>manage/branch/branchFHList.do';
-	      			});
-	  			}else{		  			    
-					$.messager.alert('错误信息','删除失败！','error');
-	  			}  
-		    } 
+	 	layer.confirm('确认信息已经填写完整，并且保存？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			$.ajax({
+				url : "<%=basePath%>manage/branch/jsonfollowItemById.do",
+				type : "post",  
+		    	dataType : "json",		
+		    	data:obj,						
+				success : function(data) { 									
+		  			if(data.code == 0){ 
+		  				$.messager.alert('操作信息',data.message,'info',function(){ 
+		  				 	window.location.href='<%=basePath%>manage/branch/branchFHList.do';
+		      			});
+		  			}else{		  			    
+						$.messager.alert('错误信息','删除失败！','error');
+		  			}  
+			    } 
+			});
+		}, function(){
+			
 		});
+		
 	 }
 	 function returnPage(){
 		layer.confirm('当前项目资料尚未提交，是否离开当前页面？', {
@@ -93,8 +106,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
-				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="followAction();">提交</span>
-				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
+				
 			</div>
 		</div>
 		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
@@ -191,21 +203,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</td>		
 							</tr>   
 						</c:if> 
-						 <tr>
-								<td align="right" style="height:40px;">是否跟踪：</td>
-								<td colspan="3">  
-									<label><input type="radio" name="isFollow" value="1" checked="checked"  onclick="followStatusClick(1);" />不跟踪</label>
-									<label><input type="radio" name="isFollow" value="0"  onclick="followStatusClick(0);" />跟踪</label> 
-								 </td>	
-							</tr> 
-							<tr id="tr_followContent" class="displaynone">
-								<td align="right" style="height:50px;">跟踪意见：</td>
-								<td colspan="3">  
-									<input type="hidden" value="${Item.id }" id="hid_itemId" />
-									<input type="hidden" id="hid_isFollowStatus" value="1" />
-									<textarea rows="4" cols="5" style="width:60%;" id="ar_followContent" name="content" ></textarea>	
-								 </td>	
-							</tr> 	
+						<tr>
+							<td align="right" style="height:40px;">是否跟踪：</td>
+							<td colspan="3">  
+								<label><input type="radio" name="isFollow" value="1" checked="checked"  onclick="followStatusClick(1);" />不跟踪</label>
+								<label><input type="radio" name="isFollow" value="0"  onclick="followStatusClick(0);" />跟踪</label> 
+							</td>	
+						</tr> 
+						<tr id="tr_followContent" class="displaynone">
+							<td align="right" style="height:50px;">跟踪意见：</td>
+							<td colspan="3">  
+								<input type="hidden" value="${Item.id }" id="hid_itemId" />
+								<input type="hidden" id="hid_isFollowStatus" value="1" />
+								<textarea rows="4" cols="5" style="width:60%;" id="ar_followContent" name="content" ></textarea>	
+							 </td>	
+						</tr> 
+						<tr>
+							<td></td>
+							<td>
+								<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="followAction();">提交</span>
+								<span class="yw-btn bg-green" style="margin-left: 50px;margin-right: 10px;" onclick="returnPage();">返回</span>
+							</td>							
+						</tr>		
 					</table>
 				</div>
 			</form>

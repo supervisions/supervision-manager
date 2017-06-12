@@ -17,7 +17,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/easyUI/jquery.easyui.min.js"></script>
 	<script src="${pageContext.request.contextPath}/source/js/easyUI/easyui-lang-zh_CN.js"></script>
 	<script src="${pageContext.request.contextPath}/source/js/common/validate.js"></script>
-	<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script> 
+	<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script>
+	
+	<!-- 以下两个引的文件用于layer -->
+	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
+	<script src="<%=basePath%>source/js/layer/layer.js"></script>
+       
 <script type="text/javascript">
 	$(document).ready(function(){	  
  	 	 $("#conLeft").attr("style","height:120%;");
@@ -226,6 +231,16 @@ function overStatusClick(stus){
 		$("#hid_isVlaue").val(1);
 	} 
 }
+	function returnPage(){
+		layer.confirm('当前项目资料尚未提交，是否离开当前页面？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			window.location.href='<%=basePath%>manage/support/supportList.do';
+		}, function(){
+			
+		});
+	}
 </script>
  </head> 
  <body>
@@ -244,8 +259,7 @@ function overStatusClick(stus){
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
-				<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItem();">提交</span>
-				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
+				
 			</div>
 		</div>
 			<form id="itemInfoForm" name="itemInfoForm" >
@@ -333,7 +347,14 @@ function overStatusClick(stus){
 									</table> 
 								</div>
 							</td>			
-						</tr>  
+						</tr> 
+						<tr>
+							<td></td>
+							<td>
+								<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItem();">提交</span>
+								<span class="yw-btn bg-green" style="margin-left: 50px;margin-right: 10px;" onclick="returnPage();">返回</span>
+							</td>							
+						</tr> 
 					</table>
 				</div>
 			</form>

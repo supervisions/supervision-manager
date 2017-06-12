@@ -173,8 +173,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			ajaxPost();
 		}, function(){
 			
-		});
-		
+		});		
 	}
 	
 	function isNull(){		
@@ -194,22 +193,22 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	}
 	function ajaxPost(){
 		if(isNull()!=false){
-		        $.ajax({
-			        cache: true, //是否缓存当前页面
-			        type: "POST", //请求类型
-			        url: "vision/efficiency/jsonSaveOrUpdateItem.do",
-			        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
-			        async: true, //发送异步请求	  
-			        dataType:"json", //响应数据类型      
-			        success: function(data) {
-			        	if(data.code==0){ 
-			        		$("#uploader_start").click(); //上传文件
-			        	}else{
-			        		layer.alert(data.message);	        	
-			        	}	
-			        }
-		   		});
-	   		}
+	        $.ajax({
+		        cache: true, //是否缓存当前页面
+		        type: "POST", //请求类型
+		        url: "vision/efficiency/jsonSaveOrUpdateItem.do",
+		        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+		        async: true, //发送异步请求	  
+		        dataType:"json", //响应数据类型      
+		        success: function(data) {
+		        	if(data.code==0){ 
+		        		$("#uploader_start").click(); //上传文件
+		        	}else{
+		        		layer.alert(data.message);	        	
+		        	}	
+		        }
+	   		});
+   		}
 	}
 	
 	function returnPage(){
