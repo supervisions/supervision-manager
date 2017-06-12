@@ -101,20 +101,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	function gradeChange(){
 		var pId = $.trim($("#valueTypeId").val());
 		if(pId == "-1"){
-			$("#dia_title").text("请选择量化模型，并量化分值");
-			var mesDia = $("#dialog1").dialog({
-		      resizable: false,
-		      height:150,
-		      modal: true,
-		      open: function (event, ui) {
-                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-              },
-		      buttons: {
-		        "确定": function() {
-		    		 $(this).dialog("close");
-		        } 
-		      }
-		    }); 
+			 layer.confirm('请选择量化模型，并量化分值', {
+						btn: ['确认'] //按钮
+					}, function(){//点击确认按钮调用
+						layer.close(layer.confirm());//关闭当前弹出层 
+					}); 
 		    return;
 		}
 		$("#sp_total_value").text("未量化");
@@ -147,57 +138,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        			//aHtml += "<tr><td colspan='3'><a class='yw-btn bg-red' style='margin-left: 300px;' onclick=''>计算得分</a></td><td></td></tr>"
 	        			$("#value_table").html(aHtml); 
 	        		 }else{
-	        		 	$("#dia_title").text("该模型未量化指标，请在量化指标模块完善");
-						 $("#dialog1").dialog({
-					      resizable: false,
-					      height:150,
-					      modal: true,
-					      open: function (event, ui) {
-			                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-			              },
-					      buttons: {
-					        "确定": function() {
-					    		 $(this).dialog("close");
-					        } 
-					      }
-					    }); 
+						 layer.confirm('该模型未量化指标，请在量化指标模块完善', {
+						btn: ['确认'] //按钮
+					}, function(){//点击确认按钮调用
+						layer.close(layer.confirm());//关闭当前弹出层 
+					}); 
 	        		 }
 	        	}else{
-	        		$("#dia_title").text("加载量化模型指标失败");
-					 $("#dialog1").dialog({
-				      resizable: false,
-				      height:150,
-				      modal: true,
-				      open: function (event, ui) {
-		                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-		              },
-				      buttons: {
-				        "确定": function() {
-				    		 $(this).dialog("close");
-				        } 
-				      }
-				    });     	
+					 layer.confirm('加载量化模型指标失败', {
+						btn: ['确认'] //按钮
+					}, function(){//点击确认按钮调用
+						layer.close(layer.confirm());//关闭当前弹出层 
+					}); 	
 	        	}	
 	            
 	        }
    		});
 	} 
 function getValue(obj,index,maxValue){
-	if($(obj).val()>maxValue){ 
-		 $("#dia_title").text("量化分值，不能超过标准分值");
-			var mesDia = $("#dialog1").dialog({
-		      resizable: false,
-		      height:150,
-		      modal: true,
-		      open: function (event, ui) {
-                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-              },
-		      buttons: {
-		        "确定": function() {
-		    		 $(this).dialog("close");
-		        } 
-		      }
-		    }); 
+	if($(obj).val()>maxValue){  
+		layer.confirm('量化分值，不能超过标准分值', {
+			btn: ['确认'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层 
+		}); 
 		 $(obj).val(maxValue); 
 		 getValue(obj,index,maxValue);
 	}else{

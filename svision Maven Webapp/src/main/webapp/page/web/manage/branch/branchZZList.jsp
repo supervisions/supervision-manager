@@ -138,7 +138,8 @@ function getItemByItemType(type){
 											
 						<th width="10%" >完成单位（部门）</th>
 						
-						<th width="10%" >操作</th> 
+						<th width="10%" >操作1</th> 
+						<th width="10%" >操作2</th> 
 					</tr>
 					<c:forEach var="item" items="${itemList}">
 						<tr>
@@ -148,22 +149,21 @@ function getItemByItemType(type){
 							<td>${item.showDate}</td> 
 							<td>${item.preparerOrg}</td>
 							<td>${item.orgName}</td>
+							<td> 
+								<c:if test="${item.status == 4}">
+									 【已完结】 
+								</c:if> 
+								<c:if test="${item == null && logUserOrg == item.supervisionOrgId || item.status != 4 && logUserOrg == item.supervisionOrgId}"> 
+									<%-- <a style="color: blue;" onclick="window.location.href='<%=basePath %>manage/branch/branchZZFile.do?id=${item.id}'">上传资料</a> --%>
+									<span class="yw-btn-small bg-red cur" onclick="window.location.href='<%=basePath %>manage/branch/branchZZFile.do?id=${item.id}'">上传资料</span>
+								</c:if>  
+							</td>	
 							<td>
-								<c:if test="${logUserOrg == item.preparerOrgId}">
-									<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
-								</c:if>							
-								
-								<%--  <c:if test="${logUserOrg != item.supervisionOrgId}"> 
-									<c:if test="${Type == 2 }"> --%>
-										<c:if test="${item.status == 4}">
-											 【已完结】 
-										</c:if> 
-										<c:if test="${item == null && logUserOrg == item.supervisionOrgId || item.status != 4 && logUserOrg == item.supervisionOrgId}"> 
-											<a style="color: blue;" onclick="window.location.href='<%=basePath %>manage/branch/branchZZFile.do?id=${item.id}'">上传资料</a>
-										</c:if> 
-									<%-- </c:if>									
-								</c:if>	 --%>
-							</td>							
+								 <c:if test="${logUserOrg == item.preparerOrgId}">
+									<%-- <a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> --%>
+									<span class="yw-btn-small bg-red cur" onclick="deleteItem(${item.id},'${item.name}')">删除</span>
+								</c:if>	
+							</td>								
 						</tr>
 					</c:forEach>
 				</table>

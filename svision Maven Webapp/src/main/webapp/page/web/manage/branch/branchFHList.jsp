@@ -169,7 +169,8 @@ function followItem(id,name){
 											
 						<th width="10%" >完成单位（部门）</th>
 						
-						<th width="10%" >操作</th> 
+						<th width="10%" >操作1</th> 
+						<th width="10%" >操作2</th> 
 					</tr>
 					<c:forEach var="item" items="${itemList}">
 						<tr>
@@ -189,31 +190,40 @@ function followItem(id,name){
 										</c:if>
 										<c:if test="${item.status != 4}">
 											<c:if test="${item.lasgTag == 31 && logUserOrg ==item.supervisionOrgId}">
-												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >上传资料</a>
+												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >上传资料</a> --%>
+											<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >上传资料</span>
 											</c:if>
 											<c:if test="${item.lasgTag == 32 && logUserOrg ==19}">
-												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >监察意见</a>
+												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >监察意见</a> --%>
+											<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >监察意见</span>
 											</c:if> 
 											<c:if test="${item.lasgTag == 33 && logUserOrg ==item.supervisionOrgId}">
-												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=34'" >录入整改情况</a>
+												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=34'" >录入整改情况</a> --%>
+											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=34'" >录入整改情况</span>
 											</c:if> 
 											<c:if test="${item.lasgTag == 34 && logUserOrg ==19}">
-												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowChange.do?id=${item.id}'" >跟踪整改</a>
+												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowChange.do?id=${item.id}'" >跟踪整改</a> --%>
+											<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFollowChange.do?id=${item.id}'" >跟踪整改</span>
 												<%-- <a style="color: blue;" onclick="followItem(${item.id},'${item.name}')" >跟踪整改</a> --%>
 											</c:if>
 											<c:if test="${item.lasgTag == 91 && logUserOrg ==item.supervisionOrgId}">
-												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >跟踪整根情况 </a>
+												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >跟踪整根情况 </a> --%>
+											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >跟踪整根情况</span>
 											</c:if>
 											<c:if test="${item.lasgTag == 35 && logUserOrg ==19}">
-												<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=93'" >监察结论</a>
+												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=93'" >监察结论</a> --%>
+											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=93'" >监察结论</span>
 											</c:if>
 										 </c:if>
-										 <c:if test="${logUserOrg == item.preparerOrgId}">
-											<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
-										</c:if>	
 								<%-- 	</c:if>									
 								</c:if>	 --%>
-							</td>							
+							</td>		
+							<td>
+								 <c:if test="${logUserOrg == item.preparerOrgId}">
+									<%-- <a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> --%>
+									<span class="yw-btn-small bg-red cur" onclick="deleteItem(${item.id},'${item.name}')">删除</span>
+								</c:if>	
+							</td>					
 						</tr>
 					</c:forEach>
 				</table>

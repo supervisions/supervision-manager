@@ -163,22 +163,26 @@ function edit(id){
 									
 									<c:if test="${UserOrgId == item.supervisionOrgId }">
 										<c:if test="${item.lasgTag == 31 }">
-											<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/support/supportFile.do?id=${item.id}'">上传资料</a>
+											<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/support/supportFile.do?id=${item.id}'">上传资料</a> --%>
+											<span class="yw-btn-small bg-lan cur"   onclick="window.location.href='<%=basePath %>manage/support/supportFile.do?id=${item.id}'">上传资料</span>
 										</c:if> 
 										<c:if test="${item.lasgTag == 998 }">
-											<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/support/supportReFile.do?id=${item.id}'">继续上传资料</a>
+											<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/support/supportReFile.do?id=${item.id}'">继续上传资料</a> --%>
+											<span class="yw-btn-small bg-lan cur"   onclick="window.location.href='<%=basePath %>manage/support/supportReFile.do?id=${item.id}'">继续上传资料</span>
 										</c:if> 
 									</c:if> 
 									<c:if test="${UserOrgId == item.preparerOrgId }">
 										<c:if test="${item.lasgTag == 999 }">
-											<a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/support/supportValue.do?id=${item.id}'" >项目量化</a>
+											<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/support/supportValue.do?id=${item.id}'" >项目量化</a> --%>
+											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/support/supportValue.do?id=${item.id}'" >项目量化</span>
 										</c:if>    
 									</c:if>
 								</c:if>								
 							</td>			
 							<td>
 								<c:if test="${UserOrgId == item.preparerOrgId }"> 
-									<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> 
+									<%-- <a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>  --%>
+									<span class="yw-btn-small bg-red cur" onclick="deleteItem(${item.id},'${item.name}')">删除</span>
 								</c:if>
 							</td>				
 						</tr>

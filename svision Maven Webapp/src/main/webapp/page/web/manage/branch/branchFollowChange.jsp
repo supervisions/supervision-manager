@@ -69,7 +69,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  				 	window.location.href='<%=basePath%>manage/branch/branchFHList.do';
 		      			});
 		  			}else{		  			    
-						$.messager.alert('错误信息','删除失败！','error');
+						$.messager.alert('错误信息','跟踪项目失败！','error');
 		  			}  
 			    } 
 			});
