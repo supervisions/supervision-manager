@@ -178,16 +178,21 @@ function editDetail(id,pName){
 							<td align="left">${item.grade }</td>
 							<td align="left">
 								
-								<a href="javascript:void(0);" style="color:blue" onclick="editDetail(${item.id},'${item.pName }');">编辑</a>
+								<%-- <a href="javascript:void(0);" style="color:blue" onclick="editDetail(${item.id},'${item.pName }');">编辑</a> --%>
+								<span class="yw-btn-small bg-lan cur" onclick="editDetail(${item.id},'${item.pName }');">编辑</span>
 								<c:if test="${item.level == 0 }"> 
-									<a href="javascript:void(0);" style="color:blue" onclick="window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=1&pid=${item.id }'">添加二级指标</a> 
+								
+									<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=1&pid=${item.id }'">添加二级指标</span>
+									<%-- <a href="javascript:void(0);" style="color:blue" onclick="window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=1&pid=${item.id }'">添加二级指标</a> --%> 
 								</c:if>
 								<c:if test="${item.level == 1 }"> 
-									<a href="javascript:void(0);" style="color:blue" onclick="window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=2&pid=${item.id }'">添加三级指标</a> 
+									<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=2&pid=${item.id }'">添加三级指标</span>
+									<%-- <a href="javascript:void(0);" style="color:blue" onclick="window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=2&pid=${item.id }'">添加三级指标</a> --%> 
 								</c:if>
 							</td>
 							<td>
-								<a href="javascript:void(0);" style="color:blue" onclick="deleteDetail(${item.id},'${item.name}')">删除</a>
+								<%-- <a href="javascript:void(0);" style="color:blue" onclick="deleteDetail(${item.id},'${item.name}')">删除</a> --%>
+								<span class="yw-btn-small bg-red cur" onclick="deleteDetail(${item.id},'${item.name}')">删除</span>
 							</td>
 						</tr>
 					</c:forEach>

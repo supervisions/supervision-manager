@@ -1321,7 +1321,7 @@
 .yw-btn {
 	width: auto;
 	height: auto;
-	padding: 3px 10px;
+	padding: 5px 13px;
 	border: none medium;
 	background-color: transparent;
 	font-size: 16px;
@@ -1332,6 +1332,20 @@
 	cursor: pointer;
 }
 
+
+.yw-btn-small {
+	width: auto;
+	height: auto;
+	padding: 2px 8px;
+	border: none medium;
+	background-color: transparent;
+	font-size: 12px;
+	line-height: 20px;
+	color: #FFF;
+	border-radius: 2px;
+	vertical-align: middle;
+	cursor: pointer;
+}
 .yw-btn-flow {
 	width: auto;
 	height: auto;
@@ -2095,6 +2109,13 @@
 
 .bg-red:hover {
 	box-shadow: 0 0 4px #D9534F;
+}
+.bg-lan {
+	background-color: #00a2ca;
+}
+
+.bg-lan:hover {
+	box-shadow: 0 0 4px #00a2ca;
 }
 
 .yw-progress-bar {

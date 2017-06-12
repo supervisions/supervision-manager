@@ -721,4 +721,39 @@
 	 and o.`org_type` =#{orgTypeA,jdbcType=INTEGER}
 	 and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
   </select>
+  
+  
+  <resultMap id="QueryResultMap" type="com.rmbank.supervision.model.Item" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="item_type" property="itemType" jdbcType="INTEGER" />
+    <result column="supervision_type_id" property="supervisionTypeId" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="stage_index" property="stageIndex" jdbcType="TINYINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="supervision_org_id" property="supervisionOrgId" jdbcType="INTEGER" />
+    <result column="supervision_org_name" property="organName" jdbcType="VARCHAR" />
+    <result column="supervision_user_id" property="supervisionUserId" jdbcType="INTEGER" />
+    <result column="preparer_org_id" property="preparerOrgId" jdbcType="INTEGER" />
+    <result column="preparer_id" property="preparerId" jdbcType="INTEGER" />
+    <result column="preparer_time" property="preparerTime" jdbcType="TIMESTAMP" />
+    <result column="is_stept" property="isStept" jdbcType="INTEGER" />    
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="super_item_type" property="superItemType" jdbcType="INTEGER" />
+    
+  </resultMap>
+  
+  <!-- 获取所有的实时监察模块未完成记录-->
+  <select id="getAllSSItemNotComplete"  resultMap="QueryResultMap">
+  	 select t.*,o.`name` as orgName from t_item  t
+		LEFT JOIN t_org o on t.supervision_org_id = o.id
+		 where t.item_type = 0 and t.end_time is not null and t.`status` in (1,2,3)
+  </select>
+  
+  <!-- 获取所有的综合管理模块未完成记录 -->
+  <select id="getAllZHItemNotComplete"  resultMap="QueryResultMap">
+  	 select t.*,o.`name` as orgName from t_item  t
+		LEFT JOIN t_org o on t.supervision_org_id = o.id
+		 where t.item_type = 1  and t.`status` in (0,1,2,3)
+  </select>
 </mapper>

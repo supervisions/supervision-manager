@@ -341,4 +341,16 @@ public class ItemServiceimpl implements ItemService {
 		return isSuccess;
 	}
 
+	@Override
+	public List<Item> getAllSSItemNotComplete() {
+		// TODO Auto-generated method stub
+		return itemMapper.getAllSSItemNotComplete();
+	}
+
+	@Override
+	public List<Item> getAllZHItemNotComplete() {
+		// TODO Auto-generated method stub
+		return itemMapper.getAllZHItemNotComplete();
+	}
+
 }  

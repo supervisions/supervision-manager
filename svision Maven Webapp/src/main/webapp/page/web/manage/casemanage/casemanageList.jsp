@@ -175,16 +175,20 @@ function editManage(id,orgName){
 							</td> --%>
 							<td>
 								<c:if test="${item.used == 1}">
-									<a style="color:blue" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">禁用</a>
+									<%-- <a style="color:blue" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">禁用</a> --%>
+								<span class="yw-btn-small bg-red cur" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">禁用</span>
 								</c:if> 
 								<c:if test="${item.used == 0}">
-									<a style="color:blue" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">启用</a>
+									<%-- <a style="color:blue" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">启用</a> --%>
+								<span class="yw-btn-small bg-lan cur" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">启用</span>
 								</c:if> 															
-								<a style="color:blue" onclick="editManage(${item.id},'${item.orgName }');">编辑</a>
+								<%-- <a style="color:blue" onclick="editManage(${item.id},'${item.orgName }');">编辑</a> --%>
+								<span class="yw-btn-small bg-lan cur" onclick="editManage(${item.id},'${item.orgName }');">编辑</span>
 								
 							</td>
 							<td>
-								<a style="color:blue" onclick="deleteGradeScheme(${item.id},'${item.name}');">删除</a>
+								<%-- <a style="color:blue" onclick="deleteGradeScheme(${item.id},'${item.name}');">删除</a> --%>
+								<span class="yw-btn-small bg-red cur" onclick="deleteGradeScheme(${item.id},'${item.name}');">删除</span>
 							</td>
 						</tr>
 					</c:forEach>
