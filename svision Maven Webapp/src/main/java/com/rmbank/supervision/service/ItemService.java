@@ -143,4 +143,21 @@ public interface ItemService {
 	 * @return
 	 */
 	boolean updateByItemSelective(Item item, String content, Integer[] orgIds);
+
+	/**
+	 * 获取所有的实时监察模块未完成的项目，以判断是否预期
+	 * 
+	 * 添加的工作事项除外
+	 * @return
+	 */
+	List<Item> getAllSSItemNotComplete();
+
+	/**
+	 * 获取所有的综合管理模块未完成的项目，以判断是否预期
+	 * 
+	 * 添加的工作事项除外
+	 * @return
+	 */
+	List<Item> getAllZHItemNotComplete();
+ 
 } 

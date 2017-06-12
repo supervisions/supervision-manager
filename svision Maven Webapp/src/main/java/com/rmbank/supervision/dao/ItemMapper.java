@@ -133,6 +133,18 @@ public interface ItemMapper {
 	 * @param item
 	 * @return
 	 */
-	int getItemCountByLogOrgFHLXZZWC(Item item); 
+	int getItemCountByLogOrgFHLXZZWC(Item item);
+
+	/**
+	 * 加载所有的实时监察模块未完成的记录
+	 * @return
+	 */
+	List<Item> getAllSSItemNotComplete();
+
+	/**
+	 * 加载所有的综合模块未完成的记录
+	 * @return
+	 */
+	List<Item> getAllZHItemNotComplete(); 
 	
 }
