@@ -65,25 +65,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				obj.values = valueArray.toString();
 				obj.detailId =  detailArray.toString(); 
 			}
-		}   
-        $.ajax({
-	        cache: true, //是否缓存当前页面
-	        type: "POST", //请求类型
-	        url: "<%=basePath%>manage/support/jsonSaveOrUpdateItemValue.do",
-	        data:obj,//发送到服务器的数据，序列化后的值
-	        async: true, //发送异步请求	  
-	        dataType:"json", //响应数据类型      
-	        success: function(data) {
-	        	if(data.code==0){ 
-	        		$.messager.alert("操作提示",data.message,"info",function(){
-	        			window.location.href='<%=basePath%>manage/support/supportList.do';
-	        		});   
-	        	}else{
-	        		$.messager.alert("操作提示",data.message,"error");  
-	        	}	
-	            
-	        }
-   		}); 
+		}
+		layer.confirm('确认信息已经填写完整，并且保存？', {
+			btn: ['确认','取消'] //按钮
+		}, function(){//点击确认按钮调用
+			layer.close(layer.confirm());//关闭当前弹出层
+			$.ajax({
+		        cache: true, //是否缓存当前页面
+		        type: "POST", //请求类型
+		        url: "<%=basePath%>manage/support/jsonSaveOrUpdateItemValue.do",
+		        data:obj,//发送到服务器的数据，序列化后的值
+		        async: true, //发送异步请求	  
+		        dataType:"json", //响应数据类型      
+		        success: function(data) {
+		        	if(data.code==0){ 
+		        		$.messager.alert("操作提示",data.message,"info",function(){
+		        			window.location.href='<%=basePath%>manage/support/supportList.do';
+		        		});   
+		        	}else{
+		        		$.messager.alert("操作提示",data.message,"error");  
+		        	}	
+		            
+		        }
+	   		});
+		}, function(){
+			
+		});	   
+         
 	}
 	function downLoadFile(path,name){
 		var filePath = encodeURI(encodeURI(path));

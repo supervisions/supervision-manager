@@ -59,11 +59,11 @@ function pagesearch(){
 }
 
 
-function deleteResource(id,name){
+function deletePermission(id,name){
 	$.messager.confirm("删除确认","确认删除资源："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsondeleteResourceById.do?id="+id,
+				url : "jsondeletePermissionById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -141,11 +141,11 @@ function authorizeResource(id,name){
 						<td>${item.description}</td>
 						<td>														
 							<%-- <a style="color:blue" onclick="window.location.href='resourceInfo.do?id=${item.id}';">编辑</a>	 --%>
-								<span class="yw-btn-small bg-lan cur" onclick="window.location.href='resourceInfo.do?id=${item.id}';">编辑</span>						
+								<span class="yw-btn-small bg-lan cur" onclick="window.location.href='permissionInfo.do?id=${item.id}';">编辑</span>						
 						</td>
 						<td>
 							<%-- <a style="color:blue" onclick="deleteResource(${item.id},'${item.name}');">删除</a> --%>
-								<span class="yw-btn-small bg-red cur" onclick="deleteResource(${item.id},'${item.name}');">删除</span>
+								<span class="yw-btn-small bg-red cur" onclick="deletePermission(${item.id},'${item.name}');">删除</span>
 						</td>
 						</tr>
 					</c:forEach>

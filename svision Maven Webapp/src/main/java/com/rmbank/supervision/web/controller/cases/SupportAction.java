@@ -125,6 +125,7 @@ public class SupportAction extends SystemAction {
 			//当前登录机构只加载当前登录中支立的项目和子机构完成的项目
 			item.setItemType(Constants.STATIC_ITEM_TYPE_MANAGE);
 			item.setOrgTypeA(Constants.ORG_TYPE_6);	
+			item.setOrgTypeB(Constants.ORG_TYPE_5);
 			item.setSupervisionOrgId(logUserOrg);
 			item.setPreparerOrgId(logUserOrg);
 			itemList=itemService.getItemListByOrgTypeAndLogOrg(item);

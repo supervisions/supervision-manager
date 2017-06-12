@@ -20,4 +20,10 @@ public interface PermissionService {
 	List<Permission> getPermissionList(Permission permission);
 
 	int getPermissionCount(Permission permission);
+
+	boolean saveOrUpdatePermission(Permission permission);
+
+	List<Permission> getExistPermission(Permission per);
+
+	boolean deletePermissionById(Integer id);
 }
