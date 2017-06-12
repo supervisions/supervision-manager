@@ -1,10 +1,8 @@
-package com.rmbank.supervision.web.controller.vision;
+package com.rmbank.supervision.web.controller.cases;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.Item;
-import com.rmbank.supervision.model.ItemProcess;
 import com.rmbank.supervision.model.Organ;
 import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ItemService;
@@ -27,15 +24,15 @@ import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
 /**
- * 效能监察待办事项控制器
+ * 综合管理待办事项控制器
  * @author DELL
  *
  */ 
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/vision")
-public class VisionTodoAction  extends  SystemAction {
+@RequestMapping("/manage")
+public class CaseTodoAction extends SystemAction {
 
 	@Resource
 	private ItemService itemService;
@@ -44,7 +41,7 @@ public class VisionTodoAction  extends  SystemAction {
 	private UserService userService;
 
 	/**
-     * 效能监察待办事项列表展示
+     * 综合管理待办事项列表展示
      *
      * @param request
      * @param response
@@ -52,7 +49,7 @@ public class VisionTodoAction  extends  SystemAction {
 	 * @throws UnsupportedEncodingException 
      */
     @RequestMapping(value = "/todoList.do")
-    @RequiresPermissions("vision/todoList.do")
+    @RequiresPermissions("manage/todoList.do")
     public String efficiencyList(Item item, 
             HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException { 
     	// 判断搜索名是否为空，不为空则转为utf-8编码

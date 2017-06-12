@@ -367,7 +367,7 @@
 	height: 530px;
 	margin: 0 auto;
 	position: absolute;
-	top: 50%;
+	top: 43%;
 	margin-top: -16%;
 }
 
@@ -384,8 +384,8 @@
 	height: 410px;
 	margin: 0 auto;
 	background-color: #FFF;
-	border: 1px solid #eb2b42;
-	border-top-color: #eb2b42;
+	border: 1px solid #1894f4;
+	border-top-color: #1894f4;
 	border-radius: 3px;
 	box-shadow: 0 0 5px #4287BA;
 }
@@ -614,7 +614,7 @@
 	line-height: 40px;
 	text-align: center;
 	border: 0;
-	background-color: #bc0a00;
+	background-color: #3a9fed;
 	color: #FFF;
 	font-size: 16px;
 	border-radius: 2px;
@@ -622,7 +622,7 @@
 }
 
 .login-btn:hover {
-	background-color: #bc0a00;;
+	background-color: #bc0a00;
 	box-shadow: 0 0 5px #3BA6F5;
 	cursor: pointer;
 }
@@ -717,8 +717,7 @@
 .head-menu {
 	width: auto;
 	height: 42px;
-	margin-top: 25px;
-	background-color: #00A2CA;
+	background-color: #1894f4;
 }
 
 .head-menu li {
@@ -2377,7 +2376,7 @@
 }
 
 .yw-row .yw-span3 {
-	width: 23.5%;
+	width: 19%;
 }
 
 .yw-row .yw-last {
@@ -3827,7 +3826,7 @@
 }
 #sltModel img:hover{
 	cursor:pointer;
-	border:3px solid red; 
+	border:3px solid #1894f4; 
 	border-raidius:10%;
 }
 #value_table{ 

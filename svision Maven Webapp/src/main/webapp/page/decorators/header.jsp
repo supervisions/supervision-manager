@@ -49,7 +49,7 @@
     <%--<div class="fl head-logo">--%>
         <img src="${pageContext.request.contextPath}/source/images/lo_title.jpg"  />  
 </div>
-<div class="fr head-menu">
+<div class="fr head-menu" style="margin-top:20px;">
     <ul class="fl">
     	<%-- <c:forEach var="item" items="${sessionScope.userResources}">
 			<c:if test="${item.url == 'vision/efficiency/efficiencyList.do'}">
