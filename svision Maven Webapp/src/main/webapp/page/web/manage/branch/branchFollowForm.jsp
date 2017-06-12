@@ -174,7 +174,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        	if(data.code==0){ 
 		        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
 		        			var uploader = $('#uploader').plupload('getUploader');
-				        	if(uploader.files>0){
+				        	if(uploader.files.length>0){
 				        		$("#uploader_start").click(); //上传文件
 				        	}else{
 				        		layer.confirm('上传资料成功！', {
@@ -185,20 +185,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								}); 	        		
 				        	}
 		        		}else{
-		        		$("#dia_title").text($("#hid_dia_title").val());
-	        			$("#dialog1").dialog({
-						      resizable: false,
-						      height:150,
-						      modal: true,
-						      open: function (event, ui) {
-				                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-				              },
-						      buttons: {
-						        "确定": function() {
-						          window.location.href='<%=basePath%>manage/branch/branchFHList.do';
-						        } 
-						      }
-						    });
+	        			layer.confirm($("#hid_dia_title").val(), {
+									btn: ['确认'] //按钮
+								}, function(){//点击确认按钮调用
+									layer.close(layer.confirm());//关闭当前弹出层
+									window.location.href='<%=basePath%>manage/branch/branchFHList.do';
+								}); 
 		        		}
 		        	}else{
 		        		layer.alert(data.message);	        	

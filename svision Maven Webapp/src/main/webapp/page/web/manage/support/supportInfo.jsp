@@ -178,7 +178,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			        success: function(data) {
 			        	if(data.code==0){ 
 			        		var uploader = $('#uploader').plupload('getUploader');
-				        	if(uploader.files>0){
+				        	if(uploader.files.length>0){
 				        		$("#uploader_start").click(); //上传文件
 				        	}else{
 				        		layer.confirm('中支立项成功，等待被监察对象上传资料进行审核！', {

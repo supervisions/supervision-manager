@@ -172,7 +172,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        success: function(data) {
 		        	if(data.code==0){ 
 		        		var uploader = $('#uploader').plupload('getUploader');
-				        	if(uploader.files>0){
+				        	if(uploader.files.length>0){
 				        		$("#uploader_start").click(); //上传文件
 				        	}else{
 				        		layer.confirm('上传资料成功，等待监察室量化，若未量化，则继续上传相关资料！', {

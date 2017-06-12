@@ -174,7 +174,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        	if(data.code==0){ 
 		        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
 		        			var uploader = $('#uploader').plupload('getUploader');
-				        	if(uploader.files>0){
+				        	if(uploader.files.length>0){
 				        		$("#uploader_start").click(); //上传文件
 				        	}else{
 				        		layer.confirm('上传资料成功！', {
