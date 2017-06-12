@@ -303,46 +303,59 @@ function followAction(itemId,status){
 						</td>
 						<td><%-- <sapn>${item.lasgTag}</sapn> --%>
 							<c:if test="${item.status == 0 && userOrg.id==17 || item.status == 0 && userOrg.id==18 || item.status == 0 && userOrg.id==19}">
-								<span style="color: red;" onclick="setProject(${item.id })">立项</span>
+								<%-- <span style="color: red;" onclick="setProject(${item.id })">立项</span> --%>
+									<span class="yw-btn-small bg-red cur" onclick="setProject(${item.id })">立项</span>
 							</c:if>
 							<c:if test="${userOrg.id == item.supervisionOrgId and item.status != 0 and item.isSign <= 1}">
-								<a style="color: blue;" onclick="sign(${item.id })">签收</a>
+								<%-- <a style="color: blue;" onclick="sign(${item.id })">签收</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="sign(${item.id })">签收</span>
 							</c:if>
 							<c:if test="${userOrg.id == item.supervisionOrgId && item.isSign >1 && item.lasgTag == 66}">
-								<a style="color: blue;" onclick="uploadFile(${item.id},67)">上传资料</a>
+								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},67)">上传资料</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},67)">签收</span>
 							</c:if>
 							<c:if test="${userOrg.id == item.supervisionOrgId && item.isSign >1 && item.lasgTag == 72}">
-								<a style="color: blue;" onclick="uploadFile(${item.id},67)">上传资料</a>
+								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},67)">上传资料</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},67)">上传资料</span>
 							</c:if>
 							<c:if test="${item.lasgTag == 67 && userOrg.id==item.preparerOrgId}">
-								<a style="color: blue;" onclick="uploadFile(${item.id},68)">监察意见</a>
+								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},68)">监察意见</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},68)">监察意见</span>
 							</c:if>		
 							<c:if test="${item.lasgTag == 999 && userOrg.id==item.preparerOrgId}">
-								<a style="color: blue;" onclick="uploadFile(${item.id},68)">监察意见</a>
+								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},68)">监察意见</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},68)">监察意见</span>
 							</c:if>				
 							<c:if test="${item.lasgTag == 69 && userOrg.id == item.supervisionOrgId }">
-								<a style="color: blue;" onclick="uploadFile(${item.id},69)">录入整改情况</a>
+								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},69)">录入整改情况</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},69)">录入整改情况</span>
 							</c:if>
 							<c:if test="${item.lasgTag == 666 && userOrg.id==item.preparerOrgId}">
-								<a style="color: blue;" onclick="followItem(${item.id},'${item.name}')">问责处理</a>
+								<%-- <a style="color: blue;" onclick="followItem(${item.id},'${item.name}')">问责处理</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="followItem(${item.id},'${item.name}')">问责处理</span>
 							</c:if>
 							<c:if test="${item.lasgTag == 68 && userOrg.id==item.preparerOrgId}">
-								<a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a>
+								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},688)">监察结论</span>
 							</c:if>
 							<c:if test="${item.lasgTag == 688 && userOrg.id==item.preparerOrgId}">
-								<a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a>
+								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},688)">监察结论</span>
 							</c:if>
 							<%-- <c:if test="${item.lasgTag == 779 && userOrg.id==item.preparerOrgId}">
 								<a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a>
 							</c:if> --%>
 							<c:if test="${item.lasgTag == 779 && userOrg.id==item.supervisionOrgId}">
-								<a style="color: blue;" onclick="uploadFile(${item.id},778)">再次录入整改情况</a>
+								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},778)">再次录入整改情况</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},778)">再次录入整改情况</span>
 							</c:if>
 							<c:if test="${item.lasgTag == 777 && userOrg.id==item.preparerOrgId}">
-								<a style="color: blue;" onclick="uploadFile(${item.id},777)">录入问责资料</a>
+								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},777)">录入问责资料</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},777)">录入问责资料</span>
 							</c:if>
 							<c:if test="${item.lasgTag == 778 && userOrg.id==item.preparerOrgId}">
-								<a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a>
+								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},688)">监察结论</span>
 							</c:if>
 							<%-- <c:if test="${userOrg.id == item.supervisionOrgId and item.status !=0}">
 								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
@@ -355,7 +368,8 @@ function followAction(itemId,status){
 						</td>
 						<td>
 							<c:if test="${userOrg.orgtype ==47}">
-								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>
+								<%-- <a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> --%>
+									<span class="yw-btn-small bg-red cur" onclick="deleteItem(${item.id},'${item.name}')">删除</span>
 							</c:if>
 						</td>
 					</tr>
