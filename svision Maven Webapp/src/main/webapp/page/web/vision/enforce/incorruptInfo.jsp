@@ -175,7 +175,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						window.location.href = '<%=basePath%>vision/enforce/enforceList.do';
 					});	
 	        	}else{
-	        		alert(data.message);	        	
+	        		layer.alert(data.message);	        	
 	        	}	
 	            
 	        }

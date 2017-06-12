@@ -173,7 +173,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        success: function(data) {
 		        	if(data.code==0){ 
 		        		var uploader = $('#uploader').plupload('getUploader');
-			        	if(uploader.files>0){
+			        	if(uploader.files.length>0){
 			        		$("#uploader_start").click(); //上传文件
 			        	}else{
 			        		layer.confirm('提交行政处罚决定书成功！', {

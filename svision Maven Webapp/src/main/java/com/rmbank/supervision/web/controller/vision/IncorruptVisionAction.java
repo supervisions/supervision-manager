@@ -46,6 +46,7 @@ import com.rmbank.supervision.web.controller.SystemAction;
  *
  */
 @Scope("prototype")
+
 @Controller
 @RequestMapping("/vision/incorrupt")
 public class IncorruptVisionAction extends SystemAction {
@@ -881,10 +882,14 @@ public class IncorruptVisionAction extends SystemAction {
 
 			itemProcess.setContentTypeId(Constants.INCORRUPT_VISION_8); // 监察室给出监察结论,项目完结
 			Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-			item.setEndTime(new Date());
-			item.setStatus(Constants.ITEM_STATUS_OVER);
-			itemService.updateByPrimaryKeySelective(item);
-
+			if(item != null){
+				if(item.getStatus() == 3){
+					item.setStatus(5);
+				}else{
+					item.setStatus(4);
+				}
+				itemService.updateByPrimaryKeySelective(item);
+			}
 			User loginUser = this.getLoginUser();
 			String ip = IpUtil.getIpAddress(request);		
 			logService.writeLog(Constants.LOG_TYPE_LZJC, "用户："+loginUser.getName()+"，对廉政监察项目给出监察结论", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);	

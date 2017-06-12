@@ -172,7 +172,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        success: function(data) {
 		        	if(data.code==0){ 
 		        		var uploader = $('#uploader').plupload('getUploader');
-			        	if(uploader.files>0){
+			        	if(uploader.files.length>0){
 			        		$("#uploader_start").click(); //上传文件
 			        	}else{
 			        		layer.confirm('录入整改情况成功，待监察室给出监察结论！', {
@@ -183,7 +183,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							});		        		
 			        	}
 		        	}else{
-		        		alert(data.message);	        	
+		        		layer.alert(data.message);	        	
 		        	}	
 		        }
 	   		});

@@ -64,7 +64,9 @@ public class VisionTodoAction  extends  SystemAction {
 		if (item.getPageNo() == null)
 			item.setPageNo(1);
 		item.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-		int totalCount = 0;
+		int totalCountXN = 0;
+		int totalCountLZ = 0;
+		int totalCountZF = 0;
 		
 		//获取当前登录用户
 		User loginUser = this.getLoginUser();
@@ -74,7 +76,9 @@ public class VisionTodoAction  extends  SystemAction {
 		Organ userOrg=userOrgList.get(0);
 		
 		// 分页集合
-		List<Item> itemList = new ArrayList<Item>();
+		List<Item> itemListXN = new ArrayList<Item>();
+		List<Item> itemListLZ = new ArrayList<Item>();
+		List<Item> itemListZF = new ArrayList<Item>();
 		try {
 			//成都分行和超级管理员获取所有项目
 			if(userOrg.getOrgtype()==Constants.ORG_TYPE_1 ||
@@ -84,28 +88,49 @@ public class VisionTodoAction  extends  SystemAction {
 				
 				item.setSupervisionTypeId(2); //2代表效能监察
 				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //实时监察模块
-				itemList = itemService.getItemListByType(item);			
-				totalCount = itemService.getItemCountBySSJC(item); //实时监察分页
-			}else {
-				//当前登录用户只加载自己完成的项目
-				item.setSupervisionTypeId(2); //2代表效能监察
-				item.setSupervisionOrgId(userOrg.getId());
+				itemListXN = itemService.getItemListXNJCToList(item);		
+				totalCountXN = itemService.getItemCountBySSJCDB(item); //实时监察分页
+				item.setSupervisionTypeId(3); //2代表效能监察
 				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //实时监察模块
-				itemList = itemService.getItemListByTypeAndLogOrg(item);
-				// 取满足要求的记录总数
-				totalCount = itemService.getItemCountByLogOrgSSJC(item); //实时监察分页
+				itemListLZ = itemService.getItemListXNJCToList(item);	
+				totalCountLZ = itemService.getItemCountBySSJCDB(item); //实时监察分页
+				item.setSupervisionTypeId(4); //2代表效能监察
+				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //实时监察模块
+				itemListZF = itemService.getItemListXNJCToList(item);	
+			
+				totalCountZF = itemService.getItemCountBySSJCDB(item); //实时监察分页
+			}else {
+				//当前登录用户只加载自己完成的项目				
+				item.setSupervisionOrgId(userOrg.getId());
+			
+				item.setSupervisionTypeId(2); //2代表效能监察
+				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //实时监察模块
+				itemListXN = itemService.getItemListToListByLogOrg(item);		
+				totalCountXN = itemService.getItemCountToListByLogOrg(item); //实时监察分页
+				
+				item.setSupervisionTypeId(3); //2代表效能监察
+				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //实时监察模块
+				itemListLZ = itemService.getItemListToListByLogOrg(item);	
+				totalCountLZ = itemService.getItemCountToListByLogOrg(item); //实时监察分页
+				
+				item.setSupervisionTypeId(4); //2代表效能监察
+				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //实时监察模块
+				itemListZF = itemService.getItemListToListByLogOrg(item);	
+			
+				totalCountZF = itemService.getItemCountToListByLogOrg(item); //实时监察分页
 			}			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} 
 		// 通过request对象传值到前台
-		item.setTotalCount(totalCount);
-		request.setAttribute("Item", item);
-		request.setAttribute("userOrg", userOrg);
-		request.setAttribute("itemList", itemList);
+		request.setAttribute("itemListXN", itemListXN);
+		request.setAttribute("itemListLZ", itemListLZ);
+		request.setAttribute("itemListZF", itemListZF);
+		request.setAttribute("totalCountXN", totalCountXN);
+		request.setAttribute("totalCountLZ", totalCountLZ);
+		request.setAttribute("totalCountZF", totalCountZF);
 
-    	
-		String ip = IpUtil.getIpAddress(request);		 
+    	 
     	return "web/vision/todoList";
     }
 }

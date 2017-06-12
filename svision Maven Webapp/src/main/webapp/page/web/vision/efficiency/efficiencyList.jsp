@@ -320,11 +320,11 @@ function followAction(itemId,status){
 							</c:if>
 							<c:if test="${item.lasgTag == 67 && userOrg.id==item.preparerOrgId}">
 								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},68)">监察意见</a> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},68)">监察意见</span>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},68)">录入监察意见</span>
 							</c:if>		
 							<c:if test="${item.lasgTag == 999 && userOrg.id==item.preparerOrgId}">
 								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},68)">监察意见</a> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},68)">监察意见</span>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},68)">录入监察意见</span>
 							</c:if>				
 							<c:if test="${item.lasgTag == 69 && userOrg.id == item.supervisionOrgId }">
 								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},69)">录入整改情况</a> --%>
@@ -336,11 +336,11 @@ function followAction(itemId,status){
 							</c:if>
 							<c:if test="${item.lasgTag == 68 && userOrg.id==item.preparerOrgId}">
 								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},688)">监察结论</span>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},688)">录入监察结论</span>
 							</c:if>
 							<c:if test="${item.lasgTag == 688 && userOrg.id==item.preparerOrgId}">
 								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},688)">监察结论</span>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},688)">录入监察结论</span>
 							</c:if>
 							<%-- <c:if test="${item.lasgTag == 779 && userOrg.id==item.preparerOrgId}">
 								<a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a>
@@ -355,7 +355,7 @@ function followAction(itemId,status){
 							</c:if>
 							<c:if test="${item.lasgTag == 778 && userOrg.id==item.preparerOrgId}">
 								<%-- <a style="color: blue;" onclick="uploadFile(${item.id},688)">监察结论</a> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},688)">监察结论</span>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},688)">录入监察结论</span>
 							</c:if>
 							<%-- <c:if test="${userOrg.id == item.supervisionOrgId and item.status !=0}">
 								<a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a>

@@ -145,6 +145,15 @@ public interface ItemMapper {
 	 * 加载所有的综合模块未完成的记录
 	 * @return
 	 */
-	List<Item> getAllZHItemNotComplete(); 
+	List<Item> getAllZHItemNotComplete();
+
+	
+	List<Item> getItemListXNJCToList(Item item);
+
+	int getItemCountBySSJCDB(Item item);
+
+	List<Item> getItemListToListByLogOrg(Item item);
+
+	int getItemCountToListByLogOrg(Item item); 
 	
 }

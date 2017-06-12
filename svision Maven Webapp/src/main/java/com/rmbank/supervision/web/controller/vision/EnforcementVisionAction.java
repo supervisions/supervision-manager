@@ -598,9 +598,14 @@ public class EnforcementVisionAction extends SystemAction {
 			}else if(tag==135){
 				itemProcess.setContentTypeId(Constants.ENFORCE_VISION_OVER);//监察室给出监察结论，项目完结
 				Item item = itemService.selectByPrimaryKey(itemProcess.getItemId());
-				item.setEndTime(new Date());
-				item.setStatus(Constants.ITEM_STATUS_OVER);
-				itemService.updateByPrimaryKeySelective(item);
+				if(item != null){
+					if(item.getStatus() == 3){
+						item.setStatus(5);
+					}else{
+						item.setStatus(4);
+					}
+					itemService.updateByPrimaryKeySelective(item);
+				}
 			}else if(tag==136){
 				itemProcess.setContentTypeId(Constants.ENFORCE_VISION_8);//被监察对象录入行政处罚意见告知书
 			}else if(tag==137 && status==0){

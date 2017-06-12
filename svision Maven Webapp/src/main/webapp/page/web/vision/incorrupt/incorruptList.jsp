@@ -229,11 +229,11 @@ function uploadFile(id,tag){
 								</c:if>
 								<c:if test="${item.status != 0 && userOrg.id==item.supervisionOrgId && item.lasgTag==-1}">
 									<%-- <span style="color: blue;" onclick="uploadFile(${item.id},72)">项目方案</span> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},72)">项目方案</span>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},72)">录入项目方案</span>
 								</c:if>
 								<c:if test="${item.lasgTag == 0 && userOrg.id==item.supervisionOrgId}">
 									<%-- <span style="color: blue;" onclick="uploadFile(${item.id},72)">项目方案</span> --%><!-- 不合规，重新进行录入方案 -->
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},72)">项目方案</span>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id},72)">录入项目方案</span>
 								</c:if>
 								<c:if test="${item.lasgTag == 73 && userOrg.id==item.supervisionOrgId}">
 									<%-- <span style="color: blue;" onclick="uploadFile(${item.id },73)">录入会议决策</span> --%>
@@ -249,15 +249,15 @@ function uploadFile(id,tag){
 								</c:if>
 								<c:if test="${item.lasgTag == 75 && userOrg.id==item.supervisionOrgId}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 75)">执行情况</a> --%><!-- 正常流程的录入执行情况 -->
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 75)">执行情况</span>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 75)">录入执行情况</span>
 								</c:if>
 								<c:if test="${item.lasgTag == 779 && userOrg.id==item.supervisionOrgId}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 75)">执行情况</a> --%><!-- 不合规不问责回到录入执行情况 -->
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 75)">执行情况</span><!-- 不合规不问责回到录入执行情况 -->
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 75)">录入执行情况</span><!-- 不合规不问责回到录入执行情况 -->
 								</c:if>
 								<c:if test="${item.lasgTag == 666 && userOrg.id==item.supervisionOrgId}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 75)">执行情况</a> --%><!-- 不合规问责回到录入执行情况 -->
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 75)">执行情况</span>	
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 75)">录入执行情况</span>	
 								</c:if>
 								<c:if test="${item.lasgTag == 778 &&  userOrg.orgtype==47}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 778)">录入问责资料</a> --%>
@@ -266,11 +266,11 @@ function uploadFile(id,tag){
 								
 								<c:if test="${item.lasgTag == 72 &&  userOrg.orgtype==47}">
 									<%-- <span style="color: blue;" onclick="uploadFile(${item.id },74)">监察意见</span> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id },74)">监察意见</span>	
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id },74)">录入监察意见</span>	
 								</c:if>
 								<c:if test="${item.lasgTag == 777  &&  userOrg.orgtype==47}">
 									<%-- <span style="color: blue;" onclick="uploadFile(${item.id },777)">监察意见</span> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id },777)">监察意见</span>	
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id },777)">录入监察意见</span>	
 								</c:if>
 								<c:if test="${item.lasgTag == 76  &&  userOrg.orgtype==47}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 76)">监察执行情况</a> --%>
@@ -279,10 +279,10 @@ function uploadFile(id,tag){
 							
 								<c:if test="${item.lasgTag == 78  &&  userOrg.orgtype==47}"> 
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 78)">监察结论</a> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 78)">监察结论</span>	
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 78)">录入监察结论</span>	
 								</c:if>
 								<c:if test="${item.lasgTag == 86  &&  userOrg.orgtype==47}">
-								<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 86)">监察结论</span>	
+								<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 86)">录入监察结论</span>	
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 86)">监察结论</a> --%><!-- 党委维持原决议，给出监察结论 -->
 								</c:if>						
 							

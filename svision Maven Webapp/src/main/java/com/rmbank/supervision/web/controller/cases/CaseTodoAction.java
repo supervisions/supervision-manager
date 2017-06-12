@@ -103,6 +103,6 @@ public class CaseTodoAction extends SystemAction {
 
     	
 		String ip = IpUtil.getIpAddress(request);		 
-    	return "web/vision/todoList";
+    	return "web/manage/todoList";
     }
 }

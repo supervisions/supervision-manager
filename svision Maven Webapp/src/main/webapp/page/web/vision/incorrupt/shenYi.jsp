@@ -189,7 +189,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							}, function(){
 								window.location.href = '<%=basePath%>vision/incorrupt/incorruptList.do';
 							}, function(){
-								window.location.href = '<%=basePath%>vision/incorrupt/incorruptList.do';
+								//window.location.href = '<%=basePath%>vision/incorrupt/incorruptList.do';
 							});
 						}
 			        }

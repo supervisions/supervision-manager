@@ -163,7 +163,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		}, function(){//点击确认按钮调用
 			var wanjie=$("input[name='wanjie']").is(':checked');
 			if(wanjie==false){
-				layer.alert('请选择想');
+				layer.alert('请选择项目是否完结！');
 			}
 			
 			
@@ -178,7 +178,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        success: function(data) {
 		        	if(data.code==0){ 
 		        		var uploader = $('#uploader').plupload('getUploader');
-			        	if(uploader.files>0){
+			        	if(uploader.files.length>0){
 			        		$("#uploader_start").click(); //上传文件
 			        	}else{
 			        		layer.confirm('提交监察意见成功！', {
@@ -189,7 +189,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							});		        		
 			        	}
 		        	}else{
-		        		alert(data.message);	        	
+		        		layer.alert(data.message);	        	
 		        	}	
 		        }
 	   		});

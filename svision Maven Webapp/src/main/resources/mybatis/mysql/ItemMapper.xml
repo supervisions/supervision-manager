@@ -757,4 +757,71 @@
 		LEFT JOIN t_org o on t.supervision_org_id = o.id
 		 where t.item_type = 1  and t.`status` in (0,1,2,3)
   </select>
+  
+  <select id="getItemListXNJCToList"  parameterType="com.rmbank.supervision.model.Item" resultMap="BaseResultMap">
+  	SELECT i.*,o.name as orgName,m.name as itemCategory,ip.content as itemNmae,ip1.content as itemName,
+  	(SELECT COUNT(*) FROM t_item_process AS tip WHERE i.id=tip.item_id) AS isSign 
+  	FROM t_item AS i
+	LEFT JOIN t_org AS o ON o.id=i.`supervision_org_id`
+	LEFT JOIN t_meta AS m ON m.id=i.`super_item_type`
+	LEFT JOIN t_item_process AS ip ON ip.item_id=i.`id` and ip.content_type_id=-1
+	LEFT JOIN t_item_process AS ip1 ON ip1.item_id=i.`id` and ip1.content_type_id=130
+	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER} and status &lt;&gt;9
+	and i.item_type=#{itemType,jdbcType=INTEGER} and status in (1,2,3)
+	<if test="searchName != null and searchName != ''">
+		and (i.name like
+		CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		)
+	</if>
+    ORDER BY i.`id` DESC
+	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
+        limit #{pageStart}, #{pageSize}
+    </if>
+  </select>
+  <select id="getItemCountBySSJCDB" parameterType="com.rmbank.supervision.model.Item" resultType="java.lang.Integer">
+  	select count(*) from t_item as i
+	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
+	<if test="supervisionOrgId != null and supervisionOrgId>0">
+		and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
+	</if>
+	and i.item_type=#{itemType,jdbcType=INTEGER} and status in (1,2,3)
+	<if test="searchName != null and searchName != ''">
+		and (
+			i.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')			
+     	)
+	</if>
+  </select>
+  <select id="getItemListToListByLogOrg" parameterType="com.rmbank.supervision.model.Item" resultMap="BaseResultMap">
+  	SELECT i.*,o.name as orgName,m.name as itemCategory,ip.content as itemNmae,ip1.content as itemName,
+  	(SELECT COUNT(*) FROM t_item_process AS tip WHERE i.id=tip.item_id) AS isSign
+  	FROM t_item AS i
+	LEFT JOIN t_org AS o ON o.id=i.`supervision_org_id`
+	LEFT JOIN t_meta AS m ON m.id=i.`super_item_type`
+	LEFT JOIN t_item_process AS ip ON ip.item_id=i.`id` and ip.content_type_id=-1
+	LEFT JOIN t_item_process AS ip1 ON ip1.item_id=i.`id` and ip1.content_type_id=130
+	WHERE 
+	 i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
+	and i.item_type=#{itemType,jdbcType=INTEGER}
+	and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER} and status in (1,2,3)
+	<if test="searchName != null and searchName != ''">
+		and (i.name like
+		CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')
+		)
+	</if>
+    ORDER BY i.`id` DESC
+	<if test="pageStart != null and pageSize != null and pageStart>-1 and pageSize>-1">
+        limit #{pageStart}, #{pageSize}
+    </if>
+  </select>
+  <select id="getItemCountToListByLogOrg" parameterType="com.rmbank.supervision.model.Item" resultType="java.lang.Integer">
+  	select count(*) from t_item as i
+	WHERE i.`supervision_type_id`= #{supervisionTypeId,jdbcType=INTEGER}
+	and i.`supervision_org_id`= #{supervisionOrgId,jdbcType=INTEGER}
+	and i.item_type=#{itemType,jdbcType=INTEGER} and status in (1,2,3)
+	<if test="searchName != null and searchName != ''">
+		and (
+			i.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')			
+     	)
+	</if>
+  </select>
 </mapper>

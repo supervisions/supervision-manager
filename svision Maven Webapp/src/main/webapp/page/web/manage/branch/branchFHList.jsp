@@ -195,7 +195,7 @@ function followItem(id,name){
 											</c:if>
 											<c:if test="${item.lasgTag == 32 && logUserOrg ==19}">
 												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >监察意见</a> --%>
-											<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >监察意见</span>
+											<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >录入监察意见</span>
 											</c:if> 
 											<c:if test="${item.lasgTag == 33 && logUserOrg ==item.supervisionOrgId}">
 												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=34'" >录入整改情况</a> --%>
@@ -208,11 +208,11 @@ function followItem(id,name){
 											</c:if>
 											<c:if test="${item.lasgTag == 91 && logUserOrg ==item.supervisionOrgId}">
 												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >跟踪整根情况 </a> --%>
-											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >跟踪整根情况</span>
+											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >录入跟踪整根情况</span>
 											</c:if>
 											<c:if test="${item.lasgTag == 35 && logUserOrg ==19}">
 												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=93'" >监察结论</a> --%>
-											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=93'" >监察结论</span>
+											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=93'" >录入监察结论</span>
 											</c:if>
 										 </c:if>
 								<%-- 	</c:if>									

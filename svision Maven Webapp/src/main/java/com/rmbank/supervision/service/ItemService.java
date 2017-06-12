@@ -159,5 +159,19 @@ public interface ItemService {
 	 * @return
 	 */
 	List<Item> getAllZHItemNotComplete();
- 
+
+	/**
+	 * 待办事项
+	 * @param item
+	 * @return
+	 */
+	
+
+	List<Item> getItemListXNJCToList(Item item);
+
+	int getItemCountBySSJCDB(Item item);
+
+	List<Item> getItemListToListByLogOrg(Item item);
+
+	int getItemCountToListByLogOrg(Item item); 
 } 

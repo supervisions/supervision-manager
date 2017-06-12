@@ -179,26 +179,19 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        dataType:"json", //响应数据类型      
 		        success: function(data) {
 		        	if(data.code==0){ 
-		        		if($.trim($("#hid_isFileUpload").val())==1||$.trim($("#hid_isFileUpload").val())=="1"){
-		        			$("#uploader_start").click(); //上传文件
-		        		}else{
-		        		$("#dia_title").text($("#hid_dia_title").val());
-	        			$("#dialog1").dialog({
-						      resizable: false,
-						      height:150,
-						      modal: true,
-						      open: function (event, ui) {
-				                  $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-				              },
-						      buttons: {
-						        "确定": function() {
-						          window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do';
-						        } 
-						      }
-						    });
-		        		}
+		        		var uploader = $('#uploader').plupload('getUploader');
+			        	if(uploader.files.length>0){
+			        		$("#uploader_start").click(); //上传文件
+			        	}else{
+			        		layer.confirm('提交监察意见成功！', {
+								btn: ['确认'] //按钮
+							}, function(){//点击确认按钮调用
+								layer.close(layer.confirm());//关闭当前弹出层
+								window.location.href = '<%=basePath%>vision/incorrupt/incorruptList.do';
+							});		        		
+			        	}
 		        	}else{
-		        		alert(data.message);	        	
+		        		layer.alert(data.message);	        	
 		        	}	
 		        }
 	   		});

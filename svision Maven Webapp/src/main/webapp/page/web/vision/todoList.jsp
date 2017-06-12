@@ -41,7 +41,7 @@ function showItem(id,type){
 			<div class=pd10>
 				<div class="fl">  
 					<span>待办事项：</span>
-					<span>共计 20 项，其中：效能监察： 5项，廉政监察：10项，执法监察：5项</span> 				
+					<span>共计 ${totalCountLZ+totalCountZF+totalCountXN}项，其中：效能监察： ${totalCountXN }项，廉政监察：${totalCountLZ }项，执法监察：${totalCountZF }项</span> 				
 				</div> 
 				<div class="cl"></div>	 
                </div> 
@@ -56,7 +56,7 @@ function showItem(id,type){
 				<tr> 							
 					<td> 
 					<table style="width:100%;">
-						<c:forEach var="xlItem" items="${xlList }">
+						<c:forEach var="xlItem" items="${itemListXN }">
 							<tr>
 								<td>${xlItem.name }</td>
 								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${xlItem.id },2)"  /></td>
@@ -66,7 +66,7 @@ function showItem(id,type){
 					</td> 					
 					<td> 
 					<table style="width:100%;">
-						<c:forEach var="lzItem" items="${lzList }">
+						<c:forEach var="lzItem" items="${itemListLZ }">
 							<tr>
 								<td>${lzItem.name }</td>
 								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${lzItem.id },3)"  /></td>
@@ -76,7 +76,7 @@ function showItem(id,type){
 					</td> 					
 					<td> 
 					<table style="width:100%;">
-						<c:forEach var="zfItem" items="${zfList }">
+						<c:forEach var="zfItem" items="${itemListZF }">
 							<tr>
 								<td>${zfItem.name }</td>
 								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${zfItem.id },4)"  /></td>

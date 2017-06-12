@@ -621,9 +621,17 @@ public class EfficiencyVisionAction extends SystemAction {
 			if(wanjie==null){
 				if(status == null){
 					itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_6); //监察室给出监察结论，项目完结
-					item.setEndTime(new Date()); //完结
-					item.setStatus(Constants.ITEM_STATUS_OVER);
-					itemService.updateByPrimaryKeySelective(item);
+					
+					if(item != null){
+						if(item.getStatus() == 3){
+							item.setStatus(5);
+						}else{
+							item.setStatus(4);
+						}
+						itemService.updateByPrimaryKeySelective(item);
+					}	
+					
+					
 				}else if(status == 4){
 					itemProcess.setContentTypeId(Constants.EFFICIENCY_VISION_3);//监察意见为不需要整改，进入监察室录入监察结论
 				}else if(status == 0){			

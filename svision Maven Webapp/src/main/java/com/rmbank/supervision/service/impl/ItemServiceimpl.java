@@ -353,4 +353,30 @@ public class ItemServiceimpl implements ItemService {
 		return itemMapper.getAllZHItemNotComplete();
 	}
 
+	
+
+	@Override
+	public List<Item> getItemListXNJCToList(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListXNJCToList(item);
+	}
+
+	@Override
+	public int getItemCountBySSJCDB(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemCountBySSJCDB(item);
+	}
+
+	@Override
+	public List<Item> getItemListToListByLogOrg(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemListToListByLogOrg(item);
+	}
+
+	@Override
+	public int getItemCountToListByLogOrg(Item item) {
+		// TODO Auto-generated method stub
+		return itemMapper.getItemCountToListByLogOrg(item);
+	}
+
 }  

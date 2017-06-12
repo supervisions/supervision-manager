@@ -144,7 +144,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             //绑定文件是否全部上传完成
             uploader.bind('UploadComplete',function(uploader,files){
                 if(null != files && files.length>0){ 
-                	layer.confirm('添加工作事项成功，等待被监察对象签收！', {
+                	layer.confirm('添加工作事项成功！', {
 								btn: ['确认'] //按钮
 							}, function(){//点击确认按钮调用
 								layer.close(layer.confirm());//关闭当前弹出层
@@ -195,10 +195,10 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        success: function(data) {
 		        	if(data.code==0){ 
 			        	var uploader = $('#uploader').plupload('getUploader');
-			        	if(uploader.files>0){
+			        	if(uploader.files.length>0){
 			        		$("#uploader_start").click(); //上传文件
 			        	}else{
-			        		layer.confirm('添加工作事项成功，等待被监察对象签收！', {
+			        		layer.confirm('添加工作事项成功！', {
 								btn: ['确认'] //按钮
 							}, function(){//点击确认按钮调用
 								layer.close(layer.confirm());//关闭当前弹出层
