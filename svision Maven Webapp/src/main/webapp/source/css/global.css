@@ -23,9 +23,9 @@ a, body, div, form, html, li, ol, span, ul {
 a:link{color:#4a9bd3;text-decoration:none;}
 a:visited{color:#4a9bd3;}
 /* a:hover{color:#FF6336;} */
-a:hover{color:#0000ff;}
+a:hover{color:#0000ff;} 
 .cl{clear:both;}
-.fl{float:left !important;}
+.fl{float:left !important; }
 .fr{float:right !important;}
 .fr-config{
 	float:right !important;
@@ -68,7 +68,8 @@ p {
 .con-left{float:left;width:160px;height:100%;background-color:#3A464E;border-top:0px;}
 /*.con-rights{padding:0;margin-left:180px;border-top:1px solid #C3C6CB;}*/  
 .con-rights{padding:0; border-top:0px;   margin-left: 110px;}
-.con-right{padding:5px 5px 0 5px; border-top:0px;  margin-left: 160px;background-color: #FFFFFF;}
+.con-right{padding:5px 5px 0 5px; border-top:0px;  background-color: #FFFFFF;float:left;width:700px;}
+.con-right1{padding:5px 5px 0 5px; border-top:0px;  background-color: #FFFFFF;float:left;width:500px;}
 .head-tool-bar{width:100%;height:25px;background-image: initial;background-position-x: initial;background-position-y: initial;background-size: initial; background-repeat-x: initial;background-repeat-y: initial;background-attachment: initial;background-origin: initial;background-clip: initial;background-color: #eb2b42;}
 
 

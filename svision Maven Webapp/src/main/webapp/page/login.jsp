@@ -174,7 +174,7 @@
 		<div class="login-panel"> 
 			<div class="fl login-left"> 
 				<div class="fl login-title">登录</div> 
-				<div class="fl panel">
+				<div class="fl panel" style="width:250px;">
 					<p class="login-rows mt30">
 						<input id="orgParentTree"  style="width:239px;height:38px;" checkbox="true"  class="easyui-combotree" />
 					</p>
@@ -189,7 +189,7 @@
 					<p class="login-rows mt30">
 						<label class="yw-checkbox">
 							<i class="mt4 mr10"  doc="loginCheckFlag" onClick="loginCheck(this);" id="icheckspan"></i>
-							<input type="checkbox" name="rememberMe" value="false" id="chkRememberPwd"><span  onclick="remeberMe(this);">记住密码</span>
+							<input type="checkbox" name="rememberMe" value="false" id="chkRememberPwd" class="displaynone"><span  onclick="remeberMe(this);">记住密码</span>
 						</label>
 					</p>
 					<div id="login-alert" class="login-rows" style="display:none;"></div>

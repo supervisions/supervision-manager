@@ -56,6 +56,9 @@ $(document).ready(function(){
 			search();
 		}
 	});				
+	/* $("#userList").addClass("yw-cm-table"); */
+	$("#userList").addClass("yw-leftSide");
+	/* $("#userList").addClass("yw-bg-hover"); */
 }); 
 //截取机构长度
 function subOrgname(){
@@ -253,20 +256,18 @@ function goToUserInfo(id){
 			<div class="fl yw-lump mlwid250 mt10">
 				<div class="yw-cm-title">
 					<span class="ml26">全部机构</span>
-				</div>
+				</div> 
 				<div class="yw-organ-tree-list" style="height: 639px;">
 					<!-- 加载机构树 -->
-					<ul id="treeList"></ul>
+					<ul id="treeList"></ul> 
 				</div>
 			</div>
 			<div class="yw-lump wid-atuo ml260s mt10">
-				<div class="yw-cm-title">
+				<div class="yw-cm-title"> 
 					<span class="ml26">用户列表</span>
-				</div>
-				<table class="yw-cm-table yw-leftSide yw-bg-hover" id="userList">
-					<tr style="background-color:#D6D3D3;font-weight: bold;">
-						<th width="4%" style="display:none">&nbsp;</th>
-						<th width="15%"><span style='margin-left:40px'>状态</span></th>
+				</div> 
+				<table id="userList" cellspacing="0" cellpadding="0">
+					<tr style="background-color:#D6D3D3;font-weight: bold;height:30px;line-height:30px;">   
 						<th width="15%">用户名称</th>
 						<th width="15%">用户账号</th>
 						<th width="25%">所属机构</th>								
@@ -275,28 +276,18 @@ function goToUserInfo(id){
 					</tr>
 					<c:forEach var="item" items="${userList}">
 						<tr> 
-							<td><c:if test="${item.used == 1}">
+							<%-- <td><c:if test="${item.used == 1}">
 								<span style='margin-left:40px'>启用</span>
 							</c:if> <c:if test="${item.used == 0}">
 								<span style='margin-left:40px'>禁用</span>
-							</c:if></td>
+							</c:if></td> --%>
 							<td>${item.name}</td>
 							<td>${item.account}</td>
 							<td title="${item.orgName}" class="orgName">${item.orgName}</td>
 							
 							<td>
-								<c:if test="${item.used == 1}">
-									<%-- <a style="color:blue" onclick="updateUser(${item.id},${item.used},'${item.name}');">禁用</a> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="updateUser(${item.id},${item.used},'${item.name}');">禁用</span>	
-								</c:if> 
-								<c:if test="${item.used == 0}">
-									<%-- <a style="color:blue" onclick="updateUser(${item.id},${item.used},'${item.name}');">启用</a> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="updateUser(${item.id},${item.used},'${item.name}');">启用</span>	
-								</c:if>								
-								<%-- <a style="color:blue" onclick="window.location.href='userInfo.do?id=${item.id}';">编辑</a> --%>
-								<span class="yw-btn-small bg-lan cur" onclick="window.location.href='userInfo.do?id=${item.id}';">编辑</span>	
-								<%-- <a style="color:blue" onclick="resetUserPwd(${item.id},'${item.name}');">重置密码</a> --%>
 								<span class="yw-btn-small bg-red cur" onclick="resetUserPwd(${item.id},'${item.name}');">重置密码</span>	
+								<span class="yw-btn-small bg-lan cur" onclick="window.location.href='userInfo.do?id=${item.id}';">编辑</span>	
 							</td>
 							<td>
 								<%-- <a style="color:blue" onclick="deleteUser(${item.id},'${item.name}');">删除</a>		 --%>

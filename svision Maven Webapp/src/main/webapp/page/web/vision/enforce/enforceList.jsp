@@ -138,17 +138,16 @@ function uploadFile(id,tag){
 		 </div>	
           <div class="fl yw-lump"> 
 			<table class="yw-cm-table yw-center yw-bg-hover" id="taskList">
-				<tr style="background-color:#D6D3D3;font-weight: bold;">
-					<th width="4%" style="display:none">&nbsp;</th>
+				<tr style="background-color:#D6D3D3;font-weight: bold;"> 
 					<th width="5%">立项情况</th>
-					<th width="4%">状态</th>	
+					<th width="5%">状态</th>	
 					<th width="5%">性质</th>	
 					<th>工作事项</th>	
 					<th width="4%">查看</th>	
 					<th>立项监察</th>	
 					<th width="10%">被监察对象</th>
 					<th>操作一</th>
-					<th width="6%">操作二</th>			
+					<th>操作二</th>			
 				</tr>
 				<c:forEach var="item" items="${itemList}">
 					<tr> 							
@@ -157,10 +156,10 @@ function uploadFile(id,tag){
 								<span style="color: red;" onclick="setProject(${item.id })">未立项</span>
 							</c:if> --%>
 							<c:if test="${item.status == 0}">
-								<span style="color: red;" >未立项</span>
+								<label style="color:red">未立项</label>
 							</c:if>
 							<c:if test="${item.status != 0 }">
-									<span>已立项</span>	
+									<label>已立项</label>	
 							</c:if>
 						</td>
 						<td  style="color:green;">
@@ -182,12 +181,12 @@ function uploadFile(id,tag){
 						</td>
 						<%-- <td>${item.name}</td> --%>
 						<td>${item.itemCategory }</td>
-						<td>${item.name}</td>
+						<td title="${item.name}"><p>${item.name}</p></td>
 						<td>
 							<img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${item.id })"  />
 							<%-- <a style="color:blue;" onclick="showItem(${item.id })">查看</a> --%>
 						</td>						
-						<td>${item.itemName}</td>
+						<td title="${item.itemName}"><p>${item.itemName}</p></td>
 						<td>${item.orgName}</td>
 						<td>
 							<%-- <span>${item.lasgTag}</span>  --%>		 								

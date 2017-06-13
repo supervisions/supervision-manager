@@ -153,9 +153,9 @@ function editDetail(id,pName){
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th><span style='margin-left:40px'>指标等级</span></th> 		 
 						<th>指标名称</th> 
-						<th>上级指标</th> 		
+						<th>上级指标</th> 		 
 						<th>所属模型</th> 		
-						<th>权重/标准分</th>											
+						<th>权重</th>											   
 						<th>操作一</th> 
 						<th>操作二</th>
 					</tr>
