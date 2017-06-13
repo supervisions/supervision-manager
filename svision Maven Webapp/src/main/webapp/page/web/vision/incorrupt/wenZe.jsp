@@ -273,7 +273,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr> 
 						<tr>
-							<td align="right"style="height:80px;">附件列表：</td>
+							<td align="right" >附件列表：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
 									<c:forEach var="fileItem" items="${ItemProcess.fileList }">
@@ -307,7 +307,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>
 						<tr>
-							<td align="right"style="height:80px;">相关附件：</td>
+							<td align="right" >相关附件：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
 									<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
@@ -331,7 +331,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>
 						<tr>
-							<td align="right"style="height:80px;">相关附件：</td>
+							<td align="right" >相关附件：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
 									<c:forEach var="fileItem" items="${ItemProcess6.fileList }">
@@ -348,7 +348,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>
 						<tr>
-							<td align="right"style="height:80px;">相关附件：</td>
+							<td align="right" >相关附件：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
 									<c:forEach var="fileItem" items="${ItemProcess4.fileList }">

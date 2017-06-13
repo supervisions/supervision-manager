@@ -3813,12 +3813,7 @@
 .taskTable td label{ 
 	max-width:50%; 
 	width:40%; 
-}
-.taskTable td span{
-	max-width:200px; 
-	width:140px; 
-	display:block ;
-}
+} 
 .taskTable td{
 	border: 1px solid #f0f3f4;
 	min-height:35px;

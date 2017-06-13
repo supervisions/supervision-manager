@@ -114,7 +114,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="14%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 

@@ -254,7 +254,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">立项审批表、方案：</td>
+							<td align="right" >立项审批表、方案：</td>
 							<td colspan="3">
 							 <label>${ItemProcess.content } </label>  
 							</td>		
@@ -284,7 +284,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 </td>	
 						</tr>
 						<tr>
-							<td align="right" style="height:120px;">上传文件说明：</td>
+							<td align="right" >上传文件说明：</td>
 							<td colspan="3"> 
 								 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
 							 </td>	

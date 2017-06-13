@@ -87,7 +87,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<!-- 初始状态 -->
 						<tr>
-							<td width="12%" align="right">项目名称：</td>
+							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
@@ -105,7 +105,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">监察内容：</td>
+							<td align="right" >监察内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess.content } </label> 
 							</td>		
@@ -128,7 +128,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<!-- 不分节点的显示方案 -->
 							<c:if test="${ItemProcess2 != null }">
 								<tr>
-									<td align="right" style="height:100px;">资料内容：</td>
+									<td align="right" >资料内容：</td>
 									<td colspan="3">
 										<label>${ItemProcess2.content } </label> 									
 									</td>		
@@ -190,7 +190,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 												
 						<c:if test="${ItemProcess3 != null }">
 							<tr>
-								<td align="right" style="height:100px;">监察室意见：</td>
+								<td align="right"  >监察室意见：</td>
 								<td colspan="3">
 									<label>${ItemProcess3.content } </label> 
 									
@@ -216,7 +216,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</c:if>
 						<c:if test="${ItemProcess4 != null }">
 							<tr>
-								<td align="right" style="height:100px;">监察室意见：</td>
+								<td align="right" >监察室意见：</td>
 								<td colspan="3">
 									<label>${ItemProcess4.content } </label>								
 								</td>		
@@ -243,7 +243,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 录入整改情况 -->
 						<c:if test="${ItemProcess5 != null }">
 							<tr>
-								<td align="right" style="height:100px;">整改内容：</td>
+								<td align="right" >整改内容：</td>
 								<td colspan="3">
 									<label>${ItemProcess5.content } </label> 									
 								</td>		
@@ -278,7 +278,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						<c:if test="${ItemProcess9 != null }">
 							<tr>
-								<td align="right" style="height:100px;">问责资料：</td>
+								<td align="right" >问责资料：</td>
 								<td colspan="3">
 									<label>${ItemProcess9.content } </label> 									
 								</td>		
@@ -298,7 +298,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 录入整改情况 -->
 						<c:if test="${ItemProcess7 != null }">
 							<tr>
-								<td align="right" style="height:100px;">再次录入整改情况：</td>
+								<td align="right" >再次录入整改情况：</td>
 								<td colspan="3">
 									<label>${ItemProcess7.content } </label> 									
 								</td>		
@@ -317,7 +317,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</c:if>
 						<c:if test="${ItemProcess8 != null }">
 							<tr>
-								<td align="right" style="height:100px;">监察结论：</td>
+								<td align="right" >监察结论：</td>
 								<td colspan="3">
 									<label>${ItemProcess8.content } </label> 
 									

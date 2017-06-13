@@ -86,7 +86,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 

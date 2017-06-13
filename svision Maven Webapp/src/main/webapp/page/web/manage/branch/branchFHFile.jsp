@@ -259,7 +259,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label> 
 								<input type="hidden" value="0" name="id" />
@@ -287,7 +287,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr> 
 						<tr>
-							<td align="right"style="height:80px;">附件列表：</td>
+							<td align="right" style="height:80px;">附件列表：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
 									<c:forEach var="fileItem" items="${ItemProcess.fileList }">

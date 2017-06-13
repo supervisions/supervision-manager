@@ -290,7 +290,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>
 						</tr>
 						<tr>
-							<td align="right" height="100px;">立项审批表、方案 ：</td>
+							<td align="right" >立项审批表、方案 ：</td>
 							<td colspan="3"> 
 								 <textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>			
 							 </td>	
@@ -317,7 +317,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<tr><td style="font-weight: 900;">${item.name }</td></tr>
 										<tr style="width: 100%;">
 											<td>
-												<div style="width:70%;">
+												<div style="width:90%;">
 													<c:forEach var="org" items="${item.itemList }">
 														<label style="float:left;padding-right:10px;padding-top:5px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
 													</c:forEach>

@@ -260,7 +260,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
 								<input id="itemName" name="name" type="text" value="" style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
@@ -289,13 +289,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>
 						</tr>
 						<tr>
-							<td align="right" height="100px;">工作要求、方案：</td>
+							<td align="right" >工作要求、方案：</td>
 							<td colspan="3"> 
 								<textarea rows="6" cols="5" style="width:60%;" name="content" ></textarea>								
 							</td> 
 						</tr>	
 						<tr>
-							<td align="right" height="100px;">上传附件：</td>
+							<td align="right"  >上传附件：</td>
 							<td colspan="3">
 								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>
@@ -309,14 +309,14 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</tr>	
 						
 						<tr>
-							<td align="right" height="100px;">选择单位：</td>
+							<td align="right" >选择单位：</td>
 							<td colspan="3"> 
 								<table style="font-size: 16px;"> 
 									<c:forEach var="item" items="${OrgList }">
 										<tr><td style="font-weight: 900;">${item.name }</td></tr>
 										<tr style="width: 100%;">
 											<td>
-												<div style="width:60%;">
+												<div style="width:90%;">
 													<c:forEach var="org" items="${item.itemList }">
 														<label style="float:left;padding-right:10px;padding-top:5px;min-width:200px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
 													</c:forEach>

@@ -235,7 +235,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
@@ -253,7 +253,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">监察内容：</td>
+							<td align="right" >监察内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess.content } </label> 
 							</td>		
@@ -272,7 +272,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						
 						<tr>
-							<td align="right" style="height:100px;">资料内容：</td>
+							<td align="right" >资料内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess2.content } </label> 
 							</td>		
@@ -307,7 +307,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>	
 						<tr>
-							<td align="right" style="height:100px;">整改内容：</td>
+							<td align="right" >整改内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess5.content } </label> 									
 							</td>		

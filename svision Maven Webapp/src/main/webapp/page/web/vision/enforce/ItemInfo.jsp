@@ -245,7 +245,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >
 						<tr>
-							<td width="8%" align="right">工作事项：</td>
+							<td width="15%" align="right">工作事项：</td>
 							<td colspan="3">
 								<input id="itemName" name="name" type="text" value="" style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 

@@ -233,7 +233,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >
 						<tr>
-							<td width="10%" align="right">项目名称：</td>
+							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
@@ -251,7 +251,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">监察内容：</td>
+							<td align="right" >监察内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess.content } </label> 
 							</td>		
@@ -270,7 +270,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						
 						<tr>
-							<td align="right" style="height:100px;">上传资料内容：</td>
+							<td align="right"  >上传资料内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess2.content } </label> 
 							</td>		
@@ -289,7 +289,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						<c:if test="${ItemProcess4 != null }">
 							<tr>
-								<td align="right" style="height:100px;">监察室意见：</td>
+								<td align="right" >监察室意见：</td>
 								<td colspan="3">
 									<label>${ItemProcess4.content } </label> 
 									<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
@@ -325,7 +325,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td> 
 						</tr>	
 						<tr>
-							<td align="right" height="129px;">上传附件：</td>
+							<td align="right" >上传附件：</td>
 							<td colspan="3">
 								<input type="hidden" id="hid_isFileUpload" value="1" /> 
 								 <div id="themeswitcher" class="pull-right"> </div>

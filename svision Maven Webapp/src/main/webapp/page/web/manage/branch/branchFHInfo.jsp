@@ -259,24 +259,24 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >
 						<tr>
-							<td width="8%" align="right">项目名称：</td>
+							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
 								<input id="itemName" name="name" type="text" value="" style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
                             	<input type="hidden" id="hid_uuid" name="uuid" />
-							</td> 
+							</td>  
 						</tr>
 						<tr>
 							<td align="right">项目分类：</td>
 							<td colspan="3">
-								<select id="supervisionTypeId" name="supervisionTypeId" style="width:254px;height:28px;">
+								<select id="supervisionTypeId" name="supervisionTypeId" style="width:184px;height:28px;">
 									<option value="-1">请选择项目分类</option>									
 									<c:forEach var="position" items="${meatListByKey}">
 										<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
 									</c:forEach>
 								</select> 
 								<span style="color:red">*</span> 
-							 立项时间：   <input type="text" name="pTime" value="" id="datepicker" style="width:254px;height:22px;">
+							 立项时间：   <input type="text" name="pTime" value="" id="datepicker" style="width:184px;height:22px;">
 							 <span style="color:red">*</span> 
 							</td>								
 						</tr>
@@ -314,8 +314,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<c:forEach var="item" items="${OrgList }">
 										<tr><td style="font-weight: 900;">${item.name }</td></tr>
 										<tr style="width: 100%;">
-											<td>
-												<div style="width:60%;">
+											<td> 
+												<div style="width:90%;">
 													<c:forEach var="org" items="${item.itemList }">
 														<label style="float:left;padding-right:10px;padding-top:5px;min-width:200px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
 													</c:forEach>

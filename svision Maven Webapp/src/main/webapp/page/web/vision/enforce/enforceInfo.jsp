@@ -245,7 +245,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<table class="font16" id="taskTable">
 									
 						<tr>
-							<td  width="10%"  align="right" height="100px;">监察内容：</td>
+							<td  width="15%"  align="right" >监察内容：</td>
 							<td colspan="3"> 
 								<input type="hidden" id="hid_uuid" name="uuid" />
                             	<input type="hidden" name="id" value="${Item.id }">
@@ -254,7 +254,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td> 
 						</tr>	
 						<tr>
-							<td align="right" height="100px;">上传附件：</td>
+							<td align="right" >上传附件：</td>
 							<td colspan="3">
 								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>
@@ -267,7 +267,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 </td>	
 						</tr>	
 						<tr>
-							<td align="right" height="50px">规定完成时间：</td>
+							<td align="right" >规定完成时间：</td>
 							<td colspan="3">
 								<%-- <select id="" name="superItemType" style="width:289px;height:28px;">
 									<option value="-1">==请选择执法类型==</option>	
@@ -281,7 +281,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" height="100px;">被监察对象：</td>
+							<td align="right" >被监察对象：</td>
 							<td colspan="3"> 
 								<c:if test="${Item.superItemType==62 }">
 									<table style="font-size: 16px;"> 
@@ -289,7 +289,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 											<tr><td style="font-weight: 900;">${item.name }</td></tr>
 											<tr style="width: 100%;">
 												<td>
-													<div style="width:60%;">
+													<div style="width:90%;">
 														<c:forEach var="org" items="${item.itemList }">
 															<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
 														</c:forEach>

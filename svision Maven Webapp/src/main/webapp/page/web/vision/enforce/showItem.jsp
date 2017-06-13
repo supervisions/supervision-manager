@@ -88,7 +88,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<!-- 初始状态 -->
 						<tr>
-							<td width="16%" align="right">工作事项：</td>
+							<td width="15%" align="right">工作事项：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
