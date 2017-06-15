@@ -68,7 +68,7 @@
 		  			data = $.parseJSON(data);
 		  			if(data.code==0){
 		  				$.messager.alert('保存信息',data.message,'info',function(){ 
-							window.location.href ="system/config/configList.do";
+							window.location.href ="<%=basePath %>system/config/configList.do";
 	        			});
 		  			}else{
 						$.messager.alert('错误信息',data.message,'error',function(){

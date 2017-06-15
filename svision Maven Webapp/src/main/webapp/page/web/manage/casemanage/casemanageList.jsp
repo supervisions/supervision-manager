@@ -65,13 +65,13 @@ function deleteGradeScheme(id,name){
 	$.messager.confirm("删除确认","确认删除模型："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "manage/casemanage/jsondeleteGradeSchemeById.do?id="+id,
+				url : "<%=basePath %>manage/casemanage/jsondeleteGradeSchemeById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) {
 		  			if(data.code == 0){ 
 		  				$.messager.alert('操作信息',data.message,'info',function(){ 
-		  					window.location.href="manage/casemanage/casemanageList.do?pageNo="+${GradeScheme.pageNo};
+		  					window.location.href="<%=basePath %>manage/casemanage/casemanageList.do?pageNo="+${GradeScheme.pageNo};
 		      			});
 		  			}else{		  			    
 						$.messager.alert('错误信息','删除失败！','error');
@@ -91,7 +91,7 @@ function updateGradeScheme(id,used,name){
 	$.messager.confirm("修改确认",operation,function(r){  
 		    if (r){   
 			$.ajax({
-				url : "manage/casemanage/jsonupdateGradeSchemeById.do?id="+id+"&used="+used,
+				url : "<%=basePath %>manage/casemanage/jsonupdateGradeSchemeById.do?id="+id+"&used="+used,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -100,16 +100,35 @@ function updateGradeScheme(id,used,name){
 		  					search();  
 		      			});
 		  			}else{		  			    
-						$.messager.alert('错误信息','修改用户状态失败！','error');
+						$.messager.alert('错误信息',data.message,'error');
 		  			}  
 			    } 
 			});
 	    }  
 	}); 
 }
-
+function enableGradeScheme(id,name){
+	$.messager.confirm("操作提示","启用量化模型，请确认量化模型已量化指标，且一级二级指标权重总和为100，三级指标标准分总和为：100分 ，否则启用失败，不能进行指标量化！",function(r){  
+		    if (r){   
+			$.ajax({
+				url : "<%=basePath %>manage/casemanage/jsonEnableGradeScheme.do?id="+id,
+				type : "post",  
+		    	dataType : "json",								
+				success : function(data) { 									
+		  			if(data.code == 0){ 
+		  				$.messager.alert('操作信息',data.message,'info',function(){ 
+		  					search();  
+		      			});
+		  			}else{		  			    
+						$.messager.alert('错误信息',data.message,'error');
+		  			}  
+			    } 
+			});
+	    }  
+	}); 
+}
 function editManage(id,orgName){
-	window.location.href="manage/casemanage/casemanageInfo.do?id="+id+"&orgName="+orgName;
+	window.location.href="<%=basePath %>manage/casemanage/casemanageInfo.do?id="+id+"&orgName="+orgName;
 }
 </script>
   </head>
@@ -126,7 +145,7 @@ function editManage(id,orgName){
 						
 		<div class="fl yw-lump mt10">
 			<form id="DeviceForm" name="DeviceForm"
-				action="manage/casemanage/casemanageList.do" method="get">
+				action="<%=basePath %>manage/casemanage/casemanageList.do" method="get">
 				<div class="pd10">
 					<div class="fl">
 						<span class="ml26">模型列表</span>						
@@ -135,7 +154,7 @@ function editManage(id,orgName){
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>
 					</div>
 					<div class="fr">
-						<span class="fl yw-btn bg-green cur" onclick="window.location.href='manage/casemanage/casemanageInfo.do?id='+ 0">新建模型</span>
+						<span class="fl yw-btn bg-green cur" onclick="window.location.href='<%=basePath %>manage/casemanage/casemanageInfo.do?id='+ 0">新建模型</span>
 					</div>
 					<div class="cl"></div>
 				</div>
@@ -175,19 +194,15 @@ function editManage(id,orgName){
 							</td> --%>
 							<td>
 								<c:if test="${item.used == 1}">
-									<%-- <a style="color:blue" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">禁用</a> --%>
 								<span class="yw-btn-small bg-red cur" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">禁用</span>
 								</c:if> 
 								<c:if test="${item.used == 0}">
-									<%-- <a style="color:blue" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">启用</a> --%>
-								<span class="yw-btn-small bg-lan cur" onclick="updateGradeScheme(${item.id},${item.used},'${item.name}');">启用</span>
+								<span class="yw-btn-small bg-lan cur" onclick="enableGradeScheme(${item.id},'${item.name}');">启用</span>
 								</c:if> 															
-								<%-- <a style="color:blue" onclick="editManage(${item.id},'${item.orgName }');">编辑</a> --%>
 								<span class="yw-btn-small bg-lan cur" onclick="editManage(${item.id},'${item.orgName }');">编辑</span>
 								
 							</td>
 							<td>
-								<%-- <a style="color:blue" onclick="deleteGradeScheme(${item.id},'${item.name}');">删除</a> --%>
 								<span class="yw-btn-small bg-red cur" onclick="deleteGradeScheme(${item.id},'${item.name}');">删除</span>
 							</td>
 						</tr>

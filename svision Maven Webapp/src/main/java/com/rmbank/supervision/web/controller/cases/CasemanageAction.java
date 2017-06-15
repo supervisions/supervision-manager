@@ -2,6 +2,7 @@ package com.rmbank.supervision.web.controller.cases;
 
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,10 @@ import com.rmbank.supervision.common.utils.Constants;
 import com.rmbank.supervision.common.utils.IpUtil;
 import com.rmbank.supervision.model.FunctionMenu;
 import com.rmbank.supervision.model.GradeScheme;
+import com.rmbank.supervision.model.GradeSchemeDetail;
 import com.rmbank.supervision.model.Role;
 import com.rmbank.supervision.model.User;
+import com.rmbank.supervision.service.GradeSchemeDetailService;
 import com.rmbank.supervision.service.GradeSchemeService;
 import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.web.controller.SystemAction;
@@ -32,7 +35,7 @@ import com.rmbank.supervision.web.controller.SystemAction;
 
 
 /**
- * 方案管理的Action
+ * 量化模型管理的Action
  * @author DELL
  *
  */
@@ -44,11 +47,13 @@ public class CasemanageAction extends SystemAction {
 	@Resource
 	private GradeSchemeService gradeSchemeService;
 	@Resource
+	private GradeSchemeDetailService gradeSchemeDetailService;
+	@Resource
 	private SysLogService logService;
 	
 	
 	/**
-	 * 方案管理列表
+	 * 量化模型管理列表
 	 * @param request
 	 * @param response
 	 * @return
@@ -87,13 +92,13 @@ public class CasemanageAction extends SystemAction {
 		
     	User loginUser = this.getLoginUser();
 		String ip = IpUtil.getIpAddress(request);		
-		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了方案列表的查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
+		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了量化模型列表的查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		
 		return "web/manage/casemanage/casemanageList";
 	}
 	
 	/**
-	 * 跳转到新增方案
+	 * 跳转到新增量化模型
 	 * @param request
 	 * @param response
 	 * @return
@@ -124,7 +129,7 @@ public class CasemanageAction extends SystemAction {
 	}
 	
 	/**
-	 * 新增/编辑方案
+	 * 新增/编辑量化模型
 	 * @param scheme
 	 * @param request
 	 * @param response
@@ -157,7 +162,7 @@ public class CasemanageAction extends SystemAction {
 				if (state) {
 					User loginUser = this.getLoginUser();
 					String ip = IpUtil.getIpAddress(request);		
-					logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，执行了对方案的修改操作", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
+					logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，执行了对量化模型的修改操作", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
@@ -173,7 +178,7 @@ public class CasemanageAction extends SystemAction {
 				if (state) {
 					User loginUser = this.getLoginUser();
 					String ip = IpUtil.getIpAddress(request);		
-					logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，新增了方案："+scheme.getName(), 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+					logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，新增了量化模型："+scheme.getName(), 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
 					
 					js.setCode(new Integer(0));
 					js.setMessage("保存成功!");
@@ -182,7 +187,7 @@ public class CasemanageAction extends SystemAction {
 					return js;
 				}
 			} else {
-				js.setMessage("该方案已存在!");
+				js.setMessage("该量化模型已存在!");
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -190,7 +195,7 @@ public class CasemanageAction extends SystemAction {
 		return js;
 	}
 	 /**
-     * 删除方案
+     * 删除量化模型
      */
     @ResponseBody
 	@RequestMapping(value = "/jsondeleteGradeSchemeById.do", method = RequestMethod.POST)
@@ -209,7 +214,7 @@ public class CasemanageAction extends SystemAction {
 			if(state==1){
 				User loginUser = this.getLoginUser();
 				String ip = IpUtil.getIpAddress(request);		
-				logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，删除了方案："+scheme.getName(), 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
+				logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，删除了量化模型："+scheme.getName(), 3, loginUser.getId(), loginUser.getUserOrgID(), ip);
 				
 				js.setCode(new Integer(0));
 				js.setMessage("删除成功!");
@@ -223,7 +228,7 @@ public class CasemanageAction extends SystemAction {
 		return js;
 	}
     /**
-     * 修改方案状态
+     * 修改量化模型状态
      */
     @ResponseBody
 	@RequestMapping(value = "/jsonupdateGradeSchemeById.do", method = RequestMethod.POST)
@@ -234,7 +239,7 @@ public class CasemanageAction extends SystemAction {
 		// 新建一个json对象 并赋初值
 		JsonResult<GradeScheme> js = new JsonResult<GradeScheme>();
 		js.setCode(new Integer(1));
-		js.setMessage("修改方案状态失败!");
+		js.setMessage("禁用量化模型失败!");
 		
 		if(gradeScheme.getUsed()==1){
 			gradeScheme.setUsed(0);
@@ -247,10 +252,10 @@ public class CasemanageAction extends SystemAction {
 			if(state==1){
 				User loginUser = this.getLoginUser();
 				String ip = IpUtil.getIpAddress(request);		
-				logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，修改了方案："+gradeScheme.getName()+"的状态", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
+				logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，禁用了量化模型："+gradeScheme.getName() , 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
 				
 				js.setCode(new Integer(0));
-				js.setMessage("修改方案状态成功!");
+				js.setMessage("禁用量化模型成功!");
 				return js;
 			}else {
 				return js;
@@ -260,8 +265,87 @@ public class CasemanageAction extends SystemAction {
 		}			
 		return js;
 	}
-    
-    
-    
+    /**
+     * 修改量化模型状态
+     */
+    @ResponseBody
+	@RequestMapping(value = "/jsonEnableGradeScheme.do", method = RequestMethod.POST)
+	@RequiresPermissions("manage/casemanage/jsonEnableGradeScheme.do")
+	public JsonResult<GradeScheme> jsonEnableGradeScheme(GradeScheme gradeScheme,			
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		// 新建一个json对象 并赋初值
+		JsonResult<GradeScheme> js = new JsonResult<GradeScheme>();
+		js.setCode(new Integer(1));
+		js.setMessage("启用量化模型失败!"); 
+		try {
+			
+			gradeScheme = gradeSchemeService.selectByPrimaryKey(gradeScheme.getId());
+			if(gradeScheme != null){
+				GradeSchemeDetail gradeSchemeDetail = new GradeSchemeDetail();
+				gradeSchemeDetail.setGradeId(gradeScheme.getId());
+				List<GradeSchemeDetail> detailList = gradeSchemeDetailService.getGradeSchemeDetailListByGradeId(gradeSchemeDetail);
+				if(detailList != null && detailList.size()>0){
+					BigDecimal value = new BigDecimal(100);
+					double fristModelValue = 0;
+					double secondModelValue = 0;
+					double thdModelValue = 0;
+					for(GradeSchemeDetail gsd : detailList){
+						if(gsd.getLevel() == 0){
+							fristModelValue = fristModelValue + gsd.getGrade();
+						}else if(gsd.getLevel() == 1){
+							secondModelValue = secondModelValue + gsd.getGrade();
+						}else if(gsd.getLevel() == 2){
+							thdModelValue = thdModelValue + gsd.getGrade();
+						}
+					}
+					BigDecimal fstValue  = new BigDecimal(fristModelValue); 
+					BigDecimal scdValue  = new BigDecimal(secondModelValue); 
+					BigDecimal thdValue  = new BigDecimal(thdModelValue); 
+					if(fstValue.compareTo(value) < 0){
+						js.setMessage("启用量化模型失败，该模型量化一级指标权重值：小于100!");
+						return js;
+					}else if(fstValue.compareTo(value) > 0){
+						js.setMessage("启用量化模型失败，该模型量化一级指标权重值：大于100!");
+						return js;
+					}
+					
+					if(scdValue.compareTo(value) < 0){
+						js.setMessage("启用量化模型失败，该模型量化二级指标权重值：小于100!");
+						return js;
+					}else if(scdValue.compareTo(value) > 0){
+						js.setMessage("启用量化模型失败，该模型量化二级指标权重值：大于100!");
+						return js;
+					}
+					
+					if(thdValue.compareTo(value) < 0){
+						js.setMessage("启用量化模型失败，该模型量化三级指标权标准分：小于100分!");
+						return js;
+					}else if(thdValue.compareTo(value) > 0){
+						js.setMessage("启用量化模型失败，该模型量化三级指标权标准分：大于100分!");
+						return js;
+					}
+					gradeScheme.setUsed(1);
+					gradeSchemeService.updateByPrimaryKeySelective(gradeScheme);
+					js.setCode(0);
+					js.setMessage("启用量化模型成功!");
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，启用了量化模型："+gradeScheme.getName() , 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
+
+					return js;
+				}else{
+					js.setMessage("启用量化模型失败，该模型未量化任何指标!");
+					return js;
+				}
+			}else{
+				js.setMessage("启用量化模型失败，获取量化模型内容失败!");
+				return js;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}			
+		return js;
+	} 
 
 }

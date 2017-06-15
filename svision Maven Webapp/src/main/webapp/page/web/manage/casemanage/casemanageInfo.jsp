@@ -70,7 +70,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		  			data = $.parseJSON(data);				  			
 		  			if(data.code==0){	 					
 		  				$.messager.alert('保存信息',data.message,'info',function(){
-		  					window.location.href="manage/casemanage/casemanageList.do";
+		  					window.location.href="<%=basePath %>manage/casemanage/casemanageList.do";
 	        			});
 		  			}else{
 						$.messager.alert('错误信息',data.message,'error',function(){
@@ -144,15 +144,15 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</c:if>
 							</td>
 						</tr>		 --%>					
-						<tr>
+						<tr class="displaynone">
 							<td width="10%" align="right">状态：</td>
 							<td>
 							<input type="hidden" name="inherit" value="1" />
-								<c:if test="${GradeScheme.used == 1 || GradeScheme.used==null}">
+								<c:if test="${GradeScheme.used == 1}">
 									<label><input type="radio" name="used" value="1" checked="checked" />启用</label>									
 									<label><input type="radio" name="used" value="0" />禁用</label>
 								</c:if> 
-								<c:if test="${GradeScheme.used == 0 }">
+								<c:if test="${GradeScheme.used == 0  || GradeScheme.used==null}">
 									<label><input type="radio" name="used" value="1" />启用</label>
 									<label><input type="radio" name="used" value="0" checked="checked" />禁用</label>									
 								</c:if>

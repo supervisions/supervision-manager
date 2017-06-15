@@ -63,7 +63,7 @@ function deletePermission(id,name){
 	$.messager.confirm("删除确认","确认删除资源："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsondeletePermissionById.do?id="+id,
+				url : "<%=basePath%>system/permission/jsondeletePermissionById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -102,7 +102,7 @@ function authorizeResource(id,name){
 				<input id="toAname" type="hidden" name="name" value="">
 			</form>
 			<form id="taskForm" name="taskForm"
-				action="permissionList.do" method="get">
+				action="<%=basePath%>system/permission/permissionList.do" method="get">
 				<div class=pd10>
 					<div class="fl">  
 						<span>条件查询：</span>
@@ -112,7 +112,7 @@ function authorizeResource(id,name){
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
 					</div>
 					<div class="fr">
-					<span class="yw-btn bg-green cur" onclick="window.location.href='permissionInfo.do?id=0';">新增权限</span> 
+					<span class="yw-btn bg-green cur" onclick="window.location.href='<%=basePath%>system/permission/permissionInfo.do?id=0';">新增权限</span> 
 					</div>
 						<div class="cl"></div>				
                      <input type="hidden" id="pageNumber" name="pageNo" value="${Permission.pageNo}" />
@@ -141,7 +141,7 @@ function authorizeResource(id,name){
 						<td>${item.description}</td>
 						<td>														
 							<%-- <a style="color:blue" onclick="window.location.href='resourceInfo.do?id=${item.id}';">编辑</a>	 --%>
-								<span class="yw-btn-small bg-lan cur" onclick="window.location.href='permissionInfo.do?id=${item.id}';">编辑</span>						
+								<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath%>system/permission/permissionInfo.do?id=${item.id}';">编辑</span>						
 						</td>
 						<td>
 							<%-- <a style="color:blue" onclick="deleteResource(${item.id},'${item.name}');">删除</a> --%>

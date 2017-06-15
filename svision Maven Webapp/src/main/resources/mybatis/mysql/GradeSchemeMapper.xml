@@ -103,6 +103,9 @@
   	SELECT gs.*, o.name AS orgName FROM t_grade_scheme gs
 	LEFT JOIN t_org o ON o.id = gs.org_id 
 	where 1=1 
+	<if test="used != null ">
+		and gs.used =  #{used,jdbcType=INTEGER}
+	</if>
 	<if test="searchName != null and searchName != ''">
 		and (
 			gs.name like CONCAT('%',#{searchName,jdbcType=VARCHAR},'%')			

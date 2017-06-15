@@ -27,7 +27,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <script type="text/javascript">
 	$(document).ready(function(){	 	
 	 	$("#moudleId").combotree({
-			 url: 'system/function/jsonLoadFunctionTreeList.do',  
+			 url: '<%=basePath %>system/function/jsonLoadFunctionTreeList.do',  
   				 required: false,
   				 onSelect:function(node){ 
   				 	//alert($(this).tree('getRoot', node.target));
@@ -46,7 +46,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
                     }
                  },
   				 onBeforeExpand:function(node){
-  				 	$("#moudleId").combotree('tree').tree('options').url = 'system/function/jsonLoadFunctionTreeList.do?pid='+ node.id;
+  				 	$("#moudleId").combotree('tree').tree('options').url = '<%=basePath %>system/function/jsonLoadFunctionTreeList.do?pid='+ node.id;
   				 },
   				 onLoadSuccess:function(){
   				 	//编辑时默认选中
@@ -81,7 +81,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		  			data = $.parseJSON(data);				  			
 		  			if(data.code==0){	 					
 		  				$.messager.alert('保存信息',data.message,'info',function(){
-		  					window.location.href="system/permission/permissionList.do";
+		  					window.location.href="<%=basePath %>system/permission/permissionList.do";
 	        			});
 		  			}else{
 						$.messager.alert('错误信息',data.message,'error',function(){

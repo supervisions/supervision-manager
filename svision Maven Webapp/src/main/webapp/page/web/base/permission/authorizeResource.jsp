@@ -40,7 +40,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		  			data = $.parseJSON(data);				  			
 		  			if(data.code==0){	 					
 		  				$.messager.alert('保存信息',data.message,'info',function(){
-		  					window.location.href="system/permission/permissionList.do";
+		  					window.location.href="<%=basePath %>system/permission/permissionList.do";
 	        			});
 		  			}else{
 						$.messager.alert('错误信息',data.message,'error',function(){
@@ -76,7 +76,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			<form id="userInfoForm" name="userInfoForm" action="<%=basePath%>system/permission/jsonSaveOrUpdateRoleResource.do" method="post">
 				<div id="tab1" class="yw-tab" style="padding:15px;">
 				<span style="font-size: 20px">当前权限:</span><input class="easyui-validatebox" readonly="readonly" value="${resourceConfig.name }"style="width:228px;height:20px; padding-left: 12px; background-color: #ccc;"/>		
-				<table class="yw-cm-table font16" id="taskTable">
+				  <table class="yw-cm-table1 font16" id="taskTable">
 					<input type="hidden" name="permissionId" value="${resourceConfig.id }">
 					<c:forEach var="item" items="${resourceList }">
 					<tr>

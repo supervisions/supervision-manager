@@ -33,7 +33,7 @@
 			var pid =-1;
 			//加载机构树
 		 	$("#treeList").tree({	 		
-			 	 url: 'jsonLoadMetaTreeList.do?rootId='+0, 			 	 
+			 	 url: '<%=basePath %>system/config/jsonLoadMetaTreeList.do?rootId='+0, 			 	 
 			 	 onClick:function(node){//单击事件	
 			 	 		
   				 		pid = node.id; 
@@ -43,7 +43,7 @@
   				 		}				 	
    				 },
    				 onBeforeExpand:function(node){    //节点展开前触发，返回 false 则取消展开动作。
- 				 	 	$('#treeList').tree('options').url ='jsonLoadMetaTreeList.do?pid='+ node.id;
+ 				 	 	$('#treeList').tree('options').url ='<%=basePath %>system/config/jsonLoadMetaTreeList.do?pid='+ node.id;
  				 },
    				 /* onBeforeSelect:function(node){                    
                     //返回树对象
@@ -74,7 +74,7 @@ function metaState(id,used,name){
 	$.messager.confirm("修改确认",operation,function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsonMetaStateById.do?id="+id+"&used="+used,
+				url : "<%=basePath %>system/config/jsonMetaStateById.do?id="+id+"&used="+used,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									

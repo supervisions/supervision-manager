@@ -28,77 +28,9 @@
     <script src="<%=basePath %>source/js/jquery.form.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#resourceForm').bootstrapValidator({
-                message: '录入数据项不能通过验证，请仔细检查',
-                feedbackIcons: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
-                fields: {
-                    name: {
-                        message: '资源名称不能为空',
-                        validators: {
-                            notEmpty: {
-                                message: '资源名称不能为空'
-                            },
-                            stringLength: {
-                                min: 2,
-                                max: 100,
-                                message: '资源名称长度必须在2到100位之间'
-                            },
-                            regexp: {
-                                regexp: /^[^@\/\'\\\"#$%&\^\*]+$/,
-                                message: '资源名称不能包含特殊字符'
-                            }
-                        }
-                    },
-                    src: {
-                        message: '资源地址不能为空',
-                        validators: {
-                            notEmpty: {
-                                message: '资源地址不能为空'
-                            },
-                            stringLength: {
-                                min: 2,
-                                max: 100,
-                                message: '资源地址长度必须在2到100位之间'
-                            }
-                        }
-                    },
-                    key: {
-                        message: '资源关键字不能为空',
-                        validators: {
-                            notEmpty: {
-                                message: '资源关键字不能为空'
-                            },
-                            stringLength: {
-                                min: 2,
-                                max: 100,
-                                message: '资源关键字长度必须在2到100位之间'
-                            },
-                            regexp: {
-                                regexp: /^[^@\/\'\\\"#$%&\^\*]+$/,
-                                message: '资源关键字不能包含特殊字符'
-                            }
-                        }
-                    }
-                },
-                submitHandler: function (validator, form, submitButton) {
-                }
-            })
+            
         });
-        $.validator.setDefaults({
-            highlight: function (element) {
-                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-            },
-            success: function (element) {
-                element.closest('.form-group').removeClass('has-error').addClass('has-success');
-            },
-            errorElement: "span",
-            errorClass: "help-block m-b-none",
-            validClass: "help-block m-b-none"
-        });
+        
         var status = true;
         function submitForm() {
             if (status) {
@@ -146,10 +78,7 @@
 <div class="row wrapper border-bottom white-bg page-heading" style="margin-top:25px; margin-bottom:25px;">
     <div class="col-lg-12">
         <h2>基础数据</h2>
-        <ol class="breadcrumb">
-            <li>
-                <a href="<%=basePath%>server/introduction.do">主页</a>
-            </li>
+        <ol class="breadcrumb"> 
             <li>
                 <a style="cursor: text;">资源管理</a>
             </li>

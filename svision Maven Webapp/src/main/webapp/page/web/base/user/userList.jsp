@@ -218,7 +218,7 @@ function fillMetaList(lst){
 }
 
 function goToUserInfo(id){
-	window.location.href="userInfo.do?id="+id;
+	window.location.href="<%=basePath%>system/user/userInfo.do?id="+id;
 }
 </script>
 </head>

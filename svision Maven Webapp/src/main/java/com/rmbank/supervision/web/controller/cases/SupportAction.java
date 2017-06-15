@@ -280,9 +280,9 @@ public class SupportAction extends SystemAction {
 				}
 			}
 		}
-		
-		
-		List<GradeScheme> gsList = gradeSchemeService.getGradeSchemeList(new GradeScheme());  
+		GradeScheme gradeScheme = new GradeScheme();
+		gradeScheme.setUsed(1);
+		List<GradeScheme> gsList = gradeSchemeService.getGradeSchemeList(gradeScheme);  
 		 
 		//获取当前用户
 		User lgUser=this.getLoginUser(); 

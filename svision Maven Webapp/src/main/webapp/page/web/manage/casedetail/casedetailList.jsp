@@ -104,10 +104,10 @@ function deleteDetail(id,name){
 	}); 
 }
 function goToOrganInfo(organId){
-	window.location.href="casedetailInfo.do?id="+id;
+	window.location.href="<%=basePath %>manage/casedetail/casedetailInfo.do?id="+id;
 }
 function editDetail(id,pName){
-	window.location.href="casedetailInfo.do?id="+id+"&pName="+pName;
+	window.location.href="<%=basePath %>manage/casedetail/casedetailInfo.do?id="+id+"&pName="+pName;
 }
 </script>
 </head>
@@ -122,7 +122,7 @@ function editDetail(id,pName){
 		</div>
 		<div class="fl yw-lump mt10">
 			<form id="organForm" name="organForm"
-				action="casedetailList.do" method="get">
+				action="<%=basePath %>manage/casedetail/casedetailList.do" method="get">
 				<div class="pd10-28">
 					<div class="fl">
 						 <button class="yw-btn bg-blue cur">全部模型</button>  

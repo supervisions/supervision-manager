@@ -203,9 +203,19 @@ public class CasedetailAction extends SystemAction {
 			gsd.setName(detail.getName());
 			// 如为编辑，则给新建ResourceConfig对象赋传来的id值,并根据ID去修改
 			if (detail.getId() > 0) {
+				GradeSchemeDetail temp = gradeSchemeDetailService.selectByPrimaryKey(detail.getId());
 				gsd.setId(detail.getId());
 				state = gradeSchemeDetailService.saveOrUpdateDetail(detail);
 				if (state) {
+					if(temp != null && temp.getGrade() != null && temp.getGrade() != detail.getGrade()){
+						GradeScheme gradeScheme = new GradeScheme();
+						gradeScheme = gradeSchemeService.selectByPrimaryKey(temp.getGradeId());
+						if(gradeScheme != null && gradeScheme.getUsed() == 1){
+							gradeScheme.setUsed(0);
+							gradeSchemeService.updateByPrimaryKeySelective(gradeScheme);
+							System.out.println("更改了量化指标的分值，总分值可能会发生变化， 将模型置为不可用，重新启用，会执行检查");
+						}
+					}
 					User loginUser = this.getLoginUser();
 		    		String ip = IpUtil.getIpAddress(request);		
 		    		logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，执行了对量化指标信息的修改", 2, loginUser.getId(), loginUser.getUserOrgID(), ip);
@@ -222,6 +232,13 @@ public class CasedetailAction extends SystemAction {
 			if (lc.size() == 0) {
 				state = gradeSchemeDetailService.saveOrUpdateDetail(detail);
 				if (state) {
+					GradeScheme gradeScheme = new GradeScheme();
+					gradeScheme = gradeSchemeService.selectByPrimaryKey(gsd.getGradeId());
+					if(gradeScheme != null && gradeScheme.getUsed() == 1){
+						gradeScheme.setUsed(0);
+						gradeSchemeService.updateByPrimaryKeySelective(gradeScheme);
+						System.out.println("新增量化指标的分值，总分值可能会发生变化， 将模型置为不可用，重新启用，会执行检查");
+					}
 					User loginUser = this.getLoginUser();
 		    		String ip = IpUtil.getIpAddress(request);		
 		    		logService.writeLog(Constants.LOG_TYPE_LXGL, "用户："+loginUser.getName()+"，新增了量化指标："+detail.getName(), 1, loginUser.getId(), loginUser.getUserOrgID(), ip);

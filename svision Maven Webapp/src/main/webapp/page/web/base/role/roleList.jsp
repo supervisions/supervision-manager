@@ -61,7 +61,7 @@ function deleteRole(id,name){
 	$.messager.confirm("删除确认","确认删除角色："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsondeleteRoleById.do?id="+id,
+				url : "<%=basePath%>system/role/jsondeleteRoleById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -96,7 +96,7 @@ function authorizeResource(id,name){
 		</div>
 		<div class="fl yw-lump mt10">
 			
-			<form id="toARfrom" action="toAuthorizationResource.do" method="post">
+			<form id="toARfrom" action="<%=basePath%>system/role/toAuthorizationResource.do" method="post">
 				<input id="toAid" type="hidden" name="id" value="">
 				<input id="toAname" type="hidden" name="name" value="">
 			</form>
@@ -112,7 +112,7 @@ function authorizeResource(id,name){
 					</div>
 
 					<div class="fr">
-						<span class="yw-btn bg-green cur" onclick="window.location.href='roleInfo.do?id=0';">新增角色</span>
+						<span class="yw-btn bg-green cur" onclick="window.location.href='<%=basePath%>system/role/roleInfo.do?id=0';">新增角色</span>
 					</div>
 					<div class="cl"></div>				
                     	<input type="hidden" id="pageNumber" name="pageNo" value="${Role.pageNo}" />
@@ -137,7 +137,7 @@ function authorizeResource(id,name){
 							 <td>	<span class="yw-btn-small bg-green cur" onclick="authorizeResource(${item.id},'${item.name}')">角色授权</span>	</td>
 						<td>							
 							<%-- <a style="color:blue" onclick="window.location.href='roleInfo.do?id=${item.id}';">编辑</a> --%>
-								<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='roleInfo.do?id=${item.id}';">编辑</span>
+								<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath%>system/role/roleInfo.do?id=${item.id}';">编辑</span>
 						</td>
 						<td>
 							<%-- <a style="color:blue" onclick="deleteRole(${item.id},'${item.name}');">删除</a> --%>

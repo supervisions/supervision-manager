@@ -62,7 +62,7 @@ function deleteResource(id,name){
 	$.messager.confirm("删除确认","确认删除资源："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsondeleteResourceById.do?id="+id,
+				url : "<%=basePath%>system/resource/jsondeleteResourceById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -127,7 +127,7 @@ function deleteResource(id,name){
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
 					</div>
 					<div class="fr">
-					<span class="yw-btn bg-green cur" onclick="window.location.href='resourceInfo.do?id=0';">新增资源</span> 
+					<span class="yw-btn bg-green cur" onclick="window.location.href='<%=basePath%>system/resource/resourceInfo.do?id=0';">新增资源</span> 
 					</div>
 						<div class="cl"></div>				
                      <input type="hidden" id="pageNumber" name="pageNo" value="${ResourceConfig.pageNo}" />
@@ -153,7 +153,7 @@ function deleteResource(id,name){
 							<td>${item.functionName}</td>
 							<td>															
 								<%-- <a style="color:blue" onclick="window.location.href='resourceInfo.do?id=${item.id}';">编辑</a>	 --%>
-								<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='resourceInfo.do?id=${item.id}';">编辑</span>						
+								<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath%>system/resource/resourceInfo.do?id=${item.id}';">编辑</span>						
 							</td>
 							<td>
 								<%-- <a style="color:blue" onclick="deleteResource(${item.id},'${item.name}');">删除</a> --%>
