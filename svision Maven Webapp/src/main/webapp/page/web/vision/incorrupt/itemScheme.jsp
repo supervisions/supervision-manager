@@ -145,7 +145,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             //绑定文件是否全部上传完成
             uploader.bind('UploadComplete',function(uploader,files){
                 if(null != files && files.length>0){ 
-                	layer.confirm(录入方案成功！', {
+                	layer.confirm('录入方案成功！', {
 								btn: ['确认'] //按钮
 							}, function(){//点击确认按钮调用
 								layer.close(layer.confirm());//关闭当前弹出层
@@ -176,7 +176,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			        	if(uploader.files.length>0){
 			        		$("#uploader_start").click(); //上传文件
 			        	}else{
-			        		layer.confirm(录入方案成功！', {
+			        		layer.confirm('录入方案成功！', {
 								btn: ['确认'] //按钮
 							}, function(){//点击确认按钮调用
 								layer.close(layer.confirm());//关闭当前弹出层

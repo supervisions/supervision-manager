@@ -202,13 +202,13 @@ function followItem(id,name){
 											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=34'" >录入整改情况</span>
 											</c:if> 
 											<c:if test="${item.lasgTag == 34 && logUserOrg ==19}">
-												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowChange.do?id=${item.id}'" >跟踪整改</a> --%>
-											<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFollowChange.do?id=${item.id}'" >跟踪整改</span>
+												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowChange.do?id=${item.id}'" >跟踪监察</a> --%>
+											<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFollowChange.do?id=${item.id}'" >跟踪监察</span>
 												<%-- <a style="color: blue;" onclick="followItem(${item.id},'${item.name}')" >跟踪整改</a> --%>
 											</c:if>
 											<c:if test="${item.lasgTag == 91 && logUserOrg ==item.supervisionOrgId}">
 												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >跟踪整根情况 </a> --%>
-											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >录入跟踪整根情况</span>
+											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >录入跟踪整改情况</span>
 											</c:if>
 											<c:if test="${item.lasgTag == 35 && logUserOrg ==19}">
 												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=93'" >监察结论</a> --%>

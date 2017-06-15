@@ -205,7 +205,7 @@ function followAction(itemId,status){
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
 					</div>
 					<div class="fr">
-						<c:if test="${userOrg.orgtype ==47  }">
+						<c:if test="${userOrg.orgtype ==47 || userOrg.orgtype ==43 }">
 							<span class="yw-btn bg-green cur" onclick="window.location.href='efficiencyInfo.do?id=0';">添加工作事项</span>							
 						</c:if>
 						

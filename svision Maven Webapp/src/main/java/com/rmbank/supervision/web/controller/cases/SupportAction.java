@@ -183,7 +183,7 @@ public class SupportAction extends SystemAction {
 				List<Organ> itemList = new ArrayList<Organ>();//用于当做OrganVM的itemList
 				frvm.setId(rc.getId());
 				frvm.setName(rc.getName());
-				itemList.add(rc);
+				//itemList.add(rc);
 				String path =rc.getPath()+"."+rc.getId()+".";//当前登录机构的子机构的path都以此开头
 				String substring=null;
 				for(Organ rc1 : organList){

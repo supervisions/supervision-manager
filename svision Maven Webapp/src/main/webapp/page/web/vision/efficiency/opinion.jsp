@@ -301,7 +301,83 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</table>
 							</td>		
 						</tr> 
-						
+						<!-- 分节点上传资料状态 -->
+						<c:if test="${Item.isStept==1 }">
+							<!-- 显示初始资料部分和初始资料监察意见 -->
+							<c:if test="${ItemProcess2 != null }">
+								<tr>
+									<td align="right">初始资料内容：</td>
+									<td colspan="3">
+										<label>${ItemProcess2.content } </label> 									
+									</td>		
+								</tr> 
+								<tr>
+									<td align="right" >初始资料附件：</td>
+									<td colspan="3"> 
+										<table style="width:100%;">
+											<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
+												<tr><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+											</c:forEach>										
+										</table>
+									</td>		
+								</tr>
+								<c:forEach var="item" items="${ipYJList }" begin="0" end="0">
+									<tr>
+										<td align="right">监察意见：</td>
+										<td colspan="3">
+											<label>${item.content } </label> 									
+										</td>		
+									</tr> 
+									<tr>
+										<td align="right" >相关附件：</td>
+										<td colspan="3"> 
+											<table style="width:100%;">
+												<c:forEach var="fileItem" items="${item.fileList }">
+													<tr><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+												</c:forEach>										
+											</table>
+										</td>		
+									</tr>								
+								</c:forEach>
+							</c:if>
+							<!-- 显示每个节点的的资料和监察意见 -->	
+							<c:forEach var="item" items="${ipList }" varStatus="varStatusA">
+								<tr>
+									<td align="right">节点${varStatusA.index+1 }资料内容：</td>
+									<td colspan="3">
+										<label>${item.content } </label> 									
+									</td>		
+								</tr> 
+								<tr>
+									<td align="right" >节点${varStatusA.index+1 }资料附件：</td>
+									<td colspan="3"> 
+										<table style="width:100%;">
+											<c:forEach var="fileItem" items="${item.fileList }">
+												<tr><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+											</c:forEach>										
+										</table>
+									</td>		
+								</tr>
+								<c:forEach var="item" items="${ipYJList }" begin="${varStatusA.index+1 }" end="${varStatusA.index+1 }">
+									<tr>
+										<td align="right">监察意见：</td>
+										<td colspan="3">
+											<label>${item.content } </label> 									
+										</td>		
+									</tr> 
+									<tr>
+										<td align="right" >相关附件：</td>
+										<td colspan="3"> 
+											<table style="width:100%;">
+												<c:forEach var="fileItem" items="${item.fileList }">
+													<tr><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+												</c:forEach>										
+											</table>
+										</td>		
+									</tr>								
+								</c:forEach>								
+							</c:forEach>							
+						</c:if>	
 						<tr>
 							<td align="right" width="15%" align="right"  >监察意见：</td>
 							<td colspan="3" > 
