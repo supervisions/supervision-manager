@@ -3857,7 +3857,7 @@
 }
 .taskTable td label{ 
 	max-width:50%; 
-	/* width:40%;  */
+	 width:30%;  
 } 
 .taskTable td{
 	border: 1px solid #f0f3f4;
@@ -3873,7 +3873,7 @@
 .branchPart:hover{
 	height:50px;
 	line-height:50px;
-	text-align: center;
+	text-align: center; 
 	background-color: #aeaeae; 
 	cursor: pointer;
 }

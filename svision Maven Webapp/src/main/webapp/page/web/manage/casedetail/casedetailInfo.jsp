@@ -145,10 +145,7 @@ function checkGrade(obj){
 							<c:if test="${SchemeDetail.level == 2  }"> 
 								<td align="right">标准分值：</td>
 							</c:if>
-							<td><input id="grade" oninput="checkGrade(this)" class="easyui-validatebox"
-								name="grade" type="text" doc="taskInfo" value="${SchemeDetail.grade}"
-								required="true" validType="number"
-								style="width:254px;height:28px;" /> 
+							<td><input id="grade" oninput="checkGrade(this)" class="easyui-validatebox" name="grade" type="text" doc="taskInfo" value="${SchemeDetail.grade}" required="true"  style="width:254px;height:28px;" /> 
 								<span style="color:red">*</span>
 							</td>							
 							<td ></td>

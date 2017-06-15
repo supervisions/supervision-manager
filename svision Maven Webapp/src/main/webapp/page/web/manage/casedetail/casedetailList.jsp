@@ -68,7 +68,7 @@ function loadGradeSchemeDetial(gId,level){
 	 	obj.level = level;
 	 }
 	$.ajax({
-		url:'<%=basePath %>manage/casedetail/jsonLoadGradeSchemeDetailList.do',
+		url:'<%=basePath %>manage/casedetail/jsonLoadGradeSchemeDetailList.do', 
 		dataType:"json",
 		type : "post",  
 		data: obj,

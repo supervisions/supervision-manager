@@ -9,7 +9,7 @@
     <result column="path" property="path" jdbcType="VARCHAR" />
     <result column="leafed" property="leafed" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="grade" property="grade" jdbcType="INTEGER" />
+    <result column="grade" property="grade" jdbcType="DOUBLE" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, grade_id, pid, level, path, leafed, name, grade
@@ -30,7 +30,7 @@
       name, grade)
     values (#{id,jdbcType=INTEGER}, #{gradeId,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, 
       #{level,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, #{leafed,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER})
+      #{name,jdbcType=VARCHAR}, #{grade,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.rmbank.supervision.model.GradeSchemeDetail" >
     insert into t_grade_scheme_detail
@@ -83,7 +83,7 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="grade != null" >
-        #{grade,jdbcType=INTEGER},
+        #{grade,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -109,7 +109,7 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="grade != null" >
-        grade = #{grade,jdbcType=INTEGER},
+        grade = #{grade,jdbcType=DOUBLE},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -122,7 +122,7 @@
       path = #{path,jdbcType=VARCHAR},
       leafed = #{leafed,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      grade = #{grade,jdbcType=INTEGER}
+      grade = #{grade,jdbcType=DOUBLE}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <sql id="sql_query">

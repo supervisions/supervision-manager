@@ -286,45 +286,37 @@ public class CasemanageAction extends SystemAction {
 				gradeSchemeDetail.setGradeId(gradeScheme.getId());
 				List<GradeSchemeDetail> detailList = gradeSchemeDetailService.getGradeSchemeDetailListByGradeId(gradeSchemeDetail);
 				if(detailList != null && detailList.size()>0){
-					BigDecimal value = new BigDecimal(100);
-					double fristModelValue = 0;
+//					BigDecimal value = new BigDecimal(100);
+					int defaultvalue = 100;
+					double fristModelValue = Double.MIN_VALUE;
 					double secondModelValue = 0;
-					double thdModelValue = 0;
+					double thdModelValue = 0; 
 					for(GradeSchemeDetail gsd : detailList){
 						if(gsd.getLevel() == 0){
 							fristModelValue = fristModelValue + gsd.getGrade();
 						}else if(gsd.getLevel() == 1){
-							secondModelValue = secondModelValue + gsd.getGrade();
+							secondModelValue = secondModelValue + gsd.getGrade(); 
 						}else if(gsd.getLevel() == 2){
 							thdModelValue = thdModelValue + gsd.getGrade();
 						}
 					}
-					BigDecimal fstValue  = new BigDecimal(fristModelValue); 
-					BigDecimal scdValue  = new BigDecimal(secondModelValue); 
-					BigDecimal thdValue  = new BigDecimal(thdModelValue); 
-					if(fstValue.compareTo(value) < 0){
-						js.setMessage("启用量化模型失败，该模型量化一级指标权重值：小于100!");
+//					BigDecimal fstValue  = new BigDecimal(fristModelValue); 
+//					BigDecimal scdValue  = new BigDecimal(secondModelValue); 
+//					BigDecimal thdValue  = new BigDecimal(thdModelValue); 
+					if(((int)fristModelValue % defaultvalue) != 0){
+						js.setMessage("启用量化模型失败，该模型量化一级指标权重值：不等于100!");
 						return js;
-					}else if(fstValue.compareTo(value) > 0){
-						js.setMessage("启用量化模型失败，该模型量化一级指标权重值：大于100!");
+					}  
+					
+					if(((int)secondModelValue % defaultvalue) != 0){
+						js.setMessage("启用量化模型失败，该模型量化各二级指标权重值：不等于100!");
 						return js;
 					}
 					
-					if(scdValue.compareTo(value) < 0){
-						js.setMessage("启用量化模型失败，该模型量化二级指标权重值：小于100!");
+					if(((int)thdModelValue % defaultvalue) != 0){
+						js.setMessage("启用量化模型失败，该模型量化三级指标权标准分：不等于100分!");
 						return js;
-					}else if(scdValue.compareTo(value) > 0){
-						js.setMessage("启用量化模型失败，该模型量化二级指标权重值：大于100!");
-						return js;
-					}
-					
-					if(thdValue.compareTo(value) < 0){
-						js.setMessage("启用量化模型失败，该模型量化三级指标权标准分：小于100分!");
-						return js;
-					}else if(thdValue.compareTo(value) > 0){
-						js.setMessage("启用量化模型失败，该模型量化三级指标权标准分：大于100分!");
-						return js;
-					}
+					} 
 					gradeScheme.setUsed(1);
 					gradeSchemeService.updateByPrimaryKeySelective(gradeScheme);
 					js.setCode(0);

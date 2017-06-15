@@ -19,7 +19,7 @@ public class GradeSchemeDetail extends Page{
 
     private String name;
 
-    private Integer grade;
+    private Double grade;
     
     private String schemaName;
     
@@ -123,11 +123,11 @@ public class GradeSchemeDetail extends Page{
         this.name = name;
     }
 
-    public Integer getGrade() {
+    public Double getGrade() {
         return grade;
     }
 
-    public void setGrade(Integer grade) {
+    public void setGrade(Double grade) {
         this.grade = grade;
     }
 
