@@ -67,7 +67,7 @@ String  url  =  uri.substring(uri.lastIndexOf("/")+1);
 </script>
 </head>
  
-<body style="overflow:auto">
+<body style="overflow-x:hidden">
 	<div id="main">
 		 <div id="header" style="height:120px;background-color: #1894f4;"><jsp:include page="/page/decorators/masterHeader.jsp"></jsp:include></div> 
 		<div id="content">

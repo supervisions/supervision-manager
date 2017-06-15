@@ -100,7 +100,7 @@ function edit(id){
 				<div class="pd10">
 					<div class="fl">
 						<span class="ml26">输入关键字查找</span>						
-						<input type="text" name="searchName" validType="SpecialWord" class="easyui-validatebox" 
+						<input type="text" name="searchName" validType="SpecialWord" class="easyui-validatebox" style="width:100px;"
 							placeholder="搜索" value="${Item.searchName}"/> 
 						<span>立项时间:</span>
 						<input style="width:129px;height:32px;" name="schBeginTime" value="${Item.schBeginTime }" class="easyui-datebox" data-options="sharedCalendar:'#sj'">

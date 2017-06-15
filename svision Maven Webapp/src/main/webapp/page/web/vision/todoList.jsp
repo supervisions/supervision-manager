@@ -40,49 +40,52 @@ function showItem(id,type){
 		<div class="fl yw-lump mt10">  
 			<div class=pd10>
 				<div class="fl">  
-					<span>待办事项：</span>
-					<span>共计 ${totalCountLZ+totalCountZF+totalCountXN}项，其中：效能监察： ${totalCountXN }项，廉政监察：${totalCountLZ }项，执法监察：${totalCountZF }项</span> 				
+					<span style="font-size:16px;font-weight:bold;height:40px;">待办事项：</span>
+					<span style="font-size:16px;font-weight:bold;height:40px;">共计  ${totalCountLZ+totalCountZF+totalCountXN} 项，其中：效能监察：  ${totalCountXN } 项，廉政监察： ${totalCountLZ } 项，执法监察： ${totalCountZF } 项</span> 				
 				</div> 
 				<div class="cl"></div>	 
                </div> 
 		 </div>	
           <div class="fl yw-lump"> 
-			<table class="yw-cm-table yw-center yw-bg-hover"  id="taskList">
+			<table  id="taskList">
 				<tr style="background-color:#D6D3D3;font-weight: bold;"> 
-					<th width="30%">效能监察</th>
-					<th width="30%">廉政监察</th>	
-					<th width="30%">执法监察</th>	 
-				</tr> 
+					<th width="30%" style="font-size:16px;font-weight:bold;height:40px;">效能监察</th>
+					<th width="30%" style="font-size:16px;font-weight:bold;height:40px;">廉政监察</th>	
+					<th width="30%" style="font-size:16px;font-weight:bold;height:40px;">执法监察</th>	 
 				<tr> 							
-					<td> 
-					<table style="width:100%;">
+					<td>
+					<table style="width:100%;height:100%;">
 						<c:forEach var="xlItem" items="${itemListXN }">
 							<tr>
-								<td>${xlItem.name }</td>
+								<td style="height:30px; "><a class="dddd" title="点击查看"  onclick="showItem(${xlItem.id },2)" >【${xlItem.name }】</a></td>
 								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${xlItem.id },2)"  /></td>
 							</tr>
 						</c:forEach>
+						<tr><td></td></tr>
 					</table>
 					</td> 					
 					<td> 
-					<table style="width:100%;">
+					<table style="width:100%;height:100%;">
 						<c:forEach var="lzItem" items="${itemListLZ }">
 							<tr>
-								<td>${lzItem.name }</td>
+								<td style="height:30px; "><a class="dddd" title="点击查看" onclick="showItem(${lzItem.id },3)" >【${lzItem.name }】</a></td>
 								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${lzItem.id },3)"  /></td>
 							</tr>
 						</c:forEach>
+						<tr><td></td></tr>
 					</table>
 					</td> 					
 					<td> 
+					<div style="width:100%;overflow-x:hidden;max-height:480px;">
 					<table style="width:100%;">
 						<c:forEach var="zfItem" items="${itemListZF }">
 							<tr>
-								<td>${zfItem.name }</td>
+								<td style="height:30px;"><a class="dddd" title="点击查看" onclick="showItem(${zfItem.id },4)"  >【${zfItem.name }】</a></td>
 								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${zfItem.id },4)"  /></td>
 							</tr>
-						</c:forEach>
-					</table>
+						</c:forEach> 
+					</table> 
+					</div>
 					</td> 
 				</tr> 
 			</table> 

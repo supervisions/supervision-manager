@@ -53,7 +53,7 @@ String  url  =  uri.substring(uri.lastIndexOf("/")+1);
 </script>
 </head>
 
-<body>
+<body style="overflow-x:hidden">
 	<div id="main">
 		<div id="header"><jsp:include page="/page/decorators/header.jsp"></jsp:include></div>
 		<div id="content">
