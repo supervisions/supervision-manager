@@ -277,10 +277,32 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<c:forEach var="fileItem" items="${ItemProcess.fileList }">
 										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 									</c:forEach> 
-									<tr><td style="border:0px;"></td><tr>
+									
 								</table>
 							</td>		
 						</tr>
+
+						<!-- 被监察对象录入方案状态 -->						
+						<c:if test="${ItemProcess2 != null }">
+							<tr>
+								<td align="right" style="height:40px;">方案内容：</td>
+								<td colspan="3">
+									<label>${ItemProcess2.content } </label> 									
+								</td>		
+							</tr> 
+							<tr>
+								<td align="right" >方案附件：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										
+									</table>
+								</td>		
+							</tr>
+						</c:if>	
+
 						<!-- 监察室给出监察意见，但是项目不合规 -->		
 						<c:if test="${ItemProcess0 != null }">
 							<tr>
@@ -296,7 +318,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<c:forEach var="fileItem" items="${ItemProcess0.fileList }">
 											<tr style="height:20px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
+										
 									</table>
 								</td>		
 							</tr>	
@@ -329,17 +351,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					                </div>
 							 </td>	
 						</tr>
-						<!-- <tr>
-							<td align="right" >是否需要整改：</td>
-							<td colspan="3">
-								<label>
-									<input type="radio" name="status" value="0" >整改
-								</label> 
-								<label>
-									<input type="radio" name="status" value="4" checked="checked">不整改
-								</label>								
-							</td>	
-						</tr> -->
+						
 						<tr>
 							<td></td>
 							<td>

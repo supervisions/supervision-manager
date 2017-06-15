@@ -266,7 +266,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right"  >监察内容：</td>
+							<td align="right" style="height:100px;">监察内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess.content } </label> 
 							</td>		
@@ -285,7 +285,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						
 						
 						<tr>
-							<td align="right" >资料内容：</td>
+							<td align="right" style="height:100px;">资料内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess2.content } </label> 
 							</td>		
@@ -379,7 +379,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</c:forEach>							
 						</c:if>	
 						<tr>
-							<td align="right" width="15%" align="right"  >监察意见：</td>
+							<td align="right" width="8%" align="right" height="100px;">监察意见：</td>
 							<td colspan="3" > 
 								<textarea rows="6" cols="5" style="width:60%;" name="content"></textarea>								
 								<input type="hidden" name ="itemId" value="${Item.id }">
@@ -387,7 +387,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td> 
 						</tr> 
 						<tr>
-							<td align="right"  >上传附件：</td>
+							<td align="right" height="129px;">上传附件：</td>
 							<td colspan="3">
 								<input type="hidden" id="hid_isFileUpload" value="1" /> 
 								 <div id="themeswitcher" class="pull-right"></div>

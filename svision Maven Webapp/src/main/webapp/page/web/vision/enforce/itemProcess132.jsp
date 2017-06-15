@@ -250,7 +250,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<c:forEach var="fileItem" items="${ItemProcess.fileList }">
 										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 									</c:forEach> 
-									<tr><td style="border:0px;"></td><tr>
+									
 								</table>
 							</td>		
 						</tr>	
@@ -267,7 +267,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<c:forEach var="fileItem" items="${ItemProcess1.fileList }">
 										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 									</c:forEach>
-									<tr><td style="border:0px;"></td><tr>
+									
 								</table>
 							</td>		
 						</tr>						
@@ -296,14 +296,14 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
 										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 									</c:forEach> 
-									<tr><td style="border:0px;"></td><tr>
+									
 								</table>
 							</td>		
 						</tr>	
 						<!-- 监察室给出监察意见，并且项目合规 -->		
 						<c:if test="${ItemProcess3 != null }">
 							<tr>
-								<td align="right" style="height:40px;">监察室意见：</td>
+								<td align="right" style="height:40px;">监察意见：</td>
 								<td colspan="3">
 									<label>${ItemProcess3.content } </label> 									
 								</td>	
@@ -315,7 +315,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
 											<tr style="height:20px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
+										
 									</table>
 								</td>		
 							</tr>	 --%>
@@ -328,7 +328,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</c:if>			
 						
 						<tr>
-							<td align="right" height="129px;">现场检查报告、执法监察意见书：</td>
+							<td align="right" height="129px;">相关资料：</td>
 							<td colspan="3">
 								 <input type="hidden" id="hid_isFileUpload" value="1" /> 
 								 <div id="themeswitcher" class="pull-right"></div>
@@ -342,7 +342,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 </td>	
 						</tr>
 						<tr>
-							<td align="right" width="15%" align="right" height="40px;">检查报告、意见书说明：</td>
+							<td></td>
+							<td>
+								相关资料包括（现场检查报告、执法检查意见书）
+							</td>
+						</tr>
+						<tr>
+							<td align="right" width="15%" align="right" height="40px;">相关资料说明：</td>
 							<td colspan="3" > 
 								<textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>								
 								<input type="hidden" name ="itemId" value="${Item.id }">

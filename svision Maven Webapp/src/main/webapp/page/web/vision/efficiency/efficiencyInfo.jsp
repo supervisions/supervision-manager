@@ -182,6 +182,8 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			layer.alert('请选择被监察对象！');	
 			return false;
 		} 
+		var evalue =$("#datepicker").val();
+		alert(evalue);
 	}
 	function ajaxPost(){
 		if(isNull()!=false){
@@ -249,7 +251,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16" id="taskTable">
 						<tr>
-							<td width="15%" align="right">项目名称：</td>
+							<td width="12%" align="right">项目名称：</td>
 							<td colspan="3"><input id="itemName" 
 								name="name" type="text" required="true" missingMessage="不克不及为空" value=""  style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
@@ -257,13 +259,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td> 
 						</tr>						
 						<tr>
-							<td align="right" >监察内容：</td>
+							<td align="right" height="100px;">监察内容：</td>
 							<td colspan="3"> 
 								<textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>								
 							</td> 
 						</tr>	
 						<tr>
-							<td align="right"  >上传附件：</td>
+							<td align="right" height="100px;">上传附件：</td>
 							<td colspan="3">
 								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>
@@ -285,24 +287,19 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									
 								</select> 
 								<span style="color:red">*</span>
-							</td>								 
-						</tr>
-						<tr>
-							<td align="right" height="50px">规定完成时间：</td>
-							<td colspan="3">
-							  <input type="text" name="end_time" value="" id="datepicker" style="width:289px;height:22px;">
+							    规定完成时间：<input type="text" name="end_time" value="" id="datepicker" style="width:258px;height:22px;">
 							 	<span style="color:red">*</span> 
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" >被监察对象：</td>
+							<td align="right" height="100px;">被监察对象：</td>
 							<td colspan="3"> 
 								<table style="font-size: 16px;"> 
 									<c:forEach var="item" items="${OrgList }">
 										<tr><td style="font-weight: 900;">${item.name }</td></tr>
 										<tr style="width: 100%;">
 											<td>
-												<div style="width:90%;">
+												<div style="width:60%;">
 													<c:forEach var="org" items="${item.itemList }">
 														<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
 													</c:forEach>

@@ -263,13 +263,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" >监察内容：</td>
+							<td align="right" style="height:40px;">监察内容：</td>
 							<td colspan="3">
 							 <label>${ItemProcess.content } </label>  
 							</td>		
 						</tr> 
 						<tr>
-							<td align="right" >附件列表：</td>
+							<td align="right"style="height:80px;">附件列表：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
 									<c:forEach var="fileItem" items="${ItemProcess.fileList }">
@@ -280,7 +280,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>
 						<tr>
-							<td align="right" >方案内容：</td>
+							<td align="right" style="height:40px;">方案内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess2.content } </label> 									
 							</td>		
@@ -297,7 +297,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr>
 						<tr>
-							<td align="right" >监察室意见：</td>
+							<td align="right" style="height:40px;">监察室意见：</td>
 							<td colspan="3">
 								<label>${ItemProcess3.content } </label> 								
 							</td>		
@@ -322,7 +322,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 有异议提请党委 -->
 						<c:if test="${ItemProcess8 != null && ItemProcess4==null}">
 							<tr>
-								<td align="right" >监察室意见：</td>
+								<td align="right" style="height:40px;">监察室意见：</td>
 								<td colspan="3">
 									<label>${ItemProcess8.content } </label>									
 								</td>		
@@ -348,7 +348,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<!-- 党委意见，重新决策 -->
 						<c:if test="${ItemProcess13 != null}">
 							<tr>
-								<td align="right"  >党委意见：</td>
+								<td align="right" style="height:40px;">党委意见：</td>
 								<td colspan="3">
 									<label>${ItemProcess13.content } </label>									
 								</td>		
@@ -364,7 +364,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td> 
 						</tr>	
 						<tr>
-							<td align="right"  >上传会议决策附件：</td>
+							<td align="right" height="40px;">上传会议决策附件：</td>
 							<td colspan="3">
 									<input type="hidden" id="hid_isFileUpload" value="1" /> 
 								 <div id="themeswitcher" class="pull-right"></div>

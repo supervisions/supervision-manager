@@ -138,16 +138,17 @@ function uploadFile(id,tag){
 		 </div>	
           <div class="fl yw-lump"> 
 			<table class="yw-cm-table yw-center yw-bg-hover" id="taskList">
-				<tr style="background-color:#D6D3D3;font-weight: bold;"> 
+				<tr style="background-color:#D6D3D3;font-weight: bold;">
+					<th width="4%" style="display:none">&nbsp;</th>
 					<th width="5%">立项情况</th>
-					<th width="5%">状态</th>	
+					<th width="4%">状态</th>	
 					<th width="5%">性质</th>	
 					<th>工作事项</th>	
 					<th width="4%">查看</th>	
 					<th>立项监察</th>	
 					<th width="10%">被监察对象</th>
 					<th>操作一</th>
-					<th>操作二</th>			
+					<th width="6%">操作二</th>			
 				</tr>
 				<c:forEach var="item" items="${itemList}">
 					<tr> 							
@@ -156,10 +157,10 @@ function uploadFile(id,tag){
 								<span style="color: red;" onclick="setProject(${item.id })">未立项</span>
 							</c:if> --%>
 							<c:if test="${item.status == 0}">
-								<label style="color:red">未立项</label>
+								<span style="color: red;" >未立项</span>
 							</c:if>
 							<c:if test="${item.status != 0 }">
-									<label>已立项</label>	
+									<span>已立项</span>	
 							</c:if>
 						</td>
 						<td  style="color:green;">
@@ -181,12 +182,12 @@ function uploadFile(id,tag){
 						</td>
 						<%-- <td>${item.name}</td> --%>
 						<td>${item.itemCategory }</td>
-						<td title="${item.name}"><p>${item.name}</p></td>
+						<td>${item.name}</td>
 						<td>
 							<img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${item.id })"  />
 							<%-- <a style="color:blue;" onclick="showItem(${item.id })">查看</a> --%>
 						</td>						
-						<td title="${item.itemName}"><p>${item.itemName}</p></td>
+						<td>${item.itemName}</td>
 						<td>${item.orgName}</td>
 						<td>
 							<%-- <span>${item.lasgTag}</span>  --%>		 								
@@ -201,7 +202,7 @@ function uploadFile(id,tag){
 								</c:if>
 								<c:if test="${item.lasgTag == 133 && userOrg.id==19}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 133)">监察意见书</a> --%>
-									<span class="yw-btn-small bg-lan cur"  onclick="uploadFile(${item.id}, 133)">录入监察意见书</span>
+									<span class="yw-btn-small bg-lan cur"  onclick="uploadFile(${item.id}, 133)">录入监察意见</span>
 								</c:if>
 								<c:if test="${item.lasgTag == 134 && userOrg.id==item.supervisionOrgId}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 134)">录入督促整改情况</a> --%>
@@ -217,7 +218,7 @@ function uploadFile(id,tag){
 								</c:if>
 								<c:if test="${item.lasgTag == 137 && userOrg.id==19}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 137)">监察行政意见告知书</a> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 137)">监察行政意见告知书</span>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 137)">监察意见告知书</span>
 								</c:if>
 								<c:if test="${item.lasgTag == 140 && userOrg.id==19}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 140)">监察行政处罚决定书</a> --%>
@@ -236,7 +237,7 @@ function uploadFile(id,tag){
 								</c:if>
 								<c:if test="${item.lasgTag == 133 && userOrg.orgtype==47}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 133)">监察意见书</a> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 133)">录入监察意见书</span>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 133)">录入监察意见</span>
 								</c:if>
 								<c:if test="${item.lasgTag == 134 && userOrg.id==item.supervisionOrgId}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 134)">录入督促整改情况</a> --%>
@@ -252,7 +253,7 @@ function uploadFile(id,tag){
 								</c:if>
 								<c:if test="${item.lasgTag == 137 && userOrg.orgtype==47}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 137)">监察行政意见告知书</a> --%>
-									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 137)">监察行政意见告知书</span>
+									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 137)">监察意见告知书</span>
 								</c:if>
 								<c:if test="${item.lasgTag == 140 && userOrg.orgtype==47}">
 									<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 140)">监察行政处罚决定书</a> --%>
@@ -290,7 +291,7 @@ function uploadFile(id,tag){
 							</c:if>
 							<c:if test="${item.lasgTag == 234 && userOrg.id==item.supervisionOrgId}">
 								<%-- <a style="color: blue;" onclick="uploadFile(${item.id}, 136)">行政处罚意见告知书</a> --%>
-									<span class="yw-btn-small bg-lan cur"  onclick="uploadFile(${item.id}, 136)">录入行政处罚意见告知书</span>
+									<span class="yw-btn-small bg-lan cur"  onclick="uploadFile(${item.id}, 136)">监察行政处罚意见告知书</span>
 							</c:if>
 							
 							<c:if test="${item.lasgTag == 138 && userOrg.id==item.supervisionOrgId}">

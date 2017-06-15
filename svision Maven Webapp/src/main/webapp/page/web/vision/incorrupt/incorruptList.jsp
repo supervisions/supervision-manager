@@ -216,11 +216,11 @@ function uploadFile(id,tag){
 								<img alt="已完结" title="已完结" src="<%=basePath %>source/images/dui.gif" /> 
 							</c:if>
 						</td>
-						<td title="${item.name}"><p>${item.name}</p></td>
+						<td>${item.name}</td>
 						<td><%-- <a style="color:blue;" onclick="showItem(${item.id })">查看</a> --%>
 							<img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${item.id })"  /></td>
 						<td>${item.itemCategory}</td>
-						<td title="${item.itemNmae}"><p>${item.itemNmae}</p></td>
+						<td>${item.itemNmae}</td>
 						<td>${item.orgName}</td>
     					<td>
 								<c:if test="${userOrg.orgtype==47 && item.status == 0 }">

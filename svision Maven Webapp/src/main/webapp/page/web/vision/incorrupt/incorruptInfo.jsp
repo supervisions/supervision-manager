@@ -165,7 +165,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td> 
 						</tr>							
 						<tr>
-							<td align="right"  >项目类别：</td>
+							<td align="right" height="50px">项目类别：</td>
 							<td colspan="3">
 								<select id="superItemType" name="superItemType" style="width:51%;height:32px;">
 									<option value="-1">==请选择项目类别==</option>	
@@ -177,7 +177,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" >规定完成时间：</td>
+							<td align="right" height="50px">规定完成时间：</td>
 							<td colspan="3">								
 							  <input type="text" name="endTimes" value="" id="datepicker" style="width:50%;height:26px;">
 							 	<span style="color:red">*</span> 

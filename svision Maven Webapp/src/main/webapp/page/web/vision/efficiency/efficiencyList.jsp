@@ -259,7 +259,7 @@ function followAction(itemId,status){
 								<img alt="已完结" title="已完结" src="<%=basePath %>source/images/dui.gif" />
 							</c:if>
 						</td>
-						<td title="${item.name}"><p>${item.name}</p></td>
+						<td title="${item.name}">${item.name}</td>
 						<td>
 							<img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${item.id })"  />
 							<!-- <a style="color:blue;" >查看</a> -->
