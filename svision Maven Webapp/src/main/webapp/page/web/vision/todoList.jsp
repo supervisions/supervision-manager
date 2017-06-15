@@ -40,8 +40,8 @@ function showItem(id,type){
 		<div class="fl yw-lump mt10">  
 			<div class=pd10>
 				<div class="fl">  
-					<span>待办事项：</span>
-					<span>共计 ${totalCountLZ+totalCountZF+totalCountXN}项，其中：效能监察： ${totalCountXN }项，廉政监察：${totalCountLZ }项，执法监察：${totalCountZF }项</span> 				
+					<span style="font-size:16px;font-weight:bold;height:40px;">待办事项：</span>
+					<span style="font-size:16px;font-weight:bold;height:40px;">共计  ${totalCountLZ+totalCountZF+totalCountXN} 项，其中：效能监察：  ${totalCountXN } 项，廉政监察： ${totalCountLZ } 项，执法监察： ${totalCountZF } 项</span> 				
 				</div> 
 				<div class="cl"></div>	 
                </div> 
@@ -49,9 +49,9 @@ function showItem(id,type){
           <div class="fl yw-lump"> 
 			<table  id="taskList">
 				<tr style="background-color:#D6D3D3;font-weight: bold;"> 
-					<th width="30%">效能监察</th>
-					<th width="30%">廉政监察</th>	
-					<th width="30%">执法监察</th>	 
+					<th width="30%" style="font-size:16px;font-weight:bold;height:40px;">效能监察</th>
+					<th width="30%" style="font-size:16px;font-weight:bold;height:40px;">廉政监察</th>	
+					<th width="30%" style="font-size:16px;font-weight:bold;height:40px;">执法监察</th>	 
 				<tr> 							
 					<td>
 					<table style="width:100%;height:100%;">

@@ -299,7 +299,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<tr><td style="font-weight: 900;">${item.name }</td></tr>
 										<tr style="width: 100%;">
 											<td>
-												<div style="width:60%;">
+												<div style="width:85%;">
 													<c:forEach var="org" items="${item.itemList }">
 														<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
 													</c:forEach>
@@ -316,7 +316,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<table style="font-size: 16px;"> 									
 									<tr>
 										<td>
-										<div style="width:60%;">
+										<div style="width:80%;">
 											<c:forEach var="item" items="${byLgUser }">
 												<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="user" value="${item.id }"/>${item.name }</label>
 											</c:forEach>
