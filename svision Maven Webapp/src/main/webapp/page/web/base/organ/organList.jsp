@@ -40,7 +40,7 @@
 				 	getOrganListByPid(pid);
    				 },
    				 onBeforeExpand:function(node){   				 
-   				 	$('#treeList').tree('options').url = 'jsonLoadOrganTreeList.do?pid='+ node.id;
+   				 	$('#treeList').tree('options').url = '<%=basePath %>system/organ/jsonLoadOrganTreeList.do?pid='+ node.id;
    				 },
    				 onLoadSuccess:function(){
    				 	//$("#treeList").combotree('state', 'open');
@@ -58,7 +58,7 @@
 		});
 function getOrganListByPid(pid){
 	  $.ajax({
-		url : "jsonLoadOrganListByPid.do?pid="+pid,
+		url : "<%=basePath %>system/organ/jsonLoadOrganListByPid.do?pid="+pid,
 		type : "post",  
 		dataType:"json",
 		success : function(data) { 
@@ -104,7 +104,7 @@ function deleteOrgan(id,name){
 	$.messager.confirm("删除确认","确认删除机构："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsondeleteOrganById.do?id="+id,
+				url : "<%=basePath %>system/organ/jsondeleteOrganById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -127,8 +127,8 @@ function fillOrganList(lst){
 		html += "<tr>";
 		html += "<td  style='display:none'>"+lst[i].id+"</td><td align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td align='left' ><span>"+lst[i].name+"</span></td><td align='left' >"+lst[i].parentName+"</td>";
 		html += "<td class='supervisionState'>"+lst[i].supervision+"</td>";
-		html +="<td align='left'>"+"<a onclick=goToOrganInfo(\'"+lst[i].id+"\')  style='color:blue' >编辑</a></td>";
-		html +="<td align='left'>"+"<a style='color:blue' onclick=deleteOrgan(\'"+lst[i].id+"\',\'"+lst[i].name+"\')>删除</a></td>";
+		html +="<td align='left'>"+"<span class='yw-btn-small bg-lan cur' onclick='goToOrganInfo("+lst[i].id+")'>编辑</span></td>";
+		html +="<td align='left'>"+"<span class='yw-btn-small bg-red cur' onclick=deleteOrgan("+lst[i].id+",'"+lst[i].name+"')>删除</span></td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";
@@ -157,7 +157,7 @@ function pagesearch(){
 }
 
 function goToOrganInfo(organId){
-	window.location.href="organInfo.do?id="+organId;
+	window.location.href="<%=basePath %>system/organ/organInfo.do?id="+organId;
 }
 </script>
 </head>
@@ -181,7 +181,7 @@ function goToOrganInfo(organId){
 						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox"
 							   style="width: 120px;" placeholder="搜索关键字：名称" value="${Organ.searchName}" />
 						<span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
-						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='organInfo.do?id=0'">新建</span>
+						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>system/organ/organInfo.do?id=0'">新建</span>
 					</div>
 					<div class="cl"></div>
 				</div>

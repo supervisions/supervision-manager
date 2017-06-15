@@ -33,7 +33,7 @@
 		var orgpid=$("#orgPid").val();
 		//加载机构树
 	 	$("#orgParentTree").combotree({
-			 	 url: 'system/organ/jsonLoadOrganTreeList.do',  
+			 	 url: '<%=basePath %>system/organ/jsonLoadOrganTreeList.do',  
   				 required: false, //是否必须
   				 //multiple:true,  //是否支持多选  				 
   				 editable:false, //是否支持用户自定义输入	  				 		 
@@ -46,7 +46,7 @@
 				 	 	$("#orgPid").val(record.id); 
   				 },
   				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。  				  
-  				 	$("#orgParentTree").combotree('tree').tree('options').url = 'system/organ/jsonLoadOrganTreeList.do?pid='+ node.id;
+  				 	$("#orgParentTree").combotree('tree').tree('options').url = '<%=basePath %>system/organ/jsonLoadOrganTreeList.do?pid='+ node.id;
   				 },
   				 onLoadSuccess:function(){ //当数据加载成功时触发。  				 	
   				 	//根据所对应的机构选中复选框
@@ -83,7 +83,7 @@
 														data.message,
 														'info',
 														function() {
-															window.location.href = "system/organ/organList.do";
+															window.location.href = "<%=basePath %>system/organ/organList.do";
 														});
 									} else {
 										$.messager.alert('错误信息', data.message,

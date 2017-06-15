@@ -100,7 +100,7 @@ function deleteUser(id,name){
 	$.messager.confirm("删除确认","确认删除用户："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsondeleteUserById.do?id="+id,
+				url : "<%=basePath%>system/user/jsondeleteUserById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -127,7 +127,7 @@ function updateUser(id,used,name){
 	$.messager.confirm("修改确认",operation,function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsonupdateUserById.do?id="+id+"&used="+used,
+				url : "<%=basePath%>system/user/jsonupdateUserById.do?id="+id+"&used="+used,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -148,7 +148,7 @@ function resetUserPwd(id,name){
 	$.messager.confirm("重置密码确认","确认重置用户："+name+"的密码？：",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsonResetUserPwd.do?id="+id,
+				url : "<%=basePath%>system/user/jsonResetUserPwd.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -167,7 +167,7 @@ function resetUserPwd(id,name){
 //根据机构ID查询用户
 function getUserListByOrgId(orgId){
 	  $.ajax({
-		url : "jsonLoadUserListByOrgId.do?orgId="+orgId,
+		url : "<%=basePath%>system/user/jsonLoadUserListByOrgId.do?orgId="+orgId,
 		type : "post",  
 		dataType:"json",
 		success : function(data) { 
@@ -199,19 +199,18 @@ function getUserListByOrgId(orgId){
 				subOrgname();
   			}else{
 				$.messager.alert('错误信息',data.message,'error');
-  			} 
+  			}  
 		}
 	});
 };
 function fillMetaList(lst){
 	var html = "<tbody>";
-	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='4%' style='display:none'>&nbsp;</th><th width='15%'><span style='margin-left:40px'>状态</span></th><th width='15%'>用户名称</th><th width='15%'>用户账号</th><th width='25%'>所属机构</th><th width='15%'>操作一</th><th width='10%'>操作二</th></tr>";
+	html += "<tr style='background-color:#D6D3D3;font-weight: bold;'><th width='15%'>用户名称</th><th width='15%'>用户账号</th><th width='25%'>所属机构</th><th width='15%'>操作一</th><th width='10%'>操作二</th></tr>";
 	for(var i = 0; i<lst.length;i++){
-		html += "<tr>";
-		html += "<td  style='display:none'>"+lst[i].id+"</td><td align='left' ><span class='usedTds' style='margin-left:40px'>"+lst[i].used+"</span></td><td align='left' >"+lst[i].name+"</td><td align='left'>"+lst[i].account+"</td>";
+		html += "<tr><td align='left' >"+lst[i].name+"</td><td align='left'>"+lst[i].account+"</td>";
 		html += "<td align='left' class='orgName' title=\'"+lst[i].orgName+"\'>"+lst[i].orgName+"</td>";
-		html += "<td align='left'>"+"<a href='javascript:void(0);' class='stateBut' onclick=updateUser(\'"+lst[i].id+"\',\'"+lst[i].used+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >启用</a>&nbsp;<a href='javascript:void(0);' onclick=goToUserInfo(\'"+lst[i].id+"\')  style='margin-top:25px;color:blue' >编辑</a>&nbsp;<a href='javascript:void(0);' onclick=resetUserPwd(\'"+lst[i].id+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >重置密码</a></td>";
-		html += "<td align='left'>"+"<a href='javascript:void(0);' onclick=deleteUser(\'"+lst[i].id+"\',\'"+lst[i].name+"\')  style='margin-top:25px;color:blue' >删除</a></td>";
+		html += "<td align='left'>"+"<span class='yw-btn-small bg-lan cur' onclick=window.location.href='<%=basePath%>system/user/userInfo.do?id="+lst[i].id+"';>编辑</span><span class='yw-btn-small bg-red cur' style='margin-left:5px;' onclick=resetUserPwd("+lst[i].id+",'"+lst[i].name+"');>重置密码</span></td>";
+		html += "<td align='left'>"+"<span class='yw-btn-small bg-red cur' onclick=deleteUser("+lst[i].id+",'"+lst[i].name+"');>删除</span></td>";
 		html += "</tr>";
 	}
 	html += "</tbody>";
@@ -243,7 +242,7 @@ function goToUserInfo(id){
 						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox"
 							   style="width: 180px;" placeholder="搜索关键字：名称、账号" value="${User.searchName}" />
 						<span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
-						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='userInfo.do?id=0';">新建</span>
+						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath%>system/user/userInfo.do?id=0';">新建</span>
 					</div>
 					<div class="cl"></div>
 				</div>
@@ -287,8 +286,8 @@ function goToUserInfo(id){
 							<td title="${item.orgName}" class="orgName">${item.orgName}</td>
 							
 							<td>
-								<span class="yw-btn-small bg-red cur" onclick="resetUserPwd(${item.id},'${item.name}');">重置密码</span>	
 								<span class="yw-btn-small bg-lan cur" onclick="window.location.href='userInfo.do?id=${item.id}';">编辑</span>	
+								<span class="yw-btn-small bg-red cur" onclick="resetUserPwd(${item.id},'${item.name}');">重置密码</span>	
 							</td>
 							<td>
 								<%-- <a style="color:blue" onclick="deleteUser(${item.id},'${item.name}');">删除</a>		 --%>

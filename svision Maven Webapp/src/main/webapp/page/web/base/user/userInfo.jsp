@@ -35,7 +35,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		}		
 	 	//加载机构树
 	 	$("#orgParentTree").combotree({
-			 	 url: 'system/organ/jsonLoadOrganTreeList.do',  
+			 	 url: '<%=basePath%>system/organ/jsonLoadOrganTreeList.do',  
   				 required: false, //是否必须
   				 //multiple:true,  //是否支持多选  				 
   				 editable:false, //是否支持用户自定义输入	
@@ -44,7 +44,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				 	 	$("#areaId").val(record.id); 
   				 },
   				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。
-  				 	$("#orgParentTree").combotree('tree').tree('options').url = 'system/organ/jsonLoadOrganTreeList.do?pid='+ node.id;
+  				 	$("#orgParentTree").combotree('tree').tree('options').url = '<%=basePath%>system/organ/jsonLoadOrganTreeList.do?pid='+ node.id;
   				 },
   				 onLoadSuccess:function(){ //当数据加载成功时触发。
   				 	//根据user所对应的机构选中复选框
@@ -89,7 +89,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		  			data = $.parseJSON(data);				  			
 		  			if(data.code==0){	 					
 		  				$.messager.alert('保存信息',data.message,'info',function(){
-		  					window.location.href="system/user/userList.do";
+		  					window.location.href="<%=basePath%>system/user/userList.do";
 	        			});
 		  			}else{
 						$.messager.alert('错误信息',data.message,'error',function(){
