@@ -182,8 +182,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			layer.alert('请选择被监察对象！');	
 			return false;
 		} 
+		var date = new Date(); 
 		var evalue =$("#datepicker").val();
-		alert(evalue);
+		alert(date);
 	}
 	function ajaxPost(){
 		if(isNull()!=false){
