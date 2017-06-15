@@ -256,7 +256,7 @@ function overStatusClick(stus){
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" >立项审批表、方案：</td>
+							<td align="right" style="height:100px;">立项审批表、方案：</td>
 							<td colspan="3">
 							 <label>${ItemProcess.content } </label>  
 							</td>		
@@ -273,7 +273,7 @@ function overStatusClick(stus){
 							</td>		
 						</tr> 
 						<tr>
-							<td align="right" >上传文件说明：</td>
+							<td align="right" style="height:100px;">上传文件说明：</td>
 							<td colspan="3"> 
 								<label>${FileItemProcess.content } </label>  
 							</td>	

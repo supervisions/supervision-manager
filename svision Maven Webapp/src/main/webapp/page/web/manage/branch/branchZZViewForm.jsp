@@ -135,24 +135,26 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<tr><td style="border:0px;"></td><tr>
 								</table>
 							</td>		
-						</tr> 
-						<tr>
-							<td align="right" style="height:100px;">上传文件说明：</td>
-							<td colspan="3"> 
-								<label>${SItemProcess.content } </label>  
-							</td>	
-						</tr>	 
-						<tr>
-							<td align="right">附件列表：</td>
-							<td colspan="3"> 
-								<table style="width:100%;height:100%;min-height:80px;">
-									<c:forEach var="fileItem" items="${SItemProcess.fileList }">
-										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-									</c:forEach> 
-									<tr><td style="border:0px;"></td><tr>
-								</table>
-							</td>		
 						</tr>
+						<c:if test="${SItemProcess != null}">
+							<tr>
+								<td align="right" style="height:100px;">资料说明：</td>
+								<td colspan="3"> 
+									<label>${SItemProcess.content } </label>  
+								</td>	
+							</tr>	
+							<tr>
+								<td align="right">相关资料：</td>
+								<td colspan="3"> 
+									<table style="width:100%;height:100%;min-height:80px;">
+										<c:forEach var="fileItem" items="${SItemProcess.fileList }">
+											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
+										</c:forEach> 
+										<tr><td style="border:0px;"></td><tr>
+									</table>
+								</td>		
+							</tr>							 
+						</c:if>
 					</table>
 				</div>
 			</form>

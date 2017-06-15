@@ -93,7 +93,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<tr>
-							<td width="15%" align="right">项目名称：</td>
+							<td width="12%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
@@ -123,7 +123,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<c:forEach var="fileItem" items="${ItemProcess.fileList }">
 										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 									</c:forEach> 
-									<tr><td style="border:0px;"></td><tr>
+									
 								</table>
 							</td>		
 						</tr> 
@@ -142,7 +142,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<c:forEach var="fileItem" items="${FileItemProcess.fileList }">
 											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
+										
 									</table>
 								</td>		
 							</tr>    
@@ -168,7 +168,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<c:forEach var="fileItem" items="${ChangeItemProcess.fileList }">
 											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
+										
 									</table>
 								</td>		
 							</tr>   
@@ -188,7 +188,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<c:forEach var="fileItem" items="${FollowItemProcess.fileList }">
 											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
+										
 									</table>
 								</td>		
 							</tr>   
@@ -223,7 +223,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<c:forEach var="fileItem" items="${OverItemProcess.fileList }">
 											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
+										
 									</table>
 								</td>		
 							</tr>   
@@ -250,7 +250,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<c:forEach var="fileItem" items="${OverItemProcess.fileList }">
 											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
+										
 									</table>
 								</td>		
 							</tr>  
@@ -277,7 +277,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 										<c:forEach var="fileItem" items="${OverProcess.fileList }">
 											<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 										</c:forEach> 
-										<tr><td style="border:0px;"></td><tr>
+										
 									</table>
 								</td>		
 							</tr>  
