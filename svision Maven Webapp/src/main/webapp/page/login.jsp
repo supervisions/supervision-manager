@@ -159,7 +159,7 @@
 	</script>
 </head>
 
-<body class="login">
+<body class="login" style="overflow-x:hidden">
 <div style="width:100%">
 	<ul class="head-ul mr300 mt123"> 
 	</ul>

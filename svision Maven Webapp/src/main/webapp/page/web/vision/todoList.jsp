@@ -47,42 +47,45 @@ function showItem(id,type){
                </div> 
 		 </div>	
           <div class="fl yw-lump"> 
-			<table class="yw-cm-table yw-center yw-bg-hover"  id="taskList">
+			<table  id="taskList">
 				<tr style="background-color:#D6D3D3;font-weight: bold;"> 
 					<th width="30%">效能监察</th>
 					<th width="30%">廉政监察</th>	
 					<th width="30%">执法监察</th>	 
-				</tr> 
 				<tr> 							
-					<td> 
-					<table style="width:100%;">
+					<td>
+					<table style="width:100%;height:100%;">
 						<c:forEach var="xlItem" items="${itemListXN }">
 							<tr>
-								<td>${xlItem.name }</td>
+								<td style="height:30px; "><a class="dddd" title="点击查看"  onclick="showItem(${xlItem.id },2)" >【${xlItem.name }】</a></td>
 								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${xlItem.id },2)"  /></td>
 							</tr>
 						</c:forEach>
+						<tr><td></td></tr>
 					</table>
 					</td> 					
 					<td> 
-					<table style="width:100%;">
+					<table style="width:100%;height:100%;">
 						<c:forEach var="lzItem" items="${itemListLZ }">
 							<tr>
-								<td>${lzItem.name }</td>
+								<td style="height:30px; "><a class="dddd" title="点击查看" onclick="showItem(${lzItem.id },3)" >【${lzItem.name }】</a></td>
 								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${lzItem.id },3)"  /></td>
 							</tr>
 						</c:forEach>
+						<tr><td></td></tr>
 					</table>
 					</td> 					
 					<td> 
+					<div style="width:100%;overflow-x:hidden;max-height:480px;">
 					<table style="width:100%;">
 						<c:forEach var="zfItem" items="${itemListZF }">
 							<tr>
-								<td>${zfItem.name }</td>
+								<td style="height:30px;"><a class="dddd" title="点击查看" onclick="showItem(${zfItem.id },4)"  >【${zfItem.name }】</a></td>
 								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${zfItem.id },4)"  /></td>
 							</tr>
-						</c:forEach>
-					</table>
+						</c:forEach> 
+					</table> 
+					</div>
 					</td> 
 				</tr> 
 			</table> 
