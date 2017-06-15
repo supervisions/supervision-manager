@@ -1521,15 +1521,18 @@
 	color: #4b5159;
 }
 
+.yw-cm-sub-table {
+	width: 100%;  
+}
 .yw-cm-table {
  width: 100%;  
 	 height: auto;  
 	border: 0;
-	border-collapse: collapse;
+	border-collapse: collapse;  
 	  border-spacing: 0; 
 	table-layout: fixed;
 	background-color: #FFF;
-}
+} 
 
 .yw-cm-table th {
 	height: 30px;
@@ -1660,9 +1663,18 @@
 	text-align: center;
 }
 .yw-leftSide {
-	text-align: left;
+	text-align: left; 
+	width:100%;
 }
 
+.yw-leftSide th{
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	color: #5F6468;
+	font-weight: normal;
+	border-bottom: 1px solid #E2E2E2;
+}
 .yw-leftSide td{
 	height: 30px;
 	line-height: 30px;
@@ -1674,7 +1686,7 @@
 	overflow: hidden;
 	text-align: center;
 }
-.yw-leftSide td:hover{
+.yw-leftSide tr:hover{
 	height: 30px;
 	line-height: 30px;
 	color: #5F6468;
@@ -1761,16 +1773,14 @@
 	border-bottom: 1px solid #00A2CA;
 }
 
-.yw-bi-tabs {
+.yw-bi-tabs { 
 	float: left;
-	width: auto;
-	height: 40px;
+	width: auto; 
 	padding-left: 6px;
 }
 
 .yw-bi-tabs span {
-	width: auto;
-	height: 38px;
+	width: auto; 
 	background-color: #DFDFDF;
 	border: 0;
 	color: #5b6067;
@@ -3823,6 +3833,7 @@
 	height:50px;
 	line-height:50px;
 	text-align: center;
+	cursor:pointer;
 }
 .branchPart:hover{
 	height:50px;

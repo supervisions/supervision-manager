@@ -53,6 +53,8 @@
    				 	} 
    				 }	
 				});	
+				
+			$("#organList").addClass("yw-leftSide");
 		});
 function getOrganListByPid(pid){
 	  $.ajax({
@@ -202,7 +204,8 @@ function goToOrganInfo(organId){
 				<div class="yw-cm-title">
 					<span class="ml26">全部机构</span>
 				</div>
-				<table class="yw-cm-table yw-leftSide yw-bg-hover" id="organList">
+				<div class="yw-cm-sub-table">
+				<table id="organList" cellspacing="0" cellpadding="0">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>						
 						<th><span style='margin-left:40px'>机构状态</span></th>
@@ -223,7 +226,7 @@ function goToOrganInfo(organId){
 								</c:if>				
 							</td>
 							<td  align="left" onclick="goToOrganInfo('')">${item.name }</td>
-							<td  align="left" onclick="goToOrganInfo('')">${item.parentName }</td>
+							<td  align="left" onclick="goToOrganInfo('')">${item.parentName }　</td>
 							<td  align="left" onclick="goToOrganInfo('')">
 								<c:if test="${item.supervision == 1}">
 									<span>是</span>
@@ -242,6 +245,7 @@ function goToOrganInfo(organId){
 						</tr>
 					</c:forEach>
 				</table>
+				</div>
 				<div class="page" id="pager"></div>
 			</div>
 		</div>

@@ -266,6 +266,7 @@ function goToUserInfo(id){
 				<div class="yw-cm-title"> 
 					<span class="ml26">用户列表</span>
 				</div> 
+				<div class="yw-cm-sub-table">
 				<table id="userList" cellspacing="0" cellpadding="0">
 					<tr style="background-color:#D6D3D3;font-weight: bold;height:30px;line-height:30px;">   
 						<th width="15%">用户名称</th>
@@ -295,7 +296,7 @@ function goToUserInfo(id){
 							</td>
 						</tr>
 					</c:forEach>
-				</table>
+				</table></div>
 				<div class="page" id="pager"></div>
 			</div>
 		</div>

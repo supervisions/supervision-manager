@@ -28,7 +28,8 @@
 			    totalCount:'${Item.totalCount}',
 			    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
 			});    
-			$("#fz").attr("onclick","window.location.href='<%=basePath%>manage/branch/branchZZList.do'"); 
+			<%-- $("#fz").attr("onclick","window.location.href='<%=basePath%>manage/branch/branchZZList.do'"); --%>  
+			 
 		});
 		
 PageClick = function(pageclickednumber) {
@@ -150,8 +151,8 @@ function followItem(id,name){
 					<div id="ff" class="branchPart-active">
 						<span>分行完成</span>
 					</div> 
-					<div id="fz"  class="branchPart" >
-						<span>中支完成</span>
+					<div id="fz" onclick="window.location.href='<%=basePath%>manage/branch/branchZZList.do'"  class="branchPart" >
+						<span >中支完成</span>
 					</div>
 				</div>
 			</div>
@@ -159,6 +160,7 @@ function followItem(id,name){
 				<div class="yw-cm-title">
 					<span class="ml26">项目列表</span>
 				</div>
+				<div class="yw-cm-sub-table">
 				<table class="yw-cm-table yw-center yw-bg-hover" id="deviceList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>
@@ -227,6 +229,7 @@ function followItem(id,name){
 						</tr>
 					</c:forEach>
 				</table>
+			</div>
 				<div class="page" id="pager"></div>
 			</div>
 		</div>

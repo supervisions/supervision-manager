@@ -68,8 +68,8 @@ p {
 .con-left{float:left;width:160px;height:100%;background-color:#3A464E;border-top:0px;}
 /*.con-rights{padding:0;margin-left:180px;border-top:1px solid #C3C6CB;}*/  
 .con-rights{padding:0; border-top:0px;   margin-left: 110px;}
-.con-right{padding:5px 5px 0 5px; border-top:0px;  background-color: #FFFFFF;float:left;width:700px;}
-.con-right1{padding:5px 5px 0 5px; border-top:0px;  background-color: #FFFFFF;float:left;width:500px;}
+.con-right{padding:5px 5px 0 5px; border-top:0px;  background-color: #FFFFFF;float:left;}
+.con-right1{padding:5px 5px 0 5px; border-top:0px;  background-color: #FFFFFF;float:left; }
 .head-tool-bar{width:100%;height:25px;background-image: initial;background-position-x: initial;background-position-y: initial;background-size: initial; background-repeat-x: initial;background-repeat-y: initial;background-attachment: initial;background-origin: initial;background-clip: initial;background-color: #eb2b42;}
 
 

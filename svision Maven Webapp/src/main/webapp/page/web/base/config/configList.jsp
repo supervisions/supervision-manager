@@ -61,6 +61,7 @@
    				 	   				 	
    				 }
 			});	
+			$("#metaList").addClass("yw-leftSide");
 		});
 //修改配置状态		
 function metaState(id,used,name){
@@ -234,7 +235,7 @@ function goToMetaInfo(metaId){
 
 <body>
 
-	<div class="con-right" id="conRight">
+	<div class="con-right" id="conRight" >
 		<div class="fl yw-lump">
 			<div class="yw-lump-title">
 				<i class="yw-icon icon-partner"></i><span>配置列表</span><input type="hidden" value="${Config.id}" id="hid_organId" />
@@ -273,6 +274,7 @@ function goToMetaInfo(metaId){
 				<div class="yw-cm-title">
 					<span class="ml26">全部配置</span>
 				</div>
+				<div class="yw-cm-sub-table">
 				<table class="yw-cm-table yw-center yw-bg-hover" id="metaList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>						
@@ -309,6 +311,7 @@ function goToMetaInfo(metaId){
 					</tr>
 					</c:forEach>
 				</table>
+				</div>
 				<div class="page" id="pager"></div>
 			</div>
 		</div>

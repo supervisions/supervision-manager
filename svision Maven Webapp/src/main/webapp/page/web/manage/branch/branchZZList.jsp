@@ -28,7 +28,7 @@
 			    totalCount:'${Item.totalCount}',
 			    buttonClickCallback:PageClick                     /* 表示点击分页数按钮调用的方法 */                  
 			});    
-			$("#ff").attr("onclick","window.location.href='<%=basePath%>manage/branch/branchFHList.do'");    
+			/* $("#ff").attr("onclick","");     */
 		});
 		
 PageClick = function(pageclickednumber) {
@@ -116,7 +116,7 @@ function getItemByItemType(type){
 				</div> 
 				<div class="yw-organ-tree-list" style="height: 639px;">
 					<!-- 加载机构树 -->
-					<div id="ff" class="branchPart">
+					<div id="ff" onclick="window.location.href='<%=basePath%>manage/branch/branchFHList.do'" class="branchPart">
 						<span>分行完成</span>
 					</div> 
 					<div id="fz"  class="branchPart-active" >
@@ -128,6 +128,7 @@ function getItemByItemType(type){
 				<div class="yw-cm-title">
 					<span class="ml26">项目列表</span>
 				</div>
+				<div class="yw-cm-sub-table">
 				<table class="yw-cm-table yw-center yw-bg-hover" id="deviceList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>
@@ -167,6 +168,7 @@ function getItemByItemType(type){
 						</tr>
 					</c:forEach>
 				</table>
+			</div>
 				<div class="page" id="pager"></div>
 			</div>
 		</div>

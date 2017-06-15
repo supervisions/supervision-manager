@@ -49,14 +49,14 @@ function fillOrganList(lst){
 			html += lst[i].pName;
 		} 
 		html += "</td><td align='left' >"+lst[i].schemaName+"</td><td class='supervisionState'>"+lst[i].grade+"</td>";
-		html +="<td align='left'>"+"<a style='color:blue'onclick=editDetail(\'"+lst[i].id+"\',\'"+lst[i].pName+"\')>编辑</a> ";
+		html +="<td align='left'>"+"<span class='yw-btn-small bg-lan cur' onclick=editDetail("+lst[i].id+",'"+lst[i].name+"');>编辑</span>";
 		if(lst[i].level == 0){
-			html +="<a href=\"javascript:void(0);\" style=\"color:blue\" onclick=window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=1&pid="+lst[i].id+"'>添加二级指标</a> ";
+			html +="<span class='yw-btn-small bg-lan cur' style='margin-left:5px;'  onclick=window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=1&pid="+lst[i].id+"'>添加二级指标</span>";
 		}else if(lst[i].level == 1){
-			html +="<a href=\"javascript:void(0);\" style=\"color:blue\" onclick=window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=2&pid="+lst[i].id+"'>添加三级指标</a>";
+			html +="<span class='yw-btn-small bg-lan cur' style='margin-left:5px;' onclick=window.location.href='<%=basePath %>manage/casedetail/casedetailInfo.do?id=0&level=2&pid="+lst[i].id+"'>添加三级指标</span>";
 		}
 		html += "</td>";
-		html += "<td align='left' >"+"<a style='color:blue' onclick=deleteDetail(\'"+lst[i].id+"\',\'"+lst[i].name+"\')>删除</a></td></tr>";
+		html += "<td align='left' >"+"<span class='yw-btn-small bg-red cur' onclick=deleteDetail("+lst[i].id+",'"+lst[i].name+"')>删除</span></td></tr>";
 	}
 	html += "</tbody>";
 	$("#organList").html(html);
@@ -149,6 +149,7 @@ function editDetail(id,pName){
 				<div class="yw-cm-title">
 					<span class="ml26">全部指标</span>
 				</div>
+				<div class="yw-cm-sub-table">
 				<table class="yw-cm-table yw-leftSide yw-bg-hover" id="organList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th><span style='margin-left:40px'>指标等级</span></th> 		 
@@ -197,6 +198,7 @@ function editDetail(id,pName){
 						</tr>
 					</c:forEach>
 				</table> 
+			</div>
 			</div>
 		</div>
 	</div>
