@@ -38,6 +38,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <!-- 以下两个引的文件用于layer -->
 	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
 	<script src="<%=basePath%>source/js/layer/layer.js"></script>
+	<script src="<%=basePath%>source/js/laydate/laydate.js"></script>
     
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
@@ -64,8 +65,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 
 <script type="text/javascript">
 	$(document).ready(function(){	 
-		$("#datepicker").datepicker(); 
-		$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
+		laydate({
+		  elem: '#datepicker', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+		  event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+		});
+		//$("#datepicker").datepicker(); 
+		//$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
 	 	 	var len=32;//32长度
             var radix=16;//16进制
             var chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
@@ -182,9 +187,18 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			layer.alert('请选择被监察对象！');	
 			return false;
 		} 
-		var date = new Date(); 
 		var evalue =$("#datepicker").val();
-		alert(date);
+		
+		var date = new Date();
+		var MM = date.getMonth()+1;
+		var sdate = date.getFullYear()+"-"+MM+"-"+date.getDate(); 
+		
+		var date1 = new Date(evalue.replace(/\-/g, "\/")); 
+		var date2 = new Date(sdate.replace(/\-/g, "\/"));
+		if(date1<date2){
+			layer.alert('规定完成时间不能小于当前时间！');	
+			return false;
+		}
 	}
 	function ajaxPost(){
 		if(isNull()!=false){
@@ -288,7 +302,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									
 								</select> 
 								<span style="color:red">*</span>
-							    规定完成时间：<input type="text" name="end_time" value="" id="datepicker" style="width:258px;height:22px;">
+							    规定完成时间：<input type="text" name="end_time" value="" id="datepicker" class="laydate-icon" >
 							 	<span style="color:red">*</span> 
 							</td>								
 						</tr>

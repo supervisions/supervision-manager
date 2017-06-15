@@ -38,7 +38,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <!-- 以下两个引的文件用于layer -->
 	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
 	<script src="<%=basePath%>source/js/layer/layer.js"></script>
-    
+    <script src="<%=basePath%>source/js/laydate/laydate.js"></script>
     
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />

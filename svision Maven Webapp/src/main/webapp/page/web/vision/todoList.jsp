@@ -47,7 +47,7 @@ function showItem(id,type){
                </div> 
 		 </div>	
           <div class="fl yw-lump"> 
-			<table  id="taskList">
+			<table  id="taskList" border="1px">
 				<tr style="background-color:#D6D3D3;font-weight: bold;"> 
 					<th width="30%" style="font-size:16px;font-weight:bold;height:40px;">效能监察</th>
 					<th width="30%" style="font-size:16px;font-weight:bold;height:40px;">廉政监察</th>	

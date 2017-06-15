@@ -37,7 +37,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <!-- 以下两个引的文件用于layer -->
 	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
 	<script src="<%=basePath%>source/js/layer/layer.js"></script>
-    
+    <script src="<%=basePath%>source/js/laydate/laydate.js"></script>
     
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
@@ -63,9 +63,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <%--///////////////////--%>
 
 <script type="text/javascript">
-	$(document).ready(function(){	 
-		$("#datepicker").datepicker(); 
-		$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
+	$(document).ready(function(){	
+		laydate({
+		  elem: '#datepicker', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+		  event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+		});	 
+		//$("#datepicker").datepicker(); 
+		//$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
 	 	 	
 	 });
 	
@@ -167,7 +171,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" height="50px">项目类别：</td>
 							<td colspan="3">
-								<select id="superItemType" name="superItemType" style="width:51%;height:32px;">
+								<select id="superItemType" name="superItemType" style="width:300px;height:32px;">
 									<option value="-1">==请选择项目类别==</option>	
 									<c:forEach var="item" items="${meatListByKey }">
 										<option value="${item.id }">${item.name }</option>
@@ -179,7 +183,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" height="50px">规定完成时间：</td>
 							<td colspan="3">								
-							  <input type="text" name="endTimes" value="" id="datepicker" style="width:50%;height:26px;">
+							  <input type="text" name="endTimes" value="" id="datepicker" class="laydate-icon" style="width:280px;height:32px;">
 							 	<span style="color:red">*</span> 
 							</td>								
 						</tr>
