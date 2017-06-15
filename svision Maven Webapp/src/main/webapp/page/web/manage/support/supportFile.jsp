@@ -254,7 +254,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right" >立项审批表、方案：</td>
+							<td align="right" style="height:100px;">立项审批表、方案：</td>
 							<td colspan="3">
 							 <label>${ItemProcess.content } </label>  
 							</td>		
@@ -271,7 +271,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr> 
 						<tr>
-							<td align="right" style="height:160px;">监察报告、整改建议书、整改报告、监察决定书：</td>
+							<td align="right" style="height:160px;">相关资料：</td>
 							<td colspan="3">
 								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>
@@ -284,7 +284,11 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 </td>	
 						</tr>
 						<tr>
-							<td align="right" >上传文件说明：</td>
+							<td></td>
+							<td>相关资料包括（监察报告、整改建议书、整改报告、监察决定书等）</td>
+						</tr>
+						<tr>
+							<td align="right" style="height:120px;">上传文件说明：</td>
 							<td colspan="3"> 
 								 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
 							 </td>	

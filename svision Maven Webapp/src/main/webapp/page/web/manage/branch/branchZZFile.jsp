@@ -273,7 +273,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>		
 						</tr> 
 						<tr>
-							<td align="right" style="height:160px;">监察报告、整改建议书、整改报告、监察决定书：</td>
+							<td align="right" style="height:160px;">相关资料：</td>
 							<td colspan="3">
 								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>
@@ -284,6 +284,10 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					                <div id="uploader">
 					                </div>
 							 </td>	
+						</tr>
+						<tr>
+							<td></td>
+							<td>相关资料包括（行政监察通知书、行政监察报告、整改建议书、整改报告、跟踪监察情况等）</td>
 						</tr>
 						<tr>
 							<td align="right" style="height:120px;">上传文件说明：</td>

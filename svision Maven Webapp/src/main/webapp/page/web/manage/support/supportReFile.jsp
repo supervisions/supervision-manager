@@ -230,7 +230,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<tr>
-							<td width="15%" align="right">项目名称：</td>
+							<td width="8%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 								<input type="hidden" value="0" name="id" />
@@ -300,7 +300,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</tr>	 
 						
 						<tr>
-							<td align="right" style="height:160px;">监察报告、整改建议书、整改报告、监察决定书：</td>
+							<td align="right" style="height:160px;">相关资料：</td>
 							<td colspan="3">
 								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>
@@ -313,7 +313,11 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 </td>	
 						</tr>
 						<tr>
-							<td align="right" style="height:120px;">上传文件说明：</td>
+							<td></td>
+							<td>相关资料（监察报告、整改建议书、整改报告、监察决定书）</td>
+						</tr>
+						<tr>
+							<td align="right" style="height:120px;">资料说明：</td>
 							<td colspan="3"> 
 								 <textarea rows="5" cols="5" style="width:60%;" name="content" ></textarea>			 
 							 </td>	
