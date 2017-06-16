@@ -98,7 +98,7 @@ function getItemByItemType(type){
 						<input type="text" name="searchName"   validType="SpecialWord" class="easyui-validatebox"
 							   style="width: 120px;" placeholder="搜索关键字：名称" value="${Item.searchName}" /> 
 						<span class="yw-btn bg-orange ml30 cur" onclick="search();">搜索</span>
-						<c:if test="${logUserOrg == 19 }">
+						<c:if test="${logUserOrg == 19 && logUserOrg.orgtype == 47 }">
 							<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>manage/branch/branchZZInfo.do'">添加项目</span>
 						</c:if>
 					</div>

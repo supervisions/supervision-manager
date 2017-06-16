@@ -144,10 +144,10 @@ public class BranchAction extends SystemAction {
 			}
 		}
 
-		request.setAttribute("logUserOrg", logUserOrg);
+		request.setAttribute("UserOrg", organ);
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item); 
-		
+		request.setAttribute("LoginUser", loginUser);
 		String ip = IpUtil.getIpAddress(request);		
 		logService.writeLog(Constants.LOG_TYPE_SYS, "用户："+loginUser.getName()+"，执行了分行立项分行完成列表查询", 4, loginUser.getId(), loginUser.getUserOrgID(), ip);
 		return "web/manage/branch/branchFHList";
@@ -215,7 +215,7 @@ public class BranchAction extends SystemAction {
 			String format = formatter.format(preparerTime);
 			it.setShowDate(format);
 		}
-		request.setAttribute("logUserOrg", logUserOrg);
+		request.setAttribute("UserOrg", organ);
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item); 
 		String ip = IpUtil.getIpAddress(request);		
