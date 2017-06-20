@@ -262,7 +262,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >
 						<tr>
-							<td align="right" width="15%" height="100px;">监察内容：</td>
+							<td align="right" width="15%" >监察内容：</td>
 							<td colspan="3"> 
 								<textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>								
 							</td> 

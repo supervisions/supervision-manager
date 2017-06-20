@@ -7,7 +7,7 @@ String  url  =  uri.substring(uri.lastIndexOf("/")+1);
 <!DOCTYPE HTML>
 <html>
 <head> 
-<meta http-equiv="X-UA-Compatible" content="IE=7,chrome=1" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=8,chrome=1" /> 
 <title>电子监察平台<sitemesh:write property='title'/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link type="text/css" href="${pageContext.request.contextPath}/source/css/skitter.css" rel="stylesheet"/>

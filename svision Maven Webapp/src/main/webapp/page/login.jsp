@@ -12,7 +12,7 @@
 %>
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=7,chrome=1" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=8,chrome=1" /> 
 	<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
 	<title>电子监察平台-登录</title>
 	<link type="text/css" href="<%=basePath%>source/css/base.css" rel="stylesheet"/>
@@ -187,7 +187,7 @@
 						<%-- <input type="text" name="account" id="loginName" class="login-input login-name easyui-validatebox" placeholder="用户名"  validType="Length[4,22]" data-options="required:true" value="<shiro:principal/>" onblur="GetPwdAndChk();"/> --%>
 					</p>
 					<p class="login-rows mt30">
-						<input type="password" name="pwd" id="password" class="login-input login-pwd easyui-validatebox" placeholder="密码"  validType="Length[4,22]" data-options="required:true"/>
+						<input type="password" name="pwd" id="password" class="login-input login-pwd easyui-validatebox" style="width:239px;height:38px;"  placeholder="密码"  validType="Length[4,22]" data-options="required:true"/>
 					</p>
 					<p class="login-rows mt30">
 						<label class="yw-checkbox">
@@ -198,7 +198,7 @@
 					<div id="login-alert" class="login-rows" style="display:none;"></div>
 					<p class="login-rows mt10">
 						<span class="login-btn" onclick="login()">登 录</span>
-					</p> 
+					</p>  
 				</div>
 			</div>
 

@@ -80,7 +80,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				
 			</div>
 			<div class="fr">  
-				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="$('#i_back').click();">返回</span>
+				<span class="yw-btn bg-green" style="margin-left: 10px;margin-right: 10px;" onclick="javascript:history.back();">返回</span>
 			</div>
 		</div> 
 		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
