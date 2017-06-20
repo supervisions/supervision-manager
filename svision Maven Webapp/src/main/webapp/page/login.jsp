@@ -12,8 +12,7 @@
 %>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<META http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="X-UA-Compatible" content="IE=5" /> 
 	<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
 	<title>电子监察平台-登录</title>
 	<link type="text/css" href="<%=basePath%>source/css/base.css" rel="stylesheet"/>
@@ -26,6 +25,10 @@
 	<script src="<%=basePath%>source/js/easyUI/easyui-lang-zh_CN.js" type="text/javascript"></script>
 	<script src="<%=basePath%>source/js/common/validate.js"></script>
 	<script src="<%=basePath%>source/js/login/pw.js"></script>
+	<!--[if IE 6]>
+	<script src="<%=basePath%>source/js/DDPngMin.js"></script>
+	<script>DD_belatedPNG.fix('.ad_img img,#ssssss');</script>
+	<![endif]--> 
 	<script type="text/javascript">
 		var baseurl = '<%=url%>';
 		$(document).ready(function() { 
@@ -167,7 +170,7 @@
 <div class="box">
 	<div class="logo">
 		<div>
-			<img src="<%=basePath%>source/images/lo_title.jpg"  /> 
+			<img id="ssssss" src="<%=basePath%>source/images/lo_title.png"  /> 
 		</div> 
 	</div>
 	<form method="post"  id="loginForm" >

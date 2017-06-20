@@ -61,14 +61,14 @@ p {
 #adminheader{width:100%;height:95px;margin:0 auto;background-color:#00A2CA;font-size:16px;}
 #content{width:100%;height:auto;margin:0 auto; min-width: 1024px;}
 #footer{width:100%;height:29px;background-color:#1894f4;min-width: 1024px;    text-align: center;
-    line-height: 29px; 
+    line-height: 29px;  
     color: white;}   
 #treeList{width:100%;height:100%;}
 .footer-info{float:left;width:100%;height:28px;line-height:28px;color:#fff;font-size:12px;text-align:center;margin:0;margin-top:1px;padding:0;}
-.con-left{float:left;width:160px;height:100%;background-color:#3A464E;border-top:0px;}
+.con-left{float:left;width:160px;height:100%;min-height:500px;background-color:#3A464E;border-top:0px;}
 /*.con-rights{padding:0;margin-left:180px;border-top:1px solid #C3C6CB;}*/  
 .con-rights{padding:0; border-top:0px;   margin-left: 110px;}
-.con-right{padding:5px 5px 0 5px; border-top:0px;  background-color: #FFFFFF;float:left;}
+.con-right{padding:5px 5px 0 5px; border-top:0px;  background-color: #FFFFFF;float:left; }
 .con-right1{padding:5px 5px 0 5px; border-top:0px;  background-color: #FFFFFF;float:left; }
 .head-tool-bar{width:100%;height:25px;background-image: initial;background-position-x: initial;background-position-y: initial;background-size: initial; background-repeat-x: initial;background-repeat-y: initial;background-attachment: initial;background-origin: initial;background-clip: initial;background-color: #eb2b42;}
 

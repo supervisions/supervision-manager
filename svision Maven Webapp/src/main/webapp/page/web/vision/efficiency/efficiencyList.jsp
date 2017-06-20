@@ -172,6 +172,9 @@ function followAction(itemId,status){
 	    } 
 	});
 } 
+function gotoInfo(){
+	window.location.href='<%=basePath%>vision/efficiency/efficiencyInfo.do?id=0';
+}
 </script>
 </head>
 <body>
@@ -206,7 +209,7 @@ function followAction(itemId,status){
 					</div>
 					<div class="fr">
 						<c:if test="${userOrg.orgtype ==47 || userOrg.orgtype ==43 }">
-							<span class="yw-btn bg-green cur" onclick="window.location.href='efficiencyInfo.do?id=0';">添加工作事项</span>							
+							<span class="yw-btn bg-green cur" onclick="gotoInfo();">添加工作事项</span>							
 						</c:if>
 						
 					</div>

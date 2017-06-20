@@ -43,11 +43,13 @@
         }
 
     }
-
+function gotomodel(){ 
+	window.location.href='/svision/moudle/model/modelSelect.do';
+}
 </script>
 <div class="fl head-logo">
     <%--<div class="fl head-logo">--%>
-        <img src="${pageContext.request.contextPath}/source/images/lo_title.jpg"  />  
+        <img id="ssssss" src="${pageContext.request.contextPath}/source/images/lo_title.png"  />  
 </div>
 <div class="fr head-menu" style="margin-top:20px;">
     <ul class="fl">
@@ -75,7 +77,7 @@
     </ul>
     <div class="fl head-menu-right">
         <!-- <a href="#"><i class="fl yw-icon icon-dot"></i><span>你有新消息</span></a> -->
-        <a href="javascript:void(0);" onclick="window.location.href='${pageContext.request.contextPath}/moudle/model/modelSelect.do'"><i class="fl yw-icon icon-dot"></i><span  style="color:white;font-size:16px;">返回首页</span></a>
+        <a href="javascript:void(0);" onclick="javascript:gotomodel();return false;"><i class="fl yw-icon icon-dot"></i><span  style="color:white;font-size:16px;">返回首页</span></a>
         <a href="javascript:void(0);" onclick="showdialog();"><i class="fl yw-icon icon-dot"></i><span  style="color:white;font-size:16px;">修改密码</span></a>
         <a href="${pageContext.request.contextPath}/logout.do"><i class="fl yw-icon icon-fork"></i><span  style="color:white;font-size:16px;">退出</span></a>
         <%--<a href="${pageContext.request.contextPath}/base/logout.do"><i class="fl yw-icon icon-fork"></i><span  style="color:white;font-size:16px;">退出</span></a>--%>
