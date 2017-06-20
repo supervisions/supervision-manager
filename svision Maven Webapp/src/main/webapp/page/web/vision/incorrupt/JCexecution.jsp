@@ -241,7 +241,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		</div>
 		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
 			<form id="itemInfoForm" name="itemInfoForm"
-				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
+				action=""
 				method="post">
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >						

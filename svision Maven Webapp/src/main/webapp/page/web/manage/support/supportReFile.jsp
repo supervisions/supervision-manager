@@ -314,7 +314,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</tr>
 						<tr>
 							<td></td>
-							<td>相关资料（监察报告、整改建议书、整改报告、监察决定书）</td>
+							<td>相关资料（监察报告、整改建议书、整改报告、监察决定书、跟踪监察情况等）</td>
 						</tr>
 						<tr>
 							<td align="right" style="height:120px;">资料说明：</td>

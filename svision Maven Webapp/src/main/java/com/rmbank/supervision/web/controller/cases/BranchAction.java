@@ -44,6 +44,7 @@ import com.rmbank.supervision.service.ItemProcessFileService;
 import com.rmbank.supervision.service.ItemProcessService;
 import com.rmbank.supervision.service.ItemService;
 import com.rmbank.supervision.service.OrganService;
+import com.rmbank.supervision.service.RoleService;
 import com.rmbank.supervision.service.SysLogService;
 import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
@@ -72,7 +73,8 @@ public class BranchAction extends SystemAction {
 	private ItemProcessFileService itemProcessFileService;
 	@Resource
 	private UserService userService;
-
+	@Resource
+	private RoleService roleService;
 	@Resource
 	private SysLogService logService;
 
@@ -143,7 +145,11 @@ public class BranchAction extends SystemAction {
 				it.setLasgTag(lastItem.getContentTypeId());
 			}
 		}
-
+		
+		List<Role> userRoleList=roleService.getRolesByUserId(loginUser.getId());
+		Role userRole = userRoleList.get(0);
+		request.setAttribute("userRole", userRole);
+		
 		request.setAttribute("UserOrg", organ);
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item); 
@@ -215,6 +221,11 @@ public class BranchAction extends SystemAction {
 			String format = formatter.format(preparerTime);
 			it.setShowDate(format);
 		}
+		
+		List<Role> userRoleList=roleService.getRolesByUserId(loginUser.getId());
+		Role userRole = userRoleList.get(0);
+		request.setAttribute("userRole", userRole);
+		
 		request.setAttribute("UserOrg", organ);
 		request.setAttribute("itemList", itemList);
 		request.setAttribute("Item", item); 

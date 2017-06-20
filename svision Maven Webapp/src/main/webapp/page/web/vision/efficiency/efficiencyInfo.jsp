@@ -65,12 +65,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 
 <script type="text/javascript">
 	$(document).ready(function(){	 
-		laydate({
-		  elem: '#datepicker', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
-		  event: 'focus' //响应事件。如果没有传入event，则按照默认的click
-		});
-		//$("#datepicker").datepicker(); 
-		//$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
 	 	 	var len=32;//32长度
             var radix=16;//16进制
             var chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
@@ -178,7 +172,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			layer.alert('请录入监察项目！');				
 			return false;
 		} 
-		if($("#datepicker").val()==null || $("#datepicker").val()==""){
+		/* if($("#datepicker").val()==null || $("#datepicker").val()==""){
 			layer.alert('请输入规定完成时间！');			
 			return false;
 		} 
@@ -198,7 +192,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		if(date1<date2){
 			layer.alert('规定完成时间不能小于当前时间！');	
 			return false;
-		}
+		} */
 	}
 	function ajaxPost(){
 		if(isNull()!=false){
@@ -261,24 +255,20 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			</div>
 		</div>
 			<form id="itemInfoForm" name="itemInfoForm"
-				action="<%=basePath%>manage/branch/jsonSaveOrUpdateItem.do"
+				action=""
 				method="post">
 				<div id="tab1" class="yw-tab">
 					<table class="font16" id="taskTable">
 						<tr>
 							<td width="12%" align="right">项目名称：</td>
 							<td colspan="3"><input id="itemName" 
-								name="name" type="text" required="true" missingMessage="不克不及为空" value=""  style="width:60%;height:28px;" />  
+								name="name" type="text" required="true"  value=""  style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
                             	<input type="hidden" id="hid_uuid" name="uuid" />
+								<input type="hidden" name="OrgId" value="${userOrg.id}">
 							</td> 
 						</tr>						
-						<tr>
-							<td align="right" height="100px;">监察内容：</td>
-							<td colspan="3"> 
-								<textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>								
-							</td> 
-						</tr>	
+						
 						<tr>
 							<td align="right" height="100px;">上传附件：</td>
 							<td colspan="3">
@@ -291,56 +281,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					                <div id="uploader">
 					                </div>
 							 </td>	
-						</tr>	
-						<tr>
-							<td align="right" height="50px">是否分节点监察：</td>
-							<td colspan="3">
-								<select id="supervisionTypeId" name="isStept" style="width:289px;height:28px;">
-								<!-- 	<option value="-1">请选择是否分节点监察</option>	 -->							
-									<option value="0">否</option>
-									<option value="1">是</option>
-									
-								</select> 
-								<span style="color:red">*</span>
-							    规定完成时间：<input type="text" name="end_time" value="" id="datepicker" class="laydate-icon" >
-							 	<span style="color:red">*</span> 
-							</td>								
-						</tr>
-						<tr>
-							<td align="right" height="100px;">被监察对象：</td>
-							<td colspan="3"> 
-								<table style="font-size: 16px;"> 
-									<c:forEach var="item" items="${OrgList }">
-										<tr><td style="font-weight: 900;">${item.name }</td></tr>
-										<tr style="width: 100%;">
-											<td>
-												<div style="width:85%;">
-													<c:forEach var="org" items="${item.itemList }">
-														<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
-													</c:forEach>
-												</div>
-											</td>
-										</tr>
-									</c:forEach> 
-								</table>
-							 </td>	
-						</tr>	
-						<tr>
-							<td align="right" height="100px;">责任领导：</td>
-							<td colspan="3"> 
-								<table style="font-size: 16px;"> 									
-									<tr>
-										<td>
-										<div style="width:80%;">
-											<c:forEach var="item" items="${byLgUser }">
-												<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="user" value="${item.id }"/>${item.name }</label>
-											</c:forEach>
-										</div>										
-										</td>										
-									</tr>								
-								</table>
-							 </td>	
-						</tr>
+						</tr>						
 						<tr>
 							<td></td>
 							<td>

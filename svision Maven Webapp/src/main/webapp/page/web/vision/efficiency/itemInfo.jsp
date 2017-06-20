@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
    <base href="<%=basePath%>">
   
-   <title>廉政监察</title>
+   <title>效能监察</title>
    
 <meta name="viewport"
 content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" /> 
@@ -39,8 +39,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	<link type="text/css" rel="stylesheet" href="<%=basePath%>source/js/layer/skin/layer.css"/>	
 	<script src="<%=basePath%>source/js/layer/layer.js"></script>
     
-    
-    
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
     <![endif]-->
@@ -65,7 +63,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <%--///////////////////--%>
 
 <script type="text/javascript">
-	$(document).ready(function(){	  
+	$(document).ready(function(){	 
+		$("#datepicker").datepicker(); 
+		$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
 	 	 	var len=32;//32长度
             var radix=16;//16进制
             var chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
@@ -145,57 +145,89 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
             //绑定文件是否全部上传完成
             uploader.bind('UploadComplete',function(uploader,files){
                 if(null != files && files.length>0){ 
-                	layer.confirm('提交监察结论，项目完结！', {
-								btn: ['确认'] //按钮
-							}, function(){//点击确认按钮调用
-								layer.close(layer.confirm());//关闭当前弹出层
-								window.location.href = '<%=basePath%>vision/incorrupt/incorruptList.do';
-							});
+                	layer.confirm('立项成功！', {
+						btn: ['确认'] //按钮
+					}, function(){//点击确认按钮调用
+						layer.close(layer.confirm());//关闭当前弹出层
+						window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
+					});	
                 }
             });
             $("#uploader_browse").removeAttr("style");
             $("#uploader_browse").attr("style","z-index: 1;font-size: 12px;font-weight: normal;");
 	 });
-	 
+	
 	//新增/编辑项目
-	function saveOpinion(obj){	
+	function saveItem(obj){	
 		layer.confirm('确认信息已经填写完整，并且保存？', {
 			btn: ['确认','取消'] //按钮
 		}, function(){//点击确认按钮调用
 			layer.close(layer.confirm());//关闭当前弹出层
-			$.ajax({
-		        cache: true, //是否缓存当前页面
-		        type: "POST", //请求类型
-		        url: "<%=basePath%>vision/incorrupt/jsonSaveJianChaJieLun.do",
-		        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
-		        async: true, //发送异步请求	  
-		        dataType:"json", //响应数据类型      
-		        success: function(data) {
-		        	if(data.code==0){ 
-		        		var uploader = $('#uploader').plupload('getUploader');
+			ajaxPost();
+		}, function(){
+			
+		});
+		
+	}
+	
+	function isNull(){		
+		
+		if($("#datepicker").val()==null || $("#datepicker").val()==""){
+			layer.alert('请输入规定完成时间！');			
+			return false;
+		} 
+		var roleId=$("input[name='OrgId']").is(':checked');
+		if(roleId==false){
+			layer.alert('请选择被监察对象！');	
+			return false;
+		} 
+		var evalue =$("#datepicker").val();
+		
+		var date = new Date();
+		var MM = date.getMonth()+1;
+		var sdate = date.getFullYear()+"-"+MM+"-"+date.getDate(); 
+		
+		var date1 = new Date(evalue.replace(/\-/g, "\/")); 
+		var date2 = new Date(sdate.replace(/\-/g, "\/"));
+		if(date1<date2){
+			layer.alert('规定完成时间不能小于当前时间！');	
+			return false;
+		}
+	}
+	function ajaxPost(){
+		if(isNull()!=false){
+		        $.ajax({
+			        cache: true, //是否缓存当前页面
+			        type: "POST", //请求类型
+			        url: "vision/efficiency/jsonsetProjectById.do",
+			        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
+			        async: true, //发送异步请求	  
+			        dataType:"json", //响应数据类型      
+			        success: function(data) {
+			        	if(data.code==0){ 
+			        	<%-- var uploader = $('#uploader').plupload('getUploader');
 			        	if(uploader.files.length>0){
 			        		$("#uploader_start").click(); //上传文件
 			        	}else{
-			        		layer.confirm('提交监察结论，项目完结！', {
+			        		layer.confirm('立项成功！', {
 								btn: ['确认'] //按钮
 							}, function(){//点击确认按钮调用
 								layer.close(layer.confirm());//关闭当前弹出层
-								window.location.href = '<%=basePath%>vision/incorrupt/incorruptList.do';
+								window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
 							});		        		
-			        	}
+			        	}		 --%>        	
+			        	layer.confirm('立项成功！', {
+							btn: ['确认'] //按钮
+						}, function(){//点击确认按钮调用
+							layer.close(layer.confirm());//关闭当前弹出层
+							window.location.href = '<%=basePath%>vision/efficiency/efficiencyList.do';
+						});		
 		        	}else{
 		        		layer.alert(data.message);	        	
 		        	}	
-		        }
-	   		});		
-		}, function(){
-			
-		});	       
-	}
-	function downLoadFile(path,name){
-		var filePath = encodeURI(encodeURI(path));
-		var fileName = encodeURI(encodeURI(name));
-		window.open("<%=basePath %>system/upload/downLoadFile.do?filePath="+filePath+"&fileName="+fileName);
+			        }
+		   		});
+	   		}
 	}
 	
 	function returnPage(){
@@ -203,7 +235,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			btn: ['确认','取消'] //按钮
 		}, function(){//点击确认按钮调用
 			layer.close(layer.confirm());//关闭当前弹出层
-			window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do';
+			window.location.href='<%=basePath%>vision/efficiency/efficiencyList.do';
 		}, function(){
 			
 		});
@@ -214,7 +246,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>vision/incorrupt/incorruptList.do'"></i><span>项目列表</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>vision/efficiency/efficiencyList.do'"></i><span>项目列表</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
@@ -229,167 +261,24 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				
 			</div>
 		</div>
-		<div style="width:100%;max-height:700px; overflow-x:hidden; ">
 			<form id="itemInfoForm" name="itemInfoForm"
 				action=""
 				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="font16 taskTable" >						
-						<tr>
-							<td width="15%" align="right">项目名称：</td>
-							<td colspan="3">
-								 <label>${Item.name } </label> 
-								<input type="hidden" value="0" name="id" />
-                            	<%-- <input type="hidden" id="hid_uuid" name="uuid" />
-                            	<input type="hidden" name="itemId" value="${Item.id }" />  
-                            	<input type="hidden" name="contentTypeId" value="${ContentTypeId }" /> --%>
-							</td> 
-						</tr>
-						<tr>
-							<td align="right">项目分类：</td>
-							<td colspan="3">
-							 <label>${Item.sType } </label>   
-							</td>								
-						</tr>
-						<%-- <tr>
-							<td align="right">项目类别：</td>
-							<td colspan="3">
-							 <label>${Item.itemCategory } </label>   
-							</td>								
-						</tr> --%>
-						<tr>
-							<td align="right">立项时间：</td>
-							<td colspan="3">
-							 <label>${Item.preparerTimes } </label>   
-							</td>								
-						</tr>
-						<tr>
-							<td align="right" style="height:40px;">监察内容：</td>
-							<td colspan="3">
-							 <label>${ItemProcess.content } </label>  
-							</td>		
-						</tr> 
-						<tr>
-							<td align="right"style="height:80px;">附件列表：</td>
-							<td colspan="3"> 
-								<table style="width:100%;height:100%;min-height:80px;">
-									<c:forEach var="fileItem" items="${ItemProcess.fileList }">
-										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-									</c:forEach> 
-									
-								</table>
-							</td>		
-						</tr>
-						<tr>
-							<td align="right" style="height:40px;">方案内容：</td>
-							<td colspan="3">
-								<label>${ItemProcess2.content } </label> 									
-							</td>		
-						</tr> 
-						<tr>
-							<td align="right" >方案附件：</td>
-							<td colspan="3"> 
-								<table style="width:100%;height:100%;min-height:80px;">
-									<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
-										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-									</c:forEach> 
-									
-								</table>
-							</td>		
-						</tr>
-						<tr>
-							<td align="right" style="height:40px;">监察意见：</td>
-							<td colspan="3">
-								<label>${ItemProcess3.content } </label> 
-								
-							</td>		
-						</tr>
-						<tr>
-							<td align="right"style="height:80px;">相关附件：</td>
-							<td colspan="3"> 
-								<table style="width:100%;height:100%;min-height:80px;">
-									<c:forEach var="fileItem" items="${ItemProcess3.fileList }">
-										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-									</c:forEach> 
-									
-								</table>
-							</td>		
-						</tr>	
-						<tr>
-							<td align="right">是否合规：</td>
-							<td colspan="3">
-								<label>合规 </label> 									
-							</td>		
-						</tr>		
-						<tr>
-							<td align="right" style="height:40px;">会议决策：</td>
-							<td colspan="3">
-								<label>${ItemProcess6.content } </label> 
-								
-							</td>		
-						</tr>
-						<tr>
-							<td align="right"style="height:80px;">相关附件：</td>
-							<td colspan="3"> 
-								<table style="width:100%;height:100%;min-height:80px;">
-									<c:forEach var="fileItem" items="${ItemProcess6.fileList }">
-										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-									</c:forEach> 
-									
-								</table>
-							</td>		
-						</tr>	
-						<!-- 有异议提请党委 -->
-						<c:if test="${ItemProcess8 != null && ItemProcess4==null}">
-							<tr>
-								<td align="right" style="height:40px;">监察意见：</td>
-								<td colspan="3">
-									<label>${ItemProcess8.content } </label>									
-								</td>		
-							</tr>
-							<tr>
-								<td align="right" >相关附件：</td>
-								<td colspan="3"> 
-									<table style="width:100%;height:100%;min-height:80px;">
-										<c:forEach var="fileItem" items="${ItemProcess8.fileList }">
-											<tr style="height:20px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-										</c:forEach> 
+					<table class="font16" id="taskTable">
 										
-									</table>
-								</td>		
-							</tr>		
-							<tr>
-								<td align="right">是否有异议：</td>
-								<td colspan="3">
-									<label>有异议</label> 									
-								</td>		
-							</tr>						
-						</c:if>
-						<!-- 党委意见，维持原决议 -->
-						<c:if test="${ItemProcess14 != null}">
-							<tr>
-								<td align="right" style="height:40px;">党委意见：</td>
-								<td colspan="3">
-									<label>${ItemProcess14.content } </label>									
-								</td>		
-							</tr>											
-						</c:if>
-						
 						<tr>
-							<td align="right" width="15%" align="right" height="40px;">监察结论：</td>
-							<td colspan="3" > 
-									
-								<textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>								
-								<input type="hidden" name ="itemId" value="${Item.id }">
-								<input type="hidden" id="hid_uuid" name="uuid" />
+							<td align="right" width="15%" height="100px;">监察内容：</td>
+							<td colspan="3"> 
+								<textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>								
 							</td> 
-						</tr>
-						<tr>
-							<td align="right" height="129px;">上传附件：</td>
+							<input type="hidden" id="hid_uuid" name="uuid" />
+							<input type="hidden" name="id" value="${itemId }"><!-- 立项项目Id -->
+						</tr>	
+						<!-- <tr>
+							<td align="right" height="100px;">上传附件：</td>
 							<td colspan="3">
-								<input type="hidden" id="hid_isFileUpload" value="1" />
-									
-								 <div id="themeswitcher" class="pull-right"></div>
+								 <div id="themeswitcher" class="pull-right"> </div>
 					                <script>
 					                    $(function() {
 					                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
@@ -398,22 +287,72 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					                <div id="uploader">
 					                </div>
 							 </td>	
-						</tr>					
+						</tr>	 -->
+						<tr>
+							<td align="right" height="50px">是否分节点监察：</td>
+							<td colspan="3">
+								<select id="supervisionTypeId" name="isstept" style="width:289px;height:28px;">
+								<!-- 	<option value="-1">请选择是否分节点监察</option>	 -->							
+									<option value="0">否</option>
+									<option value="1">是</option>
+									
+								</select> 
+								<span style="color:red">*</span>
+							    规定完成时间：<input type="text" name="end_time" value="" id="datepicker" style="width:258px;height:22px;">
+							 	<span style="color:red">*</span> 
+							</td>								
+						</tr>
+						<tr>
+							<td align="right" height="100px;">被监察对象：</td>
+							<td colspan="3"> 
+								<table style="font-size: 16px;"> 
+									<c:forEach var="item" items="${OrgList }">
+										<tr><td style="font-weight: 900;">${item.name }</td></tr>
+										<tr style="width: 100%;">
+											<td>
+												<div style="width:60%;">
+													<c:forEach var="org" items="${item.itemList }">
+														<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="OrgId" value="${org.id }"/>${org.name }</label>
+													</c:forEach>
+												</div>
+											</td>
+										</tr>
+									</c:forEach> 
+								</table>
+							 </td>	
+						</tr>	
+						<tr>
+							<td align="right" height="100px;">责任领导：</td>
+							<td colspan="3"> 
+								<table style="font-size: 16px;"> 									
+									<tr>
+										<td>
+										<div style="width:60%;">
+											<c:forEach var="item" items="${byLgUser }">
+												<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="user" value="${item.id }"/>${item.name }</label>
+											</c:forEach>
+										</div>										
+										</td>										
+									</tr>								
+								</table>
+							 </td>	
+						</tr>
 						<tr>
 							<td></td>
 							<td>
-								<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveOpinion(this);">提交</span>
+								<span class="yw-btn bg-red" style="margin-left: 10px;" id="saveBtn" onclick="saveItem(this);">提交</span>
 								<span class="yw-btn bg-green" style="margin-left: 50px;margin-right: 10px;" onclick="returnPage();">返回</span>
-							</td>
-						</tr>
+							</td>							
+						</tr>	
 					</table>
 				</div>
 			</form>
 		</div> 
-	</div>
+	
 	<div class="cl"></div>
 </div>
+
 <div class="cl"></div>
-</div> 
+</div>
 </body>
 </html>  

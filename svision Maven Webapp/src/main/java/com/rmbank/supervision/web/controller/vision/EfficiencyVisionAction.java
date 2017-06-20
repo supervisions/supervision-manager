@@ -121,8 +121,11 @@ public class EfficiencyVisionAction extends SystemAction {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		for (Item it : itemList) {
 			Date endTime = it.getEndTime();
-			String format = formatter.format(endTime);
-			it.setShowDate(format);
+			if(endTime!=null){
+				String format = formatter.format(endTime);
+				it.setShowDate(format);
+			}
+			
 			List<ItemProcess> itemprocessList = itemProcessService.getItemProcessItemId(it.getId());
 			if(itemprocessList.size()>0){
 				ItemProcess lastItem = itemprocessList.get(itemprocessList.size()-1);
@@ -197,6 +200,7 @@ public class EfficiencyVisionAction extends SystemAction {
 		}else if (orgtype == 45 || orgtype == 46 || orgtype == 47) {
 			userListByOrgId = userService.getUserListByOrgId(112);
 		}
+		//request.setAttribute("userOrg", organ2);
 		request.setAttribute("byLgUser", userListByOrgId);
 		request.setAttribute("OrgList", list);		
 		return "web/vision/efficiency/efficiencyInfo";
@@ -249,13 +253,14 @@ public class EfficiencyVisionAction extends SystemAction {
 		List<User> byLgUser = userService.getUserListByLgUser(lgUser);		
 		request.setAttribute("byLgUser", byLgUser);
 		request.setAttribute("OrgList", list);		
+		request.setAttribute("itemId", id);
 		return "web/vision/efficiency/itemInfo";
 	}
     
     
     
     /** 
-   	 * 新增,编辑项目
+   	 * 新增项目
    	 * @throws ParseException 
    	 */
    @ResponseBody
@@ -266,59 +271,62 @@ public class EfficiencyVisionAction extends SystemAction {
    		@RequestParam(value = "content", required = false) String content,
    		@RequestParam(value = "OrgId", required = false) Integer[] OrgIds,    		
    		HttpServletRequest request, HttpServletResponse response) throws ParseException{
-   	//将前台传过来的String类型的时间转换为Date类型
-   	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-   	Date date = sdf.parse(end_time);    	
-   	item.setEndTime(date); //完成时间
-   	item.setPreparerTime(new Date());
-   	item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //项目类型
-   	item.setSupervisionTypeId(2);
-   	item.setPid(0); //主任务节点的ID
-   	item.setStageIndex(new Byte("0")); //工作阶段排序   	
-   	//获取当前登录用户
-   	User u = this.getLoginUser();
-   	item.setPreparerId(u.getId()); //制单人的ID
-   	item.setSupervisionUserId(0); //
-   	//获取当前用户所属的机构id，当做制单部门的ID
-   	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
-   	item.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
-   	//新建一个json对象 并赋初值
-	JsonResult<Item> js = new JsonResult<Item>();
-	js.setCode(new Integer(1));
-	js.setMessage("保存项目信息失败!");
-	
-	boolean State =  false;
-	try {
-		//如为新增，则给id置0
-		if (item.getId() == null || item.getId() == 0) {
-			item.setId(0);					
-		} 		
-		//创建用于新增时根据项目名称去查询项目是否存在的对象
-		Item im = new Item();
-		im.setName(item.getName());
-		//根据name去数据库匹配，如编辑，则可以直接保存；如新增，则需匹配该项目是否重复
-		List<Item> lc = itemService.getExistItem(im);
-		if (lc.size() == 0) {  
-			State = itemService.saveOrUpdateItem(item,OrgIds,content);				
-			if(State){
-				User loginUser = this.getLoginUser();
-				String ip = IpUtil.getIpAddress(request);		
-				logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，添加了效能监察的工作事项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
-				
-				js.setCode(new Integer(0));
-				js.setMessage("保存项目信息成功!");
+	  
+		//将前台传过来的String类型的时间转换为Date类型
+		if (end_time != null) {
+		   	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		   	Date date = sdf.parse(end_time);    	
+		   	item.setEndTime(date); //完成时间
+		}
+	   	item.setPreparerTime(new Date());
+	   	item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //项目类型
+	   	item.setSupervisionTypeId(2);
+	   	item.setPid(0); //主任务节点的ID
+	   	item.setStageIndex(new Byte("0")); //工作阶段排序   	
+	   	//获取当前登录用户
+	   	User u = this.getLoginUser();
+	   	item.setPreparerId(u.getId()); //制单人的ID
+	   	item.setSupervisionUserId(0); //
+	   	//获取当前用户所属的机构id，当做制单部门的ID
+	   	List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());
+	   	item.setPreparerOrgId(userOrgIDs.get(0)); //制单部门的ID
+	   	//新建一个json对象 并赋初值
+		JsonResult<Item> js = new JsonResult<Item>();
+		js.setCode(new Integer(1));
+		js.setMessage("保存项目信息失败!");
+		
+		boolean State =  false;
+		try {
+			//如为新增，则给id置0
+			if (item.getId() == null || item.getId() == 0) {
+				item.setId(0);					
+			} 		
+			//创建用于新增时根据项目名称去查询项目是否存在的对象
+			Item im = new Item();
+			im.setName(item.getName());
+			//根据name去数据库匹配，如编辑，则可以直接保存；如新增，则需匹配该项目是否重复
+			List<Item> lc = itemService.getExistItem(im);
+			if (lc.size() == 0) {  
+				State = itemService.saveOrUpdateItem(item,OrgIds,content);				
+				if(State){
+					User loginUser = this.getLoginUser();
+					String ip = IpUtil.getIpAddress(request);		
+					logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，添加了效能监察的工作事项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+					
+					js.setCode(new Integer(0));
+					js.setMessage("保存项目信息成功!");
+					return js;
+				}else{
+					return js;
+				}
+			} else {
+				js.setMessage("该项目已存在!");
 				return js;
-			}else{
-				return js;
-			}
-		} else {
-			js.setMessage("该项目已存在!");
-			return js;
-		} 
-	}catch(Exception ex){
-		ex.printStackTrace();
-	}
-	return js;
+			} 
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return js;
    }
    	
    
@@ -360,37 +368,94 @@ public class EfficiencyVisionAction extends SystemAction {
    
    
     /**
-     * 修改立项状态
+     * 监察室进行立项
      */
     @ResponseBody
 	@RequestMapping(value = "/jsonsetProjectById.do", method = RequestMethod.POST)
 	@RequiresPermissions("vision/efficiency/jsonsetProjectById.do")
-	public JsonResult<Item> jsonsetProjectById(
-			@RequestParam(value = "id", required = false) Integer id,
+	public JsonResult<Item> jsonsetProjectById(Item item,
+			@RequestParam(value = "end_time", required = false) String end_time,//用于接收前台传过来的String类型的时间
+	   		@RequestParam(value = "content", required = false) String content,
+	   		@RequestParam(value = "OrgId", required = false) Integer[] OrgIds,    		
 			HttpServletRequest request, HttpServletResponse response) {
 		
-		// 新建一个json对象 并赋初值
+    	// 新建一个json对象 并赋初值
 		JsonResult<Item> js = new JsonResult<Item>();
 		js.setCode(new Integer(1));
-		js.setMessage("立项失败!");			
-		try {		
-			Item item =new Item();
-			item.setId(id);			
-			item.setStatus(1);
-			int state = itemService.updateByPrimaryKeySelective(item);
-			if(state==1){
-				User loginUser = this.getLoginUser();
-				String ip = IpUtil.getIpAddress(request);		
-				logService.writeLog(Constants.LOG_TYPE_XLJC, "用户："+loginUser.getName()+"，对效能监察的工作事项进行立项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
-				js.setCode(new Integer(0));
-				js.setMessage("立项成功!");
-				return js;
-			}else {
-				return js;
+		js.setMessage("立项失败!");
+		
+		// 获取当前登录用户
+		User u = this.getLoginUser();
+		//获取要立项的项目
+		Item item2 = itemService.selectByPrimaryKey(item.getId());
+		try {
+			// 将前台传过来的String类型的时间转换为Date类型
+			if (end_time != null) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date date = sdf.parse(end_time);
+				item2.setEndTime(date); // 完成时间			
+				item2.setStatus(1);
+				item2.setUuid(item.getUuid());			
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}	
+
+			//首先删除当前未立项的这条项目
+			boolean states = itemService.deleteItemById(item2.getId());
+			//获取当前项目的流程，有且只有一个
+			List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item2.getId()); 
+			ItemProcess getItemProcess = itemProcessList.get(0);
+			//获取初始化流程的附件集合
+			List<ItemProcessFile> fileList = itemProcessFileService.getFileListByItemId(itemProcessList.get(0).getId());
+			List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());	
+			//立项返回的项目ID
+			List<Integer> itemIds= new ArrayList<Integer>();
+			for (Integer orgId : OrgIds) {
+				item2.setId(0);
+				item2.setSupervisionOrgId(orgId);
+				itemService.insertSelective(item2);//根据机构数对项目进行立项
+				Integer itemId = item2.getId(); //立项返回的ID
+				itemIds.add(itemId);
+				
+				getItemProcess.setId(0);
+				getItemProcess.setItemId(itemId);	
+				getItemProcess.setDefined(false);
+				getItemProcess.setOrgId(userOrgIDs.get(0));
+				getItemProcess.setContent(content);
+				itemProcessService.insert(getItemProcess);//将项目的初始化流程赋给立项的项目				
+				Integer itemProcessId = getItemProcess.getId(); //返回的id
+				
+				for (ItemProcessFile itemProcessFile : fileList) {
+					itemProcessFile.setId(0);
+					itemProcessFile.setItemProcessId(itemProcessId);
+					itemProcessFileService.insertSelective(itemProcessFile);//将初始化的附件赋给立项项目
+				}
+								
+				//新增立项流程
+//				List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());					
+//				ItemProcess itemProcess = new ItemProcess();
+//				itemProcess.setUuid(item.getUuid());
+//				itemProcess.setItemId(itemId);
+//				itemProcess.setDefined(false);
+//				itemProcess.setContentTypeId(Constants.ENFORCE_VISION_0);// 监察室立项状态
+//				itemProcess.setPreparerOrgId(orgId); // 制单部门的ID
+//				itemProcess.setOrgId(userOrgIDs.get(0));
+//				itemProcess.setContent(content);
+//				itemProcess.setPreparerId(u.getId());
+//				itemProcess.setPreparerTime(new Date());
+//				itemProcessService.insert(itemProcess);
+			}
+			
+			User loginUser = this.getLoginUser();
+			String ip = IpUtil.getIpAddress(request);		
+			logService.writeLog(Constants.LOG_TYPE_ZFJC, "用户："+loginUser.getName()+"，对执法监察的项目进行了立项", 1, loginUser.getId(), loginUser.getUserOrgID(), ip);
+			
+			js.setCode(new Integer(0));
+			js.setMessage("保存项目信息成功!");
+			return js;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+
+		}
 		return js;
 	}
     

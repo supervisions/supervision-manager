@@ -244,7 +244,7 @@ function uploadFile(id,tag){
 									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 134)">录入督促整改情况</span>
 								</c:if>
 								<c:if test="${item.lasgTag == 135 && userOrg.orgtype==47}">
-									<a style="color: blue;" onclick="uploadFile(${item.id}, 135)">监察结论</a>
+									
 									<span class="yw-btn-small bg-lan cur" onclick="uploadFile(${item.id}, 135)">录入监察结论</span>
 								</c:if>
 								<c:if test="${item.status == 0 && userOrg.orgtype==47}">
