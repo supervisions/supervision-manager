@@ -308,7 +308,7 @@ function toLiXiang(id){
 							</c:if>
 						</td>
 						<td><%-- <sapn>${item.lasgTag}</sapn> --%>
-							<c:if test="${item.status == 0 && userOrg.id==17 || item.status == 0 && userOrg.id==18 || item.status == 0 && userOrg.id==19}">
+							<c:if test="${ item.status == 0 && userOrg.id==19}">
 								<%-- <span style="color: red;" onclick="setProject(${item.id })">立项</span> --%>
 									<span class="yw-btn-small bg-red cur" onclick="toLiXiang(${item.id })">立项</span>
 							</c:if>
