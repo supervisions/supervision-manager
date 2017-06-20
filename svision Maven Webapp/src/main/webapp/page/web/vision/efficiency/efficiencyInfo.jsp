@@ -40,6 +40,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	<script src="<%=basePath%>source/js/layer/layer.js"></script>
 	<script src="<%=basePath%>source/js/laydate/laydate.js"></script>
     
+    
     <!--[if lte IE 7]>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>source/js/plupload/css/my_ie_lte7.css" />
     <![endif]-->
@@ -199,7 +200,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	        $.ajax({
 		        cache: true, //是否缓存当前页面
 		        type: "POST", //请求类型
-		        url: "vision/efficiency/jsonSaveOrUpdateItem.do",
+		        url: "<%=basePath%>vision/efficiency/jsonSaveOrUpdateItem.do",
 		        data:$('#itemInfoForm').serialize(),//发送到服务器的数据，序列化后的值
 		        async: true, //发送异步请求	  
 		        dataType:"json", //响应数据类型      
@@ -240,7 +241,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 <div class="con-right" id="conRight">
 	<div class="fl yw-lump">
 		<div class="yw-lump-title"> 												
-				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>vision/efficiency/efficiencyList.do'"></i><span>项目列表</span>
+				<i id="i_back" class="yw-icon icon-back" onclick="window.location.href='<%=basePath%>vision/enforce/enforceList.do'"></i><span>项目列表</span>
 		</div>
 	</div>
 	<div class="fl yw-lump mt10">
@@ -252,15 +253,16 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
 				
+				
 			</div>
 		</div>
 			<form id="itemInfoForm" name="itemInfoForm"
 				action=""
 				method="post">
 				<div id="tab1" class="yw-tab">
-					<table class="font16" id="taskTable">
+					<table class="font16 taskTable" >
 						<tr>
-							<td width="12%" align="right">项目名称：</td>
+							<td width="10%" align="right">项目名称：</td>
 							<td colspan="3"><input id="itemName" 
 								name="name" type="text" required="true"  value=""  style="width:60%;height:28px;" />  
 								<span style="color:red">*</span> 
@@ -296,8 +298,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	
 	<div class="cl"></div>
 </div>
-
 <div class="cl"></div>
-</div>
+</div> 
 </body>
 </html>  

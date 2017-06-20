@@ -265,24 +265,6 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td> 
 						</tr>
 						<tr>
-							<td align="right">项目分类：</td>
-							<td colspan="3">
-							 <label>${Item.sType } </label>   
-							</td>								
-						</tr>
-						<tr>
-							<td align="right">立项时间：</td>
-							<td colspan="3">
-							 <label>${Item.preparerTimes } </label>   
-							</td>								
-						</tr>
-						<tr>
-							<td align="right" style="height:100px;">监察内容：</td>
-							<td colspan="3">
-								<label>${ItemProcess.content } </label> 
-							</td>		
-						</tr> 
-						<tr>
 							<td align="right">附件列表：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
@@ -293,6 +275,25 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</table>
 							</td>		
 						</tr> 
+						<tr>
+							<td align="right">项目分类：</td>
+							<td colspan="3">
+							 <label>${Item.sType } </label>   
+							</td>								
+						</tr>
+						<tr>
+							<td align="right" style="height:100px;">监察内容：</td>
+							<td colspan="3">
+								<label>${ItemProcess.content } </label> 
+							</td>		
+						</tr> 
+						<tr>
+							<td align="right">规定完成时间：</td>
+							<td colspan="3">
+							 <label>${Item.endTimes } </label>   
+							</td>								
+						</tr>
+						
 						
 						
 						<!-- 不分节点上传资料状态 -->
