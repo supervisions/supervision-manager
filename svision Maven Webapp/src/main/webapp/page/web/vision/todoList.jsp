@@ -47,13 +47,14 @@ function showItem(id,type){
                </div> 
 		 </div>	
           <div class="fl yw-lump"> 
-			<table  id="taskList" border="1px">
+			<table  id="taskList" border="0px">
 				<tr style="background-color:#D6D3D3;font-weight: bold;"> 
 					<th width="30%" style="font-size:16px;font-weight:bold;height:40px;">效能监察</th>
 					<th width="30%" style="font-size:16px;font-weight:bold;height:40px;">廉政监察</th>	
 					<th width="30%" style="font-size:16px;font-weight:bold;height:40px;">执法监察</th>	 
 				<tr> 							
 					<td>
+					<div style="width:100%;height:100%;overflow-x:hidden;max-height:626px;">
 					<table style="width:100%;height:100%;">
 						<c:forEach var="xlItem" items="${itemListXN }">
 							<tr>
@@ -61,10 +62,12 @@ function showItem(id,type){
 								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${xlItem.id },2)"  /></td>
 							</tr>
 						</c:forEach>
-						<tr><td></td></tr>
+						<tr><td colspan="2"></td></tr>
 					</table>
+					</div>
 					</td> 					
 					<td> 
+					<div style="width:100%;height:100%;overflow-x:hidden;max-height:626px;">
 					<table style="width:100%;height:100%;">
 						<c:forEach var="lzItem" items="${itemListLZ }">
 							<tr>
@@ -72,18 +75,20 @@ function showItem(id,type){
 								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${lzItem.id },3)"  /></td>
 							</tr>
 						</c:forEach>
-						<tr><td></td></tr>
+						<tr><td colspan="2"></td></tr>
 					</table>
+					</div>
 					</td> 					
 					<td> 
-					<div style="width:100%;overflow-x:hidden;max-height:480px;">
-					<table style="width:100%;">
+					<div style="width:100%;height:100%;overflow-x:hidden;max-height:626px;">
+					<table style="width:100%;height:100%;">
 						<c:forEach var="zfItem" items="${itemListZF }">
 							<tr>
 								<td style="height:30px;"><a class="dddd" title="点击查看" onclick="showItem(${zfItem.id },4)"  >【${zfItem.name }】</a></td>
 								<td width="30"><img alt="查看" title="查看详情" src="<%=basePath %>source/images/search.png" onclick="showItem(${zfItem.id },4)"  /></td>
 							</tr>
 						</c:forEach> 
+						<tr><td colspan="2" ></td></tr>
 					</table> 
 					</div>
 					</td> 

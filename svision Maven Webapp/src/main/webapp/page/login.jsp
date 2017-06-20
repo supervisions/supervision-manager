@@ -12,7 +12,7 @@
 %>
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=5" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=7,chrome=1" /> 
 	<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
 	<title>电子监察平台-登录</title>
 	<link type="text/css" href="<%=basePath%>source/css/base.css" rel="stylesheet"/>

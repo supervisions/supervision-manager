@@ -47,7 +47,7 @@ function showItem(id,type){
                </div> 
 		 </div>	
           <div class="fl yw-lump"> 
-			<table class="yw-cm-table yw-center yw-bg-hover"  id="taskList">
+			<table class="yw-cm-table yw-center yw-bg-hover" border="0px"  id="taskList" cellpadding="0" cellspacing="0">
 				<tr style="background-color:#D6D3D3;font-weight: bold;"> 
 					<th width="30%">分行立项分行完成</th>
 					<th width="30%">分行立项中支完成</th>	
@@ -55,7 +55,7 @@ function showItem(id,type){
 				</tr> 
 				<tr> 							
 					<td> 
-					<table style="width:100%;">
+					<table style="width:100%;border:0px;" cellpadding="0" cellspacing="0">
 						<c:forEach var="fhItem" items="${FHFHList }">
 							<tr>
 								<td>${fhItem.name }</td>
@@ -65,7 +65,7 @@ function showItem(id,type){
 					</table>
 					</td> 					
 					<td> 
-					<table style="width:100%;">
+					<table style="width:100%;border:0px;"> 
 						<c:forEach var="zzItem" items="${FHZZList }">
 							<tr>
 								<td>${zzItem.name }</td>
@@ -75,7 +75,7 @@ function showItem(id,type){
 					</table>
 					</td> 					
 					<td> 
-					<table style="width:100%;">
+					<table style="width:100%;border:0px;">
 						<c:forEach var="zzItem" items="${ZZList }">
 							<tr>
 								<td>${zzItem.name }</td>
