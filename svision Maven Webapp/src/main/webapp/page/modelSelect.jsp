@@ -12,8 +12,7 @@
 %>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<META http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="X-UA-Compatible" content="IE=7,chrome=1" /> 
 	<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
 	<title>电子监察平台-模块选择</title>
 	<link type="text/css" href="<%=basePath%>source/css/base.css" rel="stylesheet"/>

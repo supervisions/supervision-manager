@@ -157,7 +157,7 @@ public class EfficiencyVisionAction extends SystemAction {
 	public String efficiencyInfo(
 			@RequestParam(value = "id", required = false) Integer id,
 			HttpServletRequest request, HttpServletResponse response) {
-    	
+
     	//获取机构
 		Organ organ=new Organ();
 		List<Organ> organList = organService.getOrganList(organ);		
@@ -329,7 +329,7 @@ public class EfficiencyVisionAction extends SystemAction {
 		}
 		return js;
    }
-   
+   	
    
    /**
     * 被监察对象签收项目

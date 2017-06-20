@@ -174,9 +174,9 @@ function followAction(itemId,status){
   			}  
 	    } 
 	});
-} 
+}  
 function toLiXiang(id){
-	window.location.href="itemInfo.do?id="+id;
+	window.location.href="itemInfo.do?id="+id; 
 }
 </script>
 </head>
@@ -212,7 +212,7 @@ function toLiXiang(id){
 					</div>
 					<div class="fr">
 						<c:if test="${userOrg.orgtype ==47 || userOrg.orgtype ==43 }">
-							<span class="yw-btn bg-green cur" onclick="window.location.href='efficiencyInfo.do?id=0';">添加工作事项</span>							
+							<span class="yw-btn bg-green cur" onclick="window.location.href='<%=basePath%>vision/efficiency/efficiencyInfo.do?id=0'">添加工作事项</span>							
 						</c:if>
 						
 					</div>

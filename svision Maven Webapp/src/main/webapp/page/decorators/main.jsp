@@ -6,15 +6,19 @@ String  url  =  uri.substring(uri.lastIndexOf("/")+1);
 %>
 <!DOCTYPE HTML>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<head> 
+<meta http-equiv="X-UA-Compatible" content="IE=7,chrome=1" /> 
 <title>电子监察平台-<sitemesh:write property='title'/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/source/images/favicon.ico" type="image/x-icon" />
 <link type="text/css" href="${pageContext.request.contextPath}/source/css/base.css" rel="stylesheet"/>
 	<link type="text/css" href="${pageContext.request.contextPath}/source/css/global.css" rel="stylesheet"/>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/jquery-1.11.2.min.js"></script>
+	
+	<!--[if IE 6]>
+	<script src="${pageContext.request.contextPath}/source/js/DDPngMin.js"></script>
+	<script>DD_belatedPNG.fix('.ad_img img,#ssssss');</script>
+	<![endif]--> 
 <!-- 导入页面引用的特殊js和css文件 -->
 <sitemesh:write property='head' />
 <script type="text/javascript">
