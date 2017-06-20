@@ -84,6 +84,9 @@ function authorizeResource(id,name){
 	
 	//window.location.href="toAuthorizationResource.do?id="+id+"&name="+name;
 }
+
+
+
 function setProject(id){
 	$.messager.confirm("立项确认","是否确认立项?",function(r){  
 		    if (r){   
@@ -97,7 +100,7 @@ function setProject(id){
 		  					search();  
 		      			});
 		  			}else{		  			    
-						$.messager.alert('错误信息','删除失败！','error');
+						$.messager.alert('错误信息','立项失败！','error');
 		  			}  
 			    } 
 			});
@@ -172,6 +175,9 @@ function followAction(itemId,status){
 	    } 
 	});
 } 
+function toLiXiang(id){
+	window.location.href="itemInfo.do?id="+id;
+}
 </script>
 </head>
 <body>
@@ -304,7 +310,7 @@ function followAction(itemId,status){
 						<td><%-- <sapn>${item.lasgTag}</sapn> --%>
 							<c:if test="${item.status == 0 && userOrg.id==17 || item.status == 0 && userOrg.id==18 || item.status == 0 && userOrg.id==19}">
 								<%-- <span style="color: red;" onclick="setProject(${item.id })">立项</span> --%>
-									<span class="yw-btn-small bg-red cur" onclick="setProject(${item.id })">立项</span>
+									<span class="yw-btn-small bg-red cur" onclick="toLiXiang(${item.id })">立项</span>
 							</c:if>
 							<c:if test="${userOrg.id == item.supervisionOrgId and item.status != 0 and item.isSign <= 1}">
 								<%-- <a style="color: blue;" onclick="sign(${item.id })">签收</a> --%>

@@ -347,11 +347,13 @@ public class EnforcementVisionAction extends SystemAction {
 		JsonResult<Item> js = new JsonResult<Item>();
 		js.setCode(new Integer(1));
 		js.setMessage("保存项目信息失败!");
+		
 		// 获取当前登录用户
 		User u = this.getLoginUser();
-		// 将前台传过来的String类型的时间转换为Date类型
+		//获取要立项的项目
 		Item item2 = itemService.selectByPrimaryKey(item.getId());
 		try {
+			// 将前台传过来的String类型的时间转换为Date类型
 			if (end_time != null) {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				Date date = sdf.parse(end_time);
@@ -359,10 +361,12 @@ public class EnforcementVisionAction extends SystemAction {
 				item2.setStatus(1);
 				item2.setUuid(item.getUuid());			
 			}
-			if (item.getSuperItemType() == 61) {// 综合执法
+			if (item.getSuperItemType() == 61) {
+				// 如果为综合执法，直接修改该项目
 				item2.setSupervisionOrgId(OrgIds[0]);
 				itemService.updateByPrimaryKeySelective(item2);
 				
+				//新增项目操作流程
 				List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());					
 				ItemProcess itemProcess = new ItemProcess();
 				itemProcess.setUuid(item.getUuid());
@@ -376,16 +380,17 @@ public class EnforcementVisionAction extends SystemAction {
 				itemProcess.setPreparerTime(new Date());
 				itemProcessService.insert(itemProcess);
 				
-			}else if(item.getSuperItemType() == 62){ //单项执法
+			}else if(item.getSuperItemType() == 62){ 
+				//如果为单项执法，则需要根据勾选的机构数目来立项
 				List<Integer> itemIds= new ArrayList<Integer>();
-				//List<Integer> itemProcessIds= new ArrayList<Integer>();
-				itemService.deleteItemById(item2.getId()); //首先删除当前未立项的这条项目
+				//首先删除当前未立项的这条项目
+				itemService.deleteItemById(item2.getId());
 				//获取当前项目的流程，有且只有一个
 				List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item2.getId()); 
+				ItemProcess getItemProcess = itemProcessList.get(0);
 				//获取初始化流程的附件集合
 				List<ItemProcessFile> fileList = itemProcessFileService.getFileListByItemId(itemProcessList.get(0).getId());
 				
-				ItemProcess getItemProcess = itemProcessList.get(0);
 				for (Integer orgId : OrgIds) {
 					item2.setId(0);
 					item2.setSupervisionOrgId(orgId);
@@ -398,16 +403,13 @@ public class EnforcementVisionAction extends SystemAction {
 					itemProcessService.insert(getItemProcess);//将项目的初始化流程赋给立项的项目				
 					Integer itemProcessId = getItemProcess.getId(); //返回的id
 					
-					//itemProcessIds.add(itemProcessId);
-					
-					
 					for (ItemProcessFile itemProcessFile : fileList) {
 						itemProcessFile.setId(0);
 						itemProcessFile.setItemProcessId(itemProcessId);
-						itemProcessFileService.insertSelective(itemProcessFile);//将初始化的附件赋给流程
+						itemProcessFileService.insertSelective(itemProcessFile);//将初始化的附件赋给立项项目
 					}
 									
-					
+					//新增立项流程
 					List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());					
 					ItemProcess itemProcess = new ItemProcess();
 					itemProcess.setUuid(item.getUuid());

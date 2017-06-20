@@ -65,7 +65,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 	<div class="fl yw-lump mt10">
 		<div class="yw-bi-rows">
 			<div class="yw-bi-tabs mt5" id="ywTabs">
-			<span class="yw-bi-now">资源授权</span>
+			<span class="yw-bi-now">角色授权</span>
 			</div>
 			<div class="fr">
 				<!-- <span class="yw-btn bg-green mr26 hide" id="editBtn"  onclick="editTask();">编辑</span> -->
