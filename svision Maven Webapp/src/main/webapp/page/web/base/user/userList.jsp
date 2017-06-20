@@ -57,7 +57,7 @@ $(document).ready(function(){
 		}
 	});				
 	/* $("#userList").addClass("yw-cm-table"); */
-	$("#userList").addClass("yw-leftSide");
+	/* $("#userList").addClass("yw-leftSide"); */
 	/* $("#userList").addClass("yw-bg-hover"); */
 }); 
 //截取机构长度
@@ -251,7 +251,7 @@ function goToUserInfo(id){
 					value="" />
 			</form>
 		</div>
-		<div class="fl">
+		<div class="fl" style="width:100%">
 			<div class="fl yw-lump mlwid250 mt10">
 				<div class="yw-cm-title">
 					<span class="ml26">全部机构</span>
@@ -266,13 +266,13 @@ function goToUserInfo(id){
 					<span class="ml26">用户列表</span>
 				</div> 
 				<div class="yw-cm-sub-table">
-				<table id="userList" cellspacing="0" cellpadding="0">
-					<tr style="background-color:#D6D3D3;font-weight: bold;height:30px;line-height:30px;">   
-						<th width="15%">用户名称</th>
-						<th width="15%">用户账号</th>
-						<th width="25%">所属机构</th>								
-						<th width="15%">操作一</th>	
-						<th width="10%">操作二</th>	
+				<table class="yw-cm-table yw-center yw-bg-hover" id="userList">
+					<tr style="background-color:#D6D3D3;font-weight: bold;">
+						<th width="15%" style="text-align:center;">用户名称</th>
+						<th width="15%" style="text-align:center;">用户账号</th>
+						<th width="25%" style="text-align:center;">所属机构</th>								
+						<th width="15%" style="text-align:center;">操作一</th>	
+						<th width="10%" style="text-align:center;">操作二</th>	 
 					</tr>
 					<c:forEach var="item" items="${userList}">
 						<tr> 
@@ -295,7 +295,7 @@ function goToUserInfo(id){
 							</td>
 						</tr>
 					</c:forEach>
-				</table></div>
+				</table> </div>
 				<div class="page" id="pager"></div>
 			</div>
 		</div>

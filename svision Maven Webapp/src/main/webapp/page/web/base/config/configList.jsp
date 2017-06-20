@@ -60,8 +60,7 @@
    				 onLoadSuccess:function(){
    				 	   				 	
    				 }
-			});	
-			$("#metaList").addClass("yw-leftSide");
+			});	 
 		});
 //修改配置状态		
 function metaState(id,used,name){

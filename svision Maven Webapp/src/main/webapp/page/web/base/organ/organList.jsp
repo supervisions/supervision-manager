@@ -53,8 +53,7 @@
    				 	} 
    				 }	
 				});	
-				
-			$("#organList").addClass("yw-leftSide");
+				 
 		});
 function getOrganListByPid(pid){
 	  $.ajax({
@@ -190,7 +189,7 @@ function goToOrganInfo(organId){
 					value="" />
 			</form>
 		</div>
-		<div class="fl">
+		<div class="fl" style="width:100%">
 			<div class="fl yw-lump mlwid250 mt10">
 				<div class="yw-cm-title">
 					<span class="ml26">机构列表</span>
@@ -201,11 +200,11 @@ function goToOrganInfo(organId){
 				</div>
 			</div>
 			<div class="yw-lump wid-atuo ml260s mt10">
-				<div class="yw-cm-title">
+				<div class="yw-cm-title"> 
 					<span class="ml26">全部机构</span>
-				</div>
+				</div> 
 				<div class="yw-cm-sub-table">
-				<table id="organList" cellspacing="0" cellpadding="0">
+				<table class="yw-cm-table yw-center yw-bg-hover" id="organList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>						
 						<th><span style='margin-left:40px'>机构状态</span></th>
@@ -213,7 +212,7 @@ function goToOrganInfo(organId){
 						<th>上级机构</th>
 						<th>是否监察部门</th>
 						<th>操作一</th>
-						<th>操作二</th>
+						<th>操作二</th> 
 					</tr>
 					<c:forEach var="item" items="${organList }">
 						<tr>
