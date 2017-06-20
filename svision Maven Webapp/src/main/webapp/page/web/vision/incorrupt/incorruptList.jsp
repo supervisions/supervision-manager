@@ -88,7 +88,7 @@ function setProject(id){
 	$.messager.confirm("立项确认","是否确认立项?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsonsetProjectById.do?id="+id,
+				url : "<%=basePath%>vision/incorrupt/jsonsetProjectById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									

@@ -183,45 +183,41 @@ function followItem(id,name){
 							<td>${item.preparerOrg}</td>
 							<td>${item.orgName}</td>
 							<td>
-														
 								
-								<%-- <c:if test="${logUserOrg != item.supervisionOrgId}"> 
-									<c:if test="${Type == 2 }"> --%>
-										<c:if test="${item.status == 4}">
-											 【已完结】 
-										</c:if>
-										<c:if test="${item.status != 4}">
-											<c:if test="${item.lasgTag == 31 && logUserOrg ==item.supervisionOrgId}">
-												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >上传资料</a> --%>
-											<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >上传资料</span>
-											</c:if>
-											<c:if test="${item.lasgTag == 32 && logUserOrg ==19}">
-												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >监察意见</a> --%>
-											<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >录入监察意见</span>
-											</c:if> 
-											<c:if test="${item.lasgTag == 33 && logUserOrg ==item.supervisionOrgId}">
-												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=34'" >录入整改情况</a> --%>
-											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=34'" >录入整改情况</span>
-											</c:if> 
-											<c:if test="${item.lasgTag == 34 && logUserOrg ==19}">
-												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowChange.do?id=${item.id}'" >跟踪监察</a> --%>
-											<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFollowChange.do?id=${item.id}'" >跟踪监察</span>
-												<%-- <a style="color: blue;" onclick="followItem(${item.id},'${item.name}')" >跟踪整改</a> --%>
-											</c:if>
-											<c:if test="${item.lasgTag == 91 && logUserOrg ==item.supervisionOrgId}">
-												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >跟踪整根情况 </a> --%>
-											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >录入跟踪整根情况</span>
-											</c:if>
-											<c:if test="${item.lasgTag == 35 && logUserOrg ==19}">
-												<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=93'" >监察结论</a> --%>
-											<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=93'" >录入监察结论</span>
-											</c:if>
-										 </c:if>
-								<%-- 	</c:if>									
-								</c:if>	 --%>
+								<c:if test="${item.status == 4}">
+									 【已完结】 
+								</c:if>
+								<c:if test="${item.status != 4}">
+									<c:if test="${item.lasgTag == 31 && UserOrg.id ==item.supervisionOrgId}">
+										<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >上传资料</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >上传资料</span>
+									</c:if>
+									<c:if test="${item.lasgTag == 32 && UserOrg.id ==19}">
+										<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >监察意见</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=32'" >录入监察意见</span>
+									</c:if> 
+									<c:if test="${item.lasgTag == 33 && UserOrg.id ==item.supervisionOrgId}">
+										<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=34'" >录入整改情况</a> --%>
+									<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFHFile.do?id=${item.id}&tag=34'" >录入整改情况</span>
+									</c:if> 
+									<c:if test="${item.lasgTag == 34 && UserOrg.id ==19}">
+										<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowChange.do?id=${item.id}'" >跟踪监察</a> --%>
+									<span class="yw-btn-small bg-lan cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFollowChange.do?id=${item.id}'" >跟踪监察</span>
+										<%-- <a style="color: blue;" onclick="followItem(${item.id},'${item.name}')" >跟踪整改</a> --%>
+									</c:if>
+									<c:if test="${item.lasgTag == 91 && UserOrg.id ==item.supervisionOrgId}">
+										<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >跟踪整根情况 </a> --%>
+									<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=35'" >录入跟踪整根情况</span>
+									</c:if>
+									<c:if test="${item.lasgTag == 35 && UserOrg.id ==19}">
+										<%-- <a style="color: blue;"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=93'" >监察结论</a> --%>
+									<span class="yw-btn-small bg-lan cur"  onclick="window.location.href='<%=basePath %>manage/branch/branchFollowForm.do?id=${item.id}&tag=93'" >录入监察结论</span>
+									</c:if>
+								</c:if>
+								
 							</td>		
 							<td>
-								 <c:if test="${logUserOrg == item.preparerOrgId}">
+								 <c:if test="${UserOrg.id == item.preparerOrgId}">
 									<%-- <a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> --%>
 									<span class="yw-btn-small bg-red cur" onclick="deleteItem(${item.id},'${item.name}')">删除</span>
 								</c:if>	
