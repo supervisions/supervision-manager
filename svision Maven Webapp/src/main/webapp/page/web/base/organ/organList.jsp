@@ -204,6 +204,7 @@ function goToOrganInfo(organId){
 					<span class="ml26">全部机构</span>
 				</div> 
 				<div class="yw-cm-sub-table">
+				<div style="max-height: 600px;overflow-x: hidden;">
 				<table class="yw-cm-table yw-center yw-bg-hover" id="organList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th width="4%" style="display:none">&nbsp;</th>						
@@ -245,7 +246,7 @@ function goToOrganInfo(organId){
 					</c:forEach>
 				</table>
 				</div>
-				<div class="page" id="pager"></div>
+				</div> 
 			</div>
 		</div>
 	</div>

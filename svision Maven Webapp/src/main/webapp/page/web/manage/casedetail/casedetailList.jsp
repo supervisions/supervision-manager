@@ -150,6 +150,7 @@ function editDetail(id,pName){
 					<span class="ml26">全部指标</span>
 				</div>
 				<div class="yw-cm-sub-table">
+				<div style="max-height: 600px;overflow-x: hidden;">
 				<table class="yw-cm-table yw-leftSide yw-bg-hover" id="organList">
 					<tr style="background-color:#D6D3D3;font-weight: bold;">
 						<th><span style='margin-left:40px'>指标等级</span></th> 		 
@@ -197,7 +198,7 @@ function editDetail(id,pName){
 							</td>
 						</tr>
 					</c:forEach>
-				</table> 
+				</table> </div>
 			</div>
 			</div>
 		</div>
