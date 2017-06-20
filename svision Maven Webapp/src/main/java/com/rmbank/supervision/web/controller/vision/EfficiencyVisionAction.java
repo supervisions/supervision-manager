@@ -107,9 +107,10 @@ public class EfficiencyVisionAction extends SystemAction {
 				itemList = itemService.getItemListByType(item);			
 				totalCount = itemService.getItemCountBySSJC(item); //实时监察分页
 			}else {
-				//当前登录用户只加载自己完成的项目
+				//当前登录用户只加载自己完成的项目如果是中支监察室还需要加载自己立项的
 				item.setSupervisionTypeId(2); //2代表效能监察
 				item.setSupervisionOrgId(userOrg.getId());
+				item.setPreparerOrgId(userOrg.getId());
 				item.setItemType(Constants.STATIC_ITEM_TYPE_SVISION); //实时监察模块
 				itemList = itemService.getItemListByTypeAndLogOrg(item);
 				// 取满足要求的记录总数
@@ -755,8 +756,8 @@ public class EfficiencyVisionAction extends SystemAction {
     public String showItem(Item item, 
             HttpServletRequest request, HttpServletResponse response){
     	item = itemService.selectByPrimaryKey(item.getId());
-		if(item.getPreparerTime() != null){
-			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		if(item.getEndTime() != null){
+			item.setEndTimes(Constants.DATE_FORMAT1.format(item.getEndTime()));
 		}
 		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId());  
 		if(itemProcessList.size()>0){ 

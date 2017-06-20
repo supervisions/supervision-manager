@@ -109,9 +109,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
-							<td align="right">立项时间：</td>
+							<td align="right">规定完成时间：</td>
 							<td colspan="3">
-							 <label>${Item.preparerTimes } </label>   
+							 <label>${Item.endTimes } </label>   
 							</td>								
 						</tr>
 						<tr>
