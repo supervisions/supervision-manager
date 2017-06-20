@@ -396,7 +396,8 @@ public class EfficiencyVisionAction extends SystemAction {
 				Date date = sdf.parse(end_time);
 				item2.setEndTime(date); // 完成时间			
 				item2.setStatus(1);
-				item2.setUuid(item.getUuid());			
+				item2.setUuid(item.getUuid());	
+				item2.setIsStept(item.getIsStept());
 			}
 
 			//首先删除当前未立项的这条项目
@@ -826,8 +827,8 @@ public class EfficiencyVisionAction extends SystemAction {
 			HttpServletRequest request, HttpServletResponse response){
 		int tag = item.getTag();
 		item = itemService.selectByPrimaryKey(item.getId());
-		if(item.getPreparerTime() != null){
-			item.setPreparerTimes(Constants.DATE_FORMAT.format(item.getPreparerTime()));
+		if(item.getEndTime() != null){
+			item.setEndTimes(Constants.DATE_FORMAT1.format(item.getEndTime()));
 		}
 		List<ItemProcess> itemProcessList = itemProcessService.getItemProcessItemId(item.getId());  
 

@@ -285,7 +285,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" height="50px">是否分节点监察：</td>
 							<td colspan="3">
-								<select id="supervisionTypeId" name="isstept" style="width:289px;height:28px;">
+								<select id="supervisionTypeId" name="isStept" style="width:289px;height:28px;">
 								<!-- 	<option value="-1">请选择是否分节点监察</option>	 -->							
 									<option value="0">否</option>
 									<option value="1">是</option>
@@ -318,10 +318,10 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" height="100px;">责任领导：</td>
 							<td colspan="3"> 
-								<table style="font-size: 16px;"> 									
+								<table style="font-size: 16px; width: 100%;"> 									
 									<tr>
 										<td>
-										<div style="width:60%;">
+										<div  style="width:60%;">
 											<c:forEach var="item" items="${byLgUser }">
 												<label style="float:left;padding-right:10px;padding-top:3px;min-width:170px;"><input type="checkbox" name="user" value="${item.id }"/>${item.name }</label>
 											</c:forEach>

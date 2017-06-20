@@ -175,9 +175,9 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		        		layer.confirm('录入问责资料成功！', {
 							btn: ['确认'] //按钮
 						}, function(){//点击确认按钮调用
-							layer.close(layer.confirm());//关闭当前弹出层
+							//layer.close(layer.confirm());//关闭当前弹出层
 							window.location.href = '<%=basePath%>vision/incorrupt/incorruptList.do';
-						});		        		
+						});	        		
 		        	}
 	        	}else{
 	        		layer.alert(data.message);	        	

@@ -61,7 +61,7 @@ function deleteItem(id,name){
 	$.messager.confirm("删除确认","确认删除项目："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsondeleteItemById.do?id="+id,
+				url : "<%=basePath%>vision/enforce/jsondeleteItemById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) {											

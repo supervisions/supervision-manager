@@ -94,7 +94,7 @@ function deleteConfig(id,name){
 	$.messager.confirm("删除确认","确认删除配置："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsonDeleteConfigById.do?id="+id,
+				url : "<%=basePath %>system/config/jsonDeleteConfigById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) {											
@@ -114,7 +114,7 @@ function deleteConfig(id,name){
 //根据pid去查询配置
 function getMetaListByPid(pid){
 	  $.ajax({
-		url : "jsonLoadConfigListByPid.do?pid="+pid,
+		url : "<%=basePath %>system/config/jsonLoadConfigListByPid.do?pid="+pid,
 		type : "post",  
 		dataType:"json",
 		success : function(data) { 
@@ -227,7 +227,7 @@ function OperatOrgan(organId,operate){
 	});
 }
 function goToMetaInfo(metaId){
-	window.location.href="configInfo.do?id="+metaId;
+	window.location.href="<%=basePath %>system/config/configInfo.do?id="+metaId;
 }
 </script>
 </head>

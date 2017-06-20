@@ -87,7 +87,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<!-- 初始状态 -->
 						<tr>
-							<td width="12%" align="right">项目名称：</td>
+							<td width="15%" align="right">项目名称：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
@@ -141,7 +141,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 											<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
 												<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
 											</c:forEach> 
-											<tr><td style="border:0px;"></td><tr>
+											
 										</table>
 									</td>		
 								</tr>
@@ -155,13 +155,13 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<!-- 显示初始资料部分和初始资料监察意见 -->
 							<c:if test="${ItemProcess2 != null }">
 								<tr>
-									<td align="right">初始资料内容：</td>
+									<td align="right">节点1资料内容：</td>
 									<td colspan="3">
 										<label>${ItemProcess2.content } </label> 									
 									</td>		
 								</tr> 
 								<tr>
-									<td align="right" >初始资料附件：</td>
+									<td align="right" >节点1资料附件：</td>
 									<td colspan="3"> 
 										<table style="width:100%;">
 											<c:forEach var="fileItem" items="${ItemProcess2.fileList }">
@@ -190,15 +190,15 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</c:forEach>
 							</c:if>
 							<!-- 显示每个节点的的资料和监察意见 -->	
-							<c:forEach var="item" items="${ipList }" varStatus="varStatusA">
+							<c:forEach var="item" items="${ipList }" varStatus="varStatusA">		
 								<tr>
-									<td align="right">节点${varStatusA.index+1 }资料内容：</td>
+									<td align="right">节点${varStatusA.count+1 }资料内容：</td>
 									<td colspan="3">
 										<label>${item.content } </label> 									
 									</td>		
 								</tr> 
 								<tr>
-									<td align="right" >节点${varStatusA.index+1 }资料附件：</td>
+									<td align="right" >节点${varStatusA.count+1 }资料附件：</td>
 									<td colspan="3"> 
 										<table style="width:100%;">
 											<c:forEach var="fileItem" items="${item.fileList }">

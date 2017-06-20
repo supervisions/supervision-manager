@@ -120,6 +120,18 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			layer.alert('请输入规定完成时间！');			
 			return false;
 		}  
+		var evalue =$("#datepicker").val();
+		
+		var date = new Date();
+		var MM = date.getMonth()+1;
+		var sdate = date.getFullYear()+"-"+MM+"-"+date.getDate(); 
+		
+		var date1 = new Date(evalue.replace(/\-/g, "\/")); 
+		var date2 = new Date(sdate.replace(/\-/g, "\/"));
+		if(date1<date2){
+			layer.alert('规定完成时间不能小于当前时间！');	
+			return false;
+		}
 	}
 	
 	function returnPage(){
@@ -183,7 +195,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						<tr>
 							<td align="right" height="50px">规定完成时间：</td>
 							<td colspan="3">								
-							  <input type="text" name="endTimes" value="" id="datepicker" class="laydate-icon" style="width:280px;height:32px;">
+							  <input type="text" name="endTimes" value="" id="datepicker" class="laydate-icon" style="width:280px;height:26px;">
 							 	<span style="color:red">*</span> 
 							</td>								
 						</tr>

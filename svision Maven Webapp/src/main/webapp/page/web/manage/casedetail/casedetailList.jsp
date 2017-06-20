@@ -87,7 +87,7 @@ function deleteDetail(id,name){
 	$.messager.confirm("删除确认","确认删除模型明细："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsondeleteDetailById.do?id="+id,
+				url : "<%=basePath %>manage/casedetail/jsondeleteDetailById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) {

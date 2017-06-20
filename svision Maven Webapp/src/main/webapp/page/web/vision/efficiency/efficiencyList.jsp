@@ -61,7 +61,7 @@ function deleteItem(id,name){
 	$.messager.confirm("删除确认","确认删除项目："+name+"?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsondeleteItemById.do?id="+id,
+				url : "<%=basePath%>/vision/efficiency/jsondeleteItemById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -91,7 +91,7 @@ function setProject(id){
 	$.messager.confirm("立项确认","是否确认立项?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsonsetProjectById.do?id="+id,
+				url : "<%=basePath%>/vision/efficiency/jsonsetProjectById.do?id="+id,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -111,7 +111,7 @@ function sign(itemId){
 	$.messager.confirm("签收确认","是否确认签收?",function(r){  
 		    if (r){   
 			$.ajax({
-				url : "jsonSignItemById.do?itemId="+itemId,
+				url : "<%=basePath%>/vision/efficiency/jsonSignItemById.do?itemId="+itemId,
 				type : "post",  
 		    	dataType : "json",								
 				success : function(data) { 									
@@ -176,7 +176,7 @@ function followAction(itemId,status){
 	});
 }  
 function toLiXiang(id){
-	window.location.href="itemInfo.do?id="+id; 
+	window.location.href="<%=basePath%>/vision/efficiency/itemInfo.do?id="+id; 
 }
 </script>
 </head>
@@ -211,7 +211,8 @@ function toLiXiang(id){
 						<span class="yw-btn bg-blue ml30 cur" onclick="search();">搜索</span>						
 					</div>
 					<div class="fr">
-						<c:if test="${userOrg.orgtype ==47 || userOrg.orgtype ==43 }">
+						<%-- <c:if test="${userOrg.orgtype ==47 || userOrg.orgtype ==43 }"> --%>
+						<c:if test="${userOrg.orgtype ==47}">
 							<span class="yw-btn bg-green cur" onclick="window.location.href='<%=basePath%>vision/efficiency/efficiencyInfo.do?id=0'">添加工作事项</span>							
 						</c:if>
 						
@@ -308,7 +309,7 @@ function toLiXiang(id){
 							</c:if>
 						</td>
 						<td><%-- <sapn>${item.lasgTag}</sapn> --%>
-							<c:if test="${ item.status == 0 && userOrg.id==19}">
+							<c:if test="${ item.status == 0 && userOrg.id==19 || userOrg.orgtype ==43}">
 								<%-- <span style="color: red;" onclick="setProject(${item.id })">立项</span> --%>
 									<span class="yw-btn-small bg-red cur" onclick="toLiXiang(${item.id })">立项</span>
 							</c:if>
@@ -373,7 +374,7 @@ function toLiXiang(id){
 							</c:if>					
 						</td>
 						<td>
-							<c:if test="${userOrg.orgtype ==47}">
+							<c:if test="${userOrg.orgtype ==47 || userOrg.orgtype ==43}">
 								<%-- <a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> --%>
 									<span class="yw-btn-small bg-red cur" onclick="deleteItem(${item.id},'${item.name}')">删除</span>
 							</c:if>
