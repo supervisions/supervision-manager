@@ -115,6 +115,7 @@ public class BranchAction extends SystemAction {
 		if(organ.getOrgtype()==Constants.ORG_TYPE_1 ||
 				organ.getOrgtype()==Constants.ORG_TYPE_2 ||
 						organ.getOrgtype()==Constants.ORG_TYPE_3 ||
+								organ.getOrgtype()==Constants.ORG_TYPE_4 ||
 						Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
 			//分行立项分行完成
 			item.setItemType(Constants.STATIC_ITEM_TYPE_MANAGE);

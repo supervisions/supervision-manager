@@ -27,7 +27,7 @@ import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
 /**
- * 效能监察待办事项控制器
+ * 实时监察待办事项控制器
  * @author DELL
  *
  */ 
@@ -84,6 +84,7 @@ public class VisionTodoAction  extends  SystemAction {
 			if(userOrg.getOrgtype()==Constants.ORG_TYPE_1 ||
 					userOrg.getOrgtype()==Constants.ORG_TYPE_2 ||
 							userOrg.getOrgtype()==Constants.ORG_TYPE_3 ||
+									userOrg.getOrgtype()==Constants.ORG_TYPE_4 ||
 					Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
 				
 				item.setSupervisionTypeId(2); //2代表效能监察

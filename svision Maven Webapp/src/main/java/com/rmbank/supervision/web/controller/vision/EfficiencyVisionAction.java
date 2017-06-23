@@ -100,6 +100,7 @@ public class EfficiencyVisionAction extends SystemAction {
 			if(userOrg.getOrgtype()==Constants.ORG_TYPE_1 ||
 					userOrg.getOrgtype()==Constants.ORG_TYPE_2 ||
 							userOrg.getOrgtype()==Constants.ORG_TYPE_3 ||
+									userOrg.getOrgtype()==Constants.ORG_TYPE_4 ||
 					Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
 				
 				item.setSupervisionTypeId(2); //2代表效能监察
@@ -257,12 +258,15 @@ public class EfficiencyVisionAction extends SystemAction {
 		Integer orgtype = organ2.getOrgtype();
 		List<User> userListByOrgId =null;
 		//如果是中支监察室，加载中支领导
-		if(orgtype == 43){
-			//中支监察室
-			userListByOrgId = userService.getUserListByOrgId(113);
-		}else if (orgtype == 45 || orgtype == 46 || orgtype == 47) {
-			//分行监察室
-			userListByOrgId = userService.getUserListByOrgId(112);
+		if(orgtype == 43){			
+			Integer pid = organ2.getPid();
+			String OrgName="行领导";
+			//获取当前中支的行领导机构下的用户
+			Organ HORG=organService.getOrganByPidAndName(pid,OrgName);
+			userListByOrgId = userService.getUserListByOrgId(HORG.getId());
+		}else if (orgtype == 40) {
+			//分行监察室加载分行领导
+			userListByOrgId = userService.getUserListByOrgId(1);
 		}
 		//request.setAttribute("userOrg", organ2);
 		request.setAttribute("byLgUser", userListByOrgId);

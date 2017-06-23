@@ -270,18 +270,21 @@ public class HomeController extends SystemAction {
 	private List<FunctionMenu> parseFunctionMenuListByItemId(List<FunctionMenu> src,List<Integer> itemIdList)
     {
         for (FunctionMenu f : src) {
-            if(f.getLeaf() == 0) {
-            	List<FunctionMenu> tempList = this.functionService.getFunctionMenuByParentId(f.getId()); 
-            	List<FunctionMenu> cList = new ArrayList<FunctionMenu>();
-            	for(FunctionMenu tf : tempList){
-            		for(int id : itemIdList){
-            			if(id == tf.getId()){
-            				cList.add(tf);
-            			}
-            		}
-            	}
-                f.setChildMenulist(cList);
-            }
+        	if(f!=null){
+        		if(f.getLeaf() == 0) {
+                	List<FunctionMenu> tempList = this.functionService.getFunctionMenuByParentId(f.getId()); 
+                	List<FunctionMenu> cList = new ArrayList<FunctionMenu>();
+                	for(FunctionMenu tf : tempList){
+                		for(int id : itemIdList){
+                			if(id == tf.getId()){
+                				cList.add(tf);
+                			}
+                		}
+                	}
+                    f.setChildMenulist(cList);
+                }
+        	}
+            
         }
         return src;
     }

@@ -113,7 +113,8 @@ public class SupportAction extends SystemAction {
 		List<Item> itemList =null;
 		if(organ.getOrgtype()==Constants.ORG_TYPE_1 ||
 				organ.getOrgtype()==Constants.ORG_TYPE_2 ||
-				organ.getOrgtype()==Constants.ORG_TYPE_3 ||
+					organ.getOrgtype()==Constants.ORG_TYPE_3 ||
+						organ.getOrgtype()==Constants.ORG_TYPE_4 ||
 				Constants.USER_SUPER_ADMIN_ACCOUNT.equals(loginUser.getAccount())){
 			//成都分行监察室和超级管理员加载所有的中支立项项目
 			//itemList=itemService.getItemList(item);

@@ -212,7 +212,7 @@ function toLiXiang(id){
 					</div>
 					<div class="fr">
 						<%-- <c:if test="${userOrg.orgtype ==47 || userOrg.orgtype ==43 }"> --%>
-						<c:if test="${userOrg.orgtype ==47}">
+						<c:if test="${userOrg.orgtype ==38 ||userOrg.orgtype ==40 || userOrg.orgtype == 43|| userOrg.orgtype == 46}">
 							<span class="yw-btn bg-green cur" onclick="window.location.href='<%=basePath%>vision/efficiency/efficiencyInfo.do?id=0'">添加工作事项</span>							
 						</c:if>
 						
@@ -309,7 +309,7 @@ function toLiXiang(id){
 							</c:if>
 						</td>
 						<td><sapn>${item.lasgTag}</sapn> 
-							<c:if test="${ item.status == 0 && userOrg.id==19 || userOrg.orgtype ==43}">
+							<c:if test="${item.status == 0 && userOrg.orgtype==40 || item.status == 0 && userOrg.orgtype ==43}">
 								<%-- <span style="color: red;" onclick="setProject(${item.id })">立项</span> --%>
 									<span class="yw-btn-small bg-red cur" onclick="toLiXiang(${item.id })">立项</span>
 							</c:if>
@@ -374,7 +374,7 @@ function toLiXiang(id){
 							</c:if>					
 						</td>
 						<td>
-							<c:if test="${userOrg.orgtype ==47 || userOrg.orgtype ==43}">
+							<c:if test="${userOrg.orgtype ==40 || userOrg.orgtype ==43}">
 								<%-- <a style="color: blue;" onclick="deleteItem(${item.id},'${item.name}')">删除</a> --%>
 									<span class="yw-btn-small bg-red cur" onclick="deleteItem(${item.id},'${item.name}')">删除</span>
 							</c:if>

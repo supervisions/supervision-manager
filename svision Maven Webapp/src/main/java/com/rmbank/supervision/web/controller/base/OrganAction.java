@@ -27,6 +27,7 @@ import com.rmbank.supervision.model.User;
 import com.rmbank.supervision.service.ConfigService;
 import com.rmbank.supervision.service.OrganService;
 import com.rmbank.supervision.service.SysLogService;
+import com.rmbank.supervision.service.UserService;
 import com.rmbank.supervision.web.controller.SystemAction;
 
 @Scope("prototype")
@@ -36,6 +37,8 @@ public class OrganAction extends SystemAction {
 
 	@Resource
 	private OrganService organService;
+	@Resource
+	private UserService userService;
 	@Resource
 	private ConfigService configService;
 	@Resource
@@ -320,9 +323,16 @@ public class OrganAction extends SystemAction {
 			organ.setPid(0);
 		}
 
-		//获取用户所属的机构
+		//获取用户所属的机构（用于在用户管理的时候根据当前用户机构加载）
 		HttpSession session = request.getSession();
 		List<Integer> userOrgIds= (List<Integer>) session.getAttribute("userOrgIds");
+		
+		//用于效能监察立项，根据中支监察加载被监察对象
+		//获取当前登录用户所属机构下的所有用户
+		User lgUser = this.getLoginUser();
+		//获取当前用户对应的机构列表
+		List<Organ> userOrgList=userService.getUserOrgByUserId(lgUser.getId());
+		Organ organ2 = userOrgList.get(0);
 		
 		List<Organ> list = new ArrayList<Organ>();
 		if(userOrgIds!=null){
@@ -331,6 +341,15 @@ public class OrganAction extends SystemAction {
 			}else {
 				list = organService.getOrganByOrgIds(userOrgIds);
 			}			
+		}else if (organ2.getOrgtype()==43){
+			if(pid==null){
+				Organ selectByPrimaryKey = organService.selectByPrimaryKey(organ2.getPid());
+				selectByPrimaryKey.setChildrenCount(1);
+				list.add(selectByPrimaryKey);
+			}else {
+				list = organService.getOrganByPId(organ);	
+			}
+			
 		}else{
 			list = organService.getOrganByPId(organ);	
 		}
