@@ -152,7 +152,7 @@
 							<td align="right">机构类型:</td>
 							<td>							
 								<select name="orgtype" class="easyui-combobox" style="width:254px;height:28px;">
-									<option value="-1">=请选择机构类型=</option>
+									<option value="0">=请选择机构类型=</option>
 									<c:forEach var="item" items="${OrgType }">
 										<option value="${item.id }" <c:if test="${item.id == Organ.orgtype}">selected="selected"</c:if>>${item.name }</option>
 									</c:forEach>

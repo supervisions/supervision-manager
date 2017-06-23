@@ -251,8 +251,21 @@ public class EfficiencyVisionAction extends SystemAction {
 		
 		//获取当前登录用户所属机构下的所有用户
 		User lgUser = this.getLoginUser();
-		List<User> byLgUser = userService.getUserListByLgUser(lgUser);		
-		request.setAttribute("byLgUser", byLgUser);
+		//获取当前用户对应的机构列表
+		List<Organ> userOrgList=userService.getUserOrgByUserId(lgUser.getId());
+		Organ organ2 = userOrgList.get(0);
+		Integer orgtype = organ2.getOrgtype();
+		List<User> userListByOrgId =null;
+		//如果是中支监察室，加载中支领导
+		if(orgtype == 43){
+			//中支监察室
+			userListByOrgId = userService.getUserListByOrgId(113);
+		}else if (orgtype == 45 || orgtype == 46 || orgtype == 47) {
+			//分行监察室
+			userListByOrgId = userService.getUserListByOrgId(112);
+		}
+		//request.setAttribute("userOrg", organ2);
+		request.setAttribute("byLgUser", userListByOrgId);
 		request.setAttribute("OrgList", list);		
 		request.setAttribute("itemId", id);
 		return "web/vision/efficiency/itemInfo";
@@ -390,7 +403,7 @@ public class EfficiencyVisionAction extends SystemAction {
 		//获取要立项的项目
 		Item item2 = itemService.selectByPrimaryKey(item.getId());
 		try {
-			// 将前台传过来的String类型的时间转换为Date类型
+			// 将前台传过来的String类型的时间转换为Date类型，并且不全项目信息
 			if (end_time != null) {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				Date date = sdf.parse(end_time);
@@ -398,6 +411,7 @@ public class EfficiencyVisionAction extends SystemAction {
 				item2.setStatus(1);
 				item2.setUuid(item.getUuid());	
 				item2.setIsStept(item.getIsStept());
+				//item2.setName(item.getName());
 			}
 
 			//首先删除当前未立项的这条项目
@@ -431,19 +445,13 @@ public class EfficiencyVisionAction extends SystemAction {
 					itemProcessFileService.insertSelective(itemProcessFile);//将初始化的附件赋给立项项目
 				}
 								
-				//新增立项流程
-//				List<Integer> userOrgIDs = userService.getUserOrgIdsByUserId(u.getId());					
-//				ItemProcess itemProcess = new ItemProcess();
-//				itemProcess.setUuid(item.getUuid());
-//				itemProcess.setItemId(itemId);
-//				itemProcess.setDefined(false);
-//				itemProcess.setContentTypeId(Constants.ENFORCE_VISION_0);// 监察室立项状态
-//				itemProcess.setPreparerOrgId(orgId); // 制单部门的ID
-//				itemProcess.setOrgId(userOrgIDs.get(0));
-//				itemProcess.setContent(content);
-//				itemProcess.setPreparerId(u.getId());
-//				itemProcess.setPreparerTime(new Date());
-//				itemProcessService.insert(itemProcess);
+				//保存监察项目信息
+				ItemProcess  ItemInformation= getItemProcess;
+				ItemInformation.setId(0);
+				ItemInformation.setContentTypeId(Constants.EFFICIENCY_VISION_00);
+				ItemInformation.setContent(item.getName());
+				itemProcessService.insert(ItemInformation);//监项目的信息
+
 			}
 			
 			User loginUser = this.getLoginUser();
@@ -770,6 +778,8 @@ public class EfficiencyVisionAction extends SystemAction {
 				ip.setFileList(fileList);  
 				if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_0){
 					request.setAttribute("ItemProcess", ip); //监察内容
+				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_00){
+					request.setAttribute("ItemProcess1", ip); //监察项目
 				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_2){
 					request.setAttribute("ItemProcess2", ip); //已经上传资料
 				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_3){
@@ -841,6 +851,8 @@ public class EfficiencyVisionAction extends SystemAction {
 				ip.setFileList(fileList);  
 				if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_0){
 					request.setAttribute("ItemProcess", ip); //新建状态
+				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_00){
+					request.setAttribute("ItemProcess1", ip); //监察项目
 				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_2){
 					request.setAttribute("ItemProcess2", ip); //上传资料状态
 				}else if(ip.getContentTypeId() ==Constants.EFFICIENCY_VISION_3){

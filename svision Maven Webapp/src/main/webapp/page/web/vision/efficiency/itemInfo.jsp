@@ -64,14 +64,49 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
     <![endif]-->
     <%--///////////////////--%>
 
+
+
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css"> 
+	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/easyUI/jquery.easyui.min.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/easyUI/easyui-lang-zh_CN.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/common/validate.js"></script>
+	<script src="${pageContext.request.contextPath}/source/js/common/common.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){	
 		laydate({
 		  elem: '#datepicker', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
 		  event: 'focus' //响应事件。如果没有传入event，则按照默认的click
 		});	  
-		//$("#datepicker").datepicker(); 
-		//$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");	
+		$("#orgParentTree").combotree({
+			 	 url: '<%=basePath%>system/organ/jsonLoadOrganTreeList.do',  
+  				 required: false, //是否必须
+  				 multiple:true,  //是否支持多选  				 
+  				 editable:false, //是否支持用户自定义输入	
+  				 cascadeCheck:false,  				 		 
+  				 onSelect:function(record){ // 	当节点被选中时触发。
+				 	 	$("#areaId").val(record.id); 
+  				 },
+  				 onBeforeExpand:function(node){ //节点展开前触发，返回 false 则取消展开动作。
+  				 	$("#orgParentTree").combotree('tree').tree('options').url = '<%=basePath%>system/organ/jsonLoadOrganTreeList.do?pid='+ node.id;
+  				 },
+  				 onLoadSuccess:function(){ //当数据加载成功时触发。
+  				 	//根据user所对应的机构选中复选框
+  				 	//$("#orgParentTree").combotree('setValues', userOrg);
+  				 	var userId = $("#userId").val();
+  				 	
+  				 	if(userId>0){
+  				 		//var pId = $("#areaId").val();
+  				 		var orgName = $("#orgName").val();
+  				 		$("#orgParentTree").combotree("setText",orgName);
+  				 		
+  				 	}else{
+					//$("#cmbParentArea").combotree("disable",true);
+   				 		$("#orgParentTree").combotree("setText","=请选择被监察对象=");
+					}
+  				}
+		});	
+	
 	 	 	var len=32;//32长度
             var radix=16;//16进制
             var chars='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
@@ -182,13 +217,18 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 			layer.alert('请输入规定完成时间！');			
 			return false;
 		} 
-		var roleId=$("input[name='OrgId']").is(':checked');
+		/* var roleId=$("input[name='OrgId']").is(':checked');
 		if(roleId==false){
 			layer.alert('请选择被监察对象！');	
 			return false;
-		} 
-		var evalue =$("#datepicker").val();
+		}  */
 		
+		if($("input[name='OrgId']").val()==null || $("input[name='OrgId']").val()==""){
+			layer.alert('请选择被监察对象！');	
+			return false;
+		} 
+		
+		var evalue =$("#datepicker").val();		
 		var date = new Date();
 		var MM = date.getMonth()+1;
 		var sdate = date.getFullYear()+"-"+MM+"-"+date.getDate(); 
@@ -262,6 +302,14 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >
 						<tr>
+							<td width="10%" align="right">监察项目：</td>
+							<td colspan="3"><input id="itemName" 
+								name="name" type="text" required="true"  value=""  style="width:60%;height:28px;" />  
+								<span style="color:red">*</span> 
+                            	
+							</td> 
+						</tr>	
+						<tr>
 							<td align="right" width="15%" >监察内容：</td>
 							<td colspan="3"> 
 								<textarea rows="3" cols="5" style="width:60%;" name="content" ></textarea>								
@@ -297,6 +345,20 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							</td>								
 						</tr>
 						<tr>
+							<input type="hidden" id="OrganName" value="" />
+							<td align="right">被监察对象：</td>
+							<td>	
+								<!-- t_user_org表中user_id对应的id -->
+								<c:forEach var="userOrg" items="${userOrgList}">
+									<input name="userOrgId" type="hidden" value="${userOrg.id }" />
+								</c:forEach>
+								<input id="orgName" name="orgName" type="hidden" value="${User.orgName }" />				
+								<input id="orgParentTree" name="OrgId" value="" style="width:254px;height:28px;" checkbox="true"  class="easyui-combotree" />
+								
+								<span style="color:red">*</span>
+							</td>
+						</tr>
+						<%-- <tr>
 							<td align="right" height="100px;">被监察对象：</td>
 							<td colspan="3"> 
 								<table style="font-size: 16px;"> 
@@ -314,7 +376,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									</c:forEach> 
 								</table>
 							 </td>	
-						</tr>	
+						</tr>	 --%>
 						<tr>
 							<td align="right" height="100px;">责任领导：</td>
 							<td colspan="3"> 

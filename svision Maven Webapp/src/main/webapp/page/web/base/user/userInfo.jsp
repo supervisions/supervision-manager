@@ -125,7 +125,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 		</div>
 			<form id="userInfoForm" name="userInfoForm" action="<%=basePath%>system/user/jsonSaveOrUpdateUser.do" method="post">
 				<div id="tab1" class="yw-tab">
-				<table class="yw-cm-table font16" id="userTable">
+				<table class="taskTable font16" id="userTable">
 					<tr>
 						<td width="8%" align="right">用户名称：</td>
 						<td> 
@@ -133,7 +133,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<input type="hidden" id="userId" name="id" doc="taskInfo" value="${User.id}"/>								
 							<span style="color:red">*</span>
 						</td>
-						<td width="8%"></td>
+						
 					</tr> 
 					<c:if test="${User.id == 0 || User.id == null }">
 						<tr>
@@ -145,7 +145,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								style="width:254px;height:28px;" />
 								<span style="color:red">*</span>
 							</td>
-							<td width="8%"></td>
+							
 						</tr>
 						<tr>
 							<td width="8%" align="right">用户密码：</td>
@@ -156,7 +156,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								style="width:254px;height:28px;" /> 
 								<span style="color:red">*</span>
 							</td>
-							<td width="8%"></td>
+							
 						</tr>
 						<tr>
 							<td width="8%" align="right">确认密码：</td>
@@ -165,7 +165,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								class="easyui-validatebox" validType="equalTo['#pwd']"
 								style="width:254px;height:28px;" /> <span style="color:red">*</span>
 							</td>
-							<td width="8%"></td>
+							
 						</tr>
 					</c:if>
 					<tr>
@@ -181,6 +181,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							
 							<span style="color:red">*</span>
 						</td>
+						
 					</tr>
 					
 					<tr>
@@ -192,19 +193,21 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 									<option value="${position.id}" <c:forEach var="userPost" items="${userPostList}"><c:if test="${position.id == userPost.id}">selected="selected"</c:if></c:forEach>>${position.name}</option>
 								</c:forEach>
 						</select> <span style="color:red">*</span></td>
-						<td width="8%"></td>
+						
 					</tr>
 					<tr>
 						<td align="right">用户角色：</td>						
 						<td> 
-							<!-- 角色列表 -->
-							<c:forEach var="item" items="${roleList }">								
-								<label> 
-								<input type="radio" doc="taskInfo" <c:forEach var="selectItem" items="${userRoleList}"><c:if test="${item.id == selectItem.id}">checked="checked"</c:if></c:forEach> required="true" name="roleId" value="${item.id}" />${item.name}
-								</label>
-							</c:forEach>
-						</td>
-						<td width="8%"></td>
+							<!-- 角色列表 -->	
+							<div style="width:75%;">
+								<c:forEach var="item" items="${roleList }">								
+									<label  style="float:left;padding-right:10px;padding-top:5px;min-width:80px;"> 
+									<input type="radio" doc="taskInfo" <c:forEach var="selectItem" items="${userRoleList}"><c:if test="${item.id == selectItem.id}">checked="checked"</c:if></c:forEach> required="true" name="roleId" value="${item.id}" />${item.name}
+									</label>
+								</c:forEach>	
+							</div>						
+													
+						</td>					
 					</tr>
 					<tr>
 						<td align="right">用户状态：</td>
@@ -217,9 +220,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								<label><input type="radio" name="used" value="0"
 									checked="checked" />禁用</label>
 							</c:if></td>
-						<td width="8%"></td>
-					</tr>   
-					                       
+					</tr>				                       
 				</table>  
 				</div>
 			</form>			

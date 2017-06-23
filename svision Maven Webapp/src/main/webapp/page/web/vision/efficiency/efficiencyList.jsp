@@ -273,10 +273,10 @@ function toLiXiang(id){
 						</td> 
 						<td>${item.orgName}</td>
 						<td>
-							<c:if test="${item.isSign <= 1}">	
+							<c:if test="${item.isSign <= 2}">	
 								<img alt="未签收"  title="未签收" src="<%=basePath %>source/images/mark.png" width="16"  height="16" /> 
 							</c:if>
-							<c:if test="${item.isSign > 1}">
+							<c:if test="${item.isSign > 2}">
 								<img alt="已签收" src="<%=basePath %>source/images/dui.gif" /> 
 							</c:if>
 						</td>
@@ -308,12 +308,12 @@ function toLiXiang(id){
 								<img alt="已完结" src="<%=basePath %>source/images/dui.gif" /> 
 							</c:if>
 						</td>
-						<td><%-- <sapn>${item.lasgTag}</sapn> --%>
+						<td><sapn>${item.lasgTag}</sapn> 
 							<c:if test="${ item.status == 0 && userOrg.id==19 || userOrg.orgtype ==43}">
 								<%-- <span style="color: red;" onclick="setProject(${item.id })">立项</span> --%>
 									<span class="yw-btn-small bg-red cur" onclick="toLiXiang(${item.id })">立项</span>
 							</c:if>
-							<c:if test="${userOrg.id == item.supervisionOrgId and item.status != 0 and item.isSign <= 1}">
+							<c:if test="${userOrg.id == item.supervisionOrgId and item.status != 0 and item.isSign <= 2}">
 								<%-- <a style="color: blue;" onclick="sign(${item.id })">签收</a> --%>
 									<span class="yw-btn-small bg-lan cur" onclick="sign(${item.id })">签收</span>
 							</c:if>

@@ -87,7 +87,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					<table class="font16 taskTable"  cellpadding="0" cellspacing="0">
 						<!-- 初始状态 -->
 						<tr>
-							<td width="15%" align="right">项目名称：</td>
+							<td width="15%" align="right">工作事项：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
@@ -102,14 +102,15 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 								</table>
 							</td>		
 						</tr>	
+						<!-- 立项状态 -->					
 						<tr>
-							<td align="right">项目分类：</td>
+							<td align="right">监察项目：</td>
 							<td colspan="3">
-							 <label>${Item.sType } </label>   
-							</td>								
+								<label>${ItemProcess1.content } </label> 
+							</td>		
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">监察内容：</td>
+							<td align="right">监察内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess.content } </label> 
 							</td>		
@@ -120,7 +121,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 <label>${Item.endTimes } </label>   
 							</td>								
 						</tr>
-							
+						<tr>
+							<td align="right">被监察对象：</td>
+							<td colspan="3">
+							 <label>${Item.orgName } </label>   
+							</td>								
+						</tr>	
 						
 										
 						
@@ -274,7 +280,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<tr>
 								<td align="right" >是否需要整改：</td>
 								<td>
-									<label>需要整改</label> 
+									<label style="color: red;">需要整改</label> 
 								</td>		
 							</tr> 							
 						</c:if>

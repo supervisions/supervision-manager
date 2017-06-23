@@ -233,31 +233,32 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				method="post">
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >
+						<!-- 初始状态 -->
 						<tr>
-							<td width="13%" align="right">项目名称：</td>
+							<td width="15%" align="right">工作事项：</td>
 							<td colspan="3">
 								 <label>${Item.name } </label>  
 							</td> 
 						</tr>
 						<tr>
-							<td align="right">附件列表：</td>
+							<td align="right">相关附件：</td>
 							<td colspan="3"> 
 								<table style="width:100%;height:100%;min-height:80px;">
 									<c:forEach var="fileItem" items="${ItemProcess.fileList }">
 										<tr style="height:25px"><td style="border:0px;"><a title="点击下载" onclick="downLoadFile('${fileItem.filePath}','${fileItem.fileName}');" style="color:blue;cursor: pointer;">${fileItem.fileName}</a></td></tr>
-									</c:forEach> 
-									<tr><td style="border:0px;"></td><tr>
+									</c:forEach> 								
 								</table>
 							</td>		
-						</tr> 
+						</tr>	
+						<!-- 立项状态 -->					
 						<tr>
-							<td align="right">项目分类：</td>
+							<td align="right">监察项目：</td>
 							<td colspan="3">
-							 <label>${Item.sType } </label>   
-							</td>								
+								<label>${ItemProcess1.content } </label> 
+							</td>		
 						</tr>
 						<tr>
-							<td align="right" style="height:100px;">监察内容：</td>
+							<td align="right">监察内容：</td>
 							<td colspan="3">
 								<label>${ItemProcess.content } </label> 
 							</td>		
@@ -268,6 +269,12 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							 <label>${Item.endTimes } </label>   
 							</td>								
 						</tr>
+						<tr>
+							<td align="right">被监察对象：</td>
+							<td colspan="3">
+							 <label>${Item.orgName } </label>   
+							</td>								
+						</tr>	
 						
 						
 						
@@ -277,7 +284,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 							<!-- 不分节点的显示方案 -->
 							<c:if test="${ItemProcess2 != null }">
 								<tr>
-									<td align="right" style="height:100px;">资料内容：</td>
+									<td align="right" >资料内容：</td>
 									<td colspan="3">
 										<label>${ItemProcess2.content } </label> 									
 									</td>		
