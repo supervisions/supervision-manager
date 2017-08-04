@@ -165,7 +165,7 @@ function uploadFile(id,tag){
 						<c:if test="${userOrg.orgtype ==48 || userOrg.orgtype ==49}">
 							<span class="yw-btn bg-green cur" onclick="window.location.href='itemInfo.do';">添加工作事项</span>							
 						</c:if>
-						
+						<span class="yw-btn bg-green cur" onclick="window.location.href='itemInfo.do';">添加工作事项</span>
 					</div>
 					<div class="cl"></div>				
                     	<input type="hidden" id="pageNumber" name="pageNo" value="${Role.pageNo}" />

@@ -383,28 +383,7 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 						</tr>
 						
 								
-						<%-- <tr>
-							<td align="right" width="15%" align="right" height="40px;">执行情况：</td>
-							<td colspan="3" > 
-								<textarea rows="3" cols="5" style="width:60%;" name="content"></textarea>								
-								<input type="hidden" name ="itemId" value="${Item.id }">
-								<input type="hidden" id="hid_uuid" name="uuid" />
-							</td> 
-						</tr>	
-						<tr>
-							<td align="right" height="129px;">上传附件：</td>
-							<td colspan="3">
-									<input type="hidden" id="hid_isFileUpload" value="1" /> 
-								 <div id="themeswitcher" class="pull-right"></div>
-					                <script>
-					                    $(function() {
-					                        $.fn.themeswitcher && $('#themeswitcher').themeswitcher({cookieName:''});
-					                    });
-					                </script>
-					                <div id="uploader">
-					                </div>
-							 </td>	
-						</tr>		 --%>				
+								
 						<tr>
 							<td></td>
 							<td>

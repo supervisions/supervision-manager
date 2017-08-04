@@ -250,7 +250,7 @@ public class EfficiencyVisionAction extends SystemAction {
 			}
 		}
 		
-		//获取当前登录用户所属机构下的所有用户
+		//获取当前登录用户
 		User lgUser = this.getLoginUser();
 		//获取当前用户对应的机构列表
 		List<Organ> userOrgList=userService.getUserOrgByUserId(lgUser.getId());

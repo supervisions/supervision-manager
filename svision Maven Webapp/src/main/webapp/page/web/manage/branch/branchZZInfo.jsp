@@ -283,6 +283,17 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 				method="post">
 				<div id="tab1" class="yw-tab">
 					<table class="font16 taskTable" >
+						<input type="checkbox" name="OrgId" value="69"/>
+						<input type="checkbox" name="OrgId" value="69"/>
+						<input type="checkbox" name="OrgId" value="69"/>
+						<input type="checkbox" name="OrgId" value="69"/>
+						<input type="checkbox" name="OrgId" value="69"/>
+						<input type="checkbox" name="OrgId" value="69"/>
+						<input type="checkbox" name="OrgId" value="74"/>
+						<input type="checkbox" name="OrgId" value="74"/>
+						
+						
+		
 						<tr>
 							<td width="12%" align="right">项目名称：</td>
 							<td colspan="3">

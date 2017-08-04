@@ -81,7 +81,8 @@ public class ItemServiceimpl implements ItemService {
 		}
 		try{	
 			//新增项目成功后返回的itemId的集合 
-			List<Integer> itemId=new ArrayList<Integer>(); 			
+			List<Integer> itemId=new ArrayList<Integer>(); 		
+			
 			for (Integer i : orgIds) {				
 				item.setSupervisionOrgId(i);
 				itemMapper.insertSelective(item); 

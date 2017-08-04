@@ -101,6 +101,7 @@ function getItemByItemType(type){
 						<c:if test="${UserOrg.id == 19 && userRole.name !='超级管理员'}">
 							<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>manage/branch/branchZZInfo.do'">添加项目</span>
 						</c:if>
+						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>manage/branch/branchZZInfo.do'">添加项目</span>
 					</div>
 					<div class="cl"></div>
 				</div>

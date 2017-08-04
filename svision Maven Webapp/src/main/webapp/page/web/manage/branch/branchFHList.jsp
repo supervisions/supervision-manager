@@ -131,6 +131,7 @@ function followItem(id,name){
 						<c:if test="${UserOrg.id == 19 && userRole.name !='超级管理员'}">
 							<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHInfo.do'">添加项目</span>
 						</c:if>
+						<span class="yw-btn bg-green ml20 cur" onclick="window.location.href='<%=basePath %>manage/branch/branchFHInfo.do'">添加项目</span>
 						
 					
 					</div>

@@ -313,7 +313,7 @@ function toLiXiang(id){
 								<%-- <span style="color: red;" onclick="setProject(${item.id })">立项</span> --%>
 									<span class="yw-btn-small bg-red cur" onclick="toLiXiang(${item.id })">立项</span>
 							</c:if>
-							<c:if test="${userOrg.id == item.supervisionOrgId and item.status != 0 and item.isSign <= 2}">
+							<c:if test="${userOrg.id == item.supervisionOrgId and item.status != 0 and item.isSign <= 3}">
 								<%-- <a style="color: blue;" onclick="sign(${item.id })">签收</a> --%>
 									<span class="yw-btn-small bg-lan cur" onclick="sign(${item.id })">签收</span>
 							</c:if>

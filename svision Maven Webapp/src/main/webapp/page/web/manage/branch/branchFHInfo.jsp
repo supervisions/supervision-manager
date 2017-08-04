@@ -330,7 +330,14 @@ content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1,
 					                </div>
 							 </td>	
 						</tr>	
-						
+						<input type="checkbox" name="OrgId" value="10"/>
+						<input type="checkbox" name="OrgId" value="11"/>
+						<input type="checkbox" name="OrgId" value="12"/>
+						<input type="checkbox" name="OrgId" value="13"/>
+						<input type="checkbox" name="OrgId" value="14"/>
+						<input type="checkbox" name="OrgId" value="15"/>
+						<input type="checkbox" name="OrgId" value="16"/>
+						<input type="checkbox" name="OrgId" value="17"/>
 						<tr>
 							<td align="right" height="100px;">选择单位：</td>
 							<td colspan="3"> 

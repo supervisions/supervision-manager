@@ -128,8 +128,9 @@ function uploadFile(id,tag){
 					<div class="fr">
 						<!-- 执法监察的工作事项只有依法领导小组办公室才有权限添加 -->
 						<c:if test="${userOrg.id==16 }">
-							<span class="yw-btn bg-green cur" onclick="window.location.href='itemInfo.do?id=0';">录入工作事项</span>						
+													
 						</c:if>						
+						<span class="yw-btn bg-green cur" onclick="window.location.href='itemInfo.do?id=0';">录入工作事项</span>
 					</div>
 					<div class="cl"></div>				
                     	<input type="hidden" id="pageNumber" name="pageNo" value="${Role.pageNo}" />
