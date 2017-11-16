@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="utf-8"> 
-<title>组织机构管理</title> 
+<title>预设配置</title> 
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/source/js/easyUI/themes/icon.css"> 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/source/js/easyUI/jquery.easyui.min.js"></script>

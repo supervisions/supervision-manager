@@ -13,7 +13,7 @@
 <head>
 <base href="<%=basePath%>">
 
-<title>任务管理</title>
+<title>预设配置</title>
 
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1  ,maximum-scale=1, user-scalable=no" />
@@ -41,7 +41,7 @@
 			$("#configKey").show();		
 			return 0;
 		}else if(cfgType == 1) {
-			$("#kerValue").val("null");			
+			$("#kerValue").val("");			
 			$("#configPid").show();
 			$("#configKey").hide();
 			return 1;
@@ -54,7 +54,7 @@
 				return false;
 			}
 		}else if(isFirst()==0){			
-			if($("#kerValue").val()=="null"){			
+			if($("#kerValue").val()==""){			
 				$.messager.alert("温馨提示！","请修改关键字!",'error');
 				return false;
 			}

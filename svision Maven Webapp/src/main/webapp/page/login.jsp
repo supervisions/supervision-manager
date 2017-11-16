@@ -179,15 +179,15 @@
 				<div class="fl login-title">登录</div> 
 				<div class="fl panel" style="width:250px;">
 					<p class="login-rows mt30">
-						<input id="orgParentTree"  style="width:239px;height:38px;" checkbox="true"  class="easyui-combotree" />
+						<input id="orgParentTree"  style="width:250px;height:38px;" checkbox="true"  class="easyui-combotree" />
 					</p>
 					<p class="login-rows mt30">
 						<input type="hidden" id="hid_loginName" />
-						<input id="loginName" name="account" class="easyui-combobox"  style="width:239px;height:38px;" />  
+						<input id="loginName" name="account" class="easyui-combobox"  style="width:250px;height:38px;" />  
 						<%-- <input type="text" name="account" id="loginName" class="login-input login-name easyui-validatebox" placeholder="用户名"  validType="Length[4,22]" data-options="required:true" value="<shiro:principal/>" onblur="GetPwdAndChk();"/> --%>
 					</p>
 					<p class="login-rows mt30">
-						<input type="password" name="pwd" id="password" class="login-input login-pwd easyui-validatebox" style="width:239px;height:38px;"  placeholder="密码"  validType="Length[4,22]" data-options="required:true"/>
+						<input type="password" name="pwd" id="password" class="login-input login-pwd easyui-validatebox" style="width:250px;height:38px;"  placeholder="密码"  validType="Length[4,22]" data-options="required:true"/>
 					</p>
 					<p class="login-rows mt30">
 						<label class="yw-checkbox">

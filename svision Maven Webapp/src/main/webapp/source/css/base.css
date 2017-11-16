@@ -411,7 +411,7 @@
 }
 
 .login-title {
-	width: 100%;
+	width: 250px;
 	height: auto;
 	font-size: 20px;
 	color: #4c4c4c;
@@ -439,7 +439,7 @@
 }
 
 .login-input {
-	width: 240px;
+	width: 250px;
 	height: 38px !important;
 	line-height: 38px;
 	padding: 0 10px 0 40px;
@@ -610,7 +610,7 @@
 
 .login-btn {
 	float: left;
-	width: 290px;
+	width: 250px;
 	height: 40px;
 	line-height: 40px;
 	text-align: center;

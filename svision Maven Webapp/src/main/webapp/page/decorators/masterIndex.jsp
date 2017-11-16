@@ -63,33 +63,24 @@
         <a class="yw-right more" href=""></a>
     </div> 
     <div class="yw-clear"> 
-        <div class="yw-span4 ">
+        <div class="yw-span6">
             <div class="cell">
                 <h1>电子留痕</h1>
-                <p class="dotdotdot" style="word-wrap: break-word;width:322px;">
+                <p class="dotdotdot" style="word-wrap: break-word;width:526px;">
                 确保所有监察过程的每一个环节都留下记录（电子痕迹），有权限的监察人员或领导可以随时查看历史监察项目的记录。
                 </p>
                 
             </div>
         </div> 
-        <div class="yw-span4 ">
+        <div class="yw-span6 yw-last">
             <div class="cell">
                 <h1>查询统计</h1>
-                <p class="dotdotdot" style="word-wrap: break-word;width:322px;">
+                <p class="dotdotdot" style="word-wrap: break-word;width:526px;">
                监察记录数据（电子痕迹）不仅为历史查阅提供方便，更要为统计、大数据分析提供数据基础。
                 </p>
                 
             </div>
-        </div> 
-        <!-- <div class="yw-span4 yw-last">
-            <div class="cell">  
-                <h1>电子作业，师生互动</h1>
-                <p class="dotdotdot" style="word-wrap: break-word;width:322px;">
-                云里雾里教育云桌面，每个孩子将依靠账户密码，获得自己的私人学习空间，老师可以在后台进行作业布置，学习资料的分发，学生可以及时与老师互动。
-                </p>
-                 
-            </div>
-        </div>  -->
+        </div>
 	</div>
 </div>     
 </body>
